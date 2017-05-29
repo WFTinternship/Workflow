@@ -10,10 +10,17 @@ import java.util.List;
  */
 public interface UserDAO {
 
-    boolean add(User user);
+    long add(User user);
+
+    boolean delete(long id);
+
+    boolean deleteAll();
 
     boolean subscribeToArea(User user, AppArea appArea);
 
     List<User> getByName(String name);
+
+    User getById(long id);
+
 
 }
