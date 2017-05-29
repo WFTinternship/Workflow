@@ -6,7 +6,7 @@ import dataModel.User;
 import java.util.List;
 
 /**
- * Created by nane on 5/27/17.
+ * Created by naneh on 5/27/17.
  */
 public interface UserDAO {
 
