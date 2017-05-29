@@ -1,8 +1,8 @@
-package api;
+package com.workfront.internship.api;
 
-import dao.impl.PostDAOImpl;
-import dao.PostDAO;
-import dataModel.Post;
+import com.workfront.internship.dao.impl.PostDAOImpl;
+import com.workfront.internship.dao.PostDAO;
+import com.workfront.internship.dataModel.Post;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

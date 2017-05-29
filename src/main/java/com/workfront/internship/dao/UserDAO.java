@@ -1,7 +1,7 @@
-package dao;
+package com.workfront.internship.dao;
 
-import dataModel.AppArea;
-import dataModel.User;
+import com.workfront.internship.dataModel.AppArea;
+import com.workfront.internship.dataModel.User;
 
 import java.util.List;
 

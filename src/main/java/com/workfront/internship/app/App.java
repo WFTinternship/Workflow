@@ -1,4 +1,4 @@
-package app;
+package com.workfront.internship.app;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

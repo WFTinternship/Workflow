@@ -1,7 +1,4 @@
-package dataModel;
-
-import java.util.Date;
-import java.util.StringJoiner;
+package com.workfront.internship.dataModel;
 
 /**
  * Created by nane on 5/26/17.

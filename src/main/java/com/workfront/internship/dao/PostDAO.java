@@ -1,6 +1,6 @@
-package dao;
+package com.workfront.internship.dao;
 
-import dataModel.Post;
+import com.workfront.internship.dataModel.Post;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package dataModel;
+package com.workfront.internship.dataModel;
 
 /**
  * Created by Karen on 5/26/2017.

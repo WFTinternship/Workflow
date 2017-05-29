@@ -1,13 +1,13 @@
-package dao.impl;
+package com.workfront.internship.dao.impl;
 
-import app.App;
-import dao.PostDAO;
-import dao.UserDAO;
-import dataModel.AppArea;
-import dataModel.Post;
-import dataModel.User;
-import dbConstants.DataBaseConstants;
-import util.DBHelper;
+import com.workfront.internship.app.App;
+import com.workfront.internship.dao.PostDAO;
+import com.workfront.internship.dao.UserDAO;
+import com.workfront.internship.dataModel.AppArea;
+import com.workfront.internship.dataModel.Post;
+import com.workfront.internship.dataModel.User;
+import com.workfront.internship.dbConstants.DataBaseConstants;
+import com.workfront.internship.util.DBHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

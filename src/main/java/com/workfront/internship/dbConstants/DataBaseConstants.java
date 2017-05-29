@@ -1,4 +1,4 @@
-package dbConstants;
+package com.workfront.internship.dbConstants;
 
 /**
  * Created by nane on 5/28/17.

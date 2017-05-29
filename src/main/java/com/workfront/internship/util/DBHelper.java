@@ -1,4 +1,4 @@
-package util;
+package com.workfront.internship.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

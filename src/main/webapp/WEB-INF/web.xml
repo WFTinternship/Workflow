@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>app</servlet-name>
-        <servlet-class>app.App</servlet-class>
+        <servlet-class>com.workfront.internship.app.App</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>AddPost</servlet-name>
-        <servlet-class>api.AddPost</servlet-class>
+        <servlet-class>com.workfront.internship.api.AddPost</servlet-class>
     </servlet>
 
     <servlet-mapping>

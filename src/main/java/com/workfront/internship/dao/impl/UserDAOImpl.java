@@ -1,12 +1,11 @@
-package dao.impl;
+package com.workfront.internship.dao.impl;
 
-import dao.UserDAO;
-import dataModel.AppArea;
-import dataModel.User;
-import dbConstants.DataBaseConstants;
-import util.DBHelper;
+import com.workfront.internship.dao.UserDAO;
+import com.workfront.internship.dataModel.AppArea;
+import com.workfront.internship.dataModel.User;
+import com.workfront.internship.dbConstants.DataBaseConstants;
+import com.workfront.internship.util.DBHelper;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

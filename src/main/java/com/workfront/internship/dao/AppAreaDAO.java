@@ -1,6 +1,6 @@
-package dao;
+package com.workfront.internship.dao;
 
-import dataModel.AppArea;
+import com.workfront.internship.dataModel.AppArea;
 
 /**
  * Created by nane on 5/27/17.

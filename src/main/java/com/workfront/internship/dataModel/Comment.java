@@ -1,4 +1,4 @@
-package dataModel;
+package com.workfront.internship.dataModel;
 
 import java.sql.Date;
 

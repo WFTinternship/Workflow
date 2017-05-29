@@ -1,6 +1,6 @@
-package dao;
+package com.workfront.internship.dao;
 
-import dataModel.Comment;
+import com.workfront.internship.dataModel.Comment;
 
 import java.util.List;
 
