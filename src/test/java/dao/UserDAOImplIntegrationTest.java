@@ -1,4 +1,4 @@
-package java.dao;
+package dao;
 
 /**
  * Created by Karen on 5/29/2017.
