@@ -224,20 +224,20 @@ public class PostDAOImpl implements PostDAO {
 
     public static Post fromResultSet(Post post, ResultSet rs){
         try {
-            post.setId(rs.getLong(rs.findColumn(DataBaseConstants.Post.id)));
+            post.setId(rs.getLong(DataBaseConstants.Post.id));
 
             User user = new User();
             user = UserDAOImpl.fromResultSet(user, rs);
             post.setUser(user);
 
             AppArea appArea = AppArea.getById(
-                    rs.getLong(rs.findColumn(DataBaseConstants.AppArea.id)));
+                    rs.getLong(DataBaseConstants.AppArea.id));
 
             post.setAppArea(appArea);
 
-            post.setPostTime(rs.getTimestamp(rs.findColumn(DataBaseConstants.Post.dateTime)));
-            post.setTitle(rs.getString(rs.findColumn(DataBaseConstants.Post.title)));
-            post.setContent(rs.getString(rs.findColumn(DataBaseConstants.Post.content)));
+            post.setPostTime(rs.getTimestamp(DataBaseConstants.Post.dateTime));
+            post.setTitle(rs.getString(DataBaseConstants.Post.title));
+            post.setContent(rs.getString(DataBaseConstants.Post.content));
 
         }catch (SQLException e){
             e.printStackTrace();
