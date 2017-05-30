@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS work_flow.user_apparea;
+DROP TABLE IF EXISTS work_flow.best_answer;
+DROP TABLE IF EXISTS work_flow.comment;
+DROP TABLE IF EXISTS work_flow.post;
+DROP TABLE IF EXISTS work_flow.user;
+DROP TABLE IF EXISTS work_flow.apparea;
+DROP TABLE IF EXISTS work_flow.team;
+
 CREATE TABLE IF NOT exists work_flow.team (
   id BIGINT(25) NOT NULL AUTO_INCREMENT,
   name VARCHAR(45) NULL,
@@ -12,8 +20,7 @@ CREATE TABLE IF NOT exists work_flow.user(
   email VARCHAR(45) NOT NULL ,
   passcode VARCHAR(45),
   rating INT NOT NULL,
-  PRIMARY KEY (id)
-);
+  PRIMARY KEY (id));
 
 CREATE TABLE IF NOT exists work_flow.apparea (
   id BIGINT(25) AUTO_INCREMENT NOT NULL,
@@ -48,7 +55,7 @@ CREATE TABLE IF NOT exists work_flow.post (
   id BIGINT(25) AUTO_INCREMENT NOT NULL,
   post_id BIGINT(25),
   user_id BIGINT(25) NOT NULL,
-  date_time VARCHAR(32) NOT NULL,
+  post_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   title VARCHAR(45) NOT NULL,
   content VARCHAR(1000) NOT NULL,
   apparea_id BIGINT(25) NOT NULL,
@@ -72,7 +79,7 @@ CREATE TABLE IF NOT exists work_flow.comment (
   user_id BIGINT(25) NULL,
   post_id BIGINT(25) NULL,
   content VARCHAR(500) NULL,
-  date_time VARCHAR(32) NULL,
+  comment_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   INDEX fk_userid_comment_idx (user_id ASC),
   INDEX fk_postid_comment_idx (post_id ASC),

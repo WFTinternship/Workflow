@@ -10,7 +10,7 @@ public class DataBaseConstants {
         public static String postId = "post_id";
         public static String userId = "user_id";
         public static String appAreaId = "apparea_id";
-        public static String dateTime = "date_time";
+        public static String dateTime = "post_time";
         public static String title = "title";
         public static String content  = "content";
         public static String isCorrect  = "is_correct";
