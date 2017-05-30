@@ -24,13 +24,13 @@ public class PostDAOImpl implements PostDAO {
 
     public long add(Post post) {
         long id = 0;
-        String sql = "INSERT INTO work_flow.post (user_id, apparea_id, date_time, title, content) " +
+        String sql = "INSERT INTO work_flow.post (user_id, apparea_id, post_time, title, content) " +
                 " VALUE(?,?,?,?,?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, post.getUser().getId());
             stmt.setLong(2, post.getAppArea().getId());
-            stmt.setString(3, post.getPostTime());
+            stmt.setTimestamp(3, post.getPostTime());
             stmt.setString(4, post.getTitle());
             stmt.setString(5, post.getContent());
 
@@ -56,7 +56,7 @@ public class PostDAOImpl implements PostDAO {
         Post post = null;
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_id, team.name, team.office, date_time, title, content  " +
+                " apparea.team_id, team.name, team.office, post_time, title, content  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " JOIN apparea ON post.apparea_id = apparea.id " +
@@ -235,7 +235,7 @@ public class PostDAOImpl implements PostDAO {
 
             post.setAppArea(appArea);
 
-            post.setPostTime(rs.getString(rs.findColumn(DataBaseConstants.Post.dateTime)));
+            post.setPostTime(rs.getTimestamp(rs.findColumn(DataBaseConstants.Post.dateTime)));
             post.setTitle(rs.getString(rs.findColumn(DataBaseConstants.Post.title)));
             post.setContent(rs.getString(rs.findColumn(DataBaseConstants.Post.content)));
 

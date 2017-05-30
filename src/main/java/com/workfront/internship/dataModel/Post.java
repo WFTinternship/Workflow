@@ -1,5 +1,7 @@
 package com.workfront.internship.dataModel;
 
+import java.sql.Timestamp;
+
 /**
  * Created by nane on 5/26/17.
  */
@@ -8,7 +10,7 @@ public class Post {
     private Post post;
     private User user;
     private AppArea appArea;
-    private String postTime;
+    private Timestamp postTime;
     private String title;
     private String content;
     private boolean isCorrect;
@@ -49,11 +51,11 @@ public class Post {
         return this;
     }
 
-    public String getPostTime() {
+    public Timestamp getPostTime() {
         return postTime;
     }
 
-    public Post setPostTime(String postTime) {
+    public Post setPostTime(Timestamp postTime) {
         this.postTime = postTime;
         return this;
     }
