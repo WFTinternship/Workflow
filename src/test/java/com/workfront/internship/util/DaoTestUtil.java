@@ -1,7 +1,17 @@
 package com.workfront.internship.util;
 
+import com.workfront.internship.dao.UserDAO;
+import com.workfront.internship.dao.impl.UserDAOImpl;
+import com.workfront.internship.dataModel.AppArea;
+import com.workfront.internship.dataModel.Post;
 import com.workfront.internship.dataModel.User;
 
+import javax.jws.soap.SOAPBinding;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -15,6 +25,30 @@ public class DaoTestUtil {
                 .setEmail("name@gmail.com")
                 .setPassword("password" + uuid()).setRating(12);
         return user;
+    }
+
+    public static Post getRandomPost()  {
+        Post post = new Post();
+        UserDAO userDAO = new UserDAOImpl();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date parsedDate = null;
+        try {
+            parsedDate = dateFormat.parse("2017-05-30 13:50:58");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+        post.setUser(userDAO.getById(22))
+                .setAppArea(getRandomAppArea())
+                .setPostTime(timestamp)
+                .setTitle("title")
+                .setContent("content");
+
+        return post;
+    }
+
+    public static AppArea getRandomAppArea(){
+        return AppArea.values()[0];
     }
 
     public static String uuid(){

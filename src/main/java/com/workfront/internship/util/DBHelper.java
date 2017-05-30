@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class DBHelper {
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "vahag1234";
+    private static final String PASSWORD = "barev";
     private static final String CONN_STRING =
             "jdbc:mysql://localhost:3306/work_flow";
 

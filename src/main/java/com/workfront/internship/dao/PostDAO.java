@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface PostDAO {
 
-    boolean add(Post post);
+    long add(Post post);
 
     boolean update(Post post);
 
@@ -21,4 +21,5 @@ public interface PostDAO {
 
     List<Post> getByTitle(String title);
 
+    Post getById(long id);
 }
