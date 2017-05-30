@@ -9,7 +9,9 @@ import com.workfront.internship.util.DaoTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.*;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class PostDAOImplIntegrationTest {
         userDAO.add(user);
         appArea = AppArea.values()[0];
         postDAO = new PostDAOImpl();
+        post = DaoTestUtil.getRandomPost(user, appArea);
     }
 
     @After
@@ -42,22 +45,63 @@ public class PostDAOImplIntegrationTest {
         for (Post user: postList) {
             postDAO.delete(user.getId());
         }
+        userDAO.delete(user.getId());
         postDAO.delete(post.getId());
     }
 
+    // region <TEST CASE>
+
+    /**
+     * @see PostDAO#add(Post)
+     */
     @Test
-    public void add(){
-        post = DaoTestUtil.getRandomPost(user, appArea);
+    public void add_failure() {
+        post.setTitle(null);
+
+        // Test method
+        long postId = postDAO.add(post);
+
+        Post post = postDAO.getById(postId);
+        assertNull(post);
+    }
+
+    @Test
+    public void add_success() {
+        // Test method
         long expectedPostId = postDAO.add(post);
 
         Post actualPost = postDAO.getById(expectedPostId);
         verifyAddedPost(post, actualPost);
     }
 
-    private void verifyAddedPost(Post post, Post actualPost) {
+    @Test
+    public void getById_failure(){
+        Post post = postDAO.getById(1000000);
+        assertEquals(post, null);
+
+    }
+
+    @Test
+    public void getById_success(){
+        long expectedPostId = postDAO.add(post);
+
+        Post actualPost = postDAO.getById(expectedPostId);
+        verifyAddedPost(post, actualPost);
+
+    }
+
+    // endregion
+
+    // region <HELPERS>
+
+    static void verifyAddedPost(Post post, Post actualPost) {
+        UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
         assertEquals(post.getTitle(), actualPost.getTitle());
         assertEquals(post.getContent(), actualPost.getContent());
         assertEquals(post.getPostTime(), actualPost.getPostTime());
         assertEquals(post.isCorrect(), actualPost.isCorrect());
     }
+
+    // endregion
+
 }

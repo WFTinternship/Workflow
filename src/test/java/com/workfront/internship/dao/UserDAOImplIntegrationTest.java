@@ -49,7 +49,7 @@ public class UserDAOImplIntegrationTest {
         userDAO.delete(user.getId());
     }
 
-    private void verifyAddedUser(User user, User actualUser){
+    static void verifyAddedUser(User user, User actualUser){
         assertEquals(user.getFirstName(),actualUser.getFirstName());
         assertEquals(user.getLastName(),actualUser.getLastName());
         assertEquals(user.getEmail(),actualUser.getEmail());

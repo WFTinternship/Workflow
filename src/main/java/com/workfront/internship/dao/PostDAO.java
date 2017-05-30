@@ -11,10 +11,11 @@ public interface PostDAO {
 
     long add(Post post);
 
-    boolean update(Post post);
-
-    boolean delete(long id);
-
+    /**
+     * Gets all Posts from database.
+     *
+     * @return
+     */
     List<Post> getAll();
 
     List<Post> getByUserId(long userId);
@@ -22,4 +23,10 @@ public interface PostDAO {
     List<Post> getByTitle(String title);
 
     Post getById(long id);
+
+    boolean update(Post post);
+
+    boolean delete(long id);
+
+
 }

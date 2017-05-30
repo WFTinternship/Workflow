@@ -36,9 +36,8 @@ public class DaoTestUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
         post.setAppArea(getRandomAppArea())
-                .setPostTime(timestamp)
+                .setPostTime(new Timestamp(parsedDate.getTime()))
                 .setTitle("title")
                 .setContent("content");
 
