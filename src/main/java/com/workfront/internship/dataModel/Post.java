@@ -17,63 +17,71 @@ public class Post {
         return id;
     }
 
-    public void setId(long id) {
+    public Post setId(long id) {
         this.id = id;
+        return this;
     }
 
     public Post getPost() {
         return post;
     }
 
-    public void setPost(Post post) {
+    public Post setPost(Post post) {
         this.post = post;
+        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public Post setUser(User user) {
         this.user = user;
+        return this;
     }
 
     public AppArea getAppArea() {
         return appArea;
     }
 
-    public void setAppArea(AppArea appArea) {
+    public Post setAppArea(AppArea appArea) {
         this.appArea = appArea;
+        return this;
     }
 
     public String getPostTime() {
         return postTime;
     }
 
-    public void setPostTime(String postTime) {
+    public Post setPostTime(String postTime) {
         this.postTime = postTime;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Post setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public Post setContent(String content) {
         this.content = content;
+        return this;
     }
 
     public boolean isCorrect() {
         return isCorrect;
     }
 
-    public void setCorrect(boolean correct) {
+    public Post setCorrect(boolean correct) {
         isCorrect = correct;
+        return this;
     }
 }

@@ -30,11 +30,11 @@ public class AddPost extends HttpServlet{
         post.setContent(content);
 
         PostDAO postDAO = new PostDAOImpl();
-        boolean success = postDAO.add(post);
-        if (!success){
-            resp.setStatus(400);
-        }else {
-            resp.setStatus(200);
-        }
+//        boolean success = postDAO.add(post);
+//        if (!success){
+//            resp.setStatus(400);
+//        }else {
+//            resp.setStatus(200);
+//        }
     }
 }
