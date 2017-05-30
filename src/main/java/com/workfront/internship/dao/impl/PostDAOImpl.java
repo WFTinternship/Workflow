@@ -21,7 +21,11 @@ import java.util.List;
  */
 public class PostDAOImpl implements PostDAO {
 
-
+    /**
+     * @see PostDAO#add(Post) ()
+     *
+     * @return
+     */
     public long add(Post post) {
         long id = 0;
         String sql = "INSERT INTO work_flow.post (user_id, apparea_id, post_time, title, content) " +
@@ -51,6 +55,11 @@ public class PostDAOImpl implements PostDAO {
         return post.getId();
     }
 
+    /**
+     * @see PostDAO#getById(long) (Post) ()
+     *
+     * @return
+     */
     @Override
     public Post getById(long id) {
         Post post = null;
@@ -80,6 +89,11 @@ public class PostDAOImpl implements PostDAO {
         return post;
     }
 
+    /**
+     * @see PostDAO#getAll()
+     *
+     * @return
+     */
     @Override
     public List<Post> getAll() {
         List<Post> allPosts = new ArrayList<>();
@@ -112,6 +126,11 @@ public class PostDAOImpl implements PostDAO {
         return allPosts;
     }
 
+    /**
+     * @see PostDAO#getByUserId(long) (long) ()
+     *
+     * @return
+     */
     @Override
     public List<Post> getByUserId(long userId) {
         List<Post> posts = new ArrayList<>();
@@ -145,6 +164,11 @@ public class PostDAOImpl implements PostDAO {
         return posts;
     }
 
+    /**
+     * @see PostDAO#getByTitle(String) ()
+     *
+     * @return
+     */
     @Override
     public List<Post> getByTitle(String title) {
         List<Post> posts = new ArrayList<>();
@@ -177,6 +201,11 @@ public class PostDAOImpl implements PostDAO {
         return posts;
     }
 
+    /**
+     * @see PostDAO#update(Post) ()
+     *
+     * @return
+     */
     @Override
     public boolean update(Post post) {
         String sql = "UPDATE post SET title = ?, content = ? " +
@@ -196,6 +225,11 @@ public class PostDAOImpl implements PostDAO {
         return true;
     }
 
+    /**
+     * @see PostDAO#delete(long) (Post) ()
+     *
+     * @return
+     */
     @Override
     public boolean delete(long id) {
         String sql = "DELETE FROM post WHERE id = ?";
@@ -203,7 +237,7 @@ public class PostDAOImpl implements PostDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
-            stmt.execute();
+            stmt.executeQuery();
 
         } catch (SQLException e) {
             e.printStackTrace();
