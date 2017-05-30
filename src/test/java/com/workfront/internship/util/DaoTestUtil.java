@@ -29,7 +29,6 @@ public class DaoTestUtil {
 
     public static Post getRandomPost()  {
         Post post = new Post();
-        UserDAO userDAO = new UserDAOImpl();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date parsedDate = null;
         try {
@@ -37,13 +36,18 @@ public class DaoTestUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
-        post.setUser(userDAO.getById(22))
-                .setAppArea(getRandomAppArea())
-                .setPostTime(timestamp)
+        post.setAppArea(getRandomAppArea())
+                .setPostTime(new Timestamp(parsedDate.getTime()))
                 .setTitle("title")
                 .setContent("content");
 
+        return post;
+    }
+
+    public static Post getRandomPost(User user, AppArea appArea)  {
+        Post post = getRandomPost();
+        post.setUser(user);
+        post.setAppArea(appArea);
         return post;
     }
 

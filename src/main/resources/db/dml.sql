@@ -1,3 +1,6 @@
+INSERT INTO work_flow.apparea
+    VALUE (1, 'Reporting', 'Some rep description', NULL );
+
 INSERT INTO team
     VALUES (1, 'Team1', 'USA'),
         (2, 'Team2', 'Armenia'),
