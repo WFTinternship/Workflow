@@ -3,6 +3,7 @@ package com.workfront.internship.util;
 import com.workfront.internship.dao.UserDAO;
 import com.workfront.internship.dao.impl.UserDAOImpl;
 import com.workfront.internship.dataModel.AppArea;
+import com.workfront.internship.dataModel.Comment;
 import com.workfront.internship.dataModel.Post;
 import com.workfront.internship.dataModel.User;
 
@@ -26,7 +27,21 @@ public class DaoTestUtil {
                 .setPassword("password" + uuid()).setRating(12);
         return user;
     }
-
+    public static Comment getRandomComment(){
+        Comment comment = new Comment();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date = null;
+        try {
+           date = dateFormat.parse("2017-05-30 17:00:07");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        comment.setUser(getRandomUser())
+                .setPost(getRandomPost())
+                .setContent("content")
+                .setCommentTime(new Timestamp(date.getTime()));
+        return comment;
+    }
     public static Post getRandomPost()  {
         Post post = new Post();
         UserDAO userDAO = new UserDAOImpl();

@@ -1,6 +1,7 @@
 package com.workfront.internship.dataModel;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 /**
  * Created by Karen on 5/26/2017.
@@ -10,45 +11,50 @@ public class Comment {
     private User user;
     private Post post;
     private String content;
-    private Date dateTime;
+    private Date commentTime;
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public Comment setId(long id) {
         this.id = id;
+        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public Comment setUser(User user) {
         this.user = user;
+        return this;
     }
 
     public Post getPost() {
         return post;
     }
 
-    public void setPost(Post post) {
+    public Comment setPost(Post post) {
         this.post = post;
+        return this;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public Comment setContent(String content) {
         this.content = content;
+        return this;
     }
 
-    public Date getDateTime() {
-        return dateTime;
+    public Date getCommentTime() {
+        return commentTime;
     }
 
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public Comment setCommentTime(Date commentTime) {
+        this.commentTime = commentTime;
+        return this;
     }
 }
