@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface CommentDAO {
 
-    boolean  addComment(Comment comment);
+    long add(Comment comment);
 
-    boolean updateComment(long id, String content);
+    boolean update(long id, String content);
 
-    boolean deleteComment(long id);
+    boolean delete(long id);
 
-    List<Comment> getComments(long postId);
+    List<Comment> getById(long postId);
 }
