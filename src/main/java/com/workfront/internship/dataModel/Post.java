@@ -86,4 +86,14 @@ public class Post {
         isCorrect = correct;
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || (o instanceof Post) && id == ((Post) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

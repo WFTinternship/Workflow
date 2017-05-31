@@ -5,22 +5,21 @@ import com.workfront.internship.dataModel.User;
 
 import java.util.List;
 
-/**
- * Created by naneh on 5/27/17.
- */
+
 public interface UserDAO {
 
     long add(User user);
 
-    boolean delete(long id);
+    void deleteById(long id);
 
-    boolean deleteAll();
+    void deleteAll();
 
-    boolean subscribeToArea(User user, AppArea appArea);
+    void subscribeToArea(long userId, long appAreaId);
 
     List<User> getByName(String name);
 
     User getById(long id);
 
+    List<AppArea> getAppAreasById(long id);
 
 }

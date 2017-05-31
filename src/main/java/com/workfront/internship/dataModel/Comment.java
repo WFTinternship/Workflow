@@ -2,9 +2,7 @@ package com.workfront.internship.dataModel;
 
 import java.sql.Date;
 
-/**
- * Created by Karen on 5/26/2017.
- */
+
 public class Comment {
     private long id;
     private User user;
@@ -50,5 +48,15 @@ public class Comment {
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || (o instanceof Comment) && id == ((Comment) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

@@ -45,7 +45,7 @@ public class PostDAOImplIntegrationTest {
         for (Post user: postList) {
             postDAO.delete(user.getId());
         }
-        userDAO.delete(user.getId());
+        userDAO.deleteById(user.getId());
         postDAO.delete(post.getId());
     }
 
