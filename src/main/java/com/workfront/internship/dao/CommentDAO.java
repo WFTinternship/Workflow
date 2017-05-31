@@ -15,5 +15,7 @@ public interface CommentDAO {
 
     boolean delete(long id);
 
-    List<Comment> getById(long postId);
+    Comment getById(long id);
+
+    List<Comment> getAll();
 }

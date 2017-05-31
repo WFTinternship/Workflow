@@ -1,5 +1,6 @@
 package com.workfront.internship.dao;
 
+import com.workfront.internship.dao.impl.CommentDAOImpl;
 import com.workfront.internship.dao.impl.UserDAOImpl;
 import com.workfront.internship.dataModel.Comment;
 import com.workfront.internship.dataModel.User;
@@ -23,13 +24,7 @@ public class CommentDAOImplIntegrationTest {
 
     @Before
     public void setup(){
-
-
-    }
-
-    @Test
-    public void add(){
-
+        commentDAO = new CommentDAOImpl();
     }
 
     @After
@@ -37,7 +32,15 @@ public class CommentDAOImplIntegrationTest {
 
     }
 
-    private void verifyAddedUser(User user, User actualUser){
+    @Test
+    public void add_success(){
+
+    }
+    @Test
+    public void add_failure(){
+
+    }
+    private void verifyAddedComment(Comment comment, Comment actualComment){
 
     }
 

@@ -2,6 +2,9 @@ package com.workfront.internship.dao.impl;
 
 import com.workfront.internship.dao.CommentDAO;
 import com.workfront.internship.dataModel.Comment;
+import com.workfront.internship.dataModel.Post;
+import com.workfront.internship.dataModel.User;
+import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.util.DBHelper;
 
 import java.sql.*;
@@ -67,7 +70,7 @@ public class CommentDAOImpl implements CommentDAO {
     public boolean delete(long id) {
         String query="DELETE FROM comment WHERE id=?";
         try{
-            Connection connection=DBHelper.getConnection();
+            Connection connection = DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
             stmt.execute();
@@ -79,20 +82,39 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public List<Comment> getById(long postId) {
+    public Comment getById(long id) {
+        Comment comment = null;
+        String query="SELECT * FROM comment WHERE id = ?";
+        try {
+            Connection connection = DBHelper.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setLong(1,id);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                comment = new Comment();
+                comment = fromResultSet(comment,rs);
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
+        return comment;
+    }
+
+    @Override
+    public List<Comment> getAll() {
+        Comment comment = null;
         List<Comment> comments=new ArrayList<>();
-        String query="SELECT * FROM comment WHERE postId=?";
+        String query="SELECT * FROM comment";
         try{
 
             Connection connection=DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setLong(1, postId);
             ResultSet rs = stmt.executeQuery(query );
             while (rs.next()) {
-                Comment comment = new Comment();
-                comments.add(comment);
+                comment = new Comment();
+                comments.add(fromResultSet(comment,rs));
             }
-            stmt.execute();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -100,6 +122,23 @@ public class CommentDAOImpl implements CommentDAO {
         }
 
         return comments;
+    }
+    public static Comment fromResultSet(Comment comment, ResultSet rs){
+        try {
+            comment.setId(rs.getLong(DataBaseConstants.Comment.id));
+            User user = new User();
+            UserDAOImpl.fromResultSet(user,rs);
+            comment.setUser(user);
+            Post post = new Post();
+            PostDAOImpl.fromResultSet(post,rs);
+            comment.setPost(post);
+            comment.setContent(rs.getString(DataBaseConstants.Comment.content));
+            comment.setCommentTime(rs.getTime(DataBaseConstants.Comment.dateTime));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return comment;
     }
 }
 
