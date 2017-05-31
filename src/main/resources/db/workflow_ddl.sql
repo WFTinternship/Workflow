@@ -17,7 +17,7 @@ CREATE TABLE IF NOT exists work_flow.user(
   PRIMARY KEY (id));
 
 CREATE TABLE IF NOT exists work_flow.apparea (
-  id BIGINT(25) AUTO_INCREMENT NOT NULL,
+  id BIGINT(25) NOT NULL,
   name VARCHAR(45) NULL,
   description VARCHAR(45) NULL,
   team_name VARCHAR (25) NULL,

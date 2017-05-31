@@ -11,31 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Karen on 5/31/2017.
- */
+
 public class AppAreaDAOImpl implements AppAreaDAO {
 
     @Override
     public long add(AppArea appArea) {
         long id = 0;
-        final String sql = "INSERT INTO work_flow.apparea (name, description, team_name) " +
-                "VALUES (?, ?, ?)";
+        final String sql = "INSERT INTO work_flow.apparea (id, name, description, team_name) " +
+                "VALUES (?, ?, ?, ?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, appArea.getName());
-            stmt.setString(2, appArea.getDescription());
-            stmt.setString(3, appArea.getTeamName());
-
-            try {
-                Field idField = appArea.getClass().getDeclaredField("id");
-                idField.setAccessible(true);
-                idField.setLong(appArea, id);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            stmt.setLong(1, appArea.getId());
+            stmt.setString(2, appArea.getName());
+            stmt.setString(3, appArea.getDescription());
+            stmt.setString(4, appArea.getTeamName());
 
             stmt.executeUpdate();
             ResultSet resultSet = stmt.getGeneratedKeys();
@@ -61,6 +50,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
             throw new RuntimeException(e);
         }
     }
+
 
     //TODO check the right place of the method
     @Override
