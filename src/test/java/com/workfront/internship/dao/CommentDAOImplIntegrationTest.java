@@ -50,20 +50,20 @@ public class CommentDAOImplIntegrationTest {
 
     }
 
-    @Test
+    /*@Test
     public void add_success(){
         long expectedCommentId = commentDAO.add(comment);
         Comment actualComment = commentDAO.getById(expectedCommentId);
         verifyAddedComment(comment, actualComment);
-    }
+    }*/
     @Test
     public void add_failure(){
         long commentId = commentDAO.add(comment);
         Comment comm = commentDAO.getById(commentId);
         assertNull(comm);
-
     }
     private void verifyAddedComment(Comment comment, Comment actualComment){
+
         PostDAOImplIntegrationTest.verifyAddedPost(comment.getPost(),actualComment.getPost());
         UserDAOImplIntegrationTest.verifyAddedUser(comment.getUser(),actualComment.getUser());
         assertEquals(comment.getContent(),actualComment.getContent());
