@@ -26,7 +26,7 @@ public interface PostDAO {
 
     boolean update(Post post);
 
-    boolean delete(long id);
+    int delete(long id);
 
 
 }

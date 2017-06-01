@@ -9,11 +9,13 @@ import com.workfront.internship.util.DBHelper;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Created by Karen on 5/27/2017.
  */
 public class UserDAOImpl implements UserDAO {
+
     @Override
     public long add(User user) {
         long id = 0;
@@ -81,7 +83,21 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    @Override
+    public void unsubscribeToArea(long userId, long appAreaId) {
+        final String sql = "DELETE FROM work_flow.user_apparea " +
+                " WHERE user_id = ? AND apparea_id = ?";
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, userId);
+            stmt.setLong(2, appAreaId);
 
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public List<User> getByName(String name) {

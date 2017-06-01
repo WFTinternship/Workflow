@@ -16,6 +16,8 @@ public interface UserDAO {
 
     void subscribeToArea(long userId, long appAreaId);
 
+    void unsubscribeToArea(long userId, long appAreaId);
+
     List<User> getByName(String name);
 
     User getById(long id);

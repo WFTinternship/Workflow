@@ -107,6 +107,15 @@ public class UserDAOImplIntegrationTest {
     }
 
     @Test
+    public void unsubscribeToArea_success(){
+        userDAO.add(user);
+        userDAO.subscribeToArea(user.getId(), 1);
+        userDAO.unsubscribeToArea(user.getId(), 1);
+        List<User> users = appAreaDAO.getUsersById(1);
+        assertEquals(users.size(), 0);
+    }
+
+    @Test
     public void getByName_success(){
         user.setFirstName("Vahagn").setLastName("Vardanyan");
         userDAO.add(user);
