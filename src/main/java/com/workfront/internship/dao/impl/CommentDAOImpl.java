@@ -24,25 +24,25 @@ public class CommentDAOImpl implements CommentDAO {
         long id = 0;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        String query="INSERT INTO COMMENT(id,userId,postId,content,dateTime)"+
-                "VALUES(?,?,?,?,?)";
+        String query="INSERT INTO COMMENT(user_id,post_id,content,comment_time)"+
+                "VALUE(?,?,?,?)";
         try{
             Connection connection= DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            stmt.setLong(1, comment.getId());
-            stmt.setObject(2, comment.getUser());
-            stmt.setObject(3, comment.getPost());
-            stmt.setString(4, comment.getContent());
-            stmt.setString(5, dateFormat.format(date));
-
-            stmt.executeUpdate();
+          //  stmt.setLong(1, comment.getId());
+            stmt.setLong(1, comment.getUser().getId());
+            stmt.setLong(2, comment.getPost().getId());
+            stmt.setString(3, comment.getContent());
+            stmt.setString(4, dateFormat.format(date));
+            stmt.execute();
             ResultSet resultSet = stmt.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
             comment.setId(id);
         } catch (SQLException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
+            System.out.println("hello");
         }
         return comment.getId();
     }
@@ -51,7 +51,7 @@ public class CommentDAOImpl implements CommentDAO {
     public boolean update(long id, String content) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        String query="UPDATE COMMENT SET content=?,dateTime=? WHERE id=?";
+        String query="UPDATE COMMENT SET content=?,comment_time=? WHERE id=?";
         try{
             Connection connection= DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
@@ -85,18 +85,21 @@ public class CommentDAOImpl implements CommentDAO {
     public Comment getById(long id) {
         Comment comment = null;
         String query="SELECT * FROM comment WHERE id = ?";
+        ResultSet rs = null;
         try {
             Connection connection = DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             if(rs.next()){
                 comment = new Comment();
                 comment = fromResultSet(comment,rs);
             }
         } catch (SQLException e1) {
             e1.printStackTrace();
-        }
+        }finally {
+        close(rs);
+    }
 
         return comment;
     }
@@ -127,10 +130,14 @@ public class CommentDAOImpl implements CommentDAO {
         try {
             comment.setId(rs.getLong(DataBaseConstants.Comment.id));
             User user = new User();
-            UserDAOImpl.fromResultSet(user,rs);
+            user = UserDAOImpl.fromResultSet(user,rs);
+            user.setId(rs.getLong(DataBaseConstants.Comment.userId));
             comment.setUser(user);
+
             Post post = new Post();
-            PostDAOImpl.fromResultSet(post,rs);
+            post = PostDAOImpl.fromResultSet(post,rs);
+            post.setId(rs.getLong(DataBaseConstants.Comment.postId));
+
             comment.setPost(post);
             comment.setContent(rs.getString(DataBaseConstants.Comment.content));
             comment.setCommentTime(rs.getTime(DataBaseConstants.Comment.dateTime));
@@ -139,6 +146,15 @@ public class CommentDAOImpl implements CommentDAO {
             e.printStackTrace();
         }
         return comment;
+    }
+    private void close(ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
