@@ -1,8 +1,6 @@
 package com.workfront.internship.dataModel;
 
-/**
- * Created by Karen on 5/26/2017.
- */
+
 public class User {
     private long id;
     private String firstName;
@@ -63,5 +61,15 @@ public class User {
     public User setRating(int rating) {
         this.rating = rating;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || (o instanceof User) && id == ((User) o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

@@ -4,14 +4,8 @@ DROP TABLE IF EXISTS work_flow.comment;
 DROP TABLE IF EXISTS work_flow.post;
 DROP TABLE IF EXISTS work_flow.user;
 DROP TABLE IF EXISTS work_flow.apparea;
-DROP TABLE IF EXISTS work_flow.team;
 
-CREATE TABLE IF NOT exists work_flow.team (
-  id BIGINT(25) NOT NULL AUTO_INCREMENT,
-  name VARCHAR(45) NULL,
-  office VARCHAR(45) NULL,
-  PRIMARY KEY (id)
-);
+
 
 CREATE TABLE IF NOT exists work_flow.user(
   id BIGINT(25) NOT NULL AUTO_INCREMENT,
@@ -23,16 +17,12 @@ CREATE TABLE IF NOT exists work_flow.user(
   PRIMARY KEY (id));
 
 CREATE TABLE IF NOT exists work_flow.apparea (
-  id BIGINT(25) AUTO_INCREMENT NOT NULL,
+  id BIGINT(25) NOT NULL,
   name VARCHAR(45) NULL,
   description VARCHAR(45) NULL,
-  team_id BIGINT(25) NULL,
-  PRIMARY KEY (id),
-  INDEX teamId_idx (team_id ASC),
-  CONSTRAINT teamId
-  FOREIGN KEY (team_id) REFERENCES work_flow.team (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
+  team_name VARCHAR (25) NULL,
+  PRIMARY KEY (id)
+);
 
 
 CREATE TABLE IF NOT exists work_flow.user_apparea (

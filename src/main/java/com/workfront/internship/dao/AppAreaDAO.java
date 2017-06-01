@@ -1,12 +1,17 @@
 package com.workfront.internship.dao;
 
 import com.workfront.internship.dataModel.AppArea;
+import com.workfront.internship.dataModel.User;
 
-/**
- * Created by nane on 5/27/17.
- */
+import java.util.List;
+import java.util.Map;
+
+
 public interface AppAreaDAO {
 
-    boolean addAppArea(AppArea appArea);
+    long add(AppArea appArea);
 
+    void deleteById(long id);
+
+    List<User> getUsersById(long appAreaId);
 }

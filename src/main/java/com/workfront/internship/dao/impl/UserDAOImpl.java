@@ -35,56 +35,53 @@ public class UserDAOImpl implements UserDAO {
             user.setId(id);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return user.getId();
     }
 
     @Override
-    public boolean delete(long id) {
+    public void deleteById(long id) {
         final String sql = "DELETE FROM work_flow.user " +
                 "WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            stmt.execute();
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e);
         }
-        return true;
     }
 
     @Override
-    public boolean deleteAll() {
+    public void deleteAll() {
         final String sql = "DELETE FROM work_flow.user ";
         try (Connection conn = DBHelper.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e);
         }
-        return true;
+
     }
 
     @Override
-    public boolean subscribeToArea(User user, AppArea appArea) {
+    public void subscribeToArea(long userId, long appAreaId) {
         final String sql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, user.getId());
-            stmt.setLong(2, appArea.getId());
+            stmt.setLong(1, userId);
+            stmt.setLong(2, appAreaId);
 
             stmt.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException(e);
         }
-        return true;
     }
+
+
 
     @Override
     public List<User> getByName(String name) {
@@ -92,17 +89,17 @@ public class UserDAOImpl implements UserDAO {
         List<User> userList = new ArrayList<>();
         final String sql = "SELECT * " +
                 "FROM work_flow.user " +
-                "WHERE CONCAT (firstName, lastName) LIKE ?%";
+                "WHERE CONCAT (first_name, last_name) LIKE ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, filteredName);
+            stmt.setString(1, filteredName+"%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 User user = new User();
                 userList.add(fromResultSet(user, rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return userList;
     }
@@ -121,9 +118,28 @@ public class UserDAOImpl implements UserDAO {
                 user = fromResultSet(user, rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return user;
+    }
+
+    @Override
+    public List<AppArea> getAppAreasById(long userId) {
+        List<AppArea> appAreaList = new ArrayList<>();
+        final String sql = "SELECT * FROM work_flow.user_apparea " +
+                "WHERE user_id = ?";
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                long appAreaId = rs.getLong("apparea_id");
+                appAreaList.add(AppArea.getById(appAreaId));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return appAreaList;
     }
 
     public static User fromResultSet(User user, ResultSet rs) {
@@ -137,7 +153,7 @@ public class UserDAOImpl implements UserDAO {
             user.setRating(rs.getInt(DataBaseConstants.User.rating));
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return user;
     }

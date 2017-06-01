@@ -1,8 +1,6 @@
 package com.workfront.internship.dbConstants;
 
-/**
- * Created by nane on 5/28/17.
- */
+
 public class DataBaseConstants {
 
     public static class Post{
@@ -32,16 +30,11 @@ public class DataBaseConstants {
         public static String dateTime = "comment_time";
     }
 
-    public static class Team {
-        public static String id = "id";
-        public static String name = "name";
-        public static String office = "office";
-    }
-
     public static class AppArea{
         public static String id = "id";
-        public static String teamId= "team_id";
         public static String name = "name";
         public static String description = "description";
+        public static String teamName = "team_name";
+
     }
 }
