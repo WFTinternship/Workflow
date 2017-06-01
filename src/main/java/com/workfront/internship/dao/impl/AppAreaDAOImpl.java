@@ -16,21 +16,17 @@ public class AppAreaDAOImpl implements AppAreaDAO {
 
     @Override
     public long add(AppArea appArea) {
-        long id = 0;
         final String sql = "INSERT INTO work_flow.apparea (id, name, description, team_name) " +
                 "VALUES (?, ?, ?, ?)";
         try (Connection conn = DBHelper.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, appArea.getId());
             stmt.setString(2, appArea.getName());
             stmt.setString(3, appArea.getDescription());
             stmt.setString(4, appArea.getTeamName());
 
             stmt.executeUpdate();
-            ResultSet resultSet = stmt.getGeneratedKeys();
-            if (resultSet.next()) {
-                id = resultSet.getInt(1);
-            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

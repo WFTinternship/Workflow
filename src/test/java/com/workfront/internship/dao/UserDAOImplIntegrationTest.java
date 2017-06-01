@@ -44,6 +44,7 @@ public class UserDAOImplIntegrationTest {
         userDAO.deleteById(user.getId());
     }
 
+    // region <TEST CASE>
 
     @Test(expected = RuntimeException.class)
     public void add_failure() {
@@ -133,6 +134,8 @@ public class UserDAOImplIntegrationTest {
 
         assertTrue(appAreaList.contains(AppArea.getById(1)));
     }
+
+    // endregion
 
     // region <HELPERS>
 

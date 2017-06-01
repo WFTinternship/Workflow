@@ -28,19 +28,28 @@ import java.util.Map;
 public class AppAreaImplIntegrationTest {
 
     private AppAreaDAO appAreaDAO;
+    private UserDAO userDAO;
     private AppArea appArea;
+    private User user;
 
 
     @Before
     public void setup(){
         appAreaDAO = new AppAreaDAOImpl();
+        userDAO = new UserDAOImpl();
         appArea = AppArea.values()[0];
+        user = DaoTestUtil.getRandomUser();
     }
 
     @After
     public void tearDown(){
-
+        if(getAppAreaFieldsById(appArea.getId()).isEmpty()){
+            appAreaDAO.add(appArea);
+        }
+        userDAO.deleteById(user.getId());
     }
+
+    // region <TEST CASE>
 
     @Test
     public void add_success(){
@@ -54,13 +63,23 @@ public class AppAreaImplIntegrationTest {
 
     @Test
     public void deleteById_success(){
+        //Test method
+        appAreaDAO.deleteById(appArea.getId());
 
+        assertTrue(getAppAreaFieldsById(appArea.getId()).isEmpty());
     }
 
     @Test
     public void getUsersById_success(){
+        long userId = userDAO.add(user);
+        userDAO.subscribeToArea(userId, appArea.getId());
+        //Test method
+        List<User> userList = appAreaDAO.getUsersById(appArea.getId());
 
+        assertTrue(userList.contains(user));
     }
+
+    // endregion
 
     // region <HELPERS>
 
