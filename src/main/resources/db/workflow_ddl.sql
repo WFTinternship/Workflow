@@ -87,6 +87,7 @@ CREATE TABLE IF NOT exists work_flow.comment (
 CREATE TABLE IF NOT EXISTS work_flow.best_answer(
   post_id BIGINT(25),
   answer_id BIGINT(25),
+  PRIMARY KEY (post_id),
   CONSTRAINT fk_post_id
   FOREIGN KEY (post_id)
   REFERENCES work_flow.post (id)

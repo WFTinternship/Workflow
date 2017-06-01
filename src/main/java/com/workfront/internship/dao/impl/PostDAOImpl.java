@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.RunnableFuture;
 
 /**
  * Created by nane on 5/26/17.
@@ -50,7 +51,7 @@ public class PostDAOImpl implements PostDAO {
             post.setId(id);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         return post.getId();
     }
@@ -64,12 +65,12 @@ public class PostDAOImpl implements PostDAO {
     public Post getById(long id) {
         Post post = null;
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.passcode, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_id, team.name, team.office, post_time, title, content  " +
+                " user.email, user.passcode, user.rating, apparea_id, apparea.name, " +
+                "apparea.description,  apparea.team_name, post_time, title, content, answer_id  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
-                " JOIN apparea ON post.apparea_id = apparea.id " +
-                " LEFT JOIN team ON apparea.team_id = team.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.id = ?";
         ResultSet rs = null;
         try(Connection conn = DBHelper.getConnection();
@@ -98,12 +99,11 @@ public class PostDAOImpl implements PostDAO {
     public List<Post> getAll() {
         List<Post> allPosts = new ArrayList<>();
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_id, team.name, team.office, date_time, title, content  " +
+                " user.email, user.passcode, user.rating, apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
-                " JOIN apparea ON post.apparea_id = apparea.id " +
-                " JOIN team ON apparea.team_id = team.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL";
         ResultSet rs = null;
         try (Connection conn = DBHelper.getConnection();
@@ -114,8 +114,6 @@ public class PostDAOImpl implements PostDAO {
                 post = fromResultSet(post, rs);
                 allPosts.add(post);
             }
-
-            stmt.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,13 +133,13 @@ public class PostDAOImpl implements PostDAO {
     public List<Post> getByUserId(long userId) {
         List<Post> posts = new ArrayList<>();
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_id, team.name, team.office, date_time, title, content " +
+                " user.email, user.passcode, user.rating, apparea_id, apparea.name, " +
+                " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
-                " JOIN apparea ON post.apparea_id = apparea.id " +
-                " JOIN team ON apparea.team_id = team.id " +
-                " WHERE post_id IS NULL AND post.user_id = ?";
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
+                " WHERE post.post_id IS NULL AND post.user_id = ?";
         ResultSet rs = null;
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -173,24 +171,23 @@ public class PostDAOImpl implements PostDAO {
     public List<Post> getByTitle(String title) {
         List<Post> posts = new ArrayList<>();
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_id, team.name, team.office, date_time, title, content " +
+                " user.email, user.rating, user.passcode," +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
-                " JOIN apparea ON post.apparea_id = apparea.id " +
-                " JOIN team ON apparea.team_id = team.id " +
-                " WHERE post_id IS NULL AND post.title LIKE '%?%' ";
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE post_id IS NULL AND post.title LIKE ? ";
         ResultSet rs = null;
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, title.trim());
+            stmt.setString(1, "%" + title.trim() + "%");
             rs = stmt.executeQuery();
             while (rs.next()){
                 Post post = new Post();
+                post = fromResultSet(post, rs);
                 posts.add(post);
             }
-
-            stmt.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -231,19 +228,20 @@ public class PostDAOImpl implements PostDAO {
      * @return
      */
     @Override
-    public boolean delete(long id) {
+    public int delete(long id) {
+        int numberOfRowsAffeced;
         String sql = "DELETE FROM post WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
-            stmt.executeQuery();
+            numberOfRowsAffeced = stmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
-        return true;
+        return numberOfRowsAffeced;
     }
 
     private void close(ResultSet rs) {
@@ -262,6 +260,7 @@ public class PostDAOImpl implements PostDAO {
 
             User user = new User();
             user = UserDAOImpl.fromResultSet(user, rs);
+            user.setId(rs.getLong(DataBaseConstants.Post.userId));
             post.setUser(user);
 
             AppArea appArea = AppArea.getById(
