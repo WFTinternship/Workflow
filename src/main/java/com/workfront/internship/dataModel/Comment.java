@@ -1,6 +1,7 @@
 package com.workfront.internship.dataModel;
 
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -9,7 +10,7 @@ public class Comment {
     private User user;
     private Post post;
     private String content;
-    private Date commentTime;
+    private Timestamp commentTime;
 
     public long getId() {
         return id;
@@ -47,11 +48,11 @@ public class Comment {
         return this;
     }
 
-    public Date getCommentTime() {
+    public Timestamp getCommentTime() {
         return commentTime;
     }
 
-    public Comment setCommentTime(Date commentTime) {
+    public Comment setCommentTime(Timestamp commentTime) {
         this.commentTime = commentTime;
         return this;
     }

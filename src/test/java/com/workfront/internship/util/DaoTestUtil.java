@@ -42,19 +42,14 @@ public class DaoTestUtil {
                 .setCommentTime(new Timestamp(date.getTime()));
         return comment;
     }
-    public static Comment getRandomComment(User user,Post post){
+    public static Comment getRandomComment(User user, Post post) {
         Comment comment = new Comment();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date date = null;
-        try {
-            date = dateFormat.parse("2017-06-01 01:41:11");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Date date = new Date();
+
         comment.setUser(user)
                 .setPost(post)
-                .setCommentTime(date)
-                .setContent("content");
+                .setCommentTime(new Timestamp(date.getTime()))
+                .setContent("content_" + System.currentTimeMillis());
         return comment;
 
     }
