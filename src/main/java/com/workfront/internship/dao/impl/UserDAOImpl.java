@@ -99,7 +99,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
 
-            stmt.execute();
+            stmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

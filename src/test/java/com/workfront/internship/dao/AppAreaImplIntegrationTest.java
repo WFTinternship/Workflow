@@ -89,30 +89,7 @@ public class AppAreaImplIntegrationTest {
 
     // region <HELPERS>
 
-    private void verifyAddedAppArea(AppArea appArea, Map<String, Object> actualAppArea) {
-        assertEquals(appArea.getName(), actualAppArea.get("Name"));
-        assertEquals(appArea.getDescription(), actualAppArea.get("Description"));
-        assertEquals(appArea.getTeamName(), actualAppArea.get("TeamName"));
-    }
 
-    private Map<String, Object> getAppAreaFieldsById(long id){
-        Map<String, Object> fieldsMap = new HashMap<>();
-        final String sql = "SELECT * FROM work_flow.apparea " +
-                "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                fieldsMap.put("Name",rs.getString(AppAreaDAOImpl.name));
-                fieldsMap.put("Description",rs.getString(AppAreaDAOImpl.description));
-                fieldsMap.put("TeamName",rs.getString(AppAreaDAOImpl.teamName));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return fieldsMap;
-    }
 
     // endregion
 }

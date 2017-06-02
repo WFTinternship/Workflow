@@ -64,7 +64,6 @@ public class UserDAOImplIntegrationTest {
 
         verifyAddedUser(user, actualUser);
     }
-
 //    @Test(expected = RuntimeException.class)
 //    public void deleteById_failure(){
 //
@@ -112,7 +111,7 @@ public class UserDAOImplIntegrationTest {
         userDAO.subscribeToArea(user.getId(), 1);
         userDAO.unsubscribeToArea(user.getId(), 1);
         List<User> users = appAreaDAO.getUsersById(1);
-        assertEquals(users.size(), 0);
+        assertTrue(!users.contains(user));
     }
 
     @Test
