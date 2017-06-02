@@ -4,7 +4,6 @@ import com.workfront.internship.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.dao.impl.UserDAOImpl;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.util.DBHelper;
 import com.workfront.internship.util.DaoTestUtil;
 import junit.framework.TestCase;

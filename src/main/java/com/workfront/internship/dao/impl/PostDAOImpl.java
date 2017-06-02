@@ -1,26 +1,34 @@
 package com.workfront.internship.dao.impl;
 
-import com.workfront.internship.app.App;
 import com.workfront.internship.dao.PostDAO;
-import com.workfront.internship.dao.UserDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.Post;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.util.DBHelper;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.RunnableFuture;
 
 /**
  * Created by nane on 5/26/17.
  */
 public class PostDAOImpl implements PostDAO {
+
+    // Post fileds
+    public static final String id = "id";
+    public static final String postId = "post_id";
+    public static final String appAreaId = "apparea_id";
+    public static final String dateTime = "post_time";
+    public static final String content  = "content";
+    public static final String isCorrect  = "is_correct";
+
+    // Answer fields
+
+    public static String answerTime = "answer_time";
+    public static String answerContent = "answer_content";
+    public static String userId = "user_id";
+    public static String title = "answer_title";
 
     /**
      * @see PostDAO#add(Post) ()
@@ -29,15 +37,20 @@ public class PostDAOImpl implements PostDAO {
      */
     public long add(Post post) {
         long id = 0;
-        String sql = "INSERT INTO work_flow.post (user_id, apparea_id, post_time, title, content) " +
-                " VALUE(?,?,?,?,?)";
+        String sql = "INSERT INTO work_flow.post (user_id, apparea_id,post_id," +
+                " post_time, title, content) VALUE(?,?,?,?,?,?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, post.getUser().getId());
             stmt.setLong(2, post.getAppArea().getId());
-            stmt.setTimestamp(3, post.getPostTime());
-            stmt.setString(4, post.getTitle());
-            stmt.setString(5, post.getContent());
+            if (post.getPost() == null){
+                stmt.setNull(3, Types.BIGINT);
+            }else {
+                stmt.setLong(3, post.getPost().getId());
+            }
+            stmt.setTimestamp(4, post.getPostTime());
+            stmt.setString(5, post.getTitle());
+            stmt.setString(6, post.getContent());
 
             PreparedStatement st = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0", Statement.RETURN_GENERATED_KEYS);
             st.execute();
@@ -66,11 +79,10 @@ public class PostDAOImpl implements PostDAO {
         Post post = null;
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.rating, apparea_id, apparea.name, " +
-                "apparea.description,  apparea.team_name, post_time, title, content, answer_id  " +
+                "apparea.description,  apparea.team_name, post_time, title, content  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
-                " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.id = ?";
         ResultSet rs = null;
         try(Connection conn = DBHelper.getConnection();
@@ -198,6 +210,87 @@ public class PostDAOImpl implements PostDAO {
         return posts;
     }
 
+    @Override
+    public List<Post> getAnswersByPostId(long postId) {
+        List<Post> answerList = new ArrayList<>();
+        final String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
+                " user.email, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time as answer_time, title as answer_title," +
+                " content as answer_content " +
+                " FROM work_flow.post JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE post.post_id = ?";
+        ResultSet rs = null;
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, postId);
+            rs = stmt.executeQuery();
+            while (rs.next()){
+                Post answer = new Post();
+                answer = answerFromResultSet(answer, rs);
+                answerList.add(answer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return answerList;
+        } finally {
+            close(rs);
+        }
+        return answerList;
+    }
+
+    @Override
+    public Post getBestAnswer(long postId) {
+        Post bestAnswer = null;
+        final String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
+                " user.email, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time as answer_time, title as answer_title, " +
+                " content as answer_content " +
+                " FROM work_flow.best_answer JOIN post ON best_answer.answer_id = post.id " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE  best_answer.post_id = ?";
+        ResultSet rs = null;
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, postId);
+            rs = stmt.executeQuery();
+            if (rs.next()){
+                bestAnswer = new Post();
+                bestAnswer = answerFromResultSet(bestAnswer, rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return bestAnswer;
+        } finally {
+            close(rs);
+        }
+        return bestAnswer;
+    }
+
+    @Override
+    public boolean setBestAnswer(long postId, long answerId) {
+        final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
+        ResultSet rs = null;
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, postId);
+            stmt.setLong(2, answerId);
+            stmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            close(rs);
+        }
+        return true;
+    }
+
     /**
      * @see PostDAO#update(Post) ()
      *
@@ -254,23 +347,45 @@ public class PostDAOImpl implements PostDAO {
         }
     }
 
+
+    public static Post answerFromResultSet(Post answer, ResultSet rs){
+        try {
+            answer.setId(rs.getLong(id));
+
+            User user= new User();
+            user = UserDAOImpl.fromResultSet(user, rs);
+            user.setId(rs.getLong(userId));
+            answer.setUser(user);
+
+            AppArea appArea = AppArea.getById(
+                    rs.getLong(id));
+            answer.setAppArea(appArea);
+            answer.setPostTime(rs.getTimestamp(answerTime));
+            answer.setTitle(rs.getString(title));
+            answer.setContent(rs.getString(answerContent));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return answer;
+    }
     public static Post fromResultSet(Post post, ResultSet rs){
         try {
-            post.setId(rs.getLong(DataBaseConstants.Post.id));
+            post.setId(rs.getLong(id));
 
             User user = new User();
             user = UserDAOImpl.fromResultSet(user, rs);
-            user.setId(rs.getLong(DataBaseConstants.Post.userId));
+            user.setId(rs.getLong(userId));
             post.setUser(user);
 
             AppArea appArea = AppArea.getById(
-                    rs.getLong(DataBaseConstants.AppArea.id));
+                    rs.getLong(AppAreaDAOImpl.id));
 
             post.setAppArea(appArea);
-
-            post.setPostTime(rs.getTimestamp(DataBaseConstants.Post.dateTime));
-            post.setTitle(rs.getString(DataBaseConstants.Post.title));
-            post.setContent(rs.getString(DataBaseConstants.Post.content));
+            post.setPostTime(rs.getTimestamp(dateTime));
+            post.setTitle(rs.getString(title));
+            post.setContent(rs.getString(content));
 
         }catch (SQLException e){
             e.printStackTrace();
