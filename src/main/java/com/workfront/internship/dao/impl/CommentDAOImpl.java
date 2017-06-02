@@ -52,7 +52,7 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public boolean update(long id, String content) {
+    public boolean update(Comment comment) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String query="UPDATE comment SET content = ?, comment_time = ?" +
@@ -64,9 +64,9 @@ public class CommentDAOImpl implements CommentDAO {
             connection = DBHelper.getConnection();
 
             stmt = connection.prepareStatement(query);
-            stmt.setString(1, content);
+            stmt.setString(1, comment.getContent());
             stmt.setString(2, dateFormat.format(date));
-            stmt.setLong(3, id);
+            stmt.setLong(3, comment.getId());
 
             int rows = stmt.executeUpdate();
             return rows == 1;

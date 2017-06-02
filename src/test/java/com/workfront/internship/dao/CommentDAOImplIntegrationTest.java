@@ -42,17 +42,18 @@ public class CommentDAOImplIntegrationTest {
 
 
     @Before
-    public void setup(){
+    public void setup() {
+
         userDAO = new UserDAOImpl();
         user=  DaoTestUtil.getRandomUser();
-        userDAO.add(user);
+      //  userDAO.add(user);
 
         appAreaDAO = new AppAreaDAOImpl();
         appArea = DaoTestUtil.getRandomAppArea();
 
         postDAO = new PostDAOImpl();
         post=  DaoTestUtil.getRandomPost(user, appArea);
-        postDAO.add(post);
+       // postDAO.add(post);
 
         commentDAO = new CommentDAOImpl();
         comment = DaoTestUtil.getRandomComment(user, post);
@@ -61,13 +62,13 @@ public class CommentDAOImplIntegrationTest {
 
     @After
     public void tearDown() {
-        for (Comment c : commentList) {
+       /* for (Comment c : commentList) {
             commentDAO.delete(c.getId());
         }
         userDAO.deleteById(user.getId());
         postDAO.delete(post.getId());
         appAreaDAO.deleteById(appArea.getId());
-        commentDAO.delete(comment.getId());
+        commentDAO.delete(comment.getId());*/
 
     }
 
@@ -89,6 +90,9 @@ public class CommentDAOImplIntegrationTest {
         assertNull(comment);
     }
 
+    /**
+     * @see CommentDAO#update(Comment)
+     */
     @Test
     public void update_success() {
         Comment otherComment = DaoTestUtil.getRandomComment(user, post);
@@ -99,7 +103,7 @@ public class CommentDAOImplIntegrationTest {
         String newComment = "some new comment";
         otherComment.setContent(newComment);
         // Test method
-        boolean updated = commentDAO.update(otherComment.getId(),newComment);
+        boolean updated = commentDAO.update(otherComment);
         assertTrue(updated);
 
         // acquire stored/updated comment
@@ -108,22 +112,24 @@ public class CommentDAOImplIntegrationTest {
         isCommentsEqual(otherComment, updatedComment, false);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = RuntimeException.class)
     public void update_failure() {
 
         Comment otherComment = DaoTestUtil.getRandomComment( user , post ) ;
 
-        long id =commentDAO.add(otherComment) ;
+        long id = commentDAO.add(otherComment) ;
         assertNotNull(id);
         assertTrue(id>0);
-
-        commentDAO.update(otherComment.getId(),null);
+        otherComment.setContent(null);
+        commentDAO.update(otherComment);
         //test method
         Comment updateComment = commentDAO.getById(otherComment.getId()) ;
-            assertNull(updateComment);
-
+        assertNull(updateComment);
     }
 
+    /**
+     * @see CommentDAO#delete(long)
+     */
     @Test
     public void delete_success() {
         Comment comment = DaoTestUtil.getRandomComment(user,post) ;
@@ -145,6 +151,9 @@ public class CommentDAOImplIntegrationTest {
 
     }
 
+    /**
+     * @see CommentDAO#getById(long)
+     */
     @Test
     public void getById_success(){
     long commentId = commentDAO.add(comment);
@@ -153,10 +162,14 @@ public class CommentDAOImplIntegrationTest {
 
     }
     @Test
-    public void getById_failure(){
+    public void getById_failure() {
         Comment comment = commentDAO.getById(1000000) ;
         assertEquals(comment,null);
     }
+
+    /**
+     * @see CommentDAO#getAll()
+     */
     @Test
     public void getAll_success(){
         List<Comment> allComments = commentDAO.getAll();
@@ -175,9 +188,9 @@ public class CommentDAOImplIntegrationTest {
 
     }
 
-    private void isCommentsEqual(Comment comment, Comment actualComment) {
+    /*private void isCommentsEqual(Comment comment, Comment actualComment) {
         isCommentsEqual(comment, actualComment, true);
-    }
+    }*/
 
     private void isCommentsEqual(Comment comment, Comment actualComment, boolean skipDate) {
         PostDAOImplIntegrationTest.verifyPost(comment.getPost(), actualComment.getPost());

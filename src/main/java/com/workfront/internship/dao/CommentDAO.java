@@ -9,7 +9,7 @@ public interface CommentDAO {
 
     long add(Comment comment);
 
-    boolean update(long id, String content);
+    boolean update(Comment comment);
 
     int delete(long id);
 
