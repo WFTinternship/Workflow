@@ -14,6 +14,12 @@ import java.util.Map;
 
 public class AppAreaDAOImpl implements AppAreaDAO {
 
+
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String description = "description";
+    public static final String teamName = "team_name";
+
     @Override
     public long add(AppArea appArea) {
         final String sql = "INSERT INTO work_flow.apparea (id, name, description, team_name) " +

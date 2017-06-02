@@ -136,6 +136,67 @@ public class PostDAOImplIntegrationTest {
 
     }
 
+    @Test(expected = RuntimeException.class)
+    public void getAnswersByPostId_failure(){
+        postDAO.add(post);
+        User user = DaoTestUtil.getRandomUser();
+        userDAO.add(user);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(user);
+        answer.setContent(null);
+        postDAO.add(answer);
+
+        List<Post> answers = postDAO.getAnswersByPostId(post.getId());
+        assertEquals(answers.get(0), answer);
+    }
+    @Test
+    public void getAnswersByPostId_success(){
+        postDAO.add(post);
+        User user = DaoTestUtil.getRandomUser();
+        userDAO.add(user);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(user);
+        postDAO.add(answer);
+
+        List<Post> answers = postDAO.getAnswersByPostId(post.getId());
+        assertEquals(answers.get(0), answer);
+    }
+
+    @Test
+    public void setBestAnswer_failure(){
+
+    }
+
+    @Test
+    public void setBestAnswer_success(){
+        postDAO.add(post);
+        User anotherUser = DaoTestUtil.getRandomUser();
+        userDAO.add(anotherUser);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(anotherUser);
+        postDAO.add(answer);
+        postDAO.setBestAnswer(post.getId(), answer.getId());
+
+        Post bestAnswer = postDAO.getBestAnswer(post.getId());
+        verifyPost(bestAnswer, answer);
+
+    }
+
+    @Test
+    public void getBestAnswer_success(){
+        postDAO.add(post);
+        User user = DaoTestUtil.getRandomUser();
+        userDAO.add(user);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(user);
+        postDAO.add(answer);
+        postDAO.setBestAnswer(post.getId(), answer.getId());
+
+        // Test Method
+        Post bestAnswer = postDAO.getBestAnswer(post.getId());
+        assertEquals(bestAnswer, answer);
+    }
+
     @Test(expected = NullPointerException.class)
     public void update_failure(){
         postDAO.add(post);

@@ -49,7 +49,6 @@ CREATE TABLE IF NOT exists work_flow.post (
   title VARCHAR(45) NOT NULL,
   content VARCHAR(1000) NOT NULL,
   apparea_id BIGINT(25) NOT NULL,
-  is_correct BIT(2) NULL,
   INDEX fk_userId_idx (user_id ASC),
   INDEX fk_appareaId_idx (apparea_id ASC),
   PRIMARY KEY (id),

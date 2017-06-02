@@ -3,7 +3,6 @@ package com.workfront.internship.dao.impl;
 import com.workfront.internship.dao.UserDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.util.DBHelper;
 
 import java.sql.*;
@@ -15,6 +14,13 @@ import java.util.StringJoiner;
  * Created by Karen on 5/27/2017.
  */
 public class UserDAOImpl implements UserDAO {
+
+    public static final String id = "id";
+    public static final String firstName = "first_name";
+    public static final String lastName = "last_name";
+    public static final String email = "email";
+    public static final String password = "passcode";
+    public static final String rating = "rating";
 
     @Override
     public long add(User user) {
@@ -161,12 +167,12 @@ public class UserDAOImpl implements UserDAO {
     public static User fromResultSet(User user, ResultSet rs) {
         try {
 
-            user.setId(rs.getLong(DataBaseConstants.User.id));
-            user.setFirstName(rs.getString(DataBaseConstants.User.firstName));
-            user.setLastName(rs.getString(DataBaseConstants.User.lastName));
-            user.setEmail(rs.getString(DataBaseConstants.User.email));
-            user.setPassword(rs.getString(DataBaseConstants.User.password));
-            user.setRating(rs.getInt(DataBaseConstants.User.rating));
+            user.setId(rs.getLong(id));
+            user.setFirstName(rs.getString(firstName));
+            user.setLastName(rs.getString(lastName));
+            user.setEmail(rs.getString(email));
+            user.setPassword(rs.getString(password));
+            user.setRating(rs.getInt(rating));
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
