@@ -4,7 +4,7 @@ package com.workfront.internship.dataModel;
 public enum  AppArea {
     REPORTING(1, "Reporting", "Some rep description", "Team1");
 
-    private AppArea(long id, String name, String description, String teamName) {
+    AppArea(long id, String name, String description, String teamName) {
         this.id = id;
         this.name = name;
         this.description = description;
