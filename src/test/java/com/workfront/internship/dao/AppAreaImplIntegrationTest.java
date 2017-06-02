@@ -7,6 +7,7 @@ import com.workfront.internship.dataModel.User;
 import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.util.DBHelper;
 import com.workfront.internship.util.DaoTestUtil;
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class AppAreaImplIntegrationTest {
 
     @After
     public void tearDown(){
-        if(!appAreaDAO.getById(appArea.getId()).equals(appArea)){
+        if(appAreaDAO.getById(appArea.getId()) == null){
             appAreaDAO.add(appArea);
         }
         try {
@@ -72,7 +73,7 @@ public class AppAreaImplIntegrationTest {
         //Test method
         appAreaDAO.deleteById(appArea.getId());
 
-//        assertTrue(getAppAreaFieldsById(appArea.getId()).isEmpty());
+        assertNull(appAreaDAO.getById(appArea.getId()));
     }
 
     @Test

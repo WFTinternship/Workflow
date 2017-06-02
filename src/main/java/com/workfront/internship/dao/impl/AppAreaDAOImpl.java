@@ -76,6 +76,9 @@ public class AppAreaDAOImpl implements AppAreaDAO {
     public AppArea getById(long id) {
         AppArea appArea = AppArea.getById(id);
         Map<String, Object> actualAppArea = getAppAreaFieldsById(id);
+        if(actualAppArea.isEmpty()){
+            return null;
+        }
         if(!isTheActualAppArea(appArea, actualAppArea)){
             throw new NotExistingAppAreaException();
         }
