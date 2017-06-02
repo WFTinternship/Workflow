@@ -24,6 +24,10 @@ public class MyContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-
+        AppAreaDAO appAreaDAO = new AppAreaDAOImpl();
+        AppArea[] appAreas = AppArea.values();
+        Arrays.asList(appAreas)
+                .stream()
+                .forEach(a -> appAreaDAO.deleteById(a.getId()));
     }
 }

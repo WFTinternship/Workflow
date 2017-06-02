@@ -79,18 +79,19 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public boolean delete(long id) {
+    public int delete(long id) {
+        int n ;
         String query="DELETE FROM comment WHERE id=?";
         try{
             Connection connection = DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
-            stmt.execute();
+            n = stmt.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
-            return false;
+            return 0;
         }
-        return true;
+        return n;
     }
 
     @Override
@@ -126,10 +127,14 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public List<Comment> getAll() {
-        Comment comment;
-        List<Comment> comments=new ArrayList<>();
-        String query="SELECT * FROM comment";
-        try{
+        Comment comment ;
+        List<Comment> comments = new ArrayList<>();
+        String query = " SELECT comment.id, comment.user_id, first_name, last_name, " +
+                " email, passcode, rating, comment.post_id, post_time, title, " +
+                " post.content, comment_time, comment.content FROM comment " +
+                " INNER JOIN user ON comment.user_id = user.id " +
+                " INNER JOIN post ON comment.post_id = post.id ";
+        try {
 
             Connection connection=DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);

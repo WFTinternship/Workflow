@@ -7,6 +7,7 @@ import com.workfront.internship.dataModel.User;
 import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.util.DBHelper;
 import com.workfront.internship.util.DaoTestUtil;
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,9 @@ public class AppAreaImplIntegrationTest {
     private AppArea appArea;
     private User user;
 
-
+    /**
+     * Gets AppArea and creates new User
+     */
     @Before
     public void setup(){
         appAreaDAO = new AppAreaDAOImpl();
@@ -43,10 +46,14 @@ public class AppAreaImplIntegrationTest {
 
     @After
     public void tearDown(){
-        if(getAppAreaFieldsById(appArea.getId()).isEmpty()){
+        if(appAreaDAO.getById(appArea.getId()) == null){
             appAreaDAO.add(appArea);
         }
-        userDAO.deleteById(user.getId());
+        try {
+            userDAO.deleteById(user.getId());
+        }catch (RuntimeException e){
+
+        }
     }
 
     // region <TEST CASE>
@@ -57,8 +64,8 @@ public class AppAreaImplIntegrationTest {
         //Test method
         long appAreaId = appAreaDAO.add(appArea);
 
-        Map<String, Object> actualAppArea = getAppAreaFieldsById(appAreaId);
-        verifyAddedAppArea(appArea, actualAppArea);
+        AppArea actualAppArea = appAreaDAO.getById(appAreaId);
+        assertTrue(appArea.equals(actualAppArea));
     }
 
     @Test
@@ -66,7 +73,7 @@ public class AppAreaImplIntegrationTest {
         //Test method
         appAreaDAO.deleteById(appArea.getId());
 
-        assertTrue(getAppAreaFieldsById(appArea.getId()).isEmpty());
+        assertNull(appAreaDAO.getById(appArea.getId()));
     }
 
     @Test
@@ -83,30 +90,6 @@ public class AppAreaImplIntegrationTest {
 
     // region <HELPERS>
 
-    private void verifyAddedAppArea(AppArea appArea, Map<String, Object> actualAppArea) {
-        assertEquals(appArea.getName(), actualAppArea.get("Name"));
-        assertEquals(appArea.getDescription(), actualAppArea.get("Description"));
-        assertEquals(appArea.getTeamName(), actualAppArea.get("TeamName"));
-    }
-
-    private Map<String, Object> getAppAreaFieldsById(long id){
-        Map<String, Object> fieldsMap = new HashMap<>();
-        final String sql = "SELECT * FROM work_flow.apparea " +
-                "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                fieldsMap.put("Name",rs.getString(DataBaseConstants.AppArea.name));
-                fieldsMap.put("Description",rs.getString(DataBaseConstants.AppArea.description));
-                fieldsMap.put("TeamName",rs.getString(DataBaseConstants.AppArea.teamName));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return fieldsMap;
-    }
 
     // endregion
 }

@@ -64,7 +64,7 @@ public class UserDAOImplIntegrationTest {
 
         verifyAddedUser(user, actualUser);
     }
-
+        //TODO why doesn't method throw exception
 //    @Test(expected = RuntimeException.class)
 //    public void deleteById_failure(){
 //
@@ -143,6 +143,8 @@ public class UserDAOImplIntegrationTest {
 
         assertTrue(appAreaList.contains(AppArea.getById(1)));
     }
+
+
 
     // endregion
 

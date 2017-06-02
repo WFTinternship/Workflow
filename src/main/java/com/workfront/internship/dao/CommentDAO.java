@@ -11,7 +11,7 @@ public interface CommentDAO {
 
     boolean update(long id, String content);
 
-    boolean delete(long id);
+    int delete(long id);
 
     Comment getById(long id);
 
