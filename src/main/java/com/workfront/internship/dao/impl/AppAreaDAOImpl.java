@@ -3,7 +3,6 @@ package com.workfront.internship.dao.impl;
 import com.workfront.internship.dao.AppAreaDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.exceptions.NotExistingAppAreaException;
 import com.workfront.internship.util.DBHelper;
 
@@ -104,9 +103,9 @@ public class AppAreaDAOImpl implements AppAreaDAO {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                fieldsMap.put("Name",rs.getString(DataBaseConstants.AppArea.name));
-                fieldsMap.put("Description",rs.getString(DataBaseConstants.AppArea.description));
-                fieldsMap.put("TeamName",rs.getString(DataBaseConstants.AppArea.teamName));
+                fieldsMap.put("Name",rs.getString(AppAreaDAOImpl.name));
+                fieldsMap.put("Description",rs.getString(AppAreaDAOImpl.description));
+                fieldsMap.put("TeamName",rs.getString(AppAreaDAOImpl.teamName));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

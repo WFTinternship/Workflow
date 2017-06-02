@@ -3,7 +3,6 @@ package com.workfront.internship.dao.impl;
 import com.workfront.internship.dao.UserDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.exceptions.NoSuchUserException;
 import com.workfront.internship.util.DBHelper;
 

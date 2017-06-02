@@ -18,7 +18,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 
-/**
+/** 
  * Created by nane on 5/29/17.
  */
 public class PostDAOImplIntegrationTest {
