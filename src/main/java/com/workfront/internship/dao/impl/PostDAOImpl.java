@@ -22,6 +22,7 @@ public class PostDAOImpl implements PostDAO {
     public static final String dateTime = "post_time";
     public static final String content  = "content";
     public static final String isCorrect  = "is_correct";
+    public static String postTitle = "title";
 
     // Answer fields
 
@@ -284,7 +285,7 @@ public class PostDAOImpl implements PostDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw new RuntimeException("Foreign Key constraint fails");
         } finally {
             close(rs);
         }
@@ -302,8 +303,8 @@ public class PostDAOImpl implements PostDAO {
                 " WHERE post.id = ? ";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, post.getTitle().trim());
-            stmt.setString(2, post.getContent().trim());
+            stmt.setString(1, post.getTitle());
+            stmt.setString(2, post.getContent());
             stmt.setLong(3, post.getId());
 
             stmt.execute();
@@ -384,7 +385,7 @@ public class PostDAOImpl implements PostDAO {
 
             post.setAppArea(appArea);
             post.setPostTime(rs.getTimestamp(dateTime));
-            post.setTitle(rs.getString(title));
+            post.setTitle(rs.getString(postTitle));
             post.setContent(rs.getString(content));
 
         }catch (SQLException e){

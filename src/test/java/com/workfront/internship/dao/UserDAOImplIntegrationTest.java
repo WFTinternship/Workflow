@@ -143,8 +143,6 @@ public class UserDAOImplIntegrationTest {
         assertTrue(appAreaList.contains(AppArea.getById(1)));
     }
 
-
-
     // endregion
 
     // region <HELPERS>

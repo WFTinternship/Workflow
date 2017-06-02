@@ -108,7 +108,10 @@ public class PostDAOImplIntegrationTest {
         postDAO.add(post);
         Post anotherPost = DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(anotherPost);
+
+        //Test Method
         List<Post> allPosts = postDAO.getAll();
+
         assertNotNull(allPosts);
         assertTrue(allPosts.size() == 2 && allPosts.contains(post) && allPosts.contains(anotherPost));
     }
@@ -135,8 +138,12 @@ public class PostDAOImplIntegrationTest {
         answer.setContent(null);
         postDAO.add(answer);
 
+        // Test Method
         List<Post> answers = postDAO.getAnswersByPostId(post.getId());
         assertEquals(answers.get(0), answer);
+
+        userDAO.deleteById(user.getId());
+        postDAO.delete(answer.getId());
     }
     @Test
     public void getAnswersByPostId_success(){
@@ -147,21 +154,32 @@ public class PostDAOImplIntegrationTest {
         answer.setUser(user);
         postDAO.add(answer);
 
-
+        // Test Method
         List<Post> answers = postDAO.getAnswersByPostId(post.getId());
         assertEquals(answers.get(0), answer);
+
+        userDAO.deleteById(user.getId());
+        postDAO.delete(answer.getId());
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void setBestAnswer_failure(){
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
         userDAO.add(anotherUser);
         Post answer = DaoTestUtil.getRandomAnswer(post);
+        // not added to db
+        Post anotherPost = DaoTestUtil.getRandomPost();
+        answer.setPost(anotherPost);
+
         answer.setUser(anotherUser);
-        answer.setPost(null);
         postDAO.add(answer);
 
+        // Test Method
+        postDAO.setBestAnswer(answer.getPost().getId(), answer.getId());
+
+        userDAO.deleteById(anotherUser.getId());
+        postDAO.delete(answer.getId());
     }
 
     @Test
@@ -179,6 +197,9 @@ public class PostDAOImplIntegrationTest {
         Post bestAnswer = postDAO.getBestAnswer(post.getId());
         verifyPost(bestAnswer, answer);
 
+        userDAO.deleteById(anotherUser.getId());
+        postDAO.delete(answer.getId());
+
     }
 
     @Test
@@ -195,12 +216,15 @@ public class PostDAOImplIntegrationTest {
         Post bestAnswer = postDAO.getBestAnswer(post.getId());
 
         assertEquals(bestAnswer, answer);
+
+        userDAO.deleteById(user.getId());
+        postDAO.delete(answer.getId());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void update_failure(){
         postDAO.add(post);
-        Post newPost = post.setTitle(null);
+        Post newPost = post.setContent(null);
         postDAO.update(newPost);
     }
 
