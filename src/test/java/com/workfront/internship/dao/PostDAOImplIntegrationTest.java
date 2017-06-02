@@ -104,11 +104,6 @@ public class PostDAOImplIntegrationTest {
     }
 
     @Test
-    public void getAll_failure(){
-
-    }
-
-    @Test
     public void getAll_success(){
         postDAO.add(post);
         Post anotherPost = DaoTestUtil.getRandomPost(user, appArea);
@@ -116,12 +111,6 @@ public class PostDAOImplIntegrationTest {
         List<Post> allPosts = postDAO.getAll();
         assertNotNull(allPosts);
         assertTrue(allPosts.size() == 2 && allPosts.contains(post) && allPosts.contains(anotherPost));
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getByTitle_failure() {
-        postDAO.add(post);
-        postDAO.getByTitle(null);
     }
 
     @Test
@@ -158,12 +147,20 @@ public class PostDAOImplIntegrationTest {
         answer.setUser(user);
         postDAO.add(answer);
 
+
         List<Post> answers = postDAO.getAnswersByPostId(post.getId());
         assertEquals(answers.get(0), answer);
     }
 
     @Test
     public void setBestAnswer_failure(){
+        postDAO.add(post);
+        User anotherUser = DaoTestUtil.getRandomUser();
+        userDAO.add(anotherUser);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(anotherUser);
+        answer.setPost(null);
+        postDAO.add(answer);
 
     }
 
@@ -175,6 +172,8 @@ public class PostDAOImplIntegrationTest {
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(anotherUser);
         postDAO.add(answer);
+
+        //Test Method
         postDAO.setBestAnswer(post.getId(), answer.getId());
 
         Post bestAnswer = postDAO.getBestAnswer(post.getId());
@@ -194,6 +193,7 @@ public class PostDAOImplIntegrationTest {
 
         // Test Method
         Post bestAnswer = postDAO.getBestAnswer(post.getId());
+
         assertEquals(bestAnswer, answer);
     }
 
