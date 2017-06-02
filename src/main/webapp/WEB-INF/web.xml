@@ -6,7 +6,7 @@
 
     <listener>
         <listener-class>
-            com.workfront.internship.api.MyContextListener
+            com.workfront.internship.api.ContextListener
         </listener-class>
     </listener>
 
