@@ -11,23 +11,22 @@ import java.util.Arrays;
 /**
  * Created by nane on 6/1/17.
  */
-public class MyContextListener implements ServletContextListener {
+public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         AppAreaDAO appAreaDAO = new AppAreaDAOImpl();
         AppArea[] appAreas = AppArea.values();
-        Arrays.asList(appAreas)
-                .stream()
-                .forEach(appAreaDAO::add);
+        for (AppArea appArea: appAreas) {
+            if(appAreaDAO.getById(appArea.getId()) == null){
+                appAreaDAO.add(appArea);
+            }
+        }
+
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        AppAreaDAO appAreaDAO = new AppAreaDAOImpl();
-        AppArea[] appAreas = AppArea.values();
-        Arrays.asList(appAreas)
-                .stream()
-                .forEach(a -> appAreaDAO.deleteById(a.getId()));
+
     }
 }

@@ -3,7 +3,6 @@ package com.workfront.internship.dao.impl;
 import com.workfront.internship.dao.AppAreaDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.exceptions.NotExistingAppAreaException;
 import com.workfront.internship.util.DBHelper;
 
@@ -16,7 +15,6 @@ import java.util.Map;
 
 
 public class AppAreaDAOImpl implements AppAreaDAO {
-
 
     public static final String id = "id";
     public static final String name = "name";
@@ -56,8 +54,6 @@ public class AppAreaDAOImpl implements AppAreaDAO {
         }
     }
 
-
-    //TODO check the right place of the method
     @Override
     public List<User> getUsersById(long appAreaId) {
         List<User> userList = new ArrayList<>();
@@ -104,9 +100,9 @@ public class AppAreaDAOImpl implements AppAreaDAO {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                fieldsMap.put("Name",rs.getString(DataBaseConstants.AppArea.name));
-                fieldsMap.put("Description",rs.getString(DataBaseConstants.AppArea.description));
-                fieldsMap.put("TeamName",rs.getString(DataBaseConstants.AppArea.teamName));
+                fieldsMap.put("Name",rs.getString(name));
+                fieldsMap.put("Description",rs.getString(description));
+                fieldsMap.put("TeamName",rs.getString(teamName));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
