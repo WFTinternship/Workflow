@@ -100,9 +100,9 @@ public class AppAreaDAOImpl implements AppAreaDAO {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                fieldsMap.put("Name",rs.getString(name));
-                fieldsMap.put("Description",rs.getString(description));
-                fieldsMap.put("TeamName",rs.getString(teamName));
+                fieldsMap.put("Name",rs.getString(AppAreaDAOImpl.name));
+                fieldsMap.put("Description",rs.getString(AppAreaDAOImpl.description));
+                fieldsMap.put("TeamName",rs.getString(AppAreaDAOImpl.teamName));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
