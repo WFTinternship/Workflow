@@ -4,6 +4,7 @@ import com.workfront.internship.dao.UserDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
 import com.workfront.internship.dbConstants.DataBaseConstants;
+import com.workfront.internship.exceptions.NoSuchUserException;
 import com.workfront.internship.util.DBHelper;
 
 import java.sql.*;
@@ -12,31 +13,46 @@ import java.util.List;
 import java.util.StringJoiner;
 
 /**
- * Created by Karen on 5/27/2017.
+ * Created by Vahag on 5/27/2017.
  */
 public class UserDAOImpl implements UserDAO {
 
     @Override
     public long add(User user) {
         long id = 0;
-        final String sql = "INSERT INTO work_flow.user (first_name, last_name, email, passcode, rating) " +
+        final String addSql = "INSERT INTO work_flow.user (first_name, last_name, email, passcode, rating) " +
                 "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DBHelper.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, user.getFirstName());
-            stmt.setString(2, user.getLastName());
-            stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getPassword());
-            stmt.setInt(5, user.getRating());
 
-            stmt.executeUpdate();
-            ResultSet resultSet = stmt.getGeneratedKeys();
+        final String subscribeSql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
+                "VALUES (?, ?)";
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement addStmt = conn.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement subscribeStmt = conn.prepareStatement(subscribeSql)) {
+            conn.setAutoCommit(false);
+
+            addStmt.setString(1, user.getFirstName());
+            addStmt.setString(2, user.getLastName());
+            addStmt.setString(3, user.getEmail());
+            addStmt.setString(4, user.getPassword());
+            addStmt.setInt(5, user.getRating());
+
+            addStmt.executeUpdate();
+            ResultSet resultSet = addStmt.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
             user.setId(id);
 
+            subscribeStmt.setLong(1, id);
+            for (AppArea appArea : AppArea.values()) {
+                subscribeStmt.setLong(2, appArea.getId());
+                subscribeStmt.executeUpdate();
+                conn.commit();
+            }
+
+
         } catch (SQLException e) {
+
             throw new RuntimeException(e);
         }
         return user.getId();
@@ -49,7 +65,10 @@ public class UserDAOImpl implements UserDAO {
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            stmt.executeUpdate();
+            int numberOfUpdatedRows = stmt.executeUpdate();
+            if (numberOfUpdatedRows == 0) {
+                throw new NoSuchUserException();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +95,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
 
-            stmt.execute();
+            stmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -108,7 +127,7 @@ public class UserDAOImpl implements UserDAO {
                 "WHERE CONCAT (first_name, last_name) LIKE ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, filteredName+"%");
+            stmt.setString(1, filteredName + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 User user = new User();
