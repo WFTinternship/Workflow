@@ -64,6 +64,7 @@ public class DaoTestUtil {
         }
         post.setAppArea(getRandomAppArea())
                 .setPostTime(new Timestamp(parsedDate.getTime()))
+                .setPost(null)
                 .setTitle("title")
                 .setContent("content");
 
@@ -75,6 +76,25 @@ public class DaoTestUtil {
         post.setUser(user);
         post.setAppArea(appArea);
         return post;
+    }
+
+    public static Post getRandomAnswer(Post post){
+        Post answer = new Post();
+        User user = getRandomUser();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date parsedDate = null;
+        try {
+            parsedDate = dateFormat.parse("2017-05-30 13:50:58");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        answer.setPost(post)
+                .setUser(user)
+                .setTitle(post.getTitle())
+                .setPostTime(new Timestamp(parsedDate.getTime()))
+                .setAppArea(post.getAppArea())
+                .setContent("answer's content");
+        return answer;
     }
 
     public static AppArea getRandomAppArea(){

@@ -18,7 +18,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 
-/**
+/** 
  * Created by nane on 5/29/17.
  */
 public class PostDAOImplIntegrationTest {
@@ -104,24 +104,16 @@ public class PostDAOImplIntegrationTest {
     }
 
     @Test
-    public void getAll_failure(){
-
-    }
-
-    @Test
     public void getAll_success(){
         postDAO.add(post);
         Post anotherPost = DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(anotherPost);
+
+        //Test Method
         List<Post> allPosts = postDAO.getAll();
+
         assertNotNull(allPosts);
         assertTrue(allPosts.size() == 2 && allPosts.contains(post) && allPosts.contains(anotherPost));
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getByTitle_failure() {
-        postDAO.add(post);
-        postDAO.getByTitle(null);
     }
 
     @Test
@@ -136,10 +128,103 @@ public class PostDAOImplIntegrationTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = RuntimeException.class)
+    public void getAnswersByPostId_failure(){
+        postDAO.add(post);
+        User user = DaoTestUtil.getRandomUser();
+        userDAO.add(user);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(user);
+        answer.setContent(null);
+        postDAO.add(answer);
+
+        // Test Method
+        List<Post> answers = postDAO.getAnswersByPostId(post.getId());
+        assertEquals(answers.get(0), answer);
+
+        userDAO.deleteById(user.getId());
+        postDAO.delete(answer.getId());
+    }
+    @Test
+    public void getAnswersByPostId_success(){
+        postDAO.add(post);
+        User user = DaoTestUtil.getRandomUser();
+        userDAO.add(user);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(user);
+        postDAO.add(answer);
+
+        // Test Method
+        List<Post> answers = postDAO.getAnswersByPostId(post.getId());
+        assertEquals(answers.get(0), answer);
+
+        userDAO.deleteById(user.getId());
+        postDAO.delete(answer.getId());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void setBestAnswer_failure(){
+        postDAO.add(post);
+        User anotherUser = DaoTestUtil.getRandomUser();
+        userDAO.add(anotherUser);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        // not added to db
+        Post anotherPost = DaoTestUtil.getRandomPost();
+        answer.setPost(anotherPost);
+
+        answer.setUser(anotherUser);
+        postDAO.add(answer);
+
+        // Test Method
+        postDAO.setBestAnswer(answer.getPost().getId(), answer.getId());
+
+        userDAO.deleteById(anotherUser.getId());
+        postDAO.delete(answer.getId());
+    }
+
+    @Test
+    public void setBestAnswer_success(){
+        postDAO.add(post);
+        User anotherUser = DaoTestUtil.getRandomUser();
+        userDAO.add(anotherUser);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(anotherUser);
+        postDAO.add(answer);
+
+        //Test Method
+        postDAO.setBestAnswer(post.getId(), answer.getId());
+
+        Post bestAnswer = postDAO.getBestAnswer(post.getId());
+        verifyPost(bestAnswer, answer);
+
+        userDAO.deleteById(anotherUser.getId());
+        postDAO.delete(answer.getId());
+
+    }
+
+    @Test
+    public void getBestAnswer_success(){
+        postDAO.add(post);
+        User user = DaoTestUtil.getRandomUser();
+        userDAO.add(user);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        answer.setUser(user);
+        postDAO.add(answer);
+        postDAO.setBestAnswer(post.getId(), answer.getId());
+
+        // Test Method
+        Post bestAnswer = postDAO.getBestAnswer(post.getId());
+
+        assertEquals(bestAnswer, answer);
+
+        userDAO.deleteById(user.getId());
+        postDAO.delete(answer.getId());
+    }
+
+    @Test
     public void update_failure(){
         postDAO.add(post);
-        Post newPost = post.setTitle(null);
+        Post newPost = post.setContent(null);
         postDAO.update(newPost);
     }
 

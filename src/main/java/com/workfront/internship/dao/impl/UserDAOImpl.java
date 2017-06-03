@@ -3,7 +3,6 @@ package com.workfront.internship.dao.impl;
 import com.workfront.internship.dao.UserDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.exceptions.NoSuchUserException;
 import com.workfront.internship.util.DBHelper;
 
@@ -17,18 +16,24 @@ import java.util.StringJoiner;
  */
 public class UserDAOImpl implements UserDAO {
 
+    public static final String id = "id";
+    public static final String firstName = "first_name";
+    public static final String lastName = "last_name";
+    public static final String email = "email";
+    public static final String password = "passcode";
+    public static final String rating = "rating";
+
     @Override
     public long add(User user) {
         long id = 0;
-        final String addSql = "INSERT INTO work_flow.user (first_name, last_name, email, passcode, rating) " +
+        String addSql = "INSERT INTO work_flow.user (first_name, last_name, email, passcode, rating) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        final String subscribeSql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
+        String subscribeSql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
         try (Connection conn = DBHelper.getConnection();
-             PreparedStatement addStmt = conn.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement subscribeStmt = conn.prepareStatement(subscribeSql)) {
-            conn.setAutoCommit(false);
+             PreparedStatement addStmt = conn.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS)) {
+            //conn.setAutoCommit(false);
 
             addStmt.setString(1, user.getFirstName());
             addStmt.setString(2, user.getLastName());
@@ -43,16 +48,15 @@ public class UserDAOImpl implements UserDAO {
             }
             user.setId(id);
 
-            subscribeStmt.setLong(1, id);
-            for (AppArea appArea : AppArea.values()) {
-                subscribeStmt.setLong(2, appArea.getId());
-                subscribeStmt.executeUpdate();
-                conn.commit();
-            }
+//            subscribeStmt.setLong(1, id);
+//            for (AppArea appArea : AppArea.values()) {
+//                subscribeStmt.setLong(2, appArea.getId());
+//                subscribeStmt.executeUpdate();
+//                conn.commit();
+//            }
 
 
         } catch (SQLException e) {
-
             throw new RuntimeException(e);
         }
         return user.getId();
@@ -66,9 +70,9 @@ public class UserDAOImpl implements UserDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             int numberOfUpdatedRows = stmt.executeUpdate();
-            if (numberOfUpdatedRows == 0) {
-                throw new NoSuchUserException();
-            }
+//            if (numberOfUpdatedRows != 0) {
+//                throw new NoSuchUserException();
+//            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -180,12 +184,12 @@ public class UserDAOImpl implements UserDAO {
     public static User fromResultSet(User user, ResultSet rs) {
         try {
 
-            user.setId(rs.getLong(DataBaseConstants.User.id));
-            user.setFirstName(rs.getString(DataBaseConstants.User.firstName));
-            user.setLastName(rs.getString(DataBaseConstants.User.lastName));
-            user.setEmail(rs.getString(DataBaseConstants.User.email));
-            user.setPassword(rs.getString(DataBaseConstants.User.password));
-            user.setRating(rs.getInt(DataBaseConstants.User.rating));
+            user.setId(rs.getLong(id));
+            user.setFirstName(rs.getString(firstName));
+            user.setLastName(rs.getString(lastName));
+            user.setEmail(rs.getString(email));
+            user.setPassword(rs.getString(password));
+            user.setRating(rs.getInt(rating));
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
