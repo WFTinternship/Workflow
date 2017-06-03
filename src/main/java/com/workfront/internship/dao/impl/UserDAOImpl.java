@@ -3,18 +3,19 @@ package com.workfront.internship.dao.impl;
 import com.workfront.internship.dao.UserDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.exceptions.NoSuchUserException;
 import com.workfront.internship.util.DBHelper;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
+
 
 /**
  * Created by Vahag on 5/27/2017.
  */
 public class UserDAOImpl implements UserDAO {
+    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
     public static final String id = "id";
     public static final String firstName = "first_name";
@@ -23,6 +24,12 @@ public class UserDAOImpl implements UserDAO {
     public static final String password = "passcode";
     public static final String rating = "rating";
 
+
+    /**
+     * @see UserDAO#add(User)
+     * @param user
+     * @return
+     */
     @Override
     public long add(User user) {
         long id = 0;
@@ -57,42 +64,55 @@ public class UserDAOImpl implements UserDAO {
 
 
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return user.getId();
     }
 
+
+    /**
+     * @see UserDAO#deleteById(long)
+     * @param id
+     */
     @Override
     public void deleteById(long id) {
-        final String sql = "DELETE FROM work_flow.user " +
+        String sql = "DELETE FROM work_flow.user " +
                 "WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            int numberOfUpdatedRows = stmt.executeUpdate();
-//            if (numberOfUpdatedRows != 0) {
-//                throw new NoSuchUserException();
-//            }
+            stmt.executeUpdate();
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * @see UserDAO#deleteAll()
+     */
     @Override
     public void deleteAll() {
-        final String sql = "DELETE FROM work_flow.user ";
+        String sql = "DELETE FROM work_flow.user ";
         try (Connection conn = DBHelper.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
 
     }
 
+    /**
+     * @see UserDAO#subscribeToArea(long, long)
+     * @param userId
+     * @param appAreaId
+     */
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
-        final String sql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
+        String sql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -102,13 +122,20 @@ public class UserDAOImpl implements UserDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
     }
 
+
+    /**
+     * @see UserDAO#unsubscribeToArea(long, long)
+     * @param userId
+     * @param appAreaId
+     */
     @Override
     public void unsubscribeToArea(long userId, long appAreaId) {
-        final String sql = "DELETE FROM work_flow.user_apparea " +
+        String sql = "DELETE FROM work_flow.user_apparea " +
                 " WHERE user_id = ? AND apparea_id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -118,18 +145,24 @@ public class UserDAOImpl implements UserDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * @see UserDAO#getByName(String)
+     * @param name
+     * @return
+     */
     @Override
     public List<User> getByName(String name) {
         String filteredName = name.replaceAll(" ", "");
         List<User> userList = new ArrayList<>();
-        final String sql = "SELECT * " +
+        String sql = "SELECT * " +
                 "FROM work_flow.user " +
                 "WHERE CONCAT (first_name, last_name) LIKE ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getPooledConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, filteredName + "%");
             ResultSet rs = stmt.executeQuery();
@@ -138,15 +171,21 @@ public class UserDAOImpl implements UserDAO {
                 userList.add(fromResultSet(user, rs));
             }
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return userList;
     }
 
+    /**
+     * @see UserDAO#getById(long)
+     * @param id
+     * @return
+     */
     @Override
     public User getById(long id) {
         User user = null;
-        final String sql = "SELECT * FROM work_flow.user " +
+        String sql = "SELECT * FROM work_flow.user " +
                 "WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -157,15 +196,21 @@ public class UserDAOImpl implements UserDAO {
                 user = fromResultSet(user, rs);
             }
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return user;
     }
 
+    /**
+     * @see UserDAO#getAppAreasById(long)
+     * @param userId
+     * @return
+     */
     @Override
     public List<AppArea> getAppAreasById(long userId) {
         List<AppArea> appAreaList = new ArrayList<>();
-        final String sql = "SELECT * FROM work_flow.user_apparea " +
+        String sql = "SELECT * FROM work_flow.user_apparea " +
                 "WHERE user_id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -176,14 +221,20 @@ public class UserDAOImpl implements UserDAO {
                 appAreaList.add(AppArea.getById(appAreaId));
             }
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return appAreaList;
     }
 
+    /**
+     * Sets users fields values from result set
+     * @param user
+     * @param rs
+     * @return
+     */
     public static User fromResultSet(User user, ResultSet rs) {
         try {
-
             user.setId(rs.getLong(id));
             user.setFirstName(rs.getString(firstName));
             user.setLastName(rs.getString(lastName));
@@ -192,6 +243,7 @@ public class UserDAOImpl implements UserDAO {
             user.setRating(rs.getInt(rating));
 
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return user;
