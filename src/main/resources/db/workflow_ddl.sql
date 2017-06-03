@@ -67,7 +67,7 @@ CREATE TABLE IF NOT exists work_flow.comment (
   id BIGINT(25) NOT NULL AUTO_INCREMENT,
   user_id BIGINT(25) NULL,
   post_id BIGINT(25) NULL,
-  content VARCHAR(500) NULL,
+  content VARCHAR(500) NOT NULL,
   comment_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   INDEX fk_userid_comment_idx (user_id ASC),

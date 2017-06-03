@@ -4,7 +4,6 @@ import com.workfront.internship.dao.CommentDAO;
 import com.workfront.internship.dataModel.Comment;
 import com.workfront.internship.dataModel.Post;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.dbConstants.DataBaseConstants;
 import com.workfront.internship.util.DBHelper;
 
 import java.sql.*;
@@ -18,13 +17,13 @@ import java.util.List;
  * Created by angel on 27.05.2017.
  */
 public class CommentDAOImpl implements CommentDAO {
-    /*public static class Comment{
+
         public static String id = "id";
         public static String userId = "user_id";
         public static String postId = "post_id";
         public static String content = "content";
         public static String dateTime = "comment_time";
-    }*/
+
 
     @Override
     public long add(Comment comment) {
@@ -34,7 +33,6 @@ public class CommentDAOImpl implements CommentDAO {
         try{
             Connection connection= DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-          //  stmt.setLong(1, comment.getId());
             stmt.setLong(1, comment.getUser().getId());
             stmt.setLong(2, comment.getPost().getId());
             stmt.setString(3, comment.getContent());
@@ -52,7 +50,7 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public boolean update(Comment comment) {
+    public boolean update(long id , String newContent) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String query="UPDATE comment SET content = ?, comment_time = ?" +
@@ -64,9 +62,9 @@ public class CommentDAOImpl implements CommentDAO {
             connection = DBHelper.getConnection();
 
             stmt = connection.prepareStatement(query);
-            stmt.setString(1, comment.getContent());
-            stmt.setString(2, dateFormat.format(date));
-            stmt.setLong(3, comment.getId());
+            stmt.setString(1 , newContent);
+            stmt.setString(2, dateFormat.format(date) );
+            stmt.setLong(3, id);
 
             int rows = stmt.executeUpdate();
             return rows == 1;
@@ -159,20 +157,20 @@ public class CommentDAOImpl implements CommentDAO {
     public static Comment fromResultSet(ResultSet rs, String tableAlias) {
         Comment comment = new Comment();
         try {
-            comment.setId(rs.getLong(DataBaseConstants.Comment.id));
+            comment.setId(rs.getLong(CommentDAOImpl.id));
 
             User user = new User();
             user = UserDAOImpl.fromResultSet(user,rs);
-            user.setId(rs.getLong(DataBaseConstants.Comment.userId));
+            user.setId(rs.getLong(CommentDAOImpl.userId));
             comment.setUser(user);
 
             Post post = new Post();
             post = PostDAOImpl.fromResultSet(post,rs);
-            post.setId(rs.getLong(DataBaseConstants.Comment.postId));
+            post.setId(rs.getLong(CommentDAOImpl.postId));
             comment.setPost(post);
 
-            comment.setContent(rs.getString(getColumnName(DataBaseConstants.Comment.content, tableAlias)));
-            comment.setCommentTime(rs.getTimestamp(DataBaseConstants.Comment.dateTime));
+            comment.setContent(rs.getString(getColumnName(CommentDAOImpl.content, tableAlias)));
+            comment.setCommentTime(rs.getTimestamp(CommentDAOImpl.dateTime));
         } catch (SQLException e) {
             e.printStackTrace();
         }
