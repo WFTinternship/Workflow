@@ -5,6 +5,7 @@ import com.workfront.internship.dataModel.Comment;
 import com.workfront.internship.dataModel.Post;
 import com.workfront.internship.dataModel.User;
 import com.workfront.internship.util.DBHelper;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.text.DateFormat;
@@ -17,14 +18,20 @@ import java.util.List;
  * Created by angel on 27.05.2017.
  */
 public class CommentDAOImpl implements CommentDAO {
-
-        public static String id = "id";
-        public static String userId = "user_id";
-        public static String postId = "post_id";
-        public static String content = "content";
-        public static String dateTime = "comment_time";
+    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
 
+        public static final String id = "id";
+        public static final String userId = "user_id";
+        public static final String postId = "post_id";
+        public static final String content = "content";
+        public static final String dateTime = "comment_time";
+
+    /**
+     * @see CommentDAO#add
+     * @param comment
+     * @return
+     */
     @Override
     public long add(Comment comment) {
         long id = 0;
@@ -49,6 +56,12 @@ public class CommentDAOImpl implements CommentDAO {
         return comment.getId();
     }
 
+    /**
+     * @see CommentDAO#update(long, String)
+     * @param id
+     * @param newContent
+     * @return
+     */
     @Override
     public boolean update(long id , String newContent) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -69,13 +82,18 @@ public class CommentDAOImpl implements CommentDAO {
             int rows = stmt.executeUpdate();
             return rows == 1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception occurred");
             return false;
         } finally {
             closeResources(connection, stmt);
         }
     }
 
+    /**
+     * @see CommentDAO#delete(long)
+     * @param id
+     * @return
+     */
     @Override
     public int delete(long id) {
         int n ;
@@ -92,6 +110,11 @@ public class CommentDAOImpl implements CommentDAO {
         return n;
     }
 
+    /**
+     * @see CommentDAO#getById(long)
+     * @param id
+     * @return
+     */
     @Override
     public Comment getById(long id) {
         Comment comment = null;
@@ -123,6 +146,10 @@ public class CommentDAOImpl implements CommentDAO {
         return comment;
     }
 
+    /**
+     *@see CommentDAO#getAll()
+     * @return
+     */
     @Override
     public List<Comment> getAll() {
         Comment comment ;

@@ -32,7 +32,8 @@ public class DBHelper {
 
     public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Dr" +
+                    "iver");
         }catch (ClassNotFoundException e){
             e.printStackTrace();
         }
