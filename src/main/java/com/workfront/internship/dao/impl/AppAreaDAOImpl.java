@@ -3,10 +3,9 @@ package com.workfront.internship.dao.impl;
 import com.workfront.internship.dao.AppAreaDAO;
 import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
-import com.workfront.internship.exceptions.NotExistingAppAreaException;
+import com.workfront.internship.exceptions.dao.NotExistingAppAreaException;
 import com.workfront.internship.util.DBHelper;
 
-import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +20,11 @@ public class AppAreaDAOImpl implements AppAreaDAO {
     public static final String description = "description";
     public static final String teamName = "team_name";
 
+    /**
+     * @see AppAreaDAO#add(AppArea)
+     * @param appArea
+     * @return
+     */
     @Override
     public long add(AppArea appArea) {
         final String sql = "INSERT INTO work_flow.apparea (id, name, description, team_name) " +
@@ -41,6 +45,10 @@ public class AppAreaDAOImpl implements AppAreaDAO {
 
     }
 
+    /**
+     * @see AppAreaDAO#deleteById(long)
+     * @param id
+     */
     @Override
     public void deleteById(long id) {
         final String sql = "DELETE FROM work_flow.apparea " +
@@ -54,6 +62,11 @@ public class AppAreaDAOImpl implements AppAreaDAO {
         }
     }
 
+    /**
+     * @see AppAreaDAO#getUsersById(long)
+     * @param appAreaId
+     * @return
+     */
     @Override
     public List<User> getUsersById(long appAreaId) {
         List<User> userList = new ArrayList<>();
@@ -74,6 +87,11 @@ public class AppAreaDAOImpl implements AppAreaDAO {
         return userList;
     }
 
+    /**
+     * @see AppAreaDAO#getById(long)
+     * @param id
+     * @return
+     */
     @Override
     public AppArea getById(long id) {
         AppArea appArea = AppArea.getById(id);
