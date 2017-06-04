@@ -30,7 +30,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
      */
     @Override
     public long add(AppArea appArea) {
-        final String sql = "INSERT INTO work_flow.apparea (id, name, description, team_name) " +
+        final String sql = "INSERT INTO apparea (id, name, description, team_name) " +
                 "VALUES (?, ?, ?, ?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -55,7 +55,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
      */
     @Override
     public void deleteById(long id) {
-        final String sql = "DELETE FROM work_flow.apparea " +
+        final String sql = "DELETE FROM apparea " +
                 "WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -75,8 +75,8 @@ public class AppAreaDAOImpl implements AppAreaDAO {
     @Override
     public List<User> getUsersById(long appAreaId) {
         List<User> userList = new ArrayList<>();
-        final String sql = "SELECT * FROM work_flow.user " +
-                "WHERE id IN (SELECT user_id FROM work_flow.user_apparea WHERE apparea_id = ?) ";
+        final String sql = "SELECT * FROM user " +
+                "WHERE id IN (SELECT user_id FROM user_apparea WHERE apparea_id = ?) ";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, appAreaId);
@@ -118,7 +118,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
      */
     private Map<String, Object> getAppAreaFieldsById(long id){
         Map<String, Object> fieldsMap = new HashMap<>();
-        final String sql = "SELECT * FROM work_flow.apparea " +
+        final String sql = "SELECT * FROM apparea " +
                 "WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
