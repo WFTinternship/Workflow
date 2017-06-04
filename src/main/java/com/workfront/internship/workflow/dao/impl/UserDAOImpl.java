@@ -39,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
 
         String subscribeSql = "INSERT INTO  user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
              PreparedStatement addStmt = conn.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS)) {
             //conn.setAutoCommit(false);
 
