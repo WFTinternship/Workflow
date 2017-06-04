@@ -33,13 +33,12 @@ public class CommentDAOImplIntegrationTest {
     private Post post;
     private PostDAO postDAO;
 
-    private AppArea appArea;
-
-    List<Comment> commentList = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
 
     @Before
     public void setup() {
+        AppArea appArea;
         commentList = new ArrayList<>();
 
         userDAO = new UserDAOImpl();

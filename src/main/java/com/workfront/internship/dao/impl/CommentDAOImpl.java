@@ -15,30 +15,31 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ *
  * Created by angel on 27.05.2017.
  */
 public class CommentDAOImpl implements CommentDAO {
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
 
-        public static final String id = "id";
-        public static final String userId = "user_id";
-        public static final String postId = "post_id";
-        public static final String content = "content";
-        public static final String dateTime = "comment_time";
+        private static final String id = "id";
+        private static final String userId = "user_id";
+        private static final String postId = "post_id";
+        private static final String content = "content";
+        private static final String dateTime = "comment_time";
 
     /**
      * @see CommentDAO#add
      * @param comment
-     * @return
+     * '@return'
      */
     @Override
     public long add(Comment comment) {
         long id = 0;
-        String query="INSERT INTO comment(user_id,post_id,content,comment_time)"+
+        String query = "INSERT INTO comment(user_id,post_id,content,comment_time)"+
                 "VALUE(?,?,?,?)";
-        try{
-            Connection connection= DBHelper.getConnection();
+        try {
+            Connection connection = DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, comment.getUser().getId());
             stmt.setLong(2, comment.getPost().getId());
@@ -49,8 +50,9 @@ public class CommentDAOImpl implements CommentDAO {
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
-            comment.setId(id);
+            comment.setId(id) ;
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException();
         }
         return comment.getId();
@@ -58,20 +60,21 @@ public class CommentDAOImpl implements CommentDAO {
 
     /**
      * @see CommentDAO#update(long, String)
-     * @param id
+     * '@param' id
      * @param newContent
-     * @return
+     * '@return'
      */
     @Override
     public boolean update(long id , String newContent) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        String query="UPDATE comment SET content = ?, comment_time = ?" +
-                " WHERE comment.id = ?";
+        String query = "UPDATE comment SET content = ?," +
+                       " comment_time = ?" +
+                       " WHERE comment.id = ?";
 
         Connection connection = null;
         PreparedStatement stmt = null;
-        try{
+        try {
             connection = DBHelper.getConnection();
 
             stmt = connection.prepareStatement(query);
@@ -92,19 +95,19 @@ public class CommentDAOImpl implements CommentDAO {
     /**
      * @see CommentDAO#delete(long)
      * @param id
-     * @return
+     * '@return'
      */
     @Override
     public int delete(long id) {
         int n ;
-        String query="DELETE FROM comment WHERE id=?";
-        try{
+        String query = "DELETE FROM comment WHERE id=?";
+        try {
             Connection connection = DBHelper.getConnection();
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
             n = stmt.executeUpdate();
         }catch (SQLException e){
-            e.printStackTrace();
+            LOG.error("SQL exception occurred");
             return 0;
         }
         return n;
@@ -113,12 +116,12 @@ public class CommentDAOImpl implements CommentDAO {
     /**
      * @see CommentDAO#getById(long)
      * @param id
-     * @return
+     * '@return'
      */
     @Override
     public Comment getById(long id) {
         Comment comment = null;
-        String query="SELECT comment.id, comment.user_id, first_name, last_name, " +
+        String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
                 " email, passcode, rating, comment.post_id, post_time, title, " +
                 " post.content, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
@@ -136,8 +139,8 @@ public class CommentDAOImpl implements CommentDAO {
             while (rs.next()) {
                 comment = fromResultSet(rs, "comment");
             }
-        } catch (SQLException e1) {
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
         } finally {
             close(rs);
             closeResources(connection, stmt);
@@ -148,7 +151,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     /**
      *@see CommentDAO#getAll()
-     * @return
+     * '@return'
      */
     @Override
     public List<Comment> getAll() {
@@ -170,19 +173,22 @@ public class CommentDAOImpl implements CommentDAO {
             }
 
         } catch (SQLException e){
-            e.printStackTrace();
+            LOG.error("SQL exception occurred");
             return null;
         }
 
         return comments;
     }
 
-    public static Comment fromResultSet(ResultSet rs){
+    private static Comment fromResultSet(ResultSet rs) {
+
         return fromResultSet(rs, null);
+
     }
 
-    public static Comment fromResultSet(ResultSet rs, String tableAlias) {
+    private static Comment fromResultSet(ResultSet rs, String tableAlias) {
         Comment comment = new Comment();
+
         try {
             comment.setId(rs.getLong(CommentDAOImpl.id));
 
@@ -199,7 +205,7 @@ public class CommentDAOImpl implements CommentDAO {
             comment.setContent(rs.getString(getColumnName(CommentDAOImpl.content, tableAlias)));
             comment.setCommentTime(rs.getTimestamp(CommentDAOImpl.dateTime));
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception occurred");
         }
         return comment;
     }
@@ -223,13 +229,10 @@ public class CommentDAOImpl implements CommentDAO {
                 connection.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception occurred");
         }
     }
 
-    private static String getColumnName(String column) {
-        return getColumnName(column, null);
-    }
 
     private static String getColumnName(String column, String tableName) {
         return tableName == null ? column : tableName + "." + column;
