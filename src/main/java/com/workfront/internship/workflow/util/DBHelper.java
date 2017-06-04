@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.util;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import javax.servlet.GenericServlet;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.InputStream;
