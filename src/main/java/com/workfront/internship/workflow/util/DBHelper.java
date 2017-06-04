@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class DBHelper {
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "ang777";
+    private static final String PASSWORD = "vahag1234";
     private static final String CONN_STRING =
             "jdbc:mysql://localhost:3306/work_flow";
 
@@ -32,8 +32,7 @@ public class DBHelper {
 
     public static Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.jdbc.Dr" +
-                    "iver");
+            Class.forName("com.mysql.jdbc.Driver");
         }catch (ClassNotFoundException e){
             e.printStackTrace();
         }
