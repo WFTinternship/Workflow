@@ -51,7 +51,7 @@ public class PostDAOImplIntegrationTest {
     }
 
     /**
-     * @see PostDAO#add(Post)
+     * @see PostDAOImpl#add(Post)
      */
     @Test(expected = RuntimeException.class)
     public void add_failure() {
@@ -64,6 +64,9 @@ public class PostDAOImplIntegrationTest {
         assertNull(post);
     }
 
+    /**
+     * @see PostDAOImpl#add(Post)
+     */
     @Test
     public void add_success() {
         // Test method
@@ -73,6 +76,9 @@ public class PostDAOImplIntegrationTest {
         verifyPost(post, actualPost);
     }
 
+    /**
+     * @see PostDAOImpl#getById(long)
+     */
     @Test
     public void getById_failure() {
         Post post = postDAO.getById(1000000);
@@ -80,6 +86,9 @@ public class PostDAOImplIntegrationTest {
 
     }
 
+    /**
+     * @see PostDAOImpl#getById(long)
+     */
     @Test
     public void getById_success() {
         long expectedPostId = postDAO.add(post);
@@ -89,6 +98,9 @@ public class PostDAOImplIntegrationTest {
 
     }
 
+    /**
+     * @see PostDAOImpl#getByUserId(long)
+     */
     @Test
     public void getByUserId_failure(){
         postDAO.add(post);
@@ -96,6 +108,9 @@ public class PostDAOImplIntegrationTest {
         assertEquals(posts.size(),  0);
     }
 
+    /**
+     * @see PostDAOImpl#getByUserId(long)
+     */
     @Test
     public void getByUserId_success() {
         postDAO.add(post);
@@ -103,6 +118,9 @@ public class PostDAOImplIntegrationTest {
         assertEquals(userPosts.get(0).getUser().getId(), user.getId());
     }
 
+    /**
+     * @see PostDAOImpl#getAll()
+     */
     @Test
     public void getAll_success(){
         postDAO.add(post);
@@ -116,6 +134,9 @@ public class PostDAOImplIntegrationTest {
         assertTrue(allPosts.size() == 2 && allPosts.contains(post) && allPosts.contains(anotherPost));
     }
 
+    /**
+     * @see PostDAOImpl#getAll()
+     */
     @Test
     public void getByTitle_success() {
         post.setTitle("Title 1");
@@ -128,6 +149,9 @@ public class PostDAOImplIntegrationTest {
 
     }
 
+    /**
+     * @see PostDAOImpl#getAnswersByPostId(long)
+     */
     @Test(expected = RuntimeException.class)
     public void getAnswersByPostId_failure(){
         postDAO.add(post);
@@ -145,6 +169,10 @@ public class PostDAOImplIntegrationTest {
         userDAO.deleteById(user.getId());
         postDAO.delete(answer.getId());
     }
+
+    /**
+     * @see PostDAOImpl#getAnswersByPostId(long)
+     */
     @Test
     public void getAnswersByPostId_success(){
         postDAO.add(post);
@@ -162,6 +190,9 @@ public class PostDAOImplIntegrationTest {
         postDAO.delete(answer.getId());
     }
 
+    /**
+     * @see PostDAOImpl#setBestAnswer(long, long)
+     */
     @Test(expected = RuntimeException.class)
     public void setBestAnswer_failure(){
         postDAO.add(post);
@@ -182,6 +213,9 @@ public class PostDAOImplIntegrationTest {
         postDAO.delete(answer.getId());
     }
 
+    /**
+     * @see PostDAOImpl#setBestAnswer(long, long)
+     */
     @Test
     public void setBestAnswer_success(){
         postDAO.add(post);
@@ -202,6 +236,9 @@ public class PostDAOImplIntegrationTest {
 
     }
 
+    /**
+     * @see PostDAOImpl#getBestAnswer(long)
+     */
     @Test
     public void getBestAnswer_success(){
         postDAO.add(post);
@@ -221,6 +258,9 @@ public class PostDAOImplIntegrationTest {
         postDAO.delete(answer.getId());
     }
 
+    /**
+     * @see PostDAOImpl#update(Post)
+     */
     @Test
     public void update_failure(){
         postDAO.add(post);
@@ -228,6 +268,9 @@ public class PostDAOImplIntegrationTest {
         postDAO.update(newPost);
     }
 
+    /**
+     * @see PostDAOImpl#update(Post)
+     */
     @Test
     public void update_success() {
         postDAO.add(post);
@@ -237,6 +280,9 @@ public class PostDAOImplIntegrationTest {
         verifyPost(post, updatedPost);
     }
 
+    /**
+     * @see PostDAOImpl#delete(long)
+     */
     @Test
     public void delete_failure(){
         long postId = postDAO.add(post);
@@ -244,6 +290,9 @@ public class PostDAOImplIntegrationTest {
         assertEquals(n, 0);
     }
 
+    /**
+     * @see PostDAOImpl#delete(long)
+     */
     @Test
     public void delete_success() {
         long postId = postDAO.add(post);
