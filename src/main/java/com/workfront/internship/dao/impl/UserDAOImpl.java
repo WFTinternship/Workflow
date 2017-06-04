@@ -15,6 +15,7 @@ import java.util.List;
  * Created by Vahag on 5/27/2017.
  */
 public class UserDAOImpl implements UserDAO {
+
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
     public static final String id = "id";
@@ -162,7 +163,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = "SELECT * " +
                 "FROM work_flow.user " +
                 "WHERE CONCAT (first_name, last_name) LIKE ?";
-        try (Connection conn = DBHelper.getPooledConnection();
+        try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, filteredName + "%");
             ResultSet rs = stmt.executeQuery();

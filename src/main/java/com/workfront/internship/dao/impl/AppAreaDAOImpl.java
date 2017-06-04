@@ -5,6 +5,7 @@ import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.User;
 import com.workfront.internship.exceptions.dao.NotExistingAppAreaException;
 import com.workfront.internship.util.DBHelper;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.Map;
 
 
 public class AppAreaDAOImpl implements AppAreaDAO {
+
+    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
     public static final String id = "id";
     public static final String name = "name";
@@ -39,6 +42,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return appArea.getId();
@@ -58,6 +62,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
             stmt.setLong(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
     }
@@ -82,6 +87,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
                 userList.add(user);
             }
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return userList;
@@ -100,6 +106,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
             return null;
         }
         if(!isTheActualAppArea(appArea, actualAppArea)){
+            LOG.error("AppArea does not exist");
             throw new NotExistingAppAreaException();
         }
         return appArea;
@@ -123,6 +130,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
                 fieldsMap.put("TeamName",rs.getString(AppAreaDAOImpl.teamName));
             }
         } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         }
         return fieldsMap;
