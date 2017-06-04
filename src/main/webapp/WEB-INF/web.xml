@@ -4,9 +4,15 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <listener>
+        <listener-class>
+            com.workfront.internship.workflow.api.ContextListener
+        </listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>app</servlet-name>
-        <servlet-class>com.workfront.internship.app.App</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.app.App</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -16,14 +22,14 @@
 
     <servlet>
         <servlet-name>AddPost</servlet-name>
-        <servlet-class>com.workfront.internship.api.AddPost</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.api.AddPost</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>AddPost</servlet-name>
         <url-pattern>/addPost</url-pattern>
     </servlet-mapping>
-    
+
 
 
 </web-app>
