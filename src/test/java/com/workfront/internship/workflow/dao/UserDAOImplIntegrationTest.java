@@ -240,7 +240,7 @@ public class UserDAOImplIntegrationTest {
      * @param user
      * @param actualUser
      */
-    static void verifyAddedUser(User user, User actualUser) {
+    public static void verifyAddedUser(User user, User actualUser) {
         assertEquals(user.getFirstName(), actualUser.getFirstName());
         assertEquals(user.getLastName(), actualUser.getLastName());
         assertEquals(user.getEmail(), actualUser.getEmail());

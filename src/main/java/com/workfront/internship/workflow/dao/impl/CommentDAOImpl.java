@@ -1,10 +1,10 @@
-package com.workfront.internship.dao.impl;
+package com.workfront.internship.workflow.dao.impl;
 
-import com.workfront.internship.dao.CommentDAO;
-import com.workfront.internship.dataModel.Comment;
-import com.workfront.internship.dataModel.Post;
-import com.workfront.internship.dataModel.User;
-import com.workfront.internship.util.DBHelper;
+import com.workfront.internship.workflow.dao.CommentDAO;
+import com.workfront.internship.workflow.dataModel.Comment;
+import com.workfront.internship.workflow.dataModel.Post;
+import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
 import java.sql.*;

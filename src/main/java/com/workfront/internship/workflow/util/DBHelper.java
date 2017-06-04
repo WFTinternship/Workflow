@@ -14,10 +14,8 @@ import java.util.Properties;
  * Created by nane on 5/27/17.
  */
 public class DBHelper {
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "vahag1234";
-    private static final String CONN_STRING =
-            "jdbc:mysql://localhost:3306/work_flow";
+    public static final String POOLED_CONNECTION = "Pooled connection";
+    public static final String SINGLE_CONNECTION = "Single connection";
 
     public static Properties loadDbCfgProperties(){
         Properties properties = new Properties();
@@ -38,7 +36,7 @@ public class DBHelper {
         }
         Properties properties = loadDbCfgProperties();
 
-        return DriverManager.getConnection(properties.getProperty("DB_URL_TEST"), properties.getProperty("USERNAME"),
+        return DriverManager.getConnection(properties.getProperty("DB_TEST_URL"), properties.getProperty("USERNAME"),
                 properties.getProperty("PASSWORD"));
     }
 
@@ -50,7 +48,7 @@ public class DBHelper {
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
-        cpds.setJdbcUrl(properties.getProperty("URL"));
+        cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));
         cpds.setUser(properties.getProperty("USERNAME"));
         cpds.setPassword(properties.getProperty("PASSWORD"));
 

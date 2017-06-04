@@ -306,7 +306,7 @@ public class PostDAOImplIntegrationTest {
 
     // region <HELPERS>
 
-    static void verifyPost(Post post, Post actualPost) {
+    public static void verifyPost(Post post, Post actualPost) {
         UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
         assertEquals(post.getTitle(), actualPost.getTitle());
         assertEquals(post.getContent(), actualPost.getContent());

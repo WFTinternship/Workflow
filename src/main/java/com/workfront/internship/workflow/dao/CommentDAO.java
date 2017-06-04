@@ -1,7 +1,7 @@
-package com.workfront.internship.dao;
+package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.dataModel.Comment;
-import com.workfront.internship.dao.impl.CommentDAOImpl;
+import com.workfront.internship.workflow.dataModel.Comment;
+import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 
 import java.util.List;
 
