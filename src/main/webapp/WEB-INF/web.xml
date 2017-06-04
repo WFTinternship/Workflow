@@ -6,13 +6,13 @@
 
     <listener>
         <listener-class>
-            com.workfront.internship.api.ContextListener
+            com.workfront.internship.workflow.api.ContextListener
         </listener-class>
     </listener>
 
     <servlet>
         <servlet-name>app</servlet-name>
-        <servlet-class>com.workfront.internship.app.App</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.app.App</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -22,7 +22,7 @@
 
     <servlet>
         <servlet-name>AddPost</servlet-name>
-        <servlet-class>com.workfront.internship.api.AddPost</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.api.AddPost</servlet-class>
     </servlet>
 
     <servlet-mapping>
