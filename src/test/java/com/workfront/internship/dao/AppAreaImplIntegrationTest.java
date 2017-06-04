@@ -43,20 +43,22 @@ public class AppAreaImplIntegrationTest {
         user = DaoTestUtil.getRandomUser();
     }
 
+    /**
+     * Deletes all the users created during the test
+     */
     @After
     public void tearDown(){
         if(appAreaDAO.getById(appArea.getId()) == null){
             appAreaDAO.add(appArea);
         }
-        try {
             userDAO.deleteById(user.getId());
-        }catch (RuntimeException e){
-
-        }
     }
 
     // region <TEST CASE>
 
+    /**
+     * @see AppAreaDAOImpl#add(AppArea)
+     */
     @Test
     public void add_success(){
         appAreaDAO.deleteById(appArea.getId());
@@ -67,6 +69,9 @@ public class AppAreaImplIntegrationTest {
         assertTrue(appArea.equals(actualAppArea));
     }
 
+    /**
+     * @see AppAreaDAOImpl#deleteById(long)
+     */
     @Test
     public void deleteById_success(){
         //Test method
@@ -75,6 +80,9 @@ public class AppAreaImplIntegrationTest {
         assertNull(appAreaDAO.getById(appArea.getId()));
     }
 
+    /**
+     * @see AppAreaDAOImpl#getUsersById(long)
+     */
     @Test
     public void getUsersById_success(){
         long userId = userDAO.add(user);
@@ -83,6 +91,14 @@ public class AppAreaImplIntegrationTest {
         List<User> userList = appAreaDAO.getUsersById(appArea.getId());
 
         assertTrue(userList.contains(user));
+    }
+
+    @Test
+    public void getById_success(){
+        //Test method
+        AppArea actualAppArea = appAreaDAO.getById(1);
+
+        assertTrue(actualAppArea.equals(appArea));
     }
 
     // endregion

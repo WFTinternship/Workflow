@@ -1,7 +1,7 @@
-package com.workfront.internship.exceptions;
+package com.workfront.internship.exceptions.dao;
 
 /**
- * Created by Karen on 6/2/2017.
+ * Created by Vahag on 6/2/2017.
  */
 public class NotExistingAppAreaException extends RuntimeException {
 
