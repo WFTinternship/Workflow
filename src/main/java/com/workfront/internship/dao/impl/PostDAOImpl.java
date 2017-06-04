@@ -5,6 +5,7 @@ import com.workfront.internship.dataModel.AppArea;
 import com.workfront.internship.dataModel.Post;
 import com.workfront.internship.dataModel.User;
 import com.workfront.internship.util.DBHelper;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.List;
  * Created by nane on 5/26/17.
  */
 public class PostDAOImpl implements PostDAO {
+
+    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
     // Post fileds
     public static final String id = "id";
@@ -38,7 +41,7 @@ public class PostDAOImpl implements PostDAO {
      */
     public long add(Post post) {
         long id = 0;
-        String sql = "INSERT INTO work_flow.post (user_id, apparea_id,post_id," +
+        String sql = "INSERT INTO post (user_id, apparea_id,post_id," +
                 " post_time, title, content) VALUE(?,?,?,?,?,?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -65,6 +68,7 @@ public class PostDAOImpl implements PostDAO {
             post.setId(id);
 
         } catch (SQLException e) {
+            LOG.error("SQL exception");
             throw new RuntimeException();
         }
         return post.getId();
@@ -96,7 +100,7 @@ public class PostDAOImpl implements PostDAO {
                 post = fromResultSet(post, rs);
             }
         }catch (SQLException e){
-            e.printStackTrace();
+            LOG.error("SQL exception");
         }finally {
             close(rs);
         }
@@ -129,7 +133,7 @@ public class PostDAOImpl implements PostDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             return allPosts;
         } finally {
             close(rs);
@@ -167,7 +171,7 @@ public class PostDAOImpl implements PostDAO {
             stmt.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             return posts;
         } finally {
             close(rs);
@@ -203,7 +207,7 @@ public class PostDAOImpl implements PostDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             return posts;
         } finally {
             close(rs);
@@ -211,6 +215,12 @@ public class PostDAOImpl implements PostDAO {
         return posts;
     }
 
+    /**
+     * @see PostDAO#getAnswersByPostId(long)
+     *
+     * @param postId
+     * @return
+     */
     @Override
     public List<Post> getAnswersByPostId(long postId) {
         List<Post> answerList = new ArrayList<>();
@@ -219,7 +229,7 @@ public class PostDAOImpl implements PostDAO {
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title," +
                 " content as answer_content " +
-                " FROM work_flow.post JOIN user ON post.user_id = user.id " +
+                " FROM post JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.post_id = ?";
         ResultSet rs = null;
@@ -234,7 +244,7 @@ public class PostDAOImpl implements PostDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             return answerList;
         } finally {
             close(rs);
@@ -242,6 +252,12 @@ public class PostDAOImpl implements PostDAO {
         return answerList;
     }
 
+    /**
+     * @see PostDAO#getBestAnswer(long)
+     *
+     * @param postId
+     * @return
+     */
     @Override
     public Post getBestAnswer(long postId) {
         Post bestAnswer = null;
@@ -250,7 +266,7 @@ public class PostDAOImpl implements PostDAO {
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title, " +
                 " content as answer_content " +
-                " FROM work_flow.best_answer JOIN post ON best_answer.answer_id = post.id " +
+                " FROM best_answer JOIN post ON best_answer.answer_id = post.id " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE  best_answer.post_id = ?";
@@ -265,7 +281,7 @@ public class PostDAOImpl implements PostDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             return bestAnswer;
         } finally {
             close(rs);
@@ -273,6 +289,13 @@ public class PostDAOImpl implements PostDAO {
         return bestAnswer;
     }
 
+    /**
+     * @see PostDAO#setBestAnswer(long, long)
+     *
+     * @param postId
+     * @param answerId
+     * @return
+     */
     @Override
     public boolean setBestAnswer(long postId, long answerId) {
         final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
@@ -284,7 +307,7 @@ public class PostDAOImpl implements PostDAO {
             stmt.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             throw new RuntimeException("Foreign Key constraint fails");
         } finally {
             close(rs);
@@ -310,7 +333,7 @@ public class PostDAOImpl implements PostDAO {
             stmt.execute();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             return false;
         }
         return true;
@@ -332,7 +355,7 @@ public class PostDAOImpl implements PostDAO {
             numberOfRowsAffeced = stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("SQL exception");
             return 0;
         }
         return numberOfRowsAffeced;
@@ -371,6 +394,7 @@ public class PostDAOImpl implements PostDAO {
         }
         return answer;
     }
+
     public static Post fromResultSet(Post post, ResultSet rs){
         try {
             post.setId(rs.getLong(id));
