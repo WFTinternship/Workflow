@@ -5,13 +5,14 @@ import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.Post;
 import com.workfront.internship.workflow.dataModel.User;
 import com.workfront.internship.workflow.util.DBHelper;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by nane on 5/26/17.
+ * Created by nane on 5/26/17. 
  */
 public class PostDAOImpl implements PostDAO {
 
