@@ -1,4 +1,4 @@
-INSERT INTO work_flow.apparea
+INSERT INTO apparea
     VALUE (1, 'Reporting', 'Some rep description', NULL );
 
 INSERT INTO team

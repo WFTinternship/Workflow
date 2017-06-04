@@ -252,7 +252,7 @@ public class UserDAOImplIntegrationTest {
      * Verifies that all the users are deleted from the database
      */
     private void verifyAllUsersAreDeleted() {
-        final String sql = "SELECT * FROM work_flow.user";
+        final String sql = "SELECT * FROM user";
         try (Connection conn = DBHelper.getConnection();
              Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);

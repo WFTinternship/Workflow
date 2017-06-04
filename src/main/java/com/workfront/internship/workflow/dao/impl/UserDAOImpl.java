@@ -34,10 +34,10 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public long add(User user) {
         long id = 0;
-        String addSql = "INSERT INTO work_flow.user (first_name, last_name, email, passcode, rating) " +
+        String addSql = "INSERT INTO  user (first_name, last_name, email, passcode, rating) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        String subscribeSql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
+        String subscribeSql = "INSERT INTO  user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement addStmt = conn.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS)) {
@@ -78,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void deleteById(long id) {
-        String sql = "DELETE FROM work_flow.user " +
+        String sql = "DELETE FROM  user " +
                 "WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -95,7 +95,7 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void deleteAll() {
-        String sql = "DELETE FROM work_flow.user ";
+        String sql = "DELETE FROM  user ";
         try (Connection conn = DBHelper.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
@@ -113,7 +113,7 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
-        String sql = "INSERT INTO work_flow.user_apparea (user_id, apparea_id) " +
+        String sql = "INSERT INTO  user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -136,7 +136,7 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void unsubscribeToArea(long userId, long appAreaId) {
-        String sql = "DELETE FROM work_flow.user_apparea " +
+        String sql = "DELETE FROM  user_apparea " +
                 " WHERE user_id = ? AND apparea_id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -161,7 +161,7 @@ public class UserDAOImpl implements UserDAO {
         String filteredName = name.replaceAll(" ", "");
         List<User> userList = new ArrayList<>();
         String sql = "SELECT * " +
-                "FROM work_flow.user " +
+                "FROM  user " +
                 "WHERE CONCAT (first_name, last_name) LIKE ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -186,7 +186,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getById(long id) {
         User user = null;
-        String sql = "SELECT * FROM work_flow.user " +
+        String sql = "SELECT * FROM  user " +
                 "WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -211,7 +211,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<AppArea> getAppAreasById(long userId) {
         List<AppArea> appAreaList = new ArrayList<>();
-        String sql = "SELECT * FROM work_flow.user_apparea " +
+        String sql = "SELECT * FROM  user_apparea " +
                 "WHERE user_id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

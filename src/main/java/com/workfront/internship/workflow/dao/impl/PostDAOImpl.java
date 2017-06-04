@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by nane on 5/26/17. 
+ * Created by nane on 5/26/17.
  */
 public class PostDAOImpl implements PostDAO {
 

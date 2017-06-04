@@ -11,13 +11,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Created by nane on 5/27/17.
+ * Created by nane on 5/27/17. 
  */
 public class DBHelper {
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "barev";
-    private static final String CONN_STRING =
-            "jdbc:mysql://localhost:3306/work_flow";
 
     public static Properties loadDbCfgProperties(){
         Properties properties = new Properties();
@@ -38,7 +34,8 @@ public class DBHelper {
         }
         Properties properties = loadDbCfgProperties();
 
-        return DriverManager.getConnection(properties.getProperty("DB_URL_TEST"), properties.getProperty("USERNAME"),
+        return DriverManager.getConnection(properties.getProperty("DB_TEST_URL"),
+                properties.getProperty("USERNAME"),
                 properties.getProperty("PASSWORD"));
     }
 
@@ -61,9 +58,9 @@ public class DBHelper {
     }
 
     public static Connection getConnection(String connectionType) throws SQLException {
-        if(connectionType == "Pooled connection"){
+        if("Pooled connection".equals(connectionType)){
             return getPooledConnection();
-        }else if(connectionType == "Single connection"){
+        }else if("Single connection".equals(connectionType)){
             return getConnection();
         }
         return null;
