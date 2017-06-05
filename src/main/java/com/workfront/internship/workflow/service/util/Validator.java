@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.service.util;
 
 import com.workfront.internship.workflow.dataModel.AppArea;
+import com.workfront.internship.workflow.dataModel.Comment;
 import com.workfront.internship.workflow.dataModel.Post;
 import com.workfront.internship.workflow.dataModel.User;
 
@@ -23,6 +24,12 @@ public class Validator {
                     && !isEmpty(user.getLastName())
                     && !isEmpty(user.getEmail())
                     && !isEmpty(user.getPassword());
+    }
+    public static boolean isValidComment(Comment comment){
+        return comment != null
+                && isValidPost(comment.getPost())
+                && isValidUser(comment.getUser())
+                && !isEmpty(comment.getContent());
     }
 
     public static boolean isValidAppArea(AppArea appArea){

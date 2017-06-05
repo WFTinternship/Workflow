@@ -37,7 +37,8 @@ public class DBHelper {
         }
         Properties properties = loadDbCfgProperties();
 
-        return DriverManager.getConnection(properties.getProperty("DB_TEST_URL"), properties.getProperty("USERNAME"),
+        return DriverManager.getConnection(properties.getProperty("DB_TEST_URL"),
+                properties.getProperty("USERNAME"),
                 properties.getProperty("PASSWORD"));
     }
 
