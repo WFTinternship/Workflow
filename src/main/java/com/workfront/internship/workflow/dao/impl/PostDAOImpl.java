@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.Post;
 import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.exceptions.dao.NoRowsAffectedException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -343,20 +344,21 @@ public class PostDAOImpl implements PostDAO {
      * @return
      */
     @Override
-    public int delete(long id) {
-        int numberOfRowsAffeced;
+    public void delete(long id) {
+        int numberOfRowsAffected = 0;
         String sql = "DELETE FROM post WHERE id = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
-            numberOfRowsAffeced = stmt.executeUpdate();
+            numberOfRowsAffected = stmt.executeUpdate();
 
         } catch (SQLException e) {
-            LOG.error("SQL exception");
-            return 0;
+            LOG.error("SQL exception has occurred");
         }
-        return numberOfRowsAffeced;
+        if (numberOfRowsAffected == 0){
+            throw new NoRowsAffectedException("The operation affected to 0 rows in database");
+        }
     }
 
     private void close(ResultSet rs) {

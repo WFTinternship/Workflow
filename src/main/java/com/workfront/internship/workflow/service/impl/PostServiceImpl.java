@@ -6,13 +6,12 @@ import com.workfront.internship.workflow.dataModel.Post;
 import com.workfront.internship.workflow.exceptions.InvalidObjectException;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.util.Validator;
-import javafx.geometry.Pos;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 
 /**
- * Created by nane on 6/4/17. 
+ * Created by nane on 6/4/17.
  */
 public class PostServiceImpl implements PostService{
 
@@ -146,11 +145,15 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public int delete(long id) {
+    public void delete(long id) {
         if (id < 1){
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
-         return postDAO.delete(id);
+        try {
+            postDAO.delete(id);
+        }catch (RuntimeException e){
+            logger.error("Failed to delete specified postS");
+        }
     }
 }

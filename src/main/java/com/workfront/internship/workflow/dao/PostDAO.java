@@ -32,7 +32,7 @@ public interface PostDAO {
 
     void update(Post post);
 
-    int delete(long id);
+    void delete(long id);
 
 
 }
