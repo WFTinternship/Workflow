@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class PostDAOImpl implements PostDAO {
 
-    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOG = Logger.getLogger(PostDAOImpl.class);
 
     // Post fileds
     public static final String id = "id";
@@ -297,7 +297,7 @@ public class PostDAOImpl implements PostDAO {
      * @return
      */
     @Override
-    public boolean setBestAnswer(long postId, long answerId) {
+    public void setBestAnswer(long postId, long answerId) {
         final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
         ResultSet rs = null;
         try (Connection conn = DBHelper.getConnection();
@@ -312,7 +312,6 @@ public class PostDAOImpl implements PostDAO {
         } finally {
             close(rs);
         }
-        return true;
     }
 
     /**
@@ -321,7 +320,7 @@ public class PostDAOImpl implements PostDAO {
      * @return
      */
     @Override
-    public boolean update(Post post) {
+    public void update(Post post) {
         String sql = "UPDATE post SET title = ?, content = ? " +
                 " WHERE post.id = ? ";
         try (Connection conn = DBHelper.getConnection();
@@ -334,9 +333,8 @@ public class PostDAOImpl implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            return false;
+            throw new RuntimeException("SQL exception has occurred");
         }
-        return true;
     }
 
     /**

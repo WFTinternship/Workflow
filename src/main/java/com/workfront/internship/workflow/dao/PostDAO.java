@@ -28,9 +28,9 @@ public interface PostDAO {
 
     Post getBestAnswer(long postId);
 
-    boolean setBestAnswer(long postId, long answerId);
+    void setBestAnswer(long postId, long answerId);
 
-    boolean update(Post post);
+    void update(Post post);
 
     int delete(long id);
 
