@@ -13,4 +13,16 @@ public class NotExistingAppAreaException extends RuntimeException {
     {
         super(message);
     }
+
+    public NotExistingAppAreaException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public NotExistingAppAreaException(Throwable cause) {
+        super(cause);
+    }
+
+    public NotExistingAppAreaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

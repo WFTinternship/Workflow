@@ -71,41 +71,6 @@ public class UserDAOImpl implements UserDAO {
         return user.getId();
     }
 
-
-    /**
-     * @see UserDAO#deleteById(long)
-     * @param id
-     */
-    @Override
-    public void deleteById(long id) {
-        String sql = "DELETE FROM  user " +
-                "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * @see UserDAO#deleteAll()
-     */
-    @Override
-    public void deleteAll() {
-        String sql = "DELETE FROM  user ";
-        try (Connection conn = DBHelper.getConnection();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
-            throw new RuntimeException(e);
-        }
-
-    }
-
     /**
      * @see UserDAO#subscribeToArea(long, long)
      * @param userId
@@ -222,11 +187,47 @@ public class UserDAOImpl implements UserDAO {
                 appAreaList.add(AppArea.getById(appAreaId));
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
             throw new RuntimeException(e);
         }
         return appAreaList;
     }
+
+    /**
+     * @see UserDAO#deleteById(long)
+     * @param id
+     */
+    @Override
+    public void deleteById(long id) {
+        String sql = "DELETE FROM  user " +
+                "WHERE id = ?";
+        try (Connection conn = DBHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @see UserDAO#deleteAll()
+     */
+    @Override
+    public void deleteAll() {
+        String sql = "DELETE FROM  user ";
+        try (Connection conn = DBHelper.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
 
     /**
      * Sets users fields values from result set
@@ -244,7 +245,7 @@ public class UserDAOImpl implements UserDAO {
             user.setRating(rs.getInt(rating));
 
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
             throw new RuntimeException(e);
         }
         return user;
