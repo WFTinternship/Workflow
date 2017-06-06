@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 /**
- * Created by Angel on 6/5/2017.
+ * Created by Angel on 6/5/2017
  */
 public class CommentServiceImpl implements CommentService {
 

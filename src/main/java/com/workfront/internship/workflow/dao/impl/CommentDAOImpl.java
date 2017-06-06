@@ -19,8 +19,8 @@ import java.util.List;
  * Created by angel on 27.05.2017.
  */
 public class CommentDAOImpl implements CommentDAO {
-    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
+    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
         private static final String id = "id";
         private static final String userId = "user_id";
@@ -28,7 +28,7 @@ public class CommentDAOImpl implements CommentDAO {
         private static final String content = "content";
         private static final String dateTime = "comment_time";
 
-    /**
+        /**
      * @see CommentDAO#add
      * @param comment
      * '@return'
@@ -55,6 +55,7 @@ public class CommentDAOImpl implements CommentDAO {
             LOG.error("SQL exception");
             throw new RuntimeException();
         }
+
         return comment.getId();
     }
 

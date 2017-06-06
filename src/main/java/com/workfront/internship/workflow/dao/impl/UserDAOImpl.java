@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * Created by Vahag on 5/27/2017.
+ * Created by Vahag on 5/27/2017
  */
 public class UserDAOImpl implements UserDAO {
 
@@ -230,8 +230,6 @@ public class UserDAOImpl implements UserDAO {
 
     }
 
-
-
     /**
      * Sets users fields values from result set
      * @param user
@@ -253,4 +251,5 @@ public class UserDAOImpl implements UserDAO {
         }
         return user;
     }
+
 }
