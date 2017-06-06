@@ -57,19 +57,22 @@ public class DBHelper {
         cpds.setPassword(properties.getProperty("PASSWORD"));
 
         cpds.setInitialPoolSize(1);
-        cpds.setMinPoolSize(1);
-        cpds.setAcquireIncrement(1);
+        cpds.setMinPoolSize(0);
+        cpds.setAcquireIncrement(0);
         cpds.setMaxPoolSize(10);
 
         return cpds.getConnection();
     }
 
-    public static Connection getConnection(String connectionType) throws SQLException {
-        if(connectionType == "Pooled connection"){
+    public static Connection getConnection(ConnectionType connectionType) throws SQLException {
+        if(connectionType.equals(ConnectionType.POOL)) {
             return getPooledConnection();
-        }else if(connectionType == "Single connection"){
+        } else if(connectionType.equals(ConnectionType.BASIC)){
             return getConnection();
+        } else {
+            throw new RuntimeException(String.format(
+                    "Unknown connection type: %s", connectionType
+            ));
         }
-        return null;
     }
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
@@ -297,10 +298,11 @@ public class PostDAOImplIntegrationTest {
     /**
      * @see PostDAOImpl#delete(long)
      */
-    @Test(expected = RuntimeException.class)
+    @Test
     public void delete_failure() {
         long postId = postDAO.add(post);
         postDAO.delete(postId + 100000);
+        assertNotSame(post, postDAO.getById(postId));
     }
 
     /**

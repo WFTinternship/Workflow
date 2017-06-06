@@ -1,9 +1,11 @@
 package com.workfront.internship.workflow.dao.impl;
 
+import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dataModel.Comment;
 import com.workfront.internship.workflow.dataModel.Post;
 import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -18,7 +20,7 @@ import java.util.List;
  *
  * Created by angel on 27.05.2017.
  */
-public class CommentDAOImpl implements CommentDAO {
+public class CommentDAOImpl extends AbstractDao implements CommentDAO {
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
 
@@ -27,6 +29,14 @@ public class CommentDAOImpl implements CommentDAO {
         private static final String postId = "post_id";
         private static final String content = "content";
         private static final String dateTime = "comment_time";
+
+    public CommentDAOImpl() {
+        this(ConnectionType.POOL);
+    }
+
+    public CommentDAOImpl(ConnectionType connectionType) {
+        this.connectionType = connectionType;
+    }
 
     /**
      * @see CommentDAO#add
@@ -39,7 +49,7 @@ public class CommentDAOImpl implements CommentDAO {
         String query = "INSERT INTO comment(user_id,post_id,content,comment_time)"+
                 "VALUE(?,?,?,?)";
         try {
-            Connection connection = DBHelper.getConnection();
+            Connection connection = DBHelper.getConnection(connectionType);
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, comment.getUser().getId());
             stmt.setLong(2, comment.getPost().getId());
@@ -75,7 +85,7 @@ public class CommentDAOImpl implements CommentDAO {
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
-            connection = DBHelper.getConnection();
+            connection = DBHelper.getConnection(connectionType);
 
             stmt = connection.prepareStatement(query);
             stmt.setString(1 , newContent);
@@ -102,7 +112,7 @@ public class CommentDAOImpl implements CommentDAO {
         int n ;
         String query = "DELETE FROM comment WHERE id=?";
         try {
-            Connection connection = DBHelper.getConnection();
+            Connection connection = DBHelper.getConnection(connectionType);
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
             n = stmt.executeUpdate();
@@ -131,7 +141,7 @@ public class CommentDAOImpl implements CommentDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            connection = DBHelper.getConnection();
+            connection = DBHelper.getConnection(connectionType);
             stmt = connection.prepareStatement(query);
             stmt.setLong(1, id);
 
@@ -164,7 +174,7 @@ public class CommentDAOImpl implements CommentDAO {
                 " INNER JOIN post ON comment.post_id = post.id ";
         try {
 
-            Connection connection=DBHelper.getConnection();
+            Connection connection=DBHelper.getConnection(connectionType);
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery(query );
             while (rs.next()) {
