@@ -1,10 +1,12 @@
 package com.workfront.internship.workflow.dao.impl;
 
+import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.Post;
 import com.workfront.internship.workflow.dataModel.User;
 import com.workfront.internship.workflow.exceptions.dao.NoRowsAffectedException;
+import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -13,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by nane on 5/26/17.
+ * Created by nane on 5/26/17
  */
-public class PostDAOImpl implements PostDAO {
+public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     private static final Logger LOG = Logger.getLogger(PostDAOImpl.class);
 
@@ -35,6 +37,14 @@ public class PostDAOImpl implements PostDAO {
     public static String userId = "user_id";
     public static String title = "answer_title";
 
+    public PostDAOImpl() {
+        this(ConnectionType.POOL);
+    }
+
+    public PostDAOImpl(ConnectionType connectionType) {
+        this.connectionType = connectionType;
+    }
+
     /**
      * @see PostDAO#add(Post) ()
      *
@@ -44,7 +54,7 @@ public class PostDAOImpl implements PostDAO {
         long id = 0;
         String sql = "INSERT INTO post (user_id, apparea_id,post_id," +
                 " post_time, title, content) VALUE(?,?,?,?,?,?)";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, post.getUser().getId());
             stmt.setLong(2, post.getAppArea().getId());
@@ -91,7 +101,7 @@ public class PostDAOImpl implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.id = ?";
         ResultSet rs = null;
-        try(Connection conn = DBHelper.getConnection();
+        try(Connection conn = DBHelper.getConnection(connectionType);
             PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setLong(1, id);
 
@@ -124,7 +134,7 @@ public class PostDAOImpl implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL";
         ResultSet rs = null;
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -159,7 +169,7 @@ public class PostDAOImpl implements PostDAO {
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.user_id = ?";
         ResultSet rs = null;
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             rs = stmt.executeQuery();
@@ -197,7 +207,7 @@ public class PostDAOImpl implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL AND post.title LIKE ? ";
         ResultSet rs = null;
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + title.trim() + "%");
             rs = stmt.executeQuery();
@@ -234,7 +244,7 @@ public class PostDAOImpl implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.post_id = ?";
         ResultSet rs = null;
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
@@ -272,7 +282,7 @@ public class PostDAOImpl implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE  best_answer.post_id = ?";
         ResultSet rs = null;
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
@@ -301,7 +311,7 @@ public class PostDAOImpl implements PostDAO {
     public void setBestAnswer(long postId, long answerId) {
         final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
         ResultSet rs = null;
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, postId);
             stmt.setLong(2, answerId);
@@ -324,7 +334,7 @@ public class PostDAOImpl implements PostDAO {
     public void update(Post post) {
         String sql = "UPDATE post SET title = ?, content = ? " +
                 " WHERE post.id = ? ";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, post.getTitle());
             stmt.setString(2, post.getContent());
@@ -347,7 +357,7 @@ public class PostDAOImpl implements PostDAO {
     public void delete(long id) {
         int numberOfRowsAffected = 0;
         String sql = "DELETE FROM post WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
@@ -357,7 +367,7 @@ public class PostDAOImpl implements PostDAO {
             LOG.error("SQL exception has occurred");
         }
         if (numberOfRowsAffected == 0){
-            throw new NoRowsAffectedException("The operation affected to 0 rows in database");
+            LOG.info("No rows affected");
         }
     }
 

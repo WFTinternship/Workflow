@@ -1,9 +1,11 @@
 package com.workfront.internship.workflow.dao.impl;
 
+import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.User;
 import com.workfront.internship.workflow.exceptions.dao.DuplicateEntryException;
+import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -13,9 +15,9 @@ import java.util.List;
 
 
 /**
- * Created by Vahag on 5/27/2017.
+ * Created by Vahag on 5/27/2017
  */
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
@@ -26,6 +28,13 @@ public class UserDAOImpl implements UserDAO {
     public static final String password = "passcode";
     public static final String rating = "rating";
 
+    public UserDAOImpl() {
+        this(ConnectionType.POOL);
+    }
+
+    public UserDAOImpl(ConnectionType connectionType) {
+        this.connectionType = connectionType;
+    }
 
     /**
      * @see UserDAO#add(User)
@@ -40,7 +49,7 @@ public class UserDAOImpl implements UserDAO {
 
         String subscribeSql = "INSERT INTO  user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
-        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement addStmt = conn.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS)) {
             //conn.setAutoCommit(false);
 
@@ -83,7 +92,7 @@ public class UserDAOImpl implements UserDAO {
     public void subscribeToArea(long userId, long appAreaId) {
         String sql = "INSERT INTO  user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
-        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
@@ -106,7 +115,7 @@ public class UserDAOImpl implements UserDAO {
     public void unsubscribeToArea(long userId, long appAreaId) {
         String sql = "DELETE FROM  user_apparea " +
                 " WHERE user_id = ? AND apparea_id = ?";
-        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
@@ -131,7 +140,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = "SELECT * " +
                 "FROM  user " +
                 "WHERE CONCAT (first_name, last_name) LIKE ?";
-        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, filteredName + "%");
             ResultSet rs = stmt.executeQuery();
@@ -156,7 +165,7 @@ public class UserDAOImpl implements UserDAO {
         User user = null;
         String sql = "SELECT * FROM  user " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -181,7 +190,7 @@ public class UserDAOImpl implements UserDAO {
         List<AppArea> appAreaList = new ArrayList<>();
         String sql = "SELECT * FROM  user_apparea " +
                 "WHERE user_id = ?";
-        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
@@ -204,7 +213,7 @@ public class UserDAOImpl implements UserDAO {
     public void deleteById(long id) {
         String sql = "DELETE FROM  user " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
@@ -220,7 +229,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void deleteAll() {
         String sql = "DELETE FROM  user ";
-        try (Connection conn = DBHelper.getConnection(DBHelper.SINGLE_CONNECTION);
+        try (Connection conn = DBHelper.getConnection(connectionType);
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
