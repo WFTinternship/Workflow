@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.exceptions.dao.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.util.Validator;
@@ -27,8 +28,11 @@ public class UserServiceImpl implements UserService {
             throw new InvalidObjectException();
         }
         long id = 0;
-        try{
+        try {
             userDAO.add(user);
+        }catch (DuplicateEntryException e){
+            LOGGER.error("Duplicate user entry");
+            throw new DuplicateEntryException("User with email " + user.getEmail() + " already exists!", e);
         }catch (RuntimeException e){
             LOGGER.error("Failed to add the user");
         }

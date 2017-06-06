@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.dao.impl;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.exceptions.dao.DuplicateEntryException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class UserDAOImpl implements UserDAO {
 
-    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
     public static final String id = "id";
     public static final String firstName = "first_name";
@@ -63,9 +64,11 @@ public class UserDAOImpl implements UserDAO {
 //                conn.commit();
 //            }
 
-
+        } catch (SQLIntegrityConstraintViolationException e) {
+            LOGGER.error("Duplicate user entry");
+            throw new DuplicateEntryException("User with email " + user.getEmail() + " already exists!", e);
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
         return user.getId();
@@ -80,7 +83,7 @@ public class UserDAOImpl implements UserDAO {
     public void subscribeToArea(long userId, long appAreaId) {
         String sql = "INSERT INTO  user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
@@ -88,7 +91,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
     }
@@ -103,7 +106,7 @@ public class UserDAOImpl implements UserDAO {
     public void unsubscribeToArea(long userId, long appAreaId) {
         String sql = "DELETE FROM  user_apparea " +
                 " WHERE user_id = ? AND apparea_id = ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
@@ -111,7 +114,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
     }
@@ -128,7 +131,7 @@ public class UserDAOImpl implements UserDAO {
         String sql = "SELECT * " +
                 "FROM  user " +
                 "WHERE CONCAT (first_name, last_name) LIKE ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, filteredName + "%");
             ResultSet rs = stmt.executeQuery();
@@ -137,7 +140,7 @@ public class UserDAOImpl implements UserDAO {
                 userList.add(fromResultSet(user, rs));
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
         return userList;
@@ -153,7 +156,7 @@ public class UserDAOImpl implements UserDAO {
         User user = null;
         String sql = "SELECT * FROM  user " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -162,7 +165,7 @@ public class UserDAOImpl implements UserDAO {
                 user = fromResultSet(user, rs);
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
         return user;
@@ -178,7 +181,7 @@ public class UserDAOImpl implements UserDAO {
         List<AppArea> appAreaList = new ArrayList<>();
         String sql = "SELECT * FROM  user_apparea " +
                 "WHERE user_id = ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
@@ -187,7 +190,7 @@ public class UserDAOImpl implements UserDAO {
                 appAreaList.add(AppArea.getById(appAreaId));
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
         return appAreaList;
@@ -201,12 +204,12 @@ public class UserDAOImpl implements UserDAO {
     public void deleteById(long id) {
         String sql = "DELETE FROM  user " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            LOG.error("SQL exception");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
     }
@@ -217,11 +220,11 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void deleteAll() {
         String sql = "DELETE FROM  user ";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = DBHelper.getConnection(DBHelper.SINGLE_CONNECTION);
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            LOG.error("SQL exception");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
 
@@ -245,7 +248,7 @@ public class UserDAOImpl implements UserDAO {
             user.setRating(rs.getInt(rating));
 
         } catch (SQLException e) {
-            LOG.error("SQL exception");
+            LOGGER.error("SQL exception");
             throw new RuntimeException(e);
         }
         return user;
