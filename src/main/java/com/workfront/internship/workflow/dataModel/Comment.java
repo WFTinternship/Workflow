@@ -66,6 +66,13 @@ public class Comment {
         return (int) (id ^ (id >>> 32));
     }
 
+
+    public  boolean isValid(){
+        return this != null
+                && this.getUser().isValid()
+                && this.getPost().isValid()
+                && !isEmpty(this.getContent());
+    }
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
     }
