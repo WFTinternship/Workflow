@@ -20,7 +20,9 @@ public class DBHelper {
 
     public static Properties loadDbCfgProperties(){
         Properties properties = new Properties();
-        InputStream inputStream =  DBHelper.class.getClassLoader().getResourceAsStream("dbConfig.properties");
+        InputStream inputStream =  DBHelper.class
+                .getClassLoader()
+                .getResourceAsStream("dbConfig.properties");
         try (InputStream is = inputStream) {
             properties.load(is);
         } catch (IOException e) {
@@ -37,7 +39,8 @@ public class DBHelper {
         }
         Properties properties = loadDbCfgProperties();
 
-        return DriverManager.getConnection(properties.getProperty("DB_TEST_URL"), properties.getProperty("USERNAME"),
+        return DriverManager.getConnection(properties.getProperty("DB_TEST_URL"),
+                properties.getProperty("USERNAME"),
                 properties.getProperty("PASSWORD"));
     }
 

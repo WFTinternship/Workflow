@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 /**
- * Created by nane on 6/4/17. 
+ * Created by nane on 6/4/17.
  */
 public class PostServiceImpl implements PostService{
 
@@ -97,7 +97,7 @@ public class PostServiceImpl implements PostService{
         }
         List<Post> posts = postDAO.getByUserId(id);
         if (posts == null){
-            logger.warn("No post was found with specified user id");
+            logger.info("No post was found with specified user id");
             return null;
         }
         return posts;
@@ -145,11 +145,15 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public int delete(long id) {
+    public void delete(long id) {
         if (id < 1){
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
-         return postDAO.delete(id);
+        try {
+            postDAO.delete(id);
+        }catch (RuntimeException e){
+            logger.error("Failed to delete specified postS");
+        }
     }
 }
