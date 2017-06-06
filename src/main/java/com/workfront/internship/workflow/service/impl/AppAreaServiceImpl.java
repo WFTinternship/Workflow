@@ -1,12 +1,11 @@
 package com.workfront.internship.workflow.service.impl;
 
-import com.workfront.internship.workflow.app.App;
 import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.User;
-import com.workfront.internship.workflow.exceptions.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.util.Validator;
 import org.apache.log4j.Logger;
@@ -39,16 +38,16 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public List<User> getUsersById(long appAreaId) {
-        return null;
+        return appAreaDAO.getUsersById(appAreaId);
     }
 
     @Override
     public AppArea getById(long id) {
-        return null;
+        return appAreaDAO.getById(id);
     }
 
     @Override
     public void deleteById(long id) {
-
+        appAreaDAO.deleteById(id);
     }
 }
