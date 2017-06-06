@@ -97,7 +97,7 @@ public class PostServiceImpl implements PostService{
         }
         List<Post> posts = postDAO.getByUserId(id);
         if (posts == null){
-            logger.warn("No post was found with specified user id");
+            logger.info("No post was found with specified user id");
             return null;
         }
         return posts;
