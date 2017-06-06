@@ -52,7 +52,7 @@ public class CommentDAOImpl implements CommentDAO {
             }
             comment.setId(id) ;
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
             throw new RuntimeException();
         }
         return comment.getId();
@@ -85,7 +85,7 @@ public class CommentDAOImpl implements CommentDAO {
             int rows = stmt.executeUpdate();
             return rows == 1;
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
             return false;
         } finally {
             closeResources(connection, stmt);
@@ -107,7 +107,7 @@ public class CommentDAOImpl implements CommentDAO {
             stmt.setLong(1,id);
             n = stmt.executeUpdate();
         }catch (SQLException e){
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
             return 0;
         }
         return n;
@@ -140,7 +140,7 @@ public class CommentDAOImpl implements CommentDAO {
                 comment = fromResultSet(rs, "comment");
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
         } finally {
             close(rs);
             closeResources(connection, stmt);
@@ -173,7 +173,7 @@ public class CommentDAOImpl implements CommentDAO {
             }
 
         } catch (SQLException e){
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
             return null;
         }
 
@@ -205,7 +205,7 @@ public class CommentDAOImpl implements CommentDAO {
             comment.setContent(rs.getString(getColumnName(CommentDAOImpl.content, tableAlias)));
             comment.setCommentTime(rs.getTimestamp(CommentDAOImpl.dateTime));
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
         }
         return comment;
     }
@@ -229,7 +229,7 @@ public class CommentDAOImpl implements CommentDAO {
                 connection.close();
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOG.error("SQL exception");
         }
     }
 
