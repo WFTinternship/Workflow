@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  *
  * Created by angel on 27.05.2017.
@@ -40,6 +42,7 @@ public class CommentDAOImpl implements CommentDAO {
                 "VALUE(?,?,?,?)";
         try {
             Connection connection = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+            assertNotNull(connection);
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, comment.getUser().getId());
             stmt.setLong(2, comment.getPost().getId());
@@ -77,7 +80,7 @@ public class CommentDAOImpl implements CommentDAO {
         PreparedStatement stmt = null;
         try {
             connection = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
-
+            assertNotNull(connection);
             stmt = connection.prepareStatement(query);
             stmt.setString(1 , newContent);
             stmt.setString(2, dateFormat.format(date) );
@@ -104,6 +107,7 @@ public class CommentDAOImpl implements CommentDAO {
         String query = "DELETE FROM comment WHERE id=?";
         try {
             Connection connection = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+            assertNotNull(connection);
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
             n = stmt.executeUpdate();
@@ -133,6 +137,7 @@ public class CommentDAOImpl implements CommentDAO {
         ResultSet rs = null;
         try {
             connection = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+            assertNotNull(connection);
             stmt = connection.prepareStatement(query);
             stmt.setLong(1, id);
 
@@ -166,6 +171,7 @@ public class CommentDAOImpl implements CommentDAO {
         try {
 
             Connection connection = DBHelper.getConnection(DBHelper.POOLED_CONNECTION);
+            assertNotNull(connection);
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery(query );
             while (rs.next()) {
