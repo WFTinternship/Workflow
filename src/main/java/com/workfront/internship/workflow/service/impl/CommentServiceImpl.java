@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
             return commentDAO.add(comment);
         }catch (RuntimeException e) {
             logger.error("Failed to add the comment to database !");
-            return 0 ;
+            return 0;
         }
 
     }

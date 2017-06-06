@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.dao.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.UserService;
 import org.apache.log4j.Logger;
 
@@ -29,45 +30,58 @@ public class UserServiceImpl implements UserService {
         long id = 0;
         try {
             userDAO.add(user);
-        }catch (DuplicateEntryException e){
-            LOGGER.error("Duplicate user entry");
-            throw new DuplicateEntryException("User with email " + user.getEmail() + " already exists!", e);
         }catch (RuntimeException e){
             LOGGER.error("Failed to add the user");
+            throw new ServiceLayerException("Failed to add the user", e);
         }
         return id;
     }
 
     @Override
     public List<User> getByName(String name) {
+        List<User> users;
         if (isEmpty(name)){
             LOGGER.error("Name is not valid");
-            throw new InvalidObjectException("Not valid title");
+            throw new InvalidObjectException("Not valid name");
         }
-        //TODO exception handling
-        List<User> users = userDAO.getByName(name);
+        try {
+             users = userDAO.getByName(name);
+        }catch (RuntimeException e){
+            LOGGER.error("Failed to find such users");
+            throw new ServiceLayerException("Failed to find such users", e);
+        }
         return users;
     }
 
     @Override
     public User getById(long id) {
+        User user;
         if (id < 1){
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid user id");
         }
-        //TODO exception handling
-        User user = userDAO.getById(id);
+        try {
+            user = userDAO.getById(id);
+        }catch (RuntimeException e){
+            LOGGER.error("Failed to find such a user");
+            throw new ServiceLayerException("Failed to find such a user", e);
+        }
         return user;
     }
 
     @Override
     public List<AppArea> getAppAreasById(long id) {
+        List<AppArea> appAreas;
         if (id < 1){
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid user id");
         }
-        //TODO exception handling
-        List<AppArea> appAreas = userDAO.getAppAreasById(id);
+        try {
+            appAreas = userDAO.getAppAreasById(id);
+        }catch (RuntimeException e){
+            LOGGER.error("Failed to find app areas");
+            throw new ServiceLayerException("Failed to find app areas", e);
+        }
         return appAreas;
     }
 
@@ -81,8 +95,12 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid app area id");
         }
-        //TODO exception handling
-        userDAO.subscribeToArea(userId, appAreaId);
+        try {
+            userDAO.subscribeToArea(userId, appAreaId);
+        }catch (RuntimeException e){
+            LOGGER.error("Failed to subscribe to the app area");
+            throw new ServiceLayerException("Failed to subscribe to the app area", e);
+        }
     }
 
     @Override
@@ -95,8 +113,12 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid app area id");
         }
-        //TODO exception handling
-        userDAO.unsubscribeToArea(userId, appAreaId);
+        try {
+            userDAO.unsubscribeToArea(userId, appAreaId);
+        }catch (RuntimeException e){
+            LOGGER.error("Failed to unsubscribe from the app area");
+            throw new ServiceLayerException("Failed to unsubscribe from the app area", e);
+        }
     }
 
     @Override
@@ -105,14 +127,22 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
-        //TODO exception handling
-        userDAO.deleteById(id);
+        try {
+            userDAO.deleteById(id);
+        }catch (RuntimeException e){
+            LOGGER.error("Failed to delete the user");
+            throw new ServiceLayerException("Failed to delete the user", e);
+        }
     }
 
     @Override
     public void deleteAll() {
-        //TODO ask about catching the exception
-        userDAO.deleteAll();
+        try {
+            userDAO.deleteAll();
+        }catch (RuntimeException e){
+            LOGGER.error("Failed to delete all the user");
+            throw new ServiceLayerException("Failed to delete all the user", e);
+        }
     }
 
     public static boolean isEmpty(String string) {

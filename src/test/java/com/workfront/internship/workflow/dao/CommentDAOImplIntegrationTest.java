@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 
+import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.After;
 import org.junit.Before;

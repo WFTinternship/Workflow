@@ -51,7 +51,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
                 "VALUES (?, ?)";
         try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement addStmt = conn.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS)) {
-            //conn.setAutoCommit(false);
 
             addStmt.setString(1, user.getFirstName());
             addStmt.setString(2, user.getLastName());
@@ -65,17 +64,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
                 id = resultSet.getInt(1);
             }
             user.setId(id);
-
-//            subscribeStmt.setLong(1, id);
-//            for (AppArea appArea : AppArea.values()) {
-//                subscribeStmt.setLong(2, appArea.getId());
-//                subscribeStmt.executeUpdate();
-//                conn.commit();
-//            }
-
-        } catch (SQLIntegrityConstraintViolationException e) {
-            LOGGER.error("Duplicate user entry");
-            throw new DuplicateEntryException("User with email " + user.getEmail() + " already exists!", e);
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
             throw new RuntimeException(e);
