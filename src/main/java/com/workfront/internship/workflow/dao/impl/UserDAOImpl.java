@@ -239,8 +239,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     }
 
-
-
     /**
      * Sets users fields values from result set
      * @param user
@@ -262,4 +260,5 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         }
         return user;
     }
+
 }
