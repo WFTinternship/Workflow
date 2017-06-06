@@ -65,4 +65,8 @@ public class Comment {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 }

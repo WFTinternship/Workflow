@@ -31,7 +31,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
         private static final String dateTime = "comment_time";
 
     public CommentDAOImpl() {
-        this(ConnectionType.POOL);
+        this(ConnectionType.BASIC);
     }
 
     public CommentDAOImpl(ConnectionType connectionType) {
@@ -62,10 +62,9 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             }
             comment.setId(id) ;
         } catch (SQLException e) {
-            LOG.error("SQL exception");
+            LOG.error("SQL exception occurred");
             throw new RuntimeException();
         }
-
         return comment.getId();
     }
 

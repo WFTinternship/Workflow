@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dataModel.Post;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.service.util.Validator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public long add(Post post) {
-        if (!Validator.isValidPost(post)){
+        if (!post.isValid()){
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
@@ -77,16 +76,11 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public List<Post> getByTitle(String title) {
-        if (Validator.isEmpty(title)){
+        if (isEmpty(title)){
             logger.error("Title is not valid");
             throw new InvalidObjectException("Not valid title");
         }
-        List<Post> posts = postDAO.getByTitle(title);
-        if (posts == null){
-            logger.warn("No post was found with specified title");
-            return null;
-        }
-        return posts;
+        return postDAO.getByTitle(title);
     }
 
     @Override
@@ -133,7 +127,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void update(Post post) {
-        if (!Validator.isValidPost(post)){
+        if (!post.isValid()){
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
@@ -155,5 +149,9 @@ public class PostServiceImpl implements PostService{
         }catch (RuntimeException e){
             logger.error("Failed to delete specified postS");
         }
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
     }
 }
