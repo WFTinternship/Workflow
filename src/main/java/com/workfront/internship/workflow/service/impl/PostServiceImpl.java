@@ -3,10 +3,9 @@ package com.workfront.internship.workflow.service.impl;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.exceptions.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.util.Validator;
-import javafx.geometry.Pos;
 import org.apache.log4j.Logger;
 
 import java.util.List;

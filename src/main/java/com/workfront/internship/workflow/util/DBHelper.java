@@ -54,9 +54,11 @@ public class DBHelper {
         cpds.setUser(properties.getProperty("USERNAME"));
         cpds.setPassword(properties.getProperty("PASSWORD"));
 
-        cpds.setMinPoolSize(5);
-        cpds.setAcquireIncrement(2);
-        cpds.setMaxPoolSize(20);
+        cpds.setInitialPoolSize(1);
+        cpds.setMinPoolSize(1);
+        cpds.setAcquireIncrement(1);
+        cpds.setMaxPoolSize(10);
+
         return cpds.getConnection();
     }
 
