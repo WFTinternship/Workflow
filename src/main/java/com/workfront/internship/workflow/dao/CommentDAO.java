@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.dataModel.Comment;
+import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 
 import java.util.List;

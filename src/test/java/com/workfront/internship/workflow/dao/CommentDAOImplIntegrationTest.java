@@ -3,10 +3,10 @@ package com.workfront.internship.workflow.dao;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Comment;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Comment;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.After;

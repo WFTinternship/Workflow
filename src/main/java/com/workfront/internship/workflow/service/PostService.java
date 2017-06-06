@@ -1,9 +1,7 @@
 package com.workfront.internship.workflow.service;
 
 
-import com.workfront.internship.workflow.dataModel.Post;
-import javafx.geometry.Pos;
-import org.omg.PortableServer.POA;
+import com.workfront.internship.workflow.domain.Post;
 
 import java.util.List;
 

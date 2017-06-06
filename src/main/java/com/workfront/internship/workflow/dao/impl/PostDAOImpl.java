@@ -2,10 +2,9 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
-import com.workfront.internship.workflow.exceptions.dao.NoRowsAffectedException;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
