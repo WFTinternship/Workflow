@@ -2,7 +2,6 @@ package com.workfront.internship.workflow.dataModel;
 
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 
 public class Comment {
@@ -65,5 +64,9 @@ public class Comment {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
     }
 }

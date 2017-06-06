@@ -72,4 +72,16 @@ public class User {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
+    public boolean isValid() {
+        return this != null
+                && !isEmpty(this.getFirstName())
+                && !isEmpty(this.getLastName())
+                && !isEmpty(this.getEmail())
+                && !isEmpty(this.getPassword());
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 }

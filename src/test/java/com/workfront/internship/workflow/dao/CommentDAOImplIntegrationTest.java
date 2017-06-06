@@ -1,6 +1,5 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.dao.*;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;

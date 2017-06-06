@@ -96,4 +96,16 @@ public class Post {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
+    public boolean isValid() {
+        return this != null
+                && this.getUser().isValid()
+                && !isEmpty(this.getTitle())
+                && !isEmpty(this.getContent())
+                && this.getAppArea() != null;
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 }

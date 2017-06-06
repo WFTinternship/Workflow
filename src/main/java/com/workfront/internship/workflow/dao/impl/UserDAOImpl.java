@@ -29,7 +29,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     public static final String rating = "rating";
 
     public UserDAOImpl() {
-        this(ConnectionType.POOL);
+        this(ConnectionType.BASIC);
     }
 
     public UserDAOImpl(ConnectionType connectionType) {
@@ -239,8 +239,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     }
 
-
-
     /**
      * Sets users fields values from result set
      * @param user
@@ -262,4 +260,5 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         }
         return user;
     }
+
 }
