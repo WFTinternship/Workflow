@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.dataModel.Comment;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.CommentService;
-import com.workfront.internship.workflow.service.util.Validator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public long add(Comment comment) {
-        if(!Validator.isValidComment(comment)) {
+        if(!comment.isValid()) {
             logger.error("Comment is invalid ! Failed to add to the database");
             throw new InvalidObjectException("Invalid Comment !");
         }
