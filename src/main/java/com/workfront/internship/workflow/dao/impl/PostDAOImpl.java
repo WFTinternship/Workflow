@@ -38,7 +38,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public static String title = "answer_title";
 
     public PostDAOImpl() {
-        this(ConnectionType.POOL);
+        this(ConnectionType.BASIC);
     }
 
     public PostDAOImpl(ConnectionType connectionType) {

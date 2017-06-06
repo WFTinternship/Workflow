@@ -31,7 +31,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
         private static final String dateTime = "comment_time";
 
     public CommentDAOImpl() {
-        this(ConnectionType.POOL);
+        this(ConnectionType.BASIC);
     }
 
     public CommentDAOImpl(ConnectionType connectionType) {

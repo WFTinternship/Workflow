@@ -29,7 +29,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     public static final String rating = "rating";
 
     public UserDAOImpl() {
-        this(ConnectionType.POOL);
+        this(ConnectionType.BASIC);
     }
 
     public UserDAOImpl(ConnectionType connectionType) {

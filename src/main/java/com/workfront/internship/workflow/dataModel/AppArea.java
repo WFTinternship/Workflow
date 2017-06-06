@@ -40,4 +40,15 @@ public enum  AppArea {
         }
         return null;
     }
+
+    public boolean isValid(){
+        return this != null
+                && isEmpty(this.getName())
+                && isEmpty(this.getDescription())
+                && isEmpty(this.getTeamName());
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 }

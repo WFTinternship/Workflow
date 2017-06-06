@@ -7,7 +7,6 @@ import com.workfront.internship.workflow.dataModel.User;
 import com.workfront.internship.workflow.exceptions.dao.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.service.util.Validator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long add(User user) {
-        if(!Validator.isValidUser(user)){
+        if(!user.isValid()){
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getByName(String name) {
-        if (Validator.isEmpty(name)){
+        if (isEmpty(name)){
             LOGGER.error("Name is not valid");
             throw new InvalidObjectException("Not valid title");
         }
@@ -115,4 +114,9 @@ public class UserServiceImpl implements UserService {
         //TODO ask about catching the exception
         userDAO.deleteAll();
     }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
+
 }

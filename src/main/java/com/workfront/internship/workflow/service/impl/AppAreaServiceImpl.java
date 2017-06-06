@@ -7,7 +7,6 @@ import com.workfront.internship.workflow.dataModel.AppArea;
 import com.workfront.internship.workflow.dataModel.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.AppAreaService;
-import com.workfront.internship.workflow.service.util.Validator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public long add(AppArea appArea) {
-        if (!Validator.isValidAppArea(appArea)){
+        if (!appArea.isValid()){
             logger.error("Application Area is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Application Area");
         }
