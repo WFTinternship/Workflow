@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.dataModel.Post;
+import com.workfront.internship.workflow.domain.Post;
 
 import java.util.List;
 

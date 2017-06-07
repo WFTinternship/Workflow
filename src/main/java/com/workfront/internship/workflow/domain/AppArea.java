@@ -1,8 +1,9 @@
-package com.workfront.internship.workflow.dataModel;
+package com.workfront.internship.workflow.domain;
 
 
 public enum  AppArea {
-    REPORTING(1, "Reporting", "Some rep description", "Team1");
+    REPORTING(1, "Reporting", "Some rep description", "Team1"),
+    ANOTHERAPPARE(2,"Another App Area", "Description 2", "Team2");
 
     AppArea(long id, String name, String description, String teamName) {
         this.id = id;

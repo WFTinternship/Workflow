@@ -2,8 +2,8 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.dao.DuplicateEntryException;
 import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;

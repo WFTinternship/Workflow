@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.service;
 
 
-import com.workfront.internship.workflow.dataModel.Comment;
+import com.workfront.internship.workflow.domain.Comment;
 
 import java.util.List;
 

@@ -1,21 +1,13 @@
 package com.workfront.internship.workflow.util;
 
-import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
-import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Comment;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.domain.Comment;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 

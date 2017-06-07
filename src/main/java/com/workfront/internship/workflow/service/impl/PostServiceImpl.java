@@ -2,15 +2,16 @@ package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
-import com.workfront.internship.workflow.dataModel.Post;
+import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 
 /**
- * Created by nane on 6/4/17.
+ * Created by nane on 6/4/17
  */
 public class PostServiceImpl implements PostService{
 
@@ -29,6 +30,7 @@ public class PostServiceImpl implements PostService{
             id = postDAO.add(post);
         }catch (RuntimeException e){
             logger.error("Failed to add the post to database");
+            throw new ServiceLayerException("Failed to add the post to database", e);
         }
         return id;
     }
@@ -47,6 +49,7 @@ public class PostServiceImpl implements PostService{
             postDAO.setBestAnswer(postId, answerId);
         }catch (RuntimeException e){
             logger.error("Failed during setting the best answer");
+            throw new ServiceLayerException("Failed during setting the best answer", e);
         }
     }
 
@@ -135,6 +138,7 @@ public class PostServiceImpl implements PostService{
             postDAO.update(post);
         }catch (RuntimeException e){
             logger.error("Failed to update the post");
+            throw new ServiceLayerException("Failed to update the post", e);
         }
     }
 
@@ -147,7 +151,8 @@ public class PostServiceImpl implements PostService{
         try {
             postDAO.delete(id);
         }catch (RuntimeException e){
-            logger.error("Failed to delete specified postS");
+            logger.error("Failed to delete specified posts");
+            throw new ServiceLayerException("Failed to delete specified posts", e);
         }
     }
 
