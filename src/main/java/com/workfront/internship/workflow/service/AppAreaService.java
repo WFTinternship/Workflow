@@ -42,4 +42,5 @@ public interface AppAreaService {
      * @param id
      */
     void deleteById(long id);
+
 }

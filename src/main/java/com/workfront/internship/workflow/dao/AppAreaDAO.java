@@ -43,4 +43,4 @@ public interface AppAreaDAO {
      */
     void deleteById(long id);
 
-}
+   }
