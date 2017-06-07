@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.exceptions.dao;
 
 /**
- * Created by nane on 6/5/17.
+ * Created by nane on 6/5/17
  */
 public class NoRowsAffectedException extends RuntimeException {
 
