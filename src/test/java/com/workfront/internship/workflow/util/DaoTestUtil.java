@@ -27,7 +27,7 @@ public class DaoTestUtil {
     public static User getRandomUser(){
         User user = new User();
         user.setFirstName("name" + uuid()).setLastName("surname" + uuid())
-                .setEmail("name@gmail.com")
+                .setEmail("name@gmail.com"  + uuid().substring(0,15))
                 .setPassword("password" + uuid()).setRating(12);
         return user;
     }

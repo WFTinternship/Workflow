@@ -11,7 +11,7 @@ public interface UserService {
     //CREATE
 
     /**
-     * Adds user
+     * Adds user if is valid
      * @param user
      * @return
      */

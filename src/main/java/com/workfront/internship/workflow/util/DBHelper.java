@@ -12,11 +12,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Created by nane on 5/27/17.
+ * Created by nane on 5/27/17
  */
 public class DBHelper {
-    public static final String POOLED_CONNECTION = "Pooled connection";
-    public static final String SINGLE_CONNECTION = "Single connection";
 
     public static Properties loadDbCfgProperties(){
         Properties properties = new Properties();

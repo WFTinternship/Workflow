@@ -27,7 +27,7 @@ public class UserDAOImplIntegrationTest {
     private AppAreaDAO appAreaDAO;
     private User user;
 
-    List<User> userList;
+    private List<User> userList;
 
     @Before
     public void setup() {
@@ -44,9 +44,8 @@ public class UserDAOImplIntegrationTest {
                 userDAO.deleteById(user.getId());
             }
         }
-        if (userDAO.getById(user.getId()) != null) {
-            userDAO.deleteById(user.getId());
-        }
+        userDAO.deleteById(user.getId());
+
     }
 
     // region <TEST CASE>
@@ -180,6 +179,29 @@ public class UserDAOImplIntegrationTest {
         List<User> actualUsers = userDAO.getByName("Vahagn Vard");
 
         assertTrue(actualUsers.contains(user));
+    }
+
+    /**
+     * @see UserDAOImpl#getByEmail(String)
+     */
+    @Test
+    public void getByEmail_failure() {
+        //Test method
+        User actualUser = userDAO.getByEmail("123");
+        assertNull(actualUser.getFirstName());
+    }
+
+    /**
+     * @see UserDAOImpl#getByEmail(String)
+     */
+    @Test
+    public void getByEmail_success() {
+        user.setEmail("vahag@gmail.com");
+        userDAO.add(user);
+        //Test method
+        User actualUser = userDAO.getByEmail("vahag@gmail.com");
+
+        assertTrue(actualUser.equals(user));
     }
 
     /**
