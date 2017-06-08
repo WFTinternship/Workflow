@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>HomePosts</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.HomePageController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.api.HomeController</servlet-class>
     </servlet>
     
     <servlet-mapping>
@@ -26,12 +26,12 @@
 
     <servlet>
         <servlet-name>Post</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.PostPageController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.api.PostController</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>Post</servlet-name>
-        <url-pattern>/post</url-pattern>
+        <url-pattern>/post/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
