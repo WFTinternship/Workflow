@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.exceptions.dao;
+package com.workfront.internship.workflow.exceptions.service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
