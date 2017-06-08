@@ -1,8 +1,8 @@
 package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AppAreaDAO;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;

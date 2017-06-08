@@ -2,8 +2,9 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.exceptions.dao.DuplicateEntryException;
 import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
@@ -43,11 +44,10 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         this.connectionType = connectionType;
     }
 
-
     /**
+     * @see UserDAO#add(User)
      * @param user
      * @return
-     * @see UserDAO#add(User)
      */
     @Override
     public long add(User user) {
@@ -76,9 +76,9 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#subscribeToArea(long, long)
      * @param userId
      * @param appAreaId
-     * @see UserDAO#subscribeToArea(long, long)
      */
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
@@ -98,9 +98,9 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
 
     /**
+     * @see UserDAO#unsubscribeToArea(long, long)
      * @param userId
      * @param appAreaId
-     * @see UserDAO#unsubscribeToArea(long, long)
      */
     @Override
     public void unsubscribeToArea(long userId, long appAreaId) {
@@ -120,9 +120,9 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#getByName(String)
      * @param name
      * @return
-     * @see UserDAO#getByName(String)
      */
     @Override
     public List<User> getByName(String name) {
@@ -147,9 +147,9 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#getById(long)
      * @param id
      * @return
-     * @see UserDAO#getById(long)
      */
     @Override
     public User getById(long id) {
@@ -170,7 +170,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         }
         return user;
     }
-
 
     /**
      * @param email
@@ -197,9 +196,9 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#getAppAreasById(long)
      * @param userId
      * @return
-     * @see UserDAO#getAppAreasById(long)
      */
     @Override
     public List<AppArea> getAppAreasById(long userId) {
@@ -222,8 +221,8 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param id
      * @see UserDAO#deleteById(long)
+     * @param id
      */
     @Override
     public void deleteById(long id) {
@@ -257,7 +256,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     /**
      * Sets users fields values from result set
-     *
      * @param user
      * @param rs
      * @return

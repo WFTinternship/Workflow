@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.dataModel;
+package com.workfront.internship.workflow.domain;
 
 import java.sql.Timestamp;
 

@@ -2,7 +2,7 @@ package com.workfront.internship.workflow.api;
 
 import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
-import com.workfront.internship.workflow.dataModel.AppArea;
+import com.workfront.internship.workflow.domain.AppArea;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

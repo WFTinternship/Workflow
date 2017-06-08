@@ -10,14 +10,28 @@
         </listener-class>
     </listener>
 
+    <!--<welcome-file-list>-->
+        <!--<welcome-file>home.jsp</welcome-file>-->
+    <!--</welcome-file-list>-->
+
     <servlet>
-        <servlet-name>app</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.app.App</servlet-class>
+        <servlet-name>HomePosts</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.HomePageController</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>HomePosts</servlet-name>
+        <url-pattern></url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Post</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.PostPageController</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>app</servlet-name>
-        <url-pattern></url-pattern>
+        <servlet-name>Post</servlet-name>
+        <url-pattern>/post</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -29,7 +43,6 @@
         <servlet-name>AddPost</servlet-name>
         <url-pattern>/addPost</url-pattern>
     </servlet-mapping>
-
 
 
 </web-app>

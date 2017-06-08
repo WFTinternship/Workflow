@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.service;
 
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
 
 import java.util.List;
 
@@ -42,4 +42,5 @@ public interface AppAreaService {
      * @param id
      */
     void deleteById(long id);
+
 }

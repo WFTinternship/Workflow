@@ -2,10 +2,9 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
-import com.workfront.internship.workflow.exceptions.dao.NoRowsAffectedException;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
@@ -87,8 +86,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getById(long) (Post) ()
-     *
-     * @return
      */
     @Override
     public Post getById(long id) {
@@ -112,6 +109,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         }catch (SQLException e){
             LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
         }finally {
             close(rs);
         }
@@ -121,7 +119,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     /**
      * @see PostDAO#getAll()
      *
-     * @return
      */
     @Override
     public List<Post> getAll() {
@@ -132,7 +129,8 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
-                " WHERE post_id IS NULL";
+                " WHERE post_id IS NULL" +
+                " ORDER BY post_time DESC";
         ResultSet rs = null;
         try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -145,7 +143,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            return allPosts;
+            throw new RuntimeException("SQL exception has occurred");
         } finally {
             close(rs);
         }
@@ -154,8 +152,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getByUserId(long) (long) ()
-     *
-     * @return
      */
     @Override
     public List<Post> getByUserId(long userId) {
@@ -183,7 +179,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            return posts;
+            throw new RuntimeException("SQL exception has occurred");
         } finally {
             close(rs);
         }
@@ -192,8 +188,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getByTitle(String) ()
-     *
-     * @return
      */
     @Override
     public List<Post> getByTitle(String title) {
@@ -219,7 +213,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            return posts;
+            throw new RuntimeException("SQL exception has occurred");
         } finally {
             close(rs);
         }
@@ -228,9 +222,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getAnswersByPostId(long)
-     *
-     * @param postId
-     * @return
      */
     @Override
     public List<Post> getAnswersByPostId(long postId) {
@@ -242,7 +233,8 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " content as answer_content " +
                 " FROM post JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
-                " WHERE post.post_id = ?";
+                " WHERE post.post_id = ?" +
+                " ORDER BY answer_time DESC";
         ResultSet rs = null;
         try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -256,7 +248,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            return answerList;
+            throw new RuntimeException("SQL exception has occurred");
         } finally {
             close(rs);
         }
@@ -265,9 +257,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getBestAnswer(long)
-     *
-     * @param postId
-     * @return
      */
     @Override
     public Post getBestAnswer(long postId) {
@@ -293,7 +282,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            return bestAnswer;
+            throw new RuntimeException("SQL exception has occurred");
         } finally {
             close(rs);
         }
@@ -302,15 +291,10 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#setBestAnswer(long, long)
-     *
-     * @param postId
-     * @param answerId
-     * @return
      */
     @Override
     public void setBestAnswer(long postId, long answerId) {
         final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
-        ResultSet rs = null;
         try (Connection conn = DBHelper.getConnection(connectionType);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, postId);
@@ -320,15 +304,11 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException("Foreign Key constraint fails");
-        } finally {
-            close(rs);
         }
     }
 
     /**
      * @see PostDAO#update(Post) ()
-     *
-     * @return
      */
     @Override
     public void update(Post post) {
@@ -350,8 +330,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#delete(long) (Post) ()
-     *
-     * @return
      */
     @Override
     public void delete(long id) {

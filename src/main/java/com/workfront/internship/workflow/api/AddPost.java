@@ -2,7 +2,7 @@ package com.workfront.internship.workflow.api;
 
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dataModel.Post;
+import com.workfront.internship.workflow.domain.Post;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
