@@ -19,13 +19,16 @@ public class PostServiceImpl implements PostService{
 
     private PostDAO postDAO = new PostDAOImpl();
 
+    /**
+     * @see PostDAOImpl#add(Post)
+     */
     @Override
     public long add(Post post) {
         if (!post.isValid()){
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
-        long id = 0;
+        long id;
         try{
             id = postDAO.add(post);
         }catch (RuntimeException e){
@@ -35,6 +38,9 @@ public class PostServiceImpl implements PostService{
         return id;
     }
 
+    /**
+     * @see PostDAOImpl#setBestAnswer(long, long)
+     */
     @Override
     public void setBestAnswer(long postId, long answerId) {
         if (postId < 1) {
@@ -53,46 +59,83 @@ public class PostServiceImpl implements PostService{
         }
     }
 
+    /**
+     * @see PostDAOImpl#getAll()
+     */
     @Override
     public List<Post> getAll() {
-        List<Post> posts = postDAO.getAll();
+        List<Post> posts;
+        try {
+            posts = postDAO.getAll();
+        }catch (RuntimeException e){
+            logger.error(e.getStackTrace());
+            throw new ServiceLayerException("Failed to get all posts");
+        }
         if (posts == null){
-            logger.warn("No posts were found");
+            logger.info("No posts were found");
             return null;
         }
         return posts;
     }
 
+    /**
+     * @see PostDAOImpl#getById(long)
+     */
     @Override
     public Post getById(long id) {
         if (id < 1){
             logger.error("Id is not valid");
             throw new InvalidObjectException("Invalid post id");
         }
-        Post post = postDAO.getById(id);
+        Post post;
+        try {
+            post = postDAO.getById(id);
+        }catch (RuntimeException e){
+            logger.error(e.getStackTrace());
+            throw new ServiceLayerException("Failed to get post with specified id");
+        }
         if (post == null){
-            logger.warn("No post was found with specified id");
+            logger.info("No post was found with specified id");
             return null;
         }
         return post;
     }
 
+    /**
+     * @see PostDAOImpl#getByTitle(String)
+     */
     @Override
     public List<Post> getByTitle(String title) {
         if (isEmpty(title)){
             logger.error("Title is not valid");
             throw new InvalidObjectException("Not valid title");
         }
-        return postDAO.getByTitle(title);
+        List<Post> posts;
+        try {
+            posts = postDAO.getByTitle(title);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ServiceLayerException("Failed to get posts by specified title");
+        }
+        return posts;
     }
 
+    /**
+     * @see PostDAOImpl#getByUserId(long)
+     */
     @Override
     public List<Post> getByUserId(long id) {
         if (id < 1){
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
-        List<Post> posts = postDAO.getByUserId(id);
+        List<Post> posts;
+        try {
+            posts = postDAO.getByUserId(id);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ServiceLayerException("Failed to get posts by specified user id");
+        }
         if (posts == null){
             logger.info("No post was found with specified user id");
             return null;
@@ -100,13 +143,22 @@ public class PostServiceImpl implements PostService{
         return posts;
     }
 
+    /**
+     * @see PostDAOImpl#getAnswersByPostId(long)
+     */
     @Override
     public List<Post> getAnswersByPostId(long id) {
         if (id < 1){
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
-        List<Post> posts = postDAO.getAnswersByPostId(id);
+        List<Post> posts;
+        try {
+            posts = postDAO.getAnswersByPostId(id);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ServiceLayerException("Failed to get answers of the specified post");
+        }
         if (posts == null){
             logger.warn("Post with the specified id does not have answers");
             return null;
@@ -114,13 +166,22 @@ public class PostServiceImpl implements PostService{
         return posts;
     }
 
+    /**
+     * @see PostDAOImpl#getBestAnswer(long)
+     */
     @Override
     public Post getBestAnswer(long id) {
         if (id < 1){
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
-        Post post = postDAO.getBestAnswer(id);
+        Post post;
+        try {
+            post = postDAO.getBestAnswer(id);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ServiceLayerException("Failed to get the best answer of the specified post");
+        }
         if (post == null){
             logger.warn("Post with specified id does not have a best answer");
             return null;
@@ -128,6 +189,9 @@ public class PostServiceImpl implements PostService{
         return post;
     }
 
+    /**
+     * @see PostDAOImpl#update(Post)
+     */
     @Override
     public void update(Post post) {
         if (!post.isValid()){
@@ -142,6 +206,9 @@ public class PostServiceImpl implements PostService{
         }
     }
 
+    /**
+     * @see PostDAOImpl#delete(long)
+     */
     @Override
     public void delete(long id) {
         if (id < 1){

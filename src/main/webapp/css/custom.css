@@ -978,7 +978,7 @@ a.down:hover {
 
 @media (max-width: 767px) {
     
-    /*--- index.html ---*/
+    /*--- home.jsp ---*/
     .container-fluid {
         padding: 0;
     }
@@ -1223,4 +1223,3 @@ a.down:hover {
         padding: 0;
     }
 }
-
