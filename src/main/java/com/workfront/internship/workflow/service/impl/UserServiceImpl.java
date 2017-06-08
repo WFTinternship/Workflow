@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.exceptions.service.DuplicateEntryExcept
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.UserService;
+import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
@@ -25,9 +26,9 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO = new UserDAOImpl();
 
     /**
-     * @see UserService#add(User)
      * @param user
      * @return
+     * @see UserService#add(User)
      */
     @Override
     public long add(User user) {
@@ -36,47 +37,45 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
-        if(userDAO.getByEmail(user.getEmail()).getFirstName() != null){
+        if (userDAO.getByEmail(user.getEmail()).getFirstName() != null) {
             LOGGER.error("Failed to add. User already exists");
             throw new DuplicateEntryException("User already exists");
         }
-
+        userDAO = new UserDAOImpl();
+        Connection connection;
         try {
-            userDAO = new UserDAOImpl();
-            Field connField = UserDAOImpl.class.getDeclaredField("connection");
-            connField.setAccessible(true);
-
-            Connection connection = null;
+            connection = DBHelper.getConnection();
 
             try {
-                connection = (Connection) connField.get(userDAO);
                 connection.setAutoCommit(false);
-                id = userDAO.add(user);
+                id = userDAO.add(user, connection);
                 for (AppArea appArea : AppArea.values()) {
                     userDAO.subscribeToArea(user.getId(), appArea.getId());
                 }
                 connection.commit();
             } catch (RuntimeException e) {
-                if(connection != null){
+                if (connection != null) {
                     connection.rollback();
                 }
                 LOGGER.error("Failed to add the user");
                 throw new ServiceLayerException("Failed to add the user", e);
+            } catch (SQLException e) {
+                e.printStackTrace();
             } finally {
                 if (connection != null) {
                     connection.close();
                 }
             }
-        } catch (NoSuchFieldException | IllegalAccessException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return id;
     }
 
     /**
-     * @see UserService#getByName(String)
      * @param name
      * @return
+     * @see UserService#getByName(String)
      */
     @Override
     public List<User> getByName(String name) {
@@ -95,9 +94,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#getById(long)
      * @param id
      * @return
+     * @see UserService#getById(long)
      */
     @Override
     public User getById(long id) {
@@ -116,9 +115,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#getAppAreasById(long)
      * @param id
      * @return
+     * @see UserService#getAppAreasById(long)
      */
     @Override
     public List<AppArea> getAppAreasById(long id) {
@@ -137,9 +136,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#subscribeToArea(long, long)
      * @param userId
      * @param appAreaId
+     * @see UserService#subscribeToArea(long, long)
      */
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
@@ -160,9 +159,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#unsubscribeToArea(long, long)
      * @param userId
      * @param appAreaId
+     * @see UserService#unsubscribeToArea(long, long)
      */
     @Override
     public void unsubscribeToArea(long userId, long appAreaId) {
@@ -183,8 +182,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#deleteById(long)
      * @param id
+     * @see UserService#deleteById(long)
      */
     @Override
     public void deleteById(long id) {

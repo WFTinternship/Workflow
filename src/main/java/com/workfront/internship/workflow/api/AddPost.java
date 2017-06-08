@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by nane on 5/27/17.
+ * Created by nane on 5/27/17
  */
 public class AddPost extends HttpServlet{
     @Override

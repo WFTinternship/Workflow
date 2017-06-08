@@ -31,26 +31,28 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     public static final String rating = "rating";
 
     public UserDAOImpl() {
-        this(ConnectionType.BASIC);
-        try {
-            connection = DBHelper.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        dataSource = DBHelper.getPooledConnection();
     }
-
-    public UserDAOImpl(ConnectionType connectionType) {
-        this.connectionType = connectionType;
-    }
-
 
     /**
+     * @see UserDAO#add(User)
      * @param user
      * @return
-     * @see UserDAO#add(User)
      */
     @Override
     public long add(User user) {
+        long id = 0;
+        try {
+            id = add(user, dataSource.getConnection());
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception");
+            throw new RuntimeException(e);
+        }
+        return  id;
+    }
+
+    @Override
+    public long add(User user, Connection connection) {
         long id = 0;
         String addSql = "INSERT INTO  user (first_name, last_name, email, passcode, rating) " +
                 "VALUES (?, ?, ?, ?, ?)";
@@ -76,15 +78,16 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#subscribeToArea(long, long)
      * @param userId
      * @param appAreaId
-     * @see UserDAO#subscribeToArea(long, long)
      */
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
         String sql = "INSERT INTO  user_apparea (user_id, apparea_id) " +
                 "VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
 
@@ -98,15 +101,15 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
 
     /**
+     * @see UserDAO#unsubscribeToArea(long, long)
      * @param userId
      * @param appAreaId
-     * @see UserDAO#unsubscribeToArea(long, long)
      */
     @Override
     public void unsubscribeToArea(long userId, long appAreaId) {
         String sql = "DELETE FROM  user_apparea " +
                 " WHERE user_id = ? AND apparea_id = ?";
-        try (Connection conn = DBHelper.getConnection(connectionType);
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
@@ -120,9 +123,9 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#getByName(String)
      * @param name
      * @return
-     * @see UserDAO#getByName(String)
      */
     @Override
     public List<User> getByName(String name) {
@@ -131,7 +134,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         String sql = "SELECT * " +
                 "FROM  user " +
                 "WHERE CONCAT (first_name, last_name) LIKE ?";
-        try (Connection conn = DBHelper.getConnection(connectionType);
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, filteredName + "%");
             ResultSet rs = stmt.executeQuery();
@@ -147,16 +150,16 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#getById(long)
      * @param id
      * @return
-     * @see UserDAO#getById(long)
      */
     @Override
     public User getById(long id) {
         User user = null;
         String sql = "SELECT * FROM  user " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection(connectionType);
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -171,7 +174,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         return user;
     }
 
-
     /**
      * @param email
      * @return
@@ -182,7 +184,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         User user = new User();
         String sql = "SELECT * FROM work_flow_test.user " +
                 "WHERE work_flow_test.user.email = ?";
-        try (Connection conn = DBHelper.getConnection(connectionType);
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
@@ -199,14 +201,13 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     /**
      * @param userId
      * @return
-     * @see UserDAO#getAppAreasById(long)
      */
     @Override
     public List<AppArea> getAppAreasById(long userId) {
         List<AppArea> appAreaList = new ArrayList<>();
         String sql = "SELECT * FROM  user_apparea " +
                 "WHERE user_id = ?";
-        try (Connection conn = DBHelper.getConnection(connectionType);
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
@@ -222,14 +223,14 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param id
      * @see UserDAO#deleteById(long)
+     * @param id
      */
     @Override
     public void deleteById(long id) {
         String sql = "DELETE FROM  user " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection(connectionType);
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
@@ -245,7 +246,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     @Override
     public void deleteAll() {
         String sql = "DELETE FROM  user ";
-        try (Connection conn = DBHelper.getConnection(connectionType);
+        try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {

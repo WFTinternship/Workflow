@@ -1,10 +1,12 @@
 package com.workfront.internship.workflow.dao.impl;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -36,7 +38,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public static String title = "answer_title";
 
     public PostDAOImpl() {
-        dataSource = DBHelper.getPooledConnection();
+           dataSource = DBHelper.getPooledConnection();
     }
 
     /**
