@@ -14,26 +14,22 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by nane on 6/7/17
+ * Created by nane on 6/6/17
  */
-public class PostPageController extends HttpServlet {
-
+public class HomeController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostService postService = new PostServiceImpl();
 
-        Post post = postService.getById(222);
-        req.setAttribute("post", post);
+        List<Post> posts = postService.getAll();
+        req.setAttribute("allPosts", posts);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute("appAreas", appAreas);
 
-        List<Post> answers = postService.getAnswersByPostId(222);
-        req.setAttribute("answers", answers);
-
         getServletConfig()
                 .getServletContext()
-                .getRequestDispatcher("/pages/post.jsp")
+                .getRequestDispatcher("/pages/home.jsp")
                 .forward(req, resp);
     }
 }

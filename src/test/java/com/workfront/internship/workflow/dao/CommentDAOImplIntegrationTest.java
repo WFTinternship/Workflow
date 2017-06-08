@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.dao;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
@@ -9,11 +10,14 @@ import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 
 import com.workfront.internship.workflow.util.ConnectionType;
+import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +29,7 @@ import static junit.framework.TestCase.*;
 /**
  * Created by angel on 30.05.2017
  */
-public class CommentDAOImplIntegrationTest {
+public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
     private Comment comment;
     private CommentDAO commentDAO;
 
@@ -57,6 +61,16 @@ public class CommentDAOImplIntegrationTest {
         comment = DaoTestUtil.getRandomComment(user, post);
         commentList.add(comment);
 
+        dataSource = DBHelper.getPooledConnection();
+        LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @After
@@ -66,6 +80,14 @@ public class CommentDAOImplIntegrationTest {
         }
         userDAO.deleteById(user.getId());
         postDAO.delete(post.getId());
+
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

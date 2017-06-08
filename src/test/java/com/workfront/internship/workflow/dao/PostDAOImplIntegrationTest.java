@@ -1,29 +1,31 @@
 package com.workfront.internship.workflow.dao;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNotSame;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 
 /**
- * Created by nane on 5/29/17.
+ * Created by nane on 5/29/17
  */
-public class PostDAOImplIntegrationTest {
-    List<Post> postList = new ArrayList<>();
+public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
+    private List<Post> postList = new ArrayList<>();
     private UserDAO userDAO;
     private User user;
     private PostDAO postDAO;
@@ -33,6 +35,14 @@ public class PostDAOImplIntegrationTest {
 
     // region <TEST CASE>
 
+    public static void verifyPost(Post post, Post actualPost) {
+        UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
+        assertEquals(post.getTitle(), actualPost.getTitle());
+        assertEquals(post.getContent(), actualPost.getContent());
+        assertEquals(post.getPostTime(), actualPost.getPostTime());
+        assertEquals(post.isCorrect(), actualPost.isCorrect());
+    }
+
     @Before
     public void setUp() {
         userDAO = new UserDAOImpl();
@@ -41,6 +51,15 @@ public class PostDAOImplIntegrationTest {
         appArea = AppArea.values()[0];
         postDAO = new PostDAOImpl();
         post = DaoTestUtil.getRandomPost(user, appArea);
+        dataSource = DBHelper.getPooledConnection();
+        LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @After
@@ -54,7 +73,13 @@ public class PostDAOImplIntegrationTest {
         } catch (RuntimeException e) {
 
         }
-
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -69,6 +94,7 @@ public class PostDAOImplIntegrationTest {
 
         Post post = postDAO.getById(postId);
         assertNull(post);
+
     }
 
     /**
@@ -305,6 +331,11 @@ public class PostDAOImplIntegrationTest {
         assertNotSame(post, postDAO.getById(postId));
     }
 
+
+    // endregion
+
+    // region <HELPERS>
+
     /**
      * @see PostDAOImpl#delete(long)
      */
@@ -313,19 +344,6 @@ public class PostDAOImplIntegrationTest {
         long postId = postDAO.add(post);
         postDAO.delete(postId);
         assertNull(postDAO.getById(postId));
-    }
-
-
-    // endregion
-
-    // region <HELPERS>
-
-    public static void verifyPost(Post post, Post actualPost) {
-        UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
-        assertEquals(post.getTitle(), actualPost.getTitle());
-        assertEquals(post.getContent(), actualPost.getContent());
-        assertEquals(post.getPostTime(), actualPost.getPostTime());
-        assertEquals(post.isCorrect(), actualPost.isCorrect());
     }
     // endregion
 
