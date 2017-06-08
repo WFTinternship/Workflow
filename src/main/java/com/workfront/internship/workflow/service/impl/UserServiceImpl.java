@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntryException("User already exists");
         }
         userDAO = new UserDAOImpl();
-        Connection connection = null;
+        Connection connection;
         try {
             connection = DBHelper.getConnection();
 
