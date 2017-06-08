@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Created by nane on 5/27/17.
+ * Created by nane on 5/27/17
  */
 public class DBHelper {
 
