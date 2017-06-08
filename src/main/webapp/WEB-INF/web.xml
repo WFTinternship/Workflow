@@ -35,6 +35,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>NewPost</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.NewPostPageController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewPost</servlet-name>
+        <url-pattern>/new_post</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>AddPost</servlet-name>
         <servlet-class>com.workfront.internship.workflow.api.AddPost</servlet-class>
     </servlet>

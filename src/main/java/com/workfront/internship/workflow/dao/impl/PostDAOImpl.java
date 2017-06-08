@@ -43,10 +43,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         cpds = (ComboPooledDataSource) DBHelper.getPooledConnection();
     }
 
-    public PostDAOImpl(ConnectionType connectionType) {
-        this.connectionType = connectionType;
-    }
-
     /**
      * @see PostDAO#add(Post) ()
      *

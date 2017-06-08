@@ -1,3 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+
 <!DOCTYPE html>
 <html lang="en">
     
@@ -76,7 +85,7 @@
                         </div>
                         <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
                             <div class="stnt pull-left">                            
-                                <form action="03_new_topic.html" method="post" class="form">
+                                <form action="new_post.jsp" method="post" class="form">
                                     <button class="btn btn-primary">Start New Topic</button>
                                 </form>
                             </div>
@@ -133,7 +142,7 @@
                                         <div class="posttext pull-left">
 
                                             <div>
-                                                <input type="text" placeholder="Enter Topic Title" class="form-control" />
+                                                <input type="text" placeholder="Enter Post Title" class="form-control" />
                                             </div>
 
                                             <div class="row">
@@ -353,13 +362,9 @@
                                 <div class="divline"></div>
                                 <div class="blocktxt">
                                     <ul class="cats">
-                                        <li><a href="#">Trading for Money <span class="badge pull-right">20</span></a></li>
-                                        <li><a href="#">Vault Keys Giveway <span class="badge pull-right">10</span></a></li>
-                                        <li><a href="#">Misc Guns Locations <span class="badge pull-right">50</span></a></li>
-                                        <li><a href="#">Looking for Players <span class="badge pull-right">36</span></a></li>
-                                        <li><a href="#">Stupid Bugs &amp; Solves <span class="badge pull-right">41</span></a></li>
-                                        <li><a href="#">Video &amp; Audio Drivers <span class="badge pull-right">11</span></a></li>
-                                        <li><a href="#">2K Official Forums <span class="badge pull-right">5</span></a></li>
+                                        <c:forEach var="appArea" items="${appAreas}">
+                                        <li><a href="#">${appArea}<span class="badge pull-right">20</span></a></li>
+                                        </c:forEach>>
                                     </ul>
                                 </div>
                             </div>

@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * Created by Karen on 5/29/2017.
+ * Created by Vahag on 5/29/2017
  */
 public class DaoTestUtil {
 
