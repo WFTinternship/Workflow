@@ -86,8 +86,8 @@
                         </div>
                         <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
                             <div class="stnt pull-left">
-                                <form action="new_post.jsp" method="post" class="form">
-                                    <button class="btn btn-primary">Start New Topic</button>
+                                <form action="/new-post/11" method="post" class="form">
+                                    <button class="btn btn-primary">Add New Post</button>
                                 </form>
                             </div>
                             <div class="env pull-left"><i class="fa fa-envelope"></i></div>
