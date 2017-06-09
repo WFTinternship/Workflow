@@ -1,21 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-             pageEncoding="UTF-8" %>
+         pageEncoding="UTF-8" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<%--<c:set var="allPosts" value="<%=request.getAttribute("allPosts")%>"/>--%>
-<%--<c:set var="appAreas" value="<%=request.getAttribute("appAreas")%>"/>--%>
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from forum.azyrusthemes.home.jsphtml by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
+    
+<!-- Mirrored from forum.azyrusthemes.com/04_new_account.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
 <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Forum :: Home Page</title>
+        <title>Forum :: New account</title>
 
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -41,14 +39,14 @@
         <link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
 
     </head>
-    <body>
+    <body class="newaccountpage">
 
         <div class="container-fluid">
 
             <!-- Slider -->
             <div class="tp-banner-container">
                 <div class="tp-banner" >
-                    <ul>
+                    <ul>	
                         <!-- SLIDE  -->
                         <li data-transition="fade" data-slotamount="7" data-masterspeed="1500" >
                             <!-- MAIN IMAGE -->
@@ -63,10 +61,10 @@
             <div class="headernav">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px/></a></div>
+                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px /></a></div>
                         <div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">
                             <div class="dropdown">
-                                <a data-toggle="dropdown" href="#" >Borderlands 2</a> <b class="caret"></b>
+                                <a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>
                                 <ul class="dropdown-menu" role="menu">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>
@@ -85,7 +83,7 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                            <div class="stnt pull-left">
+                            <div class="stnt pull-left">                            
                                 <form action="new_post.jsp" method="post" class="form">
                                     <button class="btn btn-primary">Start New Topic</button>
                                 </form>
@@ -102,7 +100,6 @@
                                     <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create account</a></li>
                                 </ul>
                             </div>
-
                             <div class="clearfix"></div>
                         </div>
                     </div>
@@ -113,28 +110,8 @@
             <section class="content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-8 col-xs-12 col-md-8">
-                            <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
-                            <div class="pull-left">
-                                <ul class="paginationforum">
-                                    <li class="hidden-xs"><a href="#"  class="active">1</a></li>
-                                    <li class="hidden-xs"><a href="#">2</a></li>
-                                    <li class="hidden-xs"><a href="#">3</a></li>
-                                    <li class="hidden-xs"><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#">6</a></li>
-                                    <li><a href="#">7</a></li>
-                                    <li><a href="#">8</a></li>
-                                    <li class="hidden-xs"><a href="#">9</a></li>
-                                    <li class="hidden-xs"><a href="#">10</a></li>
-                                    <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                                    <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                                    <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-
-                                </ul>
-                            </div>
-                            <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
-                            <div class="clearfix"></div>
+                        <div class="col-lg-8 breadcrumbf">
+                            <a href="#">Create New account</a> 
                         </div>
                     </div>
                 </div>
@@ -143,42 +120,87 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
+
+
+
                             <!-- POST -->
-                            <c:forEach var="post" items="${allPosts}" >
                             <div class="post">
-                                <div class="wrap-ut pull-left">
-                                    <div class="userinfo pull-left">
-                                        <div class="avatar">
-                                            <img src="images/avatar.jpg" alt="" />
-                                            <div class="status green">&nbsp;</div>
+                                <form action="#" class="form newtopic" method="post">
+                                    <div class="postinfotop">
+                                        <h2>Create New Account</h2>
+                                    </div>
+
+                                    <!-- acc section -->
+                                    <div class="accsection">
+                                        <div class="acccap">
+                                            <div class="userinfo pull-left">&nbsp;</div>
+                                            <div class="posttext pull-left"><h3>Required Fields</h3></div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="topwrap">
+                                            <div class="userinfo pull-left">
+                                                <div class="avatar">
+                                                    <img src="images/avatar-blank.jpg" alt="" />
+                                                    <div class="status green">&nbsp;</div>
+                                                </div>
+                                                <div class="imgsize">60 x 60</div>
+                                                <div>
+                                                    <button class="btn">Add</button>
+                                                </div>
+                                            </div>
+                                            <div class="posttext pull-left">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <input type="text" placeholder="First Name" class="form-control" />
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <input type="text" placeholder="Last Name" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <input type="text" placeholder="Email" class="form-control" />
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <input type="password" placeholder="Password" class="form-control" id="pass" name="pass" />
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6">
+                                                        <input type="password" placeholder="Retype Password" class="form-control" id="pass2" name="pass2" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>  
+                                    </div><!-- acc section END -->
+
+
+                                    <div class="postinfobot">
+
+                                        <div class="notechbox pull-left">
+                                            <input type="checkbox" name="note" id="note" class="form-control" />
                                         </div>
 
-                                        <div class="icons">
-                                            <img src="images/icon1.jpg" alt="" /><img src="images/icon4.jpg" alt="" />
-                                        </div>
-                                    </div>
-                                    <div class="posttext pull-left">
-                                        <h2><a href="/post/${post.id}" >${post.title}</a></h2>
-                                        <p>${post.content}</p>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="postinfo pull-left">
-                                    <div class="comments">
-                                        <div class="commentbg">
-                                            560
-                                            <div class="mark"></div>
+                                        <div class="pull-left lblfch">
+                                            <label for="note"> I agree with the Terms and Conditions of this site</label>
                                         </div>
 
+                                        <div class="pull-right postreply">
+                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                            <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+                                        <div class="clearfix"></div>
                                     </div>
-                                    <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                    <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
-                                </div>
-                                <div class="clearfix"></div>
+                                </form>
                             </div><!-- POST -->
-                            </c:forEach>
 
-                            <!-- POST -->
+
+
+
+
 
                         </div>
                         <div class="col-lg-4 col-md-4">
@@ -190,9 +212,8 @@
                                 <div class="blocktxt">
                                     <ul class="cats">
                                         <c:forEach var="appArea" items="${appAreas}" >
-                                        <li><a href="#">${appArea.name}<span class="badge pull-right">20</span></a></li>
-                                       </c:forEach>
-                                    </ul>
+                                            <li><a href="#">${appArea.name} <span class="badge pull-right">20</span></a></li>
+                                        </c:forEach></ul>
                                 </div>
                             </div>
 
@@ -213,8 +234,8 @@
                                                     </div>
                                                 </td>
                                                 <td class="chbox">
-                                                    <input id="opt1" type="radio" name="opt" value="1">
-                                                    <label for="opt1"></label>
+                                                    <input id="opt1" type="radio" name="opt" value="1">  
+                                                    <label for="opt1"></label>  
                                                 </td>
                                             </tr>
                                             <tr>
@@ -226,8 +247,8 @@
                                                     </div>
                                                 </td>
                                                 <td class="chbox">
-                                                    <input id="opt2" type="radio" name="opt" value="2" checked>
-                                                    <label for="opt2"></label>
+                                                    <input id="opt2" type="radio" name="opt" value="2" checked>  
+                                                    <label for="opt2"></label>  
                                                 </td>
                                             </tr>
                                             <tr>
@@ -239,8 +260,8 @@
                                                     </div>
                                                 </td>
                                                 <td class="chbox">
-                                                    <input id="opt3" type="radio" name="opt" value="3">
-                                                    <label for="opt3"></label>
+                                                    <input id="opt3" type="radio" name="opt" value="3">  
+                                                    <label for="opt3"></label>  
                                                 </td>
                                             </tr>
                                         </table>
@@ -279,43 +300,12 @@
                     </div>
                 </div>
 
-
-
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-xs-12">
-                            <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
-                            <div class="pull-left">
-                                <ul class="paginationforum">
-                                    <li class="hidden-xs"><a href="#"  class="active">1</a></li>
-                                    <li class="hidden-xs"><a href="#">2</a></li>
-                                    <li class="hidden-xs"><a href="#">3</a></li>
-                                    <li class="hidden-xs"><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#">6</a></li>
-                                    <li><a href="#">7</a></li>
-                                    <li><a href="#">8</a></li>
-                                    <li class="hidden-xs"><a href="#">9</a></li>
-                                    <li class="hidden-xs"><a href="#">10</a></li>
-                                    <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                                    <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                                    <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-
-                                </ul>
-                            </div>
-                            <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-
-
             </section>
 
             <footer>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""  /></a></div>
+                        <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px/></a></div>
                         <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                         <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                             <ul class="socialicons">
@@ -332,14 +322,16 @@
             </footer>
         </div>
 
+
         <!-- get jQuery from the google apis -->
         <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
-
 
         <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
         <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
         <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
 
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
 
 
@@ -366,5 +358,5 @@
         <!-- END REVOLUTION SLIDER -->
     </body>
 
-<!-- Mirrored from forum.azyrusthemes.home.jsphtml by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
+<!-- Mirrored from forum.azyrusthemes.com/04_new_account.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
 </html>

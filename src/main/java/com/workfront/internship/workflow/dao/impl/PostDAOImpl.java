@@ -37,7 +37,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public static String title = "answer_title";
 
     public PostDAOImpl() {
-        dataSource = DBHelper.getPooledConnection();
+           dataSource = DBHelper.getPooledConnection();
     }
 
     /**
