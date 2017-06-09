@@ -51,7 +51,7 @@
                 <!-- SLIDE  -->
                 <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
                     <!-- MAIN IMAGE -->
-                    <img src="images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
+                    <img src="http://localhost:8080/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
                          data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
                 </li>
@@ -97,7 +97,7 @@
                     <div class="env pull-left"><i class="fa fa-envelope"></i></div>
 
                     <div class="avatar pull-left dropdown">
-                        <a data-toggle="dropdown" href="#"><img src="images/avatar.jpg" alt=""/></a> <b
+                        <a data-toggle="dropdown" href="#"><img src="http://localhost:8080/images/avatar.jpg" alt=""/></a> <b
                             class="caret"></b>
                         <div class="status green">&nbsp;</div>
                         <ul class="dropdown-menu" role="menu">
@@ -136,13 +136,13 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="images/avatar.jpg" alt=""/>
+                                    <img src="http://localhost:8080/images/avatar.jpg" alt=""/>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
                                 <div class="icons">
-                                    <img src="images/icon1.jpg" alt=""/><img src="images/icon4.jpg" alt=""/><img
-                                        src="images/icon5.jpg" alt=""/><img src="images/icon6.jpg" alt=""/>
+                                    <img src="http://localhost:8080/images/icon1.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
+                                        src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
                                 </div>
                             </div>
                             <div class="posttext pull-left">
@@ -191,13 +191,13 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="images/avatar2.jpg" alt=""/>
+                                        <img src="http://localhost:8080/images/avatar2.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
                                     <div class="icons">
-                                        <img src="images/icon3.jpg" alt=""/><img src="images/icon4.jpg" alt=""/><img
-                                            src="images/icon5.jpg" alt=""/><img src="images/icon6.jpg" alt=""/>
+                                        <img src="http://localhost:8080/images/icon3.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
+                                            src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -241,13 +241,13 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="images/avatar4.jpg" alt=""/>
+                                        <img src="http://localhost:8080/images/avatar4.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
                                     <div class="icons">
-                                        <img src="images/icon3.jpg" alt=""/><img src="images/icon4.jpg" alt=""/><img
-                                            src="images/icon5.jpg" alt=""/><img src="images/icon6.jpg" alt=""/>
+                                        <img src="http://localhost:8080/images/icon3.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
+                                            src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
