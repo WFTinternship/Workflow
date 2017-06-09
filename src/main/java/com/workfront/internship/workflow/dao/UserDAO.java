@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.dao;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 
+import java.sql.Connection;
 import java.util.List;
 
 
@@ -16,6 +17,10 @@ public interface UserDAO {
      * @return
      */
     long add(User user);
+
+    long add(User user, Connection connection);
+
+
 
     //READ
 

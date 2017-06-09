@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.dao.impl;
 
+import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class AppAreaDAOImpl implements AppAreaDAO {
+public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
@@ -23,6 +24,10 @@ public class AppAreaDAOImpl implements AppAreaDAO {
     public static final String description = "description";
     public static final String teamName = "team_name";
 
+
+    public AppAreaDAOImpl(){
+        dataSource = DBHelper.getPooledConnection();
+    }
     /**
      * @see AppAreaDAO#add(AppArea)
      * @param appArea
@@ -32,7 +37,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
     public long add(AppArea appArea) {
         final String sql = "INSERT INTO apparea (id, name, description, team_name) " +
                 "VALUES (?, ?, ?, ?)";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, appArea.getId());
             stmt.setString(2, appArea.getName());
@@ -57,7 +62,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
     public void deleteById(long id) {
         final String sql = "DELETE FROM apparea " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
@@ -77,7 +82,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
         List<User> userList = new ArrayList<>();
         final String sql = "SELECT * FROM user " +
                 "WHERE id IN (SELECT user_id FROM user_apparea WHERE apparea_id = ?) ";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, appAreaId);
             ResultSet rs = stmt.executeQuery();
@@ -120,7 +125,7 @@ public class AppAreaDAOImpl implements AppAreaDAO {
         Map<String, Object> fieldsMap = new HashMap<>();
         final String sql = "SELECT * FROM apparea " +
                 "WHERE id = ?";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
