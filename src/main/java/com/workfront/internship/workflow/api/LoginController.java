@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -24,22 +25,26 @@ public class LoginController extends HttpServlet {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute("appAreas", appAreas);
 
-//        User user = new User();
-//        UserService userService = new UserServiceImpl();
-//
-//        String jsp;
-//        try {
-//            userService.add(user);
-//            jsp = "/pages/home.jsp";
-//        }catch (RuntimeException e){
-//            e.printStackTrace();
-//            jsp = "/pages/login.jsp";
-//        }
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
 
+        UserService userService = new UserServiceImpl();
+        String jsp;
+        try {
+            User user = userService.authenticate(email, password);
+            HttpSession session = req.getSession();
+            session.setAttribute("user", user);
+            resp.setStatus(200);
+            jsp = "/pages/home.jsp";
+        } catch (RuntimeException e) {
+            //when the user was not found in database or query failed.
+            resp.setStatus(405);
+            jsp = "/pages/login.jsp";
+        }
 
         getServletConfig()
                 .getServletContext()
-                .getRequestDispatcher("/pages/login.jsp")
+                .getRequestDispatcher(jsp)
                 .forward(req, resp);
     }
 

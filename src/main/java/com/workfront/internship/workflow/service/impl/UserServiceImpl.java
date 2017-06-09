@@ -212,8 +212,31 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User authenticate(String email, String password) {
+        if (isEmpty(email)){
+            LOGGER.error("Email is not valid");
+            throw new InvalidObjectException("Not valid email");
+        }
+
+        if (isEmpty(password)){
+            LOGGER.error("Password is not valid");
+            throw new InvalidObjectException("Not valid password");
+        }
+
+        User user = userDAO.getByEmail(email);
+
+        //TODO: Password should be hashed
+        if (user != null && user.getPassword().equals(password)){
+            return user;
+        }else {
+            LOGGER.error("Invalid email-password combination!");
+            throw new ServiceLayerException("Invalid email-password combination!");
+        }
+    }
+
     public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
+        return string == null || string.trim().length() == 0;
     }
 
 }
