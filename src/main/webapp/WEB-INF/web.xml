@@ -10,9 +10,15 @@
         </listener-class>
     </listener>
 
-    <!--<welcome-file-list>-->
-        <!--<welcome-file>home.jsp</welcome-file>-->
-    <!--</welcome-file-list>-->
+
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.workfront.internship.workflow.api.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/new-post</url-pattern>
+    </filter-mapping>
 
     <servlet>
         <servlet-name>HomePosts</servlet-name>
