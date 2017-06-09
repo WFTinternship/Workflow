@@ -6,7 +6,8 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-
+<c:set var="allPosts" value="<%=request.getAttribute("allPosts")%>"/>
+<c:set var="appAreas" value="<%=request.getAttribute("appAreas")%>"/>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -157,7 +158,7 @@
                                         </div>
                                     </div>
                                     <div class="posttext pull-left">
-                                        <h2><a href="post.jsp">${post.title}</a></h2>
+                                        <h2><a href="/post/${post.id}" >${post.title}</a></h2>
                                         <p>${post.content}</p>
                                     </div>
                                     <div class="clearfix"></div>

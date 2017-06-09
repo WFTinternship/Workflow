@@ -1,11 +1,13 @@
 package com.workfront.internship.workflow.dao;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDAOImplIntegrationTest {
+public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
 
     private UserDAO userDAO;
     private AppAreaDAO appAreaDAO;
@@ -34,6 +36,16 @@ public class UserDAOImplIntegrationTest {
         appAreaDAO = new AppAreaDAOImpl();
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
+
+        dataSource = DBHelper.getPooledConnection();
+        LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @After
@@ -44,6 +56,13 @@ public class UserDAOImplIntegrationTest {
             }
         }
         userDAO.deleteById(user.getId());
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

@@ -6,20 +6,16 @@ import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
-import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNull;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
+
 import static junit.framework.TestCase.assertTrue;
 
-import java.sql.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**

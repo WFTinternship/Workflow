@@ -6,7 +6,6 @@ import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -37,10 +36,8 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public static String userId = "user_id";
     public static String title = "answer_title";
 
-    ComboPooledDataSource cpds;
-
     public PostDAOImpl() {
-        cpds = (ComboPooledDataSource) DBHelper.getPooledConnection();
+        dataSource = DBHelper.getPooledConnection();
     }
 
     /**
@@ -52,7 +49,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         long id = 0;
         String sql = "INSERT INTO post (user_id, apparea_id,post_id," +
                 " post_time, title, content) VALUE(?,?,?,?,?,?)";
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, post.getUser().getId());
             stmt.setLong(2, post.getAppArea().getId());
@@ -97,7 +94,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.id = ?";
         ResultSet rs = null;
-        try(Connection conn = cpds.getConnection();
+        try(Connection conn = dataSource.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setLong(1, id);
 
@@ -131,7 +128,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " WHERE post_id IS NULL" +
                 " ORDER BY post_time DESC";
         ResultSet rs = null;
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -164,7 +161,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.user_id = ?";
         ResultSet rs = null;
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, userId);
             rs = stmt.executeQuery();
@@ -200,7 +197,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL AND post.title LIKE ? ";
         ResultSet rs = null;
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + title.trim() + "%");
             rs = stmt.executeQuery();
@@ -235,7 +232,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " WHERE post.post_id = ?" +
                 " ORDER BY answer_time DESC";
         ResultSet rs = null;
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
@@ -270,7 +267,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE  best_answer.post_id = ?";
         ResultSet rs = null;
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
@@ -294,7 +291,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     @Override
     public void setBestAnswer(long postId, long answerId) {
         final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, postId);
             stmt.setLong(2, answerId);
@@ -313,7 +310,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public void update(Post post) {
         String sql = "UPDATE post SET title = ?, content = ? " +
                 " WHERE post.id = ? ";
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, post.getTitle());
             stmt.setString(2, post.getContent());
@@ -334,7 +331,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public void delete(long id) {
         int numberOfRowsAffected = 0;
         String sql = "DELETE FROM post WHERE id = ?";
-        try (Connection conn = cpds.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
