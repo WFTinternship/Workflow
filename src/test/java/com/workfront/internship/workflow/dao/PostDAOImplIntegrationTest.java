@@ -136,7 +136,6 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
      */
     @Test
     public void getByUserId_failure() {
-        postDAO.add(post);
         List<Post> posts = postDAO.getByUserId(1000000);
         assertEquals(posts.size(), 0);
     }
@@ -147,8 +146,30 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     @Test
     public void getByUserId_success() {
         postDAO.add(post);
+        //Test method
         List<Post> userPosts = postDAO.getByUserId(user.getId());
-        assertEquals(userPosts.get(0).getUser().getId(), user.getId());
+        assertTrue(userPosts.contains(post));
+    }
+
+    /**
+     * @see PostDAOImpl#getByAppAreaId(long)
+     */
+    @Test
+    public void getByAppAreaId_failure(){
+        //Test method
+        List<Post> actualPosts = postDAO.getByAppAreaId(100000);
+        assertEquals(actualPosts.size(), 0);
+    }
+
+    /**
+     * @see PostDAOImpl#getByAppAreaId(long)
+     */
+    @Test
+    public void getByAppAreaId_success(){
+        postDAO.add(post);
+        //Test method
+        List<Post> actualPosts = postDAO.getByAppAreaId(appArea.getId());
+        assertTrue(actualPosts.contains(post));
     }
 
     /**

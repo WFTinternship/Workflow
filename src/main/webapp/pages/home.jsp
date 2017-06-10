@@ -86,7 +86,7 @@
                         </div>
                         <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
                             <div class="stnt pull-left">
-                                <form action="/new-post" method="post" class="form">
+                                <form action="<c:url value="/new-post"/>" method="post" class="form">
                                     <button class="btn btn-primary">Add New Post</button>
                                 </form>
                             </div>
@@ -185,12 +185,12 @@
 
                             <!-- -->
                             <div class="sidebarblock">
-                                <h3>Application Area</h3>
+                                <h3>Application Areas</h3>
                                 <div class="divline"></div>
                                 <div class="blocktxt">
                                     <ul class="cats">
                                         <c:forEach var="appArea" items="${appAreas}" >
-                                        <li><a href="#">${appArea.name}<span class="badge pull-right">20</span></a></li>
+                                        <li><a href="<%=request.getContextPath()%>/${appArea.id}">${appArea.name}<span class="badge pull-right"></span></a></li>
                                        </c:forEach>
                                     </ul>
                                 </div>
@@ -362,9 +362,6 @@
             });	//ready
 
         </script>
-
         <!-- END REVOLUTION SLIDER -->
     </body>
-
-<!-- Mirrored from forum.azyrusthemes.home.jsphtml by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
 </html>
