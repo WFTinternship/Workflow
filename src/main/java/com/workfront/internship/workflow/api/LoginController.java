@@ -29,11 +29,17 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("password");
 
         UserService userService = new UserServiceImpl();
-        String jsp;
+
+        String jsp = req.getRequestURL().toString();
         try {
             User user = userService.authenticate(email, password);
+
             HttpSession session = req.getSession();
+            //setting the maximum inactive to be 30 minutes.
+            session.setMaxInactiveInterval(1800);
             session.setAttribute("user", user);
+
+           // resp.setHeader("location", "http://localhost:8080");
             resp.setStatus(200);
             jsp = "/pages/home.jsp";
         } catch (RuntimeException e) {

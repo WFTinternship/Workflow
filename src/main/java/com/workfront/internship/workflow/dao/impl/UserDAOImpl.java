@@ -90,7 +90,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
 
-            stmt.executeUpdate();
+            stmt.execute();
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
