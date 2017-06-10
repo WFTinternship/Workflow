@@ -39,6 +39,16 @@ website:   	http://www.themepunch.com
 .btn-login{
 	background: #f77f29;
 	color: white;
+	margin-left: 473px;
+	margin-top: -92px;
+	margin-right: -33px;
+}
+.btn-signup{
+	background: #f77f29;
+	color: white;
+	margin-left: 986px;
+	margin-top: -93px;
+	margin-right: -33px;
 }
 .btn-login:hover{
 	background: #FFAB00;

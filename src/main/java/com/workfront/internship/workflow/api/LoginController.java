@@ -28,25 +28,29 @@ public class LoginController extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
+
         UserService userService = new UserServiceImpl();
 
-        String jsp = req.getRequestURL().toString();
+        String jsp;
+        User user = null;
         try {
-            User user = userService.authenticate(email, password);
+            user = userService.authenticate(email, password);
 
             HttpSession session = req.getSession();
             //setting the maximum inactive to be 30 minutes.
             session.setMaxInactiveInterval(1800);
             session.setAttribute("user", user);
 
-           // resp.setHeader("location", "http://localhost:8080");
+            // resp.setHeader("location", "http://localhost:8080");
             resp.setStatus(200);
-            jsp = "/pages/home.jsp";
+            jsp = "/pages/new-post.jsp";
         } catch (RuntimeException e) {
             //when the user was not found in database or query failed.
+            req.setAttribute("user", null);
             resp.setStatus(405);
             jsp = "/pages/login.jsp";
         }
+
 
         getServletConfig()
                 .getServletContext()
