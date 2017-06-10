@@ -7,6 +7,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private String avatarURL;
     private int rating;
 
     public long getId() {
@@ -51,6 +52,15 @@ public class User {
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    public User setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
         return this;
     }
 
