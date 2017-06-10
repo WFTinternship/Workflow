@@ -11,14 +11,14 @@
     </listener>
 
 
-    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>com.workfront.internship.workflow.api.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/new-post</url-pattern>
-    </filter-mapping>
+    <!--<filter>-->
+        <!--<filter-name>LoginFilter</filter-name>-->
+        <!--<filter-class>com.workfront.internship.workflow.api.LoginFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>LoginFilter</filter-name>-->
+        <!--<url-pattern>/new-post</url-pattern>-->
+    <!--</filter-mapping>-->
 
     <servlet>
         <servlet-name>HomePosts</servlet-name>
@@ -28,6 +28,7 @@
     <servlet-mapping>
         <servlet-name>HomePosts</servlet-name>
         <url-pattern></url-pattern>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -59,6 +60,15 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SignUp</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.SignUpController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SignUp</servlet-name>
+        <url-pattern>/signUp</url-pattern>
+    </servlet-mapping>
     <!--<servlet>-->
         <!--<servlet-name>AppAreaPosts</servlet-name>-->
         <!--<servlet-class>com.workfront.internship.workflow.api.AppAreaPostsController</servlet-class>-->
