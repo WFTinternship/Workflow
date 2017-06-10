@@ -352,7 +352,7 @@
 
                             <!-- -->
                             <div class="sidebarblock">
-                                <h3>Categories</h3>
+                                <h3>Application Areas</h3>
                                 <div class="divline"></div>
                                 <div class="blocktxt">
                                     <ul class="cats">

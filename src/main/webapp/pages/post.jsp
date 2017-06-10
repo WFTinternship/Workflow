@@ -16,10 +16,10 @@
     <title>Forum :: Topic</title>
 
     <!-- Bootstrap -->
-    <link href="http://localhost:8080/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom -->
-    <link href="http://localhost:8080/css/custom.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>css/custom.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,13 +31,13 @@
     <!-- fonts -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
           rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://localhost:8080/font-awesome-4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>font-awesome-4.0.3/css/font-awesome.min.css">
 
     <!-- CSS STYLE-->
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/css/style.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>css/style.css" media="screen"/>
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/rs-plugin/css/settings.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>rs-plugin/css/settings.css" media="screen"/>
 
 </head>
 <body class="topic">
@@ -51,7 +51,7 @@
                 <!-- SLIDE  -->
                 <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
                     <!-- MAIN IMAGE -->
-                    <img src="http://localhost:8080/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
+                    <img src="<%=request.getContextPath()%>images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
                          data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
                 </li>
@@ -97,7 +97,7 @@
                     <div class="env pull-left"><i class="fa fa-envelope"></i></div>
 
                     <div class="avatar pull-left dropdown">
-                        <a data-toggle="dropdown" href="#"><img src="http://localhost:8080/images/avatar.jpg" alt=""/></a> <b
+                        <a data-toggle="dropdown" href="#"><img src="<%=request.getContextPath()%>images/avatar.jpg" alt=""/></a> <b
                             class="caret"></b>
                         <div class="status green">&nbsp;</div>
                         <ul class="dropdown-menu" role="menu">
@@ -136,13 +136,13 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="http://localhost:8080/images/avatar.jpg" alt=""/>
+                                    <img src="<%=request.getContextPath()%>images/avatar.jpg" alt=""/>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
                                 <div class="icons">
-                                    <img src="http://localhost:8080/images/icon1.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
-                                        src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
+                                    <img src="<%=request.getContextPath()%>images/icon1.jpg" alt=""/><img src="<%=request.getContextPath()%>images/icon4.jpg" alt=""/><img
+                                        src="<%=request.getContextPath()%>images/icon5.jpg" alt=""/><img src="<%=request.getContextPath()%>images/icon6.jpg" alt=""/>
                                 </div>
                             </div>
                             <div class="posttext pull-left">
@@ -191,13 +191,13 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="http://localhost:8080/images/avatar2.jpg" alt=""/>
+                                        <img src="<%=request.getContextPath()%>images/avatar2.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
                                     <div class="icons">
-                                        <img src="http://localhost:8080/images/icon3.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
-                                            src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
+                                        <img src="<%=request.getContextPath()%>images/icon3.jpg" alt=""/><img src="<%=request.getContextPath()%>images/icon4.jpg" alt=""/><img
+                                            src="<%=request.getContextPath()%>images/icon5.jpg" alt=""/><img src="<%=request.getContextPath()%>images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -241,13 +241,13 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="http://localhost:8080/images/avatar4.jpg" alt=""/>
+                                        <img src="<%=request.getContextPath()%>images/avatar4.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
                                     <div class="icons">
-                                        <img src="http://localhost:8080/images/icon3.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
-                                            src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
+                                        <img src="<%=request.getContextPath()%>images/icon3.jpg" alt=""/><img src="<%=request.getContextPath()%>images/icon4.jpg" alt=""/><img
+                                            src="<%=request.getContextPath()%>images/icon5.jpg" alt=""/><img src="<%=request.getContextPath()%>images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">

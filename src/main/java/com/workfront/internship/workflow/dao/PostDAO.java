@@ -30,6 +30,13 @@ public interface PostDAO {
     List<Post> getByUserId(long userId);
 
     /**
+     * Gets posts with the specified app area id
+     * @param id id of the app area
+     * @return List of posts created under the specified app area
+     */
+    List<Post> getByAppAreaId(long id);
+
+    /**
      *
      * @param title the phrase to search for posts
      * @return List of Post that contain the parameter in their titles
