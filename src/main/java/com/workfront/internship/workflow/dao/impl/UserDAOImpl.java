@@ -27,6 +27,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     public static final String lastName = "last_name";
     public static final String email = "email";
     public static final String password = "passcode";
+    public static final String avatarURl = "avatar_url";
     public static final String rating = "rating";
 
     public UserDAOImpl() {
@@ -53,15 +54,16 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     @Override
     public long add(User user, Connection connection) {
         long id = 0;
-        String addSql = "INSERT INTO  user (first_name, last_name, email, passcode, rating) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String addSql = "INSERT INTO  user (first_name, last_name, email, passcode, avatar_url, rating) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement addStmt = connection.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS)) {
 
             addStmt.setString(1, user.getFirstName());
             addStmt.setString(2, user.getLastName());
             addStmt.setString(3, user.getEmail());
             addStmt.setString(4, user.getPassword());
-            addStmt.setInt(5, user.getRating());
+            addStmt.setString(5, user.getAvatarURL());
+            addStmt.setInt(6, user.getRating());
 
             addStmt.executeUpdate();
             ResultSet resultSet = addStmt.getGeneratedKeys();
@@ -181,8 +183,8 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     @Override
     public User getByEmail(String email) {
         User user = new User();
-        String sql = "SELECT * FROM work_flow_test.user " +
-                "WHERE work_flow_test.user.email = ?";
+        String sql = "SELECT * FROM user " +
+                "WHERE user.email = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
@@ -269,6 +271,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             user.setLastName(rs.getString(lastName));
             user.setEmail(rs.getString(email));
             user.setPassword(rs.getString(password));
+            user.setAvatarURL(rs.getString(avatarURl));
             user.setRating(rs.getInt(rating));
 
         } catch (SQLException e) {
