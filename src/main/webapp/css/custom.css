@@ -160,14 +160,14 @@ ul.socialicons li a:hover {
     font-family: 'Open Sans Bold', sans-serif;
     padding-left: 30px;
     padding-right: 30px;
-    background-color: #1abc9c;
+    background-color: #f77f29;
 }
 
 .avt .btn-primary:hover, 
 .avt .btn-primary:focus, 
 .avt .btn-primary:active, 
 .avt .btn-primary.active{
-    background-color: #1abc9c;
+    background-color: #f77f29;
 
 
     border: none;
@@ -611,7 +611,7 @@ td.chbox {
 }
 
 .up {
-    color: #1abc9c;
+    color: #f77f29;
     font-size: 12px;
 }
 
@@ -706,7 +706,7 @@ a.down:hover {
 
 
 .btn-primary {
-    background-color: #1abc9c;
+    background-color: #f77f29;
     box-shadow: none;
     border-radius: 2px;
     padding: 10px 15px;
