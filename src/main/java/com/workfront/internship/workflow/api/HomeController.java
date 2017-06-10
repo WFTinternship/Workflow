@@ -22,7 +22,6 @@ public class HomeController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostService postService = new PostServiceImpl();
-        PostDAO postDAO = new PostDAOImpl();
 
         List<Post> posts = postService.getAll();
         req.setAttribute("allPosts", posts);

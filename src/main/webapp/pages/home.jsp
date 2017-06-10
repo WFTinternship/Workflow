@@ -362,9 +362,6 @@
             });	//ready
 
         </script>
-
         <!-- END REVOLUTION SLIDER -->
     </body>
-
-<!-- Mirrored from forum.azyrusthemes.home.jsphtml by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
 </html>

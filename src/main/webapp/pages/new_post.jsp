@@ -236,7 +236,7 @@
                             </div><!-- POST -->
 
                             <div class="row similarposts">
-                                <div class="col-lg-10"><i class="fa fa-info-circle"></i> <p>Similar Posts according to your <a href="#">Topic Title</a>.</p></div>
+                                <div class="col-lg-10"><i class="fa fa-info-circle"></i> <p>Similar Posts according to yours <a href="#">Topic Title</a>.</p></div>
                                 <div class="col-lg-2 loading"><i class="fa fa-spinner"></i></div>
 
                             </div>
