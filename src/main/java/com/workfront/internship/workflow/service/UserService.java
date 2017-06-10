@@ -68,4 +68,12 @@ public interface UserService {
      * Deletes all the existing users
      */
     void deleteAll();
+
+    /**
+     * Checks whether the email and password combination exists in database
+     * @param email is input from client
+     * @param password is input from client
+     * @return user with specified email, is the password is correct
+     */
+    User authenticate(String email, String password);
 }

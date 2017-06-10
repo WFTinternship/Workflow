@@ -125,7 +125,7 @@
 
                             <!-- POST -->
                             <div class="post">
-                                <form action="#" class="form newtopic" method="post">
+                                <form action="/login" class="form newtopic" method="post">
                                     <div class="postinfotop">
                                         <h2>Create New Account</h2>
                                     </div>

@@ -127,7 +127,7 @@
 
                             <!-- POST -->
                             <div class="post">
-                                <form action="#" class="form newtopic" method="post">
+                                <form action="/new-post" class="form newtopic" method="post">
                                     <div class="topwrap">
                                         <div class="userinfo pull-left">
                                             <div class="avatar">

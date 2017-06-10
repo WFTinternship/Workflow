@@ -144,7 +144,6 @@
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
                             <!-- POST -->
-
                             <c:forEach var="post" items="${allPosts}" >
                             <div class="post">
                                 <div class="wrap-ut pull-left">
