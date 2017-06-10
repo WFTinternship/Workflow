@@ -84,9 +84,9 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                            <div class="stnt pull-left">                            
-                                <form action="new_post.jsp" method="post" class="form">
-                                    <button class="btn btn-primary">Start New Topic</button>
+                            <div class="stnt pull-left">
+                                <form action="/new-post" method="post" class="form">
+                                    <button class="btn btn-primary">Add New Post</button>
                                 </form>
                             </div>
                             <div class="env pull-left"><i class="fa fa-envelope"></i></div>
@@ -98,7 +98,7 @@
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
                                     <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-4" href="04_new_account.html">Create account</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create account</a></li>
                                 </ul>
                             </div>
                             <div class="clearfix"></div>
@@ -127,7 +127,7 @@
 
                             <!-- POST -->
                             <div class="post">
-                                <form action="#" class="form newtopic" method="post">
+                                <form action="/new-post" class="form newtopic" method="post">
                                     <div class="topwrap">
                                         <div class="userinfo pull-left">
                                             <div class="avatar">
@@ -148,16 +148,10 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-6">
                                                     <select name="category" id="category"  class="form-control" >
-                                                        <option value="" disabled selected>Select Category</option>
-                                                        <option value="op1">Option1</option>
-                                                        <option value="op2">Option2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <select name="subcategory" id="subcategory"  class="form-control" >
-                                                        <option value="" disabled selected>Select Subcategory</option>
-                                                        <option value="op1">Option1</option>
-                                                        <option value="op2">Option2</option>
+                                                        <option value="" disabled selected>Select Application Area</option>
+                                                        <c:forEach var="appArea" items="${appAreas}" >
+                                                            <option value="op${appArea.id}">${appArea.name}</option>
+                                                        </c:forEach>
                                                     </select>
                                                 </div>
                                             </div>
@@ -362,9 +356,9 @@
                                 <div class="divline"></div>
                                 <div class="blocktxt">
                                     <ul class="cats">
-                                        <c:forEach var="appArea" items="${appAreas}">
-                                        <li><a href="#">${appArea}<span class="badge pull-right">20</span></a></li>
-                                        </c:forEach>>
+                                        <c:forEach var="appArea" items="${appAreas}" >
+                                            <li><a href="#">${appArea.name} <span class="badge pull-right">20</span></a></li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>

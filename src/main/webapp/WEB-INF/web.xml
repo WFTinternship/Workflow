@@ -10,9 +10,15 @@
         </listener-class>
     </listener>
 
-    <!--<welcome-file-list>-->
-        <!--<welcome-file>home.jsp</welcome-file>-->
-    <!--</welcome-file-list>-->
+
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.workfront.internship.workflow.api.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/new-post</url-pattern>
+    </filter-mapping>
 
     <servlet>
         <servlet-name>HomePosts</servlet-name>
@@ -22,6 +28,7 @@
     <servlet-mapping>
         <servlet-name>HomePosts</servlet-name>
         <url-pattern></url-pattern>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -40,17 +47,17 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>NewPost</servlet-name>
-        <url-pattern>/new_post</url-pattern>
+        <url-pattern>/new-post</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AddPost</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.AddPost</servlet-class>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.LoginController</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>AddPost</servlet-name>
-        <url-pattern>/addPost</url-pattern>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
 
