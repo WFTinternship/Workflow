@@ -67,15 +67,11 @@ public class PostServiceImpl implements PostService{
         List<Post> posts;
         try {
             posts = postDAO.getAll();
+            return posts;
         }catch (RuntimeException e){
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get all posts");
         }
-        if (posts == null){
-            logger.info("No posts were found");
-            return null;
-        }
-        return posts;
     }
 
     /**
@@ -90,15 +86,11 @@ public class PostServiceImpl implements PostService{
         Post post;
         try {
             post = postDAO.getById(id);
+            return post;
         }catch (RuntimeException e){
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get post with specified id");
         }
-        if (post == null){
-            logger.info("No post was found with specified id");
-            return null;
-        }
-        return post;
     }
 
     /**
@@ -113,11 +105,11 @@ public class PostServiceImpl implements PostService{
         List<Post> posts;
         try {
             posts = postDAO.getByTitle(title);
+            return posts;
         }catch (RuntimeException e){
-            e.printStackTrace();
             throw new ServiceLayerException("Failed to get posts by specified title");
         }
-        return posts;
+
     }
 
     /**
@@ -132,15 +124,32 @@ public class PostServiceImpl implements PostService{
         List<Post> posts;
         try {
             posts = postDAO.getByUserId(id);
+            return posts;
         }catch (RuntimeException e){
-            e.printStackTrace();
             throw new ServiceLayerException("Failed to get posts by specified user id");
         }
-        if (posts == null){
-            logger.info("No post was found with specified user id");
-            return null;
+
+    }
+
+    /**
+     * @see PostService#getByAppAreaId(long)
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Post> getByAppAreaId(long id) {
+        if (id < 1){
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
         }
-        return posts;
+        List<Post> posts;
+        try {
+            posts = postDAO.getByAppAreaId(id);
+            return posts;
+        }catch (RuntimeException e){
+            throw new ServiceLayerException("Failed to get posts by specified app area id");
+        }
+
     }
 
     /**
@@ -155,15 +164,12 @@ public class PostServiceImpl implements PostService{
         List<Post> posts;
         try {
             posts = postDAO.getAnswersByPostId(id);
+            return posts;
         }catch (RuntimeException e){
             e.printStackTrace();
             throw new ServiceLayerException("Failed to get answers of the specified post");
         }
-        if (posts == null){
-            logger.warn("Post with the specified id does not have answers");
-            return null;
-        }
-        return posts;
+
     }
 
     /**
@@ -178,15 +184,11 @@ public class PostServiceImpl implements PostService{
         Post post;
         try {
             post = postDAO.getBestAnswer(id);
+            return post;
         }catch (RuntimeException e){
-            e.printStackTrace();
             throw new ServiceLayerException("Failed to get the best answer of the specified post");
         }
-        if (post == null){
-            logger.warn("Post with specified id does not have a best answer");
-            return null;
-        }
-        return post;
+
     }
 
     /**

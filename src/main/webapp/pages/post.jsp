@@ -16,10 +16,10 @@
     <title>Forum :: Topic</title>
 
     <!-- Bootstrap -->
-    <link href="http://localhost:8080/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom -->
-    <link href="http://localhost:8080/css/custom.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/custom.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,20 +30,49 @@
 
     <!-- fonts -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
-          rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://localhost:8080/font-awesome-4.0.3/css/font-awesome.min.css">
+          rel='stylesheet' type='${pageContext.request.contextPath}/text/css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome-4.0.3/css/font-awesome.min.css">
 
     <!-- CSS STYLE-->
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/css/style.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen"/>
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/rs-plugin/css/settings.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css" media="screen"/>
 
 </head>
 <body class="topic">
 
 <div class="container-fluid">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span id="form-img"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height="60px" width="60px/"></span>
+                </div>
+                <form action="http://localhost:8080/login" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="usr">Name:</label>
+                        <input type="text" class="form-control" name="email" id="usr">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" class="form-control" name="password" id="pwd">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-login">Login</button>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
     <!-- Slider -->
     <div class="tp-banner-container">
         <div class="tp-banner">
@@ -51,7 +80,7 @@
                 <!-- SLIDE  -->
                 <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
                     <!-- MAIN IMAGE -->
-                    <img src="http://localhost:8080/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
+                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
                          data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
                 </li>
@@ -90,14 +119,14 @@
                 </div>
                 <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
                     <div class="stnt pull-left">
-                        <form action="/new-post" method="post" class="form">
-                            <button class="btn btn-primary">Add New Post</button>
-                        </form>
+
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+
                     </div>
                     <div class="env pull-left"><i class="fa fa-envelope"></i></div>
 
                     <div class="avatar pull-left dropdown">
-                        <a data-toggle="dropdown" href="#"><img src="http://localhost:8080/images/avatar.jpg" alt=""/></a> <b
+                        <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
                             class="caret"></b>
                         <div class="status green">&nbsp;</div>
                         <ul class="dropdown-menu" role="menu">
@@ -136,13 +165,13 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="http://localhost:8080/images/avatar.jpg" alt=""/>
+                                    <img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
                                 <div class="icons">
-                                    <img src="http://localhost:8080/images/icon1.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
-                                        src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
+                                    <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
+                                        src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
                                 </div>
                             </div>
                             <div class="posttext pull-left">
@@ -191,13 +220,13 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="http://localhost:8080/images/avatar2.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/avatar2.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
                                     <div class="icons">
-                                        <img src="http://localhost:8080/images/icon3.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
-                                            src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -241,13 +270,13 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="http://localhost:8080/images/avatar4.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/avatar4.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
                                     <div class="icons">
-                                        <img src="http://localhost:8080/images/icon3.jpg" alt=""/><img src="http://localhost:8080/images/icon4.jpg" alt=""/><img
-                                            src="http://localhost:8080/images/icon5.jpg" alt=""/><img src="http://localhost:8080/images/icon6.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -423,7 +452,7 @@
 </div>
 
 <!-- get jQuery from the google apis -->
-<script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
 <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
@@ -431,7 +460,7 @@
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->

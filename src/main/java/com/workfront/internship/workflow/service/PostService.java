@@ -54,6 +54,13 @@ public interface PostService {
     List<Post> getByUserId(long id);
 
     /**
+     * Gets posts with the specified app area id
+     * @param id id of the app area
+     * @return List of posts created under the specified app area
+     */
+    List<Post> getByAppAreaId(long id);
+
+    /**
      * Gets all answers of the post by id.
      * @param id
      * @return List of answers

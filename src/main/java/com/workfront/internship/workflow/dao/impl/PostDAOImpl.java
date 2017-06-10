@@ -170,9 +170,40 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 post = fromResultSet(post, rs);
                 posts.add(post);
             }
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            close(rs);
+        }
+        return posts;
+    }
 
-            stmt.execute();
-
+    /**
+     * @see PostDAO#getByAppAreaId(long)
+     * @param id id of the app area
+     */
+    @Override
+    public List<Post> getByAppAreaId(long id) {
+        List<Post> posts = new ArrayList<>();
+        String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
+                " user.email, user.passcode, user.rating, apparea_id, apparea.name, " +
+                " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
+                " FROM post " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
+                " WHERE post.post_id IS NULL AND post.apparea_id = ?";
+        ResultSet rs = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()){
+                Post post = new Post();
+                post = fromResultSet(post, rs);
+                posts.add(post);
+            }
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
