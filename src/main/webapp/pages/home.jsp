@@ -44,7 +44,36 @@
     <body>
 
         <div class="container-fluid">
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <span id="form-img"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height="60px" width="60px/"></span>
+                        </div>
+                        <form action="http://localhost:8080/login" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="usr">Name:</label>
+                                    <input type="text" class="form-control" name="email" id="usr">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pwd">Password:</label>
+                                    <input type="password" class="form-control" name="password" id="pwd">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-login">Login</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
             <!-- Slider -->
             <div class="tp-banner-container">
                 <div class="tp-banner" >
@@ -86,9 +115,9 @@
                         </div>
                         <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
                             <div class="stnt pull-left">
-                                <form action="<c:url value="/new-post"/>" method="post" class="form">
-                                    <button class="btn btn-primary">Add New Post</button>
-                                </form>
+
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+
                             </div>
                             <div class="env pull-left"><i class="fa fa-envelope"></i></div>
 
@@ -333,14 +362,14 @@
         </div>
 
         <!-- get jQuery from the google apis -->
-        <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
         <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
         <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
         <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
 
-        <script src="js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
         <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
@@ -362,6 +391,9 @@
             });	//ready
 
         </script>
+
         <!-- END REVOLUTION SLIDER -->
     </body>
+
+<!-- Mirrored from forum.azyrusthemes.home.jsphtml by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
 </html>

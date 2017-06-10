@@ -69,6 +69,7 @@
         <servlet-name>SignUp</servlet-name>
         <url-pattern>/signUp</url-pattern>
     </servlet-mapping>
+
     <!--<servlet>-->
         <!--<servlet-name>AppAreaPosts</servlet-name>-->
         <!--<servlet-class>com.workfront.internship.workflow.api.AppAreaPostsController</servlet-class>-->
