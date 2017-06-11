@@ -42,6 +42,15 @@ public enum  AppArea {
         return null;
     }
 
+    public static AppArea getByName(String name){
+        AppArea [] appAreas = AppArea.values();
+        for (AppArea appArea: appAreas) {
+            if(appArea.getName().equals(name))
+                return appArea;
+        }
+        return null;
+    }
+
     public boolean isValid(){
         return this != null
                 && isEmpty(this.getName())

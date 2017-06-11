@@ -16,10 +16,10 @@
         <title>Forum :: New account</title>
 
         <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Custom -->
-        <link href="css/custom.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/custom.css" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,13 +30,13 @@
 
         <!-- fonts -->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="font-awesome-4.0.3/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome-4.0.3/css/font-awesome.min.css">
 
         <!-- CSS STYLE-->
-        <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen" />
 
         <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-        <link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css" media="screen" />
 
     </head>
     <body class="newaccountpage">
@@ -50,7 +50,7 @@
                         <!-- SLIDE  -->
                         <li data-transition="fade" data-slotamount="7" data-masterspeed="1500" >
                             <!-- MAIN IMAGE -->
-                            <img src="images/slide.jpg"  alt="slidebg1"  data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                            <img src="${pageContext.request.contextPath}/images/slide.jpg"  alt="slidebg1"  data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
                             <!-- LAYERS -->
                         </li>
                     </ul>
@@ -58,77 +58,70 @@
             </div>
             <!-- //Slider -->
 
+
             <div class="headernav">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px /></a></div>
-                        <div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">
-                            <div class="dropdown">
-                                <a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>
+                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img
+                                src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                                height=60px width=60px/></a></div>
+                        <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
+                        <%--<div class="dropdown">--%>
+                        <%--<a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>--%>
+                        <%--<ul class="dropdown-menu" role="menu">--%>
+                        <%--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>--%>
+                        <%--<li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>--%>
+                        <%--<li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>--%>
 
-                                </ul>
-                            </div>
-                        </div>
+                        <%--</ul>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
                         <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                             <div class="wrap">
                                 <form action="#" method="post" class="form">
-                                    <div class="pull-left txt"><input type="text" class="form-control" placeholder="Search Topics"></div>
-                                    <div class="pull-right"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></div>
+                                    <div class="pull-left txt"><input type="text" class="form-control"
+                                                                      placeholder="Search Topics"></div>
+                                    <div class="pull-right">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                    </div>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                            <div class="stnt pull-left">                            
-                                <form action="new_post.jsp" method="post" class="form">
-                                    <button class="btn btn-primary">Start New Topic</button>
-                                </form>
-                            </div>
-                            <div class="env pull-left"><i class="fa fa-envelope"></i></div>
-
-
-                                <%--@elvariable id="user" type="com.workfront.internship.workflow.domain.User"--%>
+                        <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
+                            <div class="stnt">
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
                                 <c:if test="${user == null}">
-                                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-
-                                        <div class="stnt pull-left">
-                                            <button type="submit" class="btn btn-signup">Sign Up</button>
-                                        </div>
-
-                                        <div class="clearfix"></div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-
-                                        <div class="stnt pull-left">
-                                            <button type="submit" class="btn btn-login">Login</button>
-                                        </div>
-
-                                        <div class="clearfix"></div>
-                                    </div>
+                          <span>
+                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/login" ><button type="submit" class="btn btn-login">Login</button></a>
+                          </span>
                                 </c:if>
-                                <c:if test="${user != null}">
-                                    <div class="avatar pull-left dropdown">
-                                        <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
-                                            class="caret"></b>
-                                        <div class="status green">&nbsp;</div>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
-                                                account</a></li>
-                                        </ul>
-                                    </div>
-
-                                </c:if>
+                            </div>
 
                             <div class="clearfix"></div>
                         </div>
+
+                        <c:if test="${user != null}">
+                            <div class="avatar pull-left dropdown">
+                                <a data-toggle="dropdown" href="#"><img
+                                        src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                    class="caret"></b>
+                                <div class="status green">&nbsp;</div>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
+                                        account</a></li>
+                                </ul>
+                            </div>
+
+                        </c:if>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -147,103 +140,147 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
+                            <ul class="nav nav-tabs">
+                                <li  class="active"><a data-toggle="tab" href="#signup">Sign up</a></li>
+                                <li><a data-toggle="tab" href="#login">Login</a></li>
+                            </ul>
 
+                            <div class="tab-content">
+                                <div id="signup" class="tab-pane fade in active">
 
-
-                            <!-- POST -->
-                            <div class="post">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar-blank.jpg" alt="" />
-                                        <div class="status green">&nbsp;</div>
-                                    </div>
-                                    <div class="imgsize">60 x 60</div>
-                                    <div>
-                                        <form action="/upload" method="post" enctype="multipart/form-data">
-                                            <input type="file" name="file" />
-                                            <input type="submit" value="upload" />
-                                        </form>
-
-                                        <%--<form action = "/upload" method = "post"--%>
-                                        <%--enctype = "multipart/form-data">--%>
-                                        <%--<input type="file" id="upload" name="upload" size = "50"/>--%>
-                                        <%--<a href="/upload" onclick="document.getElementById('upload').click(); return false">Add</a>--%>
-                                        <%--<input type = "file" name = "file" value="Add" size = "50" />--%>
-                                        <%--<br />--%>
-                                        <%--<input type = "submit" value = "Upload File" />--%>
-
-                                        <%--<form action="new_post.jsp" method="post" class="form">--%>
-                                        <%--<button class="btn">Add</button>--%>
-                                        <%--</form>--%>
-
-                                    </div>
-                                </div>
-                                <form action="/login" class="form newtopic" method="post">
-                                    <div class="postinfotop">
-                                        <h2>Create New Account</h2>
-                                    </div>
-
-                                    <!-- acc section -->
-                                    <div class="accsection">
-                                        <div class="acccap">
-                                            <div class="userinfo pull-left">&nbsp;</div>
-                                            <div class="posttext pull-left"><h3>Required Fields</h3></div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="topwrap">
-
-
-
-                                            <div class="posttext pull-left">
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="text" placeholder="First Name" class="form-control" />
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="text" placeholder="Last Name" class="form-control" />
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <input type="text" placeholder="Email" class="form-control" />
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="password" placeholder="Password" class="form-control" id="pass" name="pass" />
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="password" placeholder="Retype Password" class="form-control" id="pass2" name="pass2" />
-                                                    </div>
-                                                </div>
-
+                                    <!-- POST -->
+                                    <div class="post">
+                                        <form action="/signup" class="form newtopic" method="post">
+                                            <div class="postinfotop">
+                                                <h2>Create New Account</h2>
                                             </div>
-                                            <div class="clearfix"></div>
-                                        </div>  
-                                    </div><!-- acc section END -->
+
+                                            <!-- acc section -->
+                                            <div class="accsection">
+                                                <div class="acccap">
+                                                    <div class="userinfo pull-left">&nbsp;</div>
+                                                    <div class="posttext pull-left"><h3>Required Fields</h3></div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="topwrap">
+                                                    <div class="userinfo pull-left">
+                                                        <div class="avatar">
+                                                            <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" alt="" />
+                                                            <div class="status green">&nbsp;</div>
+                                                        </div>
+                                                        <div class="imgsize">60 x 60</div>
+                                                        <div>
+                                                            <button class="btn">Add</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="posttext pull-left">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="text" placeholder="First Name" class="form-control" name="firstName"/>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="text" placeholder="Last Name" class="form-control" name="lastName"/>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <input type="text" placeholder="Email" class="form-control" name="email" />
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="password" placeholder="Password" class="form-control" id="sgpass" name="password" />
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="password" placeholder="Retype Password" class="form-control" id="sgpass2" name="confirmPass" />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div><!-- acc section END -->
 
 
-                                    <div class="postinfobot">
+                                            <div class="postinfobot">
 
-                                        <div class="notechbox pull-left">
-                                            <input type="checkbox" name="note" id="note" class="form-control" />
-                                        </div>
+                                                <div class="notechbox pull-left">
+                                                    <input type="checkbox" name="note" id="sgnote" class="form-control" />
+                                                </div>
 
-                                        <div class="pull-left lblfch">
-                                            <label for="note"> I agree with the Terms and Conditions of this site</label>
-                                        </div>
+                                                <div class="pull-left lblfch">
+                                                    <label for="note"> I agree with the Terms and Conditions of this site</label>
+                                                </div>
 
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
-                                            <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                                <div class="pull-right postreply">
+                                                    <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                                    <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
+                                                    <div class="clearfix"></div>
+                                                </div>
 
 
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </form>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </form>
+                                    </div><!-- POST -->
+
+
+
+                                </div>
+                                <div id="login" class="tab-pane fade">
+
+                                    <!-- POST -->
+                                    <div class="post">
+                                        <form action="/signup" class="form newtopic" method="post">
+                                            <div class="postinfotop">
+                                                <h2>Create New Account</h2>
+                                            </div>
+
+                                            <!-- acc section -->
+                                            <div class="accsection">
+
+                                                <div class="topwrap">
+                                                    <div class="posttext container">
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <input type="text" placeholder="Email" class="form-control" name="email" />
+
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <input type="password" placeholder="Password" class="form-control" id="pass" name="password" />
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div><!-- acc section END -->
+
+
+                                            <div class="postinfobot">
+
+                                                <div class="notechbox pull-left">
+                                                    <input type="checkbox" name="note" id="note" class="form-control" />
+                                                </div>
+
+                                                <div class="pull-left lblfch">
+                                                    <label for="note"> I agree with the Terms and Conditions of this site</label>
+                                                </div>
+
+                                                <div class="pull-right postreply">
+                                                    <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                                    <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </form>
+                                    </div><!-- POST -->
+
+                                </div>
                             </div>
-        <!-- POST -->
-
 
 
 
@@ -371,7 +408,7 @@
 
 
         <!-- get jQuery from the google apis -->
-        <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
         <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
         <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
@@ -379,7 +416,7 @@
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
         <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->

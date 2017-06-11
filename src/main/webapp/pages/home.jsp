@@ -6,8 +6,10 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<%--<c:set var="allPosts" value="<%=request.getAttribute("allPosts")%>"/>--%>
-<%--<c:set var="appAreas" value="<%=request.getAttribute("appAreas")%>"/>--%>
+<c:set var="allPosts" value='<%=request.getAttribute("allPosts")%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute("appAreas")%>'/>
+<c:set var="user" value='<%=request.getAttribute("name")%>'/>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,7 +59,7 @@
                             src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
-                <form action="/login" method="post">
+                <form action="/login/new-post" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="usr">Name:</label>
@@ -122,49 +124,38 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                    <div class="stnt pull-left">
+                <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
+                    <div class="stnt">
                         <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+                        <c:if test="${user == null}">
+                          <span>
+                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/login" ><button type="submit" class="btn btn-login">Login</button></a>
+                          </span>
+                        </c:if>
                     </div>
 
                     <div class="clearfix"></div>
                 </div>
 
-                    <c:if test="${user != null}">
-                        <div class="avatar pull-left dropdown">
-                            <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
-                                class="caret"></b>
-                            <div class="status green">&nbsp;</div>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
-                                    account</a></li>
-                            </ul>
-                        </div>
+                <c:if test="${user != null}">
+                    <div class="avatar pull-left dropdown">
+                        <a data-toggle="dropdown" href="#"><img
+                                src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                            class="caret"></b>
+                        <div class="status green">&nbsp;</div>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
+                                account</a></li>
+                        </ul>
+                    </div>
 
-                    </c:if>
+                </c:if>
 
-                    <c:if test="${user == null}">
-                        <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
 
-                            <div class="stnt pull-left">
-                                <button type="submit" class="btn btn-signup">Sign Up</button>
-                            </div>
-
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-
-                            <div class="stnt pull-left">
-                                <button type="submit" class="btn btn-login">Login</button>
-                            </div>
-
-                            <div class="clearfix"></div>
-                        </div>
-                    </c:if>
 
 
             </div>

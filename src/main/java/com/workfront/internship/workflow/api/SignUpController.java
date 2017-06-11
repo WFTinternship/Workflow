@@ -23,6 +23,16 @@ public class SignUpController extends HttpServlet{
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute("appAreas", appAreas);
 
+        String url = req.getRequestURL().toString();
+        String requestType = url.substring(url.lastIndexOf('/') + 1);
+
+        if (requestType.equals("user")){
+            getServletConfig()
+                    .getServletContext()
+                    .getRequestDispatcher("/pages/login.jsp")
+                    .forward(req, resp);
+        }
+
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String email = req.getParameter("email");
