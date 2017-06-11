@@ -172,7 +172,23 @@
                                                 </div>
                                                 <div class="imgsize">60 x 60</div>
                                                 <div>
-                                                    <button class="btn">Add</button>
+                                                    <form action="/upload" method="post" enctype="multipart/form-data">
+                                                        <input type="file" name="file" />
+                                                        <input type="submit" value="upload" />
+                                                    </form>
+
+                                                    <%--<form action = "/upload" method = "post"--%>
+                                                          <%--enctype = "multipart/form-data">--%>
+                                                        <%--<input type="file" id="upload" name="upload" size = "50"/>--%>
+                                                        <%--<a href="/upload" onclick="document.getElementById('upload').click(); return false">Add</a>--%>
+                                                        <%--<input type = "file" name = "file" value="Add" size = "50" />--%>
+                                                        <%--<br />--%>
+                                                        <%--<input type = "submit" value = "Upload File" />--%>
+
+                                                    <%--<form action="new_post.jsp" method="post" class="form">--%>
+                                                        <%--<button class="btn">Add</button>--%>
+                                                    <%--</form>--%>
+
                                                 </div>
                                             </div>
                                             <div class="posttext pull-left">
@@ -222,7 +238,8 @@
                                         <div class="clearfix"></div>
                                     </div>
                                 </form>
-                            </div><!-- POST -->
+                            </div>
+        <!-- POST -->
 
 
 
