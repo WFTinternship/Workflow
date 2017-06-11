@@ -34,7 +34,7 @@ public class HomeController extends HttpServlet {
 
         getServletConfig()
                 .getServletContext()
-                .getRequestDispatcher("/pages/home.jsp")
+                .getRequestDispatcher("index.jsp")
                 .forward(req, resp);
     }
 }

@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    private Connection connection;
-
     public static final String id = "id";
     public static final String firstName = "first_name";
     public static final String lastName = "last_name";
@@ -32,6 +31,10 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     public UserDAOImpl() {
         dataSource = DBHelper.getPooledConnection();
+    }
+
+    public UserDAOImpl(DataSource dataSource){
+        this.dataSource = dataSource;
     }
 
     /**

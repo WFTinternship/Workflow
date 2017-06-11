@@ -24,12 +24,12 @@
         <servlet-name>HomePosts</servlet-name>
         <servlet-class>com.workfront.internship.workflow.api.HomeController</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>HomePosts</servlet-name>
-        <url-pattern></url-pattern>
-        <url-pattern>/home</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
+
 
     <servlet>
         <servlet-name>Post</servlet-name>
@@ -79,6 +79,9 @@
         <servlet-name>Upload</servlet-name>
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
+
+
+
 
     <!--<servlet>-->
         <!--<servlet-name>AppAreaPosts</servlet-name>-->

@@ -9,6 +9,7 @@ import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,10 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     public CommentDAOImpl(){
         dataSource = DBHelper.getPooledConnection();
+    }
+
+    public CommentDAOImpl(DataSource dataSource){
+        this.dataSource = dataSource;
     }
 
     /**
@@ -128,7 +133,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
     public Comment getById(long id) {
         Comment comment = null;
         String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
-                " email, passcode, rating, comment.post_id, post_time, title, " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
                 " post.content, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id WHERE comment.id = ?";
@@ -164,13 +169,12 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
         Comment comment ;
         List<Comment> comments = new ArrayList<>();
         String query = " SELECT comment.id, comment.user_id, first_name, last_name, " +
-                " email, passcode, rating, comment.post_id, post_time, title, " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
                 " post.content, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id ";
-        try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query);
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);){
             ResultSet rs = stmt.executeQuery(query );
             while (rs.next()) {
                 comment = fromResultSet(rs);

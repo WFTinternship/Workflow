@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaExcept
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,12 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
     public AppAreaDAOImpl(){
         dataSource = DBHelper.getPooledConnection();
     }
+
+    public AppAreaDAOImpl(DataSource dataSource){
+        this.dataSource = dataSource;
+    }
+
+
     /**
      * @see AppAreaDAO#add(AppArea)
      * @param appArea

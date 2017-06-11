@@ -152,6 +152,32 @@
 
                             <!-- POST -->
                             <div class="post">
+                                <div class="userinfo pull-left">
+                                    <div class="avatar">
+                                        <img src="images/avatar-blank.jpg" alt="" />
+                                        <div class="status green">&nbsp;</div>
+                                    </div>
+                                    <div class="imgsize">60 x 60</div>
+                                    <div>
+                                        <form action="/upload" method="post" enctype="multipart/form-data">
+                                            <input type="file" name="file" />
+                                            <input type="submit" value="upload" />
+                                        </form>
+
+                                        <%--<form action = "/upload" method = "post"--%>
+                                        <%--enctype = "multipart/form-data">--%>
+                                        <%--<input type="file" id="upload" name="upload" size = "50"/>--%>
+                                        <%--<a href="/upload" onclick="document.getElementById('upload').click(); return false">Add</a>--%>
+                                        <%--<input type = "file" name = "file" value="Add" size = "50" />--%>
+                                        <%--<br />--%>
+                                        <%--<input type = "submit" value = "Upload File" />--%>
+
+                                        <%--<form action="new_post.jsp" method="post" class="form">--%>
+                                        <%--<button class="btn">Add</button>--%>
+                                        <%--</form>--%>
+
+                                    </div>
+                                </div>
                                 <form action="/login" class="form newtopic" method="post">
                                     <div class="postinfotop">
                                         <h2>Create New Account</h2>
@@ -165,32 +191,9 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="topwrap">
-                                            <div class="userinfo pull-left">
-                                                <div class="avatar">
-                                                    <img src="images/avatar-blank.jpg" alt="" />
-                                                    <div class="status green">&nbsp;</div>
-                                                </div>
-                                                <div class="imgsize">60 x 60</div>
-                                                <div>
-                                                    <form action="/upload" method="post" enctype="multipart/form-data">
-                                                        <input type="file" name="file" />
-                                                        <input type="submit" value="upload" />
-                                                    </form>
 
-                                                    <%--<form action = "/upload" method = "post"--%>
-                                                          <%--enctype = "multipart/form-data">--%>
-                                                        <%--<input type="file" id="upload" name="upload" size = "50"/>--%>
-                                                        <%--<a href="/upload" onclick="document.getElementById('upload').click(); return false">Add</a>--%>
-                                                        <%--<input type = "file" name = "file" value="Add" size = "50" />--%>
-                                                        <%--<br />--%>
-                                                        <%--<input type = "submit" value = "Upload File" />--%>
 
-                                                    <%--<form action="new_post.jsp" method="post" class="form">--%>
-                                                        <%--<button class="btn">Add</button>--%>
-                                                    <%--</form>--%>
 
-                                                </div>
-                                            </div>
                                             <div class="posttext pull-left">
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-6">

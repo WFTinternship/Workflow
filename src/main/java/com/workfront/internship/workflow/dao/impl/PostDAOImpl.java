@@ -9,6 +9,7 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,10 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     public PostDAOImpl() {
            dataSource = DBHelper.getPooledConnection();
+    }
+
+    public PostDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     /**

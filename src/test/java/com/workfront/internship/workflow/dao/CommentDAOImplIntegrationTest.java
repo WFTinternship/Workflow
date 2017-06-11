@@ -44,24 +44,25 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
 
     @Before
     public void setup() {
+        dataSource = DBHelper.getPooledConnection();
+
         AppArea appArea;
         commentList = new ArrayList<>();
 
-        userDAO = new UserDAOImpl();
+        userDAO = new UserDAOImpl(dataSource);
         user=  DaoTestUtil.getRandomUser();
         userDAO.add(user);
 
         appArea = DaoTestUtil.getRandomAppArea();
 
-        postDAO = new PostDAOImpl();
+        postDAO = new PostDAOImpl(dataSource);
         post=  DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(post);
 
-        commentDAO = new CommentDAOImpl();
+        commentDAO = new CommentDAOImpl(dataSource);
         comment = DaoTestUtil.getRandomComment(user, post);
         commentList.add(comment);
 
-        dataSource = DBHelper.getPooledConnection();
         LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
