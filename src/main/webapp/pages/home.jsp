@@ -124,9 +124,15 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                    <div class="stnt pull-left">
+                <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
+                    <div class="stnt">
                         <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+                        <c:if test="${user == null}">
+                          <span>
+                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/login" ><button type="submit" class="btn btn-login">Login</button></a>
+                          </span>
+                        </c:if>
                     </div>
 
                     <div class="clearfix"></div>
@@ -149,26 +155,7 @@
 
                 </c:if>
 
-                <c:if test="${user == null}">
-                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
 
-                        <form action="/signup/user" method="post">
-                            <div class="stnt pull-left">
-                                <button type="submit" class="btn btn-signup">Sign Up</button>
-                            </div>
-                        </form>
-                        <div class="clearfix"></div>
-                    </div>
-
-                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                        <form action="/login/user" method="post">
-                            <div class="stnt pull-left">
-                                <button type="submit" class="btn btn-login">Login</button>
-                            </div>
-                        </form>
-                            <div class="clearfix"></div>
-                    </div>
-                </c:if>
 
 
             </div>

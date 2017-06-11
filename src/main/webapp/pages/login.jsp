@@ -58,77 +58,70 @@
             </div>
             <!-- //Slider -->
 
+
             <div class="headernav">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px /></a></div>
-                        <div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">
-                            <div class="dropdown">
-                                <a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>
+                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img
+                                src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                                height=60px width=60px/></a></div>
+                        <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
+                        <%--<div class="dropdown">--%>
+                        <%--<a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>--%>
+                        <%--<ul class="dropdown-menu" role="menu">--%>
+                        <%--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>--%>
+                        <%--<li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>--%>
+                        <%--<li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>--%>
 
-                                </ul>
-                            </div>
-                        </div>
+                        <%--</ul>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
                         <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                             <div class="wrap">
                                 <form action="#" method="post" class="form">
-                                    <div class="pull-left txt"><input type="text" class="form-control" placeholder="Search Topics"></div>
-                                    <div class="pull-right"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></div>
+                                    <div class="pull-left txt"><input type="text" class="form-control"
+                                                                      placeholder="Search Topics"></div>
+                                    <div class="pull-right">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                    </div>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                            <div class="stnt pull-left">                            
-                                <form action="new_post.jsp" method="post" class="form">
-                                    <button class="btn btn-primary">Start New Topic</button>
-                                </form>
-                            </div>
-                            <div class="env pull-left"><i class="fa fa-envelope"></i></div>
-
-
-                                <%--@elvariable id="user" type="com.workfront.internship.workflow.domain.User"--%>
+                        <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
+                            <div class="stnt">
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
                                 <c:if test="${user == null}">
-                                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-
-                                        <div class="stnt pull-left">
-                                            <button type="submit" class="btn btn-signup">Sign Up</button>
-                                        </div>
-
-                                        <div class="clearfix"></div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-
-                                        <div class="stnt pull-left">
-                                            <button type="submit" class="btn btn-login">Login</button>
-                                        </div>
-
-                                        <div class="clearfix"></div>
-                                    </div>
+                          <span>
+                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/login" ><button type="submit" class="btn btn-login">Login</button></a>
+                          </span>
                                 </c:if>
-                                <c:if test="${user != null}">
-                                    <div class="avatar pull-left dropdown">
-                                        <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
-                                            class="caret"></b>
-                                        <div class="status green">&nbsp;</div>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
-                                                account</a></li>
-                                        </ul>
-                                    </div>
-
-                                </c:if>
+                            </div>
 
                             <div class="clearfix"></div>
                         </div>
+
+                        <c:if test="${user != null}">
+                            <div class="avatar pull-left dropdown">
+                                <a data-toggle="dropdown" href="#"><img
+                                        src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                    class="caret"></b>
+                                <div class="status green">&nbsp;</div>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
+                                        account</a></li>
+                                </ul>
+                            </div>
+
+                        </c:if>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -147,83 +140,147 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
+                            <ul class="nav nav-tabs">
+                                <li  class="active"><a data-toggle="tab" href="#signup">Sign up</a></li>
+                                <li><a data-toggle="tab" href="#login">Login</a></li>
+                            </ul>
 
+                            <div class="tab-content">
+                                <div id="signup" class="tab-pane fade in active">
 
-
-                            <!-- POST -->
-                            <div class="post">
-                                <form action="/login" class="form newtopic" method="post">
-                                    <div class="postinfotop">
-                                        <h2>Create New Account</h2>
-                                    </div>
-
-                                    <!-- acc section -->
-                                    <div class="accsection">
-                                        <div class="acccap">
-                                            <div class="userinfo pull-left">&nbsp;</div>
-                                            <div class="posttext pull-left"><h3>Required Fields</h3></div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="topwrap">
-                                            <div class="userinfo pull-left">
-                                                <div class="avatar">
-                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" alt="" />
-                                                    <div class="status green">&nbsp;</div>
-                                                </div>
-                                                <div class="imgsize">60 x 60</div>
-                                                <div>
-                                                    <button class="btn">Add</button>
-                                                </div>
+                                    <!-- POST -->
+                                    <div class="post">
+                                        <form action="/signup" class="form newtopic" method="post">
+                                            <div class="postinfotop">
+                                                <h2>Create New Account</h2>
                                             </div>
-                                            <div class="posttext pull-left">
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="text" placeholder="First Name" class="form-control" />
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="text" placeholder="Last Name" class="form-control" />
-                                                    </div>
+
+                                            <!-- acc section -->
+                                            <div class="accsection">
+                                                <div class="acccap">
+                                                    <div class="userinfo pull-left">&nbsp;</div>
+                                                    <div class="posttext pull-left"><h3>Required Fields</h3></div>
+                                                    <div class="clearfix"></div>
                                                 </div>
-                                                <div>
-                                                    <input type="text" placeholder="Email" class="form-control" />
+                                                <div class="topwrap">
+                                                    <div class="userinfo pull-left">
+                                                        <div class="avatar">
+                                                            <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" alt="" />
+                                                            <div class="status green">&nbsp;</div>
+                                                        </div>
+                                                        <div class="imgsize">60 x 60</div>
+                                                        <div>
+                                                            <button class="btn">Add</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="posttext pull-left">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="text" placeholder="First Name" class="form-control" name="firstName"/>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="text" placeholder="Last Name" class="form-control" name="lastName"/>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <input type="text" placeholder="Email" class="form-control" name="email" />
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="password" placeholder="Password" class="form-control" id="sgpass" name="password" />
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <input type="password" placeholder="Retype Password" class="form-control" id="sgpass2" name="confirmPass" />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="clearfix"></div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="password" placeholder="Password" class="form-control" id="pass" name="pass" />
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="password" placeholder="Retype Password" class="form-control" id="pass2" name="pass2" />
-                                                    </div>
+                                            </div><!-- acc section END -->
+
+
+                                            <div class="postinfobot">
+
+                                                <div class="notechbox pull-left">
+                                                    <input type="checkbox" name="note" id="sgnote" class="form-control" />
                                                 </div>
 
+                                                <div class="pull-left lblfch">
+                                                    <label for="note"> I agree with the Terms and Conditions of this site</label>
+                                                </div>
+
+                                                <div class="pull-right postreply">
+                                                    <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                                    <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+
+                                                <div class="clearfix"></div>
                                             </div>
-                                            <div class="clearfix"></div>
-                                        </div>  
-                                    </div><!-- acc section END -->
+                                        </form>
+                                    </div><!-- POST -->
 
 
-                                    <div class="postinfobot">
 
-                                        <div class="notechbox pull-left">
-                                            <input type="checkbox" name="note" id="note" class="form-control" />
-                                        </div>
+                                </div>
+                                <div id="login" class="tab-pane fade">
 
-                                        <div class="pull-left lblfch">
-                                            <label for="note"> I agree with the Terms and Conditions of this site</label>
-                                        </div>
+                                    <!-- POST -->
+                                    <div class="post">
+                                        <form action="/signup" class="form newtopic" method="post">
+                                            <div class="postinfotop">
+                                                <h2>Create New Account</h2>
+                                            </div>
 
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
-                                            <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                            <!-- acc section -->
+                                            <div class="accsection">
+
+                                                <div class="topwrap">
+                                                    <div class="posttext container">
+
+                                                        <div class="row">
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <input type="text" placeholder="Email" class="form-control" name="email" />
+
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <input type="password" placeholder="Password" class="form-control" id="pass" name="password" />
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div><!-- acc section END -->
 
 
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </form>
-                            </div><!-- POST -->
+                                            <div class="postinfobot">
 
+                                                <div class="notechbox pull-left">
+                                                    <input type="checkbox" name="note" id="note" class="form-control" />
+                                                </div>
+
+                                                <div class="pull-left lblfch">
+                                                    <label for="note"> I agree with the Terms and Conditions of this site</label>
+                                                </div>
+
+                                                <div class="pull-right postreply">
+                                                    <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                                    <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </form>
+                                    </div><!-- POST -->
+
+                                </div>
+                            </div>
 
 
 
