@@ -6,8 +6,10 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<%--<c:set var="allPosts" value="<%=request.getAttribute("allPosts")%>"/>--%>
-<%--<c:set var="appAreas" value="<%=request.getAttribute("appAreas")%>"/>--%>
+<c:set var="allPosts" value='<%=request.getAttribute("allPosts")%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute("appAreas")%>'/>
+<c:set var="user" value='<%=request.getAttribute("name")%>'/>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -130,41 +132,43 @@
                     <div class="clearfix"></div>
                 </div>
 
-                    <c:if test="${user != null}">
-                        <div class="avatar pull-left dropdown">
-                            <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
-                                class="caret"></b>
-                            <div class="status green">&nbsp;</div>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
-                                    account</a></li>
-                            </ul>
-                        </div>
+                <c:if test="${user != null}">
+                    <div class="avatar pull-left dropdown">
+                        <a data-toggle="dropdown" href="#"><img
+                                src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                            class="caret"></b>
+                        <div class="status green">&nbsp;</div>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
+                                account</a></li>
+                        </ul>
+                    </div>
 
-                    </c:if>
+                </c:if>
 
-                    <c:if test="${user == null}">
-                        <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
+                <c:if test="${user == null}">
+                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
 
+                        <form action="/login/signup" method="post">
                             <div class="stnt pull-left">
                                 <button type="submit" class="btn btn-signup">Sign Up</button>
                             </div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
 
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-
+                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
+                        <form action="/login/user" method="post">
                             <div class="stnt pull-left">
                                 <button type="submit" class="btn btn-login">Login</button>
                             </div>
-
+                        </form>
                             <div class="clearfix"></div>
-                        </div>
-                    </c:if>
+                    </div>
+                </c:if>
 
 
             </div>

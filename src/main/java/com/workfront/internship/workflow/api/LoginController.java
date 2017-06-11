@@ -29,10 +29,28 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("password");
 
 
+        String url = req.getRequestURL().toString();
+        String requestType = url.substring(url.lastIndexOf('/') + 1);
+
+        if (requestType.equals("signup")){
+            getServletConfig()
+                    .getServletContext()
+                    .getRequestDispatcher("/pages/login.jsp")
+                    .forward(req, resp);
+        }
+
+        if (requestType.equals("user")){
+            getServletConfig()
+                    .getServletContext()
+                    .getRequestDispatcher("/pages/login.jsp")
+                    .forward(req, resp);
+        }
+
+
         UserService userService = new UserServiceImpl();
 
         String jsp;
-        User user = null;
+        User user;
         try {
             user = userService.authenticate(email, password);
 
@@ -43,7 +61,7 @@ public class LoginController extends HttpServlet {
 
             // resp.setHeader("location", "http://localhost:8080");
             resp.setStatus(200);
-            jsp = "/pages/new-post.jsp";
+            jsp = "/pages/home.jsp";
         } catch (RuntimeException e) {
             //when the user was not found in database or query failed.
             req.setAttribute("user", null);
