@@ -1,8 +1,11 @@
 package com.workfront.internship.workflow.api;
 
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
+import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
@@ -28,21 +31,25 @@ public class LoginController extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
+        PostService postService = new PostServiceImpl();
+
+        List<Post> posts = postService.getAll();
+        req.setAttribute("allPosts", posts);
 
         String url = req.getRequestURL().toString();
         String requestType = url.substring(url.lastIndexOf('/') + 1);
 
-        if (requestType.equals("signup")){
+        if (requestType.equals("user")){
             getServletConfig()
                     .getServletContext()
                     .getRequestDispatcher("/pages/login.jsp")
                     .forward(req, resp);
         }
 
-        if (requestType.equals("user")){
+        if (requestType.equals("new-post")){
             getServletConfig()
                     .getServletContext()
-                    .getRequestDispatcher("/pages/login.jsp")
+                    .getRequestDispatcher("/pages/new_post.jsp")
                     .forward(req, resp);
         }
 

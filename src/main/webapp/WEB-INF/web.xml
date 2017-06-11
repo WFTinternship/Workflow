@@ -67,7 +67,7 @@
 
     <servlet-mapping>
         <servlet-name>SignUp</servlet-name>
-        <url-pattern>/signUp</url-pattern>
+        <url-pattern>/signup/*</url-pattern>
     </servlet-mapping>
 
     <!--<servlet>-->

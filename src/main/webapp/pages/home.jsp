@@ -59,7 +59,7 @@
                             src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
-                <form action="/login" method="post">
+                <form action="/login/new-post" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="usr">Name:</label>
@@ -152,7 +152,7 @@
                 <c:if test="${user == null}">
                     <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
 
-                        <form action="/login/signup" method="post">
+                        <form action="/signup/user" method="post">
                             <div class="stnt pull-left">
                                 <button type="submit" class="btn btn-signup">Sign Up</button>
                             </div>

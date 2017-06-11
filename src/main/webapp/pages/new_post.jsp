@@ -7,6 +7,9 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 
+<c:set var="allPosts" value='<%=request.getAttribute("allPosts")%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute("appAreas")%>'/>
+
 <!DOCTYPE html>
 <html lang="en">
     
@@ -17,10 +20,10 @@
         <title>Forum :: New topic</title>
 
         <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Custom -->
-        <link href="css/custom.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/custom.css" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,13 +34,13 @@
 
         <!-- fonts -->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="font-awesome-4.0.3/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome-4.0.3/css/font-awesome.min.css">
 
         <!-- CSS STYLE-->
-        <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen" />
 
         <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-        <link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css" media="screen" />
 
     </head>
     <body>
@@ -51,7 +54,7 @@
                         <!-- SLIDE  -->
                         <li data-transition="fade" data-slotamount="7" data-masterspeed="1500" >
                             <!-- MAIN IMAGE -->
-                            <img src="images/slide.jpg"  alt="slidebg1"  data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
+                            <img src="${pageContext.request.contextPath}/images/slide.jpg"  alt="slidebg1"  data-bgfit="cover" data-bgposition="left top" data-bgrepeat="no-repeat">
                             <!-- LAYERS -->
                         </li>
                     </ul>
@@ -62,7 +65,9 @@
             <div class="headernav">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img src="images/logo.jpg" alt=""  /></a></div>
+                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp">
+                            <img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            height=60px width=60px  /></a></div>
                         <div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">
                             <div class="dropdown">
                                 <a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>
@@ -159,12 +164,13 @@
                                     <div class="topwrap">
                                         <div class="userinfo pull-left">
                                             <div class="avatar">
-                                                <img src="images/avatar4.jpg" alt="" />
+                                                <img src="${pageContext.request.contextPath}/images/avatar4.jpg" alt="" />
                                                 <div class="status red">&nbsp;</div>
                                             </div>
 
                                             <div class="icons">
-                                                <img src="images/icon3.jpg" alt="" /><img src="images/icon4.jpg" alt="" /><img src="images/icon5.jpg" alt="" /><img src="images/icon6.jpg" alt="" />
+                                                <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt="" /><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt="" />
+                                                <img src="${pageContext.request.contextPath}/images/icon5.jpg" alt="" /><img src="${pageContext.request.contextPath}/images/icon6.jpg" alt="" />
                                             </div>
                                         </div>
                                         <div class="posttext pull-left">
@@ -270,106 +276,41 @@
                             </div>
 
                             <!-- POST -->
-                            <div class="post">
-                                <div class="wrap-ut pull-left">
-                                    <div class="userinfo pull-left">
-                                        <div class="avatar">
-                                            <img src="images/avatar.jpg" alt="" />
-                                            <div class="status green">&nbsp;</div>
-                                        </div>
+                            <c:forEach var="post" items="${allPosts}">
+                                <div class="post">
+                                    <div class="wrap-ut pull-left">
+                                        <div class="userinfo pull-left">
+                                            <div class="avatar">
+                                                <img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/>
+                                                <div class="status green">&nbsp;</div>
+                                            </div>
 
-                                        <div class="icons">
-                                            <img src="images/icon1.jpg" alt="" /><img src="images/icon4.jpg" alt="" />
+                                            <div class="icons">
+                                                <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/>
+                                                <img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
+                                            </div>
                                         </div>
+                                        <div class="posttext pull-left">
+                                            <h2><a href="/post/${post.id}">${post.title}</a></h2>
+                                            <p>${post.content}</p>
+                                        </div>
+                                        <div class="clearfix"></div>
                                     </div>
-                                    <div class="posttext pull-left">
-                                        <h2>10 Kids Unaware of Their Halloween Costume</h2>
-                                        <p>It's one thing to subject yourself to a Halloween costume mishap because, hey, that's your prerogative.</p>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="postinfo pull-left">
-                                    <div class="comments">
-                                        <div class="commentbg">
-                                            560
-                                            <div class="mark"></div>
+                                    <div class="postinfo pull-left">
+                                        <div class="comments">
+                                            <div class="commentbg">
+                                                560
+                                                <div class="mark"></div>
+                                            </div>
+
                                         </div>
-
-                                    </div>
-                                    <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                    <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>                                    
-                                </div>
-                                <div class="clearfix"></div>
-                            </div><!-- POST -->
-
-
-                            <!-- POST -->
-                            <div class="post">
-                                <div class="wrap-ut pull-left">
-                                    <div class="userinfo pull-left">
-                                        <div class="avatar">
-                                            <img src="images/avatar2.jpg" alt="" />
-                                            <div class="status red">&nbsp;</div>
-                                        </div>
-
-                                        <div class="icons">
-                                            <img src="images/icon3.jpg" alt="" /><img src="images/icon4.jpg" alt="" /><img src="images/icon5.jpg" alt="" /><img src="images/icon6.jpg" alt="" />
-                                        </div>
-                                    </div>
-                                    <div class="posttext pull-left">
-                                        <h2>What Instagram Ads Will Look Like</h2>
-                                        <p>Instagram offered a first glimpse at what its ads will look like in a blog post Thursday. The sample ad, which you can see below.</p>
+                                        <div class="views"><i class="fa fa-eye"></i> 1,568</div>
+                                        <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
-                                <div class="postinfo pull-left">
-                                    <div class="comments">
-                                        <div class="commentbg">
-                                            89
-                                            <div class="mark"></div>
-                                        </div>
-
-                                    </div>
-                                    <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                    <div class="time"><i class="fa fa-clock-o"></i> 15 min</div>                                    
-                                </div>
-                                <div class="clearfix"></div>
-                            </div><!-- POST -->
-
-
-                            <!-- POST -->
-                            <div class="post">
-                                <div class="wrap-ut pull-left">
-                                    <div class="userinfo pull-left">
-                                        <div class="avatar">
-                                            <img src="images/avatar3.jpg" alt="" />
-                                            <div class="status red">&nbsp;</div>
-                                        </div>
-
-                                        <div class="icons">
-                                            <img src="images/icon2.jpg" alt="" /><img src="images/icon4.jpg" alt="" />
-                                        </div>
-                                    </div>
-                                    <div class="posttext pull-left">
-                                        <h2>The Future of Magazines Is on Tablets</h2>
-                                        <p>Eric Schmidt has seen the future of magazines, and it's on the tablet. At a Magazine Publishers Association.</p>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="postinfo pull-left">
-                                    <div class="comments">
-                                        <div class="commentbg">
-                                            456
-                                            <div class="mark"></div>
-                                        </div>
-
-                                    </div>
-                                    <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                    <div class="time"><i class="fa fa-clock-o"></i> 2 days</div>                                    
-                                </div>
-                                <div class="clearfix"></div>
-                            </div><!-- POST -->
-
+                                <!-- POST -->
+                            </c:forEach>
 
 
 
@@ -510,7 +451,9 @@
             <footer>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="images/logo.jpg" alt=""  /></a></div>
+                        <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#">
+                            <img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                                                                                       height=60px width=60px /></a></div>
                         <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                         <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                             <ul class="socialicons">
@@ -528,7 +471,7 @@
         </div>
 
         <!-- get jQuery from the google apis -->
-        <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
         <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
         <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
@@ -536,7 +479,7 @@
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
         <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->

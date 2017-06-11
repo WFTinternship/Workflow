@@ -1,6 +1,9 @@
 package com.workfront.internship.workflow.api;
 
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +21,11 @@ public class NewPostPageController extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute("appAreas", appAreas);
+
+        PostService postService = new PostServiceImpl();
+
+        List<Post> posts = postService.getAll();
+        req.setAttribute("allPosts", posts);
 
         getServletConfig().
                 getServletContext().
