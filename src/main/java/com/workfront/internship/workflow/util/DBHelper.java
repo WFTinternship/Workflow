@@ -48,6 +48,11 @@ public class DBHelper {
     }
 
     public static DataSource getPooledConnection(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
         Properties properties = loadDbCfgProperties();
 
         cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));
