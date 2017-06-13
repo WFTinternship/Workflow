@@ -19,6 +19,7 @@ import java.util.Properties;
  * Created by nane on 5/27/17
  */
 public class DBHelper {
+    static ComboPooledDataSource cpds = new ComboPooledDataSource();
 
     public static Properties loadDbCfgProperties(){
         Properties properties = new Properties();
@@ -47,7 +48,6 @@ public class DBHelper {
     }
 
     public static DataSource getPooledConnection(){
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
         Properties properties = loadDbCfgProperties();
 
         cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));

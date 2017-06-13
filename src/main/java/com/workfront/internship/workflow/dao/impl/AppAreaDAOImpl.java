@@ -60,6 +60,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         } finally {
+            closeResources(conn, stmt);
 
         }
         return appArea.getId();
@@ -85,7 +86,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         } finally {
-
+            closeResources(conn, stmt);
         }
     }
 
@@ -115,7 +116,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
         } finally {
-
+            closeResources(conn, stmt);
         }
         return userList;
     }
@@ -163,6 +164,8 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
+        } finally {
+            closeResources(conn, stmt, rs);
         }
         return fieldsMap;
     }
