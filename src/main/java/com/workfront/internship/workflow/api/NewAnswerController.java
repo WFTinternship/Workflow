@@ -16,43 +16,47 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Vahag on 6/8/2017
+ * Created by nane on 6/12/17
  */
-public class NewPostPageController extends HttpServlet {
+public class NewAnswerController extends HttpServlet{
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
 
         PostService postService = new PostServiceImpl();
 
-        String title = req.getParameter("title");
-        String content = req.getParameter("content");
+        String url = req.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        String content = req.getParameter("reply");
+
+        Post post = postService.getById(postId);
+        req.setAttribute("post", post);
 
         HttpSession session = req.getSession();
         User user = (User)session.getAttribute("user");
 
-        AppArea appArea = AppArea.getById(Integer.parseInt(req.getParameter("appArea")));
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute("appAreas", appAreas);
 
-        Post post = new Post();
-        post.setTitle(title)
-                .setAppArea(appArea)
+        Post answer = new Post();
+        answer.setUser(user)
                 .setContent(content)
-                .setUser(user);
-        String jsp;
+                .setAppArea(post.getAppArea())
+                .setTitle(post.getTitle())
+                .setPost(post);
+
         try {
             postService.add(post);
-            jsp = "/pages/home.jsp";
         }catch (RuntimeException e){
-            jsp = "/pages/new_post.jsp";
+            //TODO: send message that the answer was not added.
         }
 
-        List<Post> posts = postService.getAll();
-        req.setAttribute("allPosts", posts);
+        List<Post> answers = postService.getAnswersByPostId(postId);
+        req.setAttribute("answers", answers);
 
         getServletConfig().
                 getServletContext().
-                getRequestDispatcher(jsp).
+                getRequestDispatcher("/pages/post.jsp").
                 forward(req,resp);
     }
 }

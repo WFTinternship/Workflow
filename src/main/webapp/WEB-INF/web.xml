@@ -24,12 +24,12 @@
         <servlet-name>HomePosts</servlet-name>
         <servlet-class>com.workfront.internship.workflow.api.HomeController</servlet-class>
     </servlet>
-
+    
     <servlet-mapping>
         <servlet-name>HomePosts</servlet-name>
         <url-pattern></url-pattern>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
-
 
     <servlet>
         <servlet-name>Post</servlet-name>
@@ -71,10 +71,20 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>NewAnswer</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.NewAnswerController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>NewAnswer</servlet-name>
+        <url-pattern>/new-answer/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Upload</servlet-name>
         <servlet-class>com.workfront.internship.workflow.api.FileUploadHandler</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>Upload</servlet-name>
         <url-pattern>/upload</url-pattern>
