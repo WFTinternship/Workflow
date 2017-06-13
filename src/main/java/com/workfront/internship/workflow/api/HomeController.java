@@ -1,7 +1,5 @@
 package com.workfront.internship.workflow.api;
 
-import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.service.PostService;
@@ -34,7 +32,7 @@ public class HomeController extends HttpServlet {
 
         getServletConfig()
                 .getServletContext()
-                .getRequestDispatcher("/pages/home.jsp")
+                .getRequestDispatcher("/index.jsp")
                 .forward(req, resp);
     }
 }

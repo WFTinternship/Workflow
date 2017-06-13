@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.dao;
 
+import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 
 import java.util.List;
@@ -56,6 +57,7 @@ public interface PostDAO {
      * @return List of answers of the specified post
      */
     List<Post> getAnswersByPostId(long postId);
+
 
     /**
      *

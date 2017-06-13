@@ -4,11 +4,13 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,10 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     public PostDAOImpl() {
            dataSource = DBHelper.getPooledConnection();
+    }
+
+    public PostDAOImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     /**
@@ -87,7 +93,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public Post getById(long id) {
         Post post = null;
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.passcode, user.rating, apparea_id, apparea.name, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
                 "apparea.description,  apparea.team_name, post_time, title, content  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
@@ -120,7 +126,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public List<Post> getAll() {
         List<Post> allPosts = new ArrayList<>();
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.passcode, user.rating, apparea_id, apparea.name, apparea.description, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time, title, content  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
@@ -153,7 +159,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public List<Post> getByUserId(long userId) {
         List<Post> posts = new ArrayList<>();
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.passcode, user.rating, apparea_id, apparea.name, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
                 " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
@@ -187,7 +193,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public List<Post> getByAppAreaId(long id) {
         List<Post> posts = new ArrayList<>();
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.passcode, user.rating, apparea_id, apparea.name, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
                 " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
@@ -220,7 +226,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public List<Post> getByTitle(String title) {
         List<Post> posts = new ArrayList<>();
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.rating, user.passcode," +
+                " user.email, user.avatar_url, user.rating, user.passcode," +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time, title, content " +
                 " FROM post " +
@@ -254,7 +260,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public List<Post> getAnswersByPostId(long postId) {
         List<Post> answerList = new ArrayList<>();
         final String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.rating, user.passcode, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title," +
                 " content as answer_content " +
@@ -282,6 +288,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         return answerList;
     }
 
+
     /**
      * @see PostDAO#getBestAnswer(long)
      */
@@ -289,7 +296,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public Post getBestAnswer(long postId) {
         Post bestAnswer = null;
         final String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.rating, user.passcode, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title, " +
                 " content as answer_content " +

@@ -80,6 +80,30 @@
         <url-pattern>/new-answer/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Upload</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.FileUploadHandler</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Upload</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Comment</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.CommentController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Comment</servlet-name>
+        <url-pattern>/comment</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
     <!--<servlet>-->
         <!--<servlet-name>AppAreaPosts</servlet-name>-->
         <!--<servlet-class>com.workfront.internship.workflow.api.AppAreaPostsController</servlet-class>-->
