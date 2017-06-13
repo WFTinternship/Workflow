@@ -27,9 +27,6 @@ public class HomeController extends HttpServlet {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute("appAreas", appAreas);
 
-
-
-
         getServletConfig()
                 .getServletContext()
                 .getRequestDispatcher("/index.jsp")

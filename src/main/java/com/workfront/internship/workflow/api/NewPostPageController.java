@@ -26,9 +26,6 @@ public class NewPostPageController extends HttpServlet {
 
         PostService postService = new PostServiceImpl();
 
-        List<Post> posts = postService.getAll();
-        req.setAttribute("allPosts", posts);
-
         String title = req.getParameter("title");
         String content = req.getParameter("content");
 
@@ -50,6 +47,8 @@ public class NewPostPageController extends HttpServlet {
             jsp = "/pages/new_post.jsp";
         }
 
+        List<Post> posts = postService.getAll();
+        req.setAttribute("allPosts", posts);
 
         getServletConfig().
                 getServletContext().
