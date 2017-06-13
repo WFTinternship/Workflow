@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -47,7 +46,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
     @Override
     public long add(Comment comment) {
         long id = 0;
-        String query = "INSERT INTO comment(user_id,post_id,content,comment_time)"+
+        String query = "INSERT INTO comment(user_id,post_id,content,comment_time) "+
                 "VALUE(?,?,?,?)";
         Connection connection = null;
         PreparedStatement stmt = null;

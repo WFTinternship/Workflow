@@ -38,10 +38,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     /**
      * Sets users fields values from result set
-     *
-     * @param user
-     * @param rs
-     * @return
      */
     public static User fromResultSet(User user, ResultSet rs) {
         try {
@@ -61,31 +57,23 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param user
-     * @return
      * @see UserDAO#add(User)
      */
     @Override
     public long add(User user) {
-        long id = 0;
-        try {
-            id = add(user, dataSource.getConnection());
-        } catch (SQLException e) {
-            LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
-        }
-        return id;
+        return add(user, dataSource);
     }
 
     @Override
-    public long add(User user, Connection connection) {
+    public long add(User user, DataSource dataSource) {
         long id = 0;
         String addSql = "INSERT INTO  user (first_name, last_name, email, passcode, avatar_url, rating) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
-
+        Connection connection = null;
         PreparedStatement addStmt = null;
         ResultSet resultSet = null;
         try {
+            connection = dataSource.getConnection();
             addStmt = connection.prepareStatement(addSql, Statement.RETURN_GENERATED_KEYS);
             addStmt.setString(1, user.getFirstName());
             addStmt.setString(2, user.getLastName());
@@ -110,8 +98,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param userId
-     * @param appAreaId
      * @see UserDAO#subscribeToArea(long, long)
      */
     @Override
@@ -125,9 +111,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
-
             stmt.execute();
-
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
             throw new RuntimeException(e);
@@ -137,8 +121,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param userId
-     * @param appAreaId
      * @see UserDAO#unsubscribeToArea(long, long)
      */
     @Override
@@ -152,9 +134,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, userId);
             stmt.setLong(2, appAreaId);
-
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
             throw new RuntimeException(e);
@@ -164,8 +144,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param name
-     * @return
      * @see UserDAO#getByName(String)
      */
     @Override
@@ -197,8 +175,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param id
-     * @return
      * @see UserDAO#getById(long)
      */
     @Override
@@ -228,8 +204,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param email
-     * @return
      * @see UserDAO#getByEmail(String)
      */
     @Override
@@ -258,8 +232,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param userId
-     * @return
      * @see UserDAO#getAppAreasById(long)
      */
     @Override
@@ -289,7 +261,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
-     * @param id
      * @see UserDAO#deleteById(long)
      */
     @Override

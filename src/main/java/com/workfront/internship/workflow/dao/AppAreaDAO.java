@@ -12,8 +12,8 @@ public interface AppAreaDAO {
 
     /**
      * Adds AppArea to the database
-     * @param appArea
-     * @return
+     * @param appArea app area to be added
+     * @return id of the added app area
      */
     long add(AppArea appArea);
 
@@ -21,15 +21,15 @@ public interface AppAreaDAO {
 
     /**
      * Gets the list of users who are subscribed to the appArea with the given id
-     * @param appAreaId
-     * @return
+     * @param appAreaId app area id
+     * @return users of the given app area
      */
     List<User> getUsersById(long appAreaId);
 
     /**
      * Gets the AppArea with the given id
-     * @param id
-     * @return
+     * @param id id of the searched app area
+     * @return app area with the given id
      */
     AppArea getById(long id);
 
@@ -39,7 +39,7 @@ public interface AppAreaDAO {
 
     /**
      * Deletes AppArea with the given id
-     * @param id
+     * @param id app area id that has to be deleted
      */
     void deleteById(long id);
 

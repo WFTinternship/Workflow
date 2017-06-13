@@ -1,11 +1,7 @@
 package com.workfront.internship.workflow.util;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mchange.v2.c3p0.PooledDataSource;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -19,14 +15,13 @@ import java.util.Properties;
  * Created by nane on 5/27/17
  */
 public class DBHelper {
-    static ComboPooledDataSource cpds = new ComboPooledDataSource();
+    private static ComboPooledDataSource cpds = new ComboPooledDataSource();
 
-    public static Properties loadDbCfgProperties(){
+    private static Properties loadDbCfgProperties(){
         Properties properties = new Properties();
-        InputStream inputStream =  DBHelper.class
+        try (InputStream is = DBHelper.class
                 .getClassLoader()
-                .getResourceAsStream("dbConfig.properties");
-        try (InputStream is = inputStream) {
+                .getResourceAsStream("dbConfig.properties")) {
             properties.load(is);
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +44,11 @@ public class DBHelper {
 
     public static DataSource getPooledConnection(){
         Properties properties = loadDbCfgProperties();
-
+        try {
+            cpds.setDriverClass("com.mysql.jdbc.Driver"); //loads the jdbc driver
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
         cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));
         cpds.setUser(properties.getProperty("USERNAME"));
         cpds.setPassword(properties.getProperty("PASSWORD"));
@@ -62,15 +61,4 @@ public class DBHelper {
         return cpds;
     }
 
-    public static Connection getConnection(ConnectionType connectionType) throws SQLException {
-        if(connectionType.equals(ConnectionType.POOL)) {
-            return getPooledConnection().getConnection();
-        } else if(connectionType.equals(ConnectionType.BASIC)){
-            return getConnection();
-        } else {
-            throw new RuntimeException(String.format(
-                    "Unknown connection type: %s", connectionType
-            ));
-        }
-    }
 }

@@ -11,7 +11,7 @@ import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
-import java.lang.reflect.Field;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -42,13 +42,14 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntryException("User already exists");
         }
         userDAO = new UserDAOImpl();
-        Connection connection;
+        DataSource dataSource;
         try {
-            connection = DBHelper.getConnection();
-
+            dataSource = DBHelper.getPooledConnection();
+            Connection connection = null;
             try {
+                connection = dataSource.getConnection();
                 connection.setAutoCommit(false);
-                id = userDAO.add(user, connection);
+                id = userDAO.add(user, dataSource);
                 for (AppArea appArea : AppArea.values()) {
                     userDAO.subscribeToArea(user.getId(), appArea.getId());
                 }
