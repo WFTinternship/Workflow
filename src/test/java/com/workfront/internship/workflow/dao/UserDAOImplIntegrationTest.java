@@ -29,15 +29,12 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     private UserDAO userDAO;
     private AppAreaDAO appAreaDAO;
     private User user;
-    private DataSource dataSource;
-
     private List<User> userList;
 
     @Before
     public void setup() {
-        dataSource = DBHelper.getPooledConnection();
         userDAO = new UserDAOImpl(dataSource);
-        appAreaDAO = new AppAreaDAOImpl(dataSource);
+        appAreaDAO = new AppAreaDAOImpl();
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
 
@@ -53,12 +50,13 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         for (User user : userList) {
             if (userDAO.getById(user.getId()) != null) {
                 userDAO.deleteById(user.getId());
             }
         }
+
         userDAO.deleteById(user.getId());
         if (dataSource instanceof ComboPooledDataSource) {
             try {

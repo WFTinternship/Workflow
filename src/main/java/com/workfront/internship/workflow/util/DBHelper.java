@@ -20,9 +20,6 @@ import java.util.Properties;
  */
 public class DBHelper {
 
-    private static ComboPooledDataSource cpds = new ComboPooledDataSource();
-
-
     public static Properties loadDbCfgProperties(){
         Properties properties = new Properties();
         InputStream inputStream =  DBHelper.class
@@ -50,11 +47,7 @@ public class DBHelper {
     }
 
     public static DataSource getPooledConnection(){
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
         Properties properties = loadDbCfgProperties();
 
         cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));
@@ -64,7 +57,7 @@ public class DBHelper {
         cpds.setInitialPoolSize(5);
         cpds.setMinPoolSize(5);
         cpds.setAcquireIncrement(5);
-        cpds.setMaxPoolSize(200);
+        cpds.setMaxPoolSize(20);
 
         return cpds;
     }

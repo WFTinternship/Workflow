@@ -44,8 +44,11 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
     public long add(AppArea appArea) {
         final String sql = "INSERT INTO apparea (id, name, description, team_name) " +
                 "VALUES (?, ?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, appArea.getId());
             stmt.setString(2, appArea.getName());
             stmt.setString(3, appArea.getDescription());
@@ -56,6 +59,8 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
+        } finally {
+
         }
         return appArea.getId();
 
@@ -69,13 +74,18 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
     public void deleteById(long id) {
         final String sql = "DELETE FROM apparea " +
                 "WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
+        } finally {
+
         }
     }
 
@@ -89,8 +99,11 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
         List<User> userList = new ArrayList<>();
         final String sql = "SELECT * FROM user " +
                 "WHERE id IN (SELECT user_id FROM user_apparea WHERE apparea_id = ?) ";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, appAreaId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -101,6 +114,8 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
             throw new RuntimeException(e);
+        } finally {
+
         }
         return userList;
     }
@@ -132,10 +147,14 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
         Map<String, Object> fieldsMap = new HashMap<>();
         final String sql = "SELECT * FROM apparea " +
                 "WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             while (rs.next()) {
                 fieldsMap.put("Name",rs.getString(AppAreaDAOImpl.name));
                 fieldsMap.put("Description",rs.getString(AppAreaDAOImpl.description));

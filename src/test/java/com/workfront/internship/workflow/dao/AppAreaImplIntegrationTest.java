@@ -32,8 +32,6 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
      */
     @Before
     public void setup(){
-        dataSource = DBHelper.getPooledConnection();
-
         appAreaDAO = new AppAreaDAOImpl(dataSource);
         userDAO = new UserDAOImpl(dataSource);
         appArea = AppArea.values()[0];

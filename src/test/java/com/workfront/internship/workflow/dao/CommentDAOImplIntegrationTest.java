@@ -44,8 +44,6 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
 
     @Before
     public void setup() {
-        dataSource = DBHelper.getPooledConnection();
-
         AppArea appArea;
         commentList = new ArrayList<>();
 

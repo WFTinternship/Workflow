@@ -45,7 +45,6 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() {
-        dataSource = DBHelper.getPooledConnection();
         userDAO = new UserDAOImpl(dataSource);
         postDAO = new PostDAOImpl(dataSource);
 
