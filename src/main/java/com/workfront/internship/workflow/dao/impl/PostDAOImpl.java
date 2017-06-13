@@ -55,8 +55,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         long id = 0;
         String sql = "INSERT INTO post (user_id, apparea_id,post_id," +
                 " post_time, title, content) VALUE(?,?,?,?,?,?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, post.getUser().getId());
             stmt.setLong(2, post.getAppArea().getId());
             if (post.getPost() == null){
@@ -73,7 +77,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.execute();
             PreparedStatement t = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=1",Statement.RETURN_GENERATED_KEYS);
             t.execute();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             if(rs.next()){
                 id = rs.getLong(1);
             }
@@ -82,6 +86,8 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException();
+        }finally {
+            closeResources(conn, stmt, rs);
         }
         return post.getId();
     }
@@ -99,9 +105,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        try(Connection conn = dataSource.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
 
            rs = stmt.executeQuery();
@@ -113,7 +122,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
         }finally {
-            close(rs);
+            closeResources(conn, stmt, rs);
         }
         return post;
     }
@@ -133,9 +142,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL" +
                 " ORDER BY post_time DESC";
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             while (rs.next()){
                 Post post = new Post();
@@ -147,7 +159,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
-            close(rs);
+            closeResources(conn, stmt, rs);
         }
         return allPosts;
     }
@@ -166,9 +178,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.user_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, userId);
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -180,7 +195,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
-            close(rs);
+            closeResources(conn, stmt, rs);
         }
         return posts;
     }
@@ -200,9 +215,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.apparea_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -214,7 +232,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
-            close(rs);
+            closeResources(conn, stmt, rs);
         }
         return posts;
     }
@@ -233,9 +251,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL AND post.title LIKE ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, "%" + title.trim() + "%");
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -248,7 +269,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
-            close(rs);
+            closeResources(conn, stmt, rs);
         }
         return posts;
     }
@@ -268,9 +289,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.post_id = ?" +
                 " ORDER BY answer_time DESC";
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -283,7 +307,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
-            close(rs);
+            closeResources(conn, stmt, rs);
         }
         return answerList;
     }
@@ -304,9 +328,12 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE  best_answer.post_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
             if (rs.next()){
@@ -318,7 +345,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
-            close(rs);
+            closeResources(conn, stmt, rs);
         }
         return bestAnswer;
     }
@@ -329,8 +356,11 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     @Override
     public void setBestAnswer(long postId, long answerId) {
         final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, postId);
             stmt.setLong(2, answerId);
             stmt.execute();
@@ -338,6 +368,8 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException("Foreign Key constraint fails");
+        }finally {
+            closeResources(conn, stmt);
         }
     }
 
@@ -348,8 +380,11 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public void update(Post post) {
         String sql = "UPDATE post SET title = ?, content = ? " +
                 " WHERE post.id = ? ";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, post.getTitle());
             stmt.setString(2, post.getContent());
             stmt.setLong(3, post.getId());
@@ -359,6 +394,8 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
+        }finally {
+            closeResources(conn, stmt);
         }
     }
 
@@ -369,30 +406,24 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public void delete(long id) {
         int numberOfRowsAffected = 0;
         String sql = "DELETE FROM post WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
 
             numberOfRowsAffected = stmt.executeUpdate();
 
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
+        }finally {
+            closeResources(conn, stmt);
         }
         if (numberOfRowsAffected == 0){
             LOG.info("No rows affected");
         }
     }
-
-    private void close(ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 
     public static Post answerFromResultSet(Post answer, ResultSet rs){
         try {

@@ -64,7 +64,7 @@ public class DBHelper {
         cpds.setInitialPoolSize(5);
         cpds.setMinPoolSize(5);
         cpds.setAcquireIncrement(5);
-        cpds.setMaxPoolSize(200);
+        cpds.setMaxPoolSize(20);
 
         return cpds;
     }
