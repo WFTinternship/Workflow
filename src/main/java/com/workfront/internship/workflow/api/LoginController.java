@@ -46,14 +46,6 @@ public class LoginController extends HttpServlet {
                     .forward(req, resp);
         }
 
-        if (requestType.equals("new-post")){
-            getServletConfig()
-                    .getServletContext()
-                    .getRequestDispatcher("/pages/new_post.jsp")
-                    .forward(req, resp);
-        }
-
-
         UserService userService = new UserServiceImpl();
 
         String jsp;
@@ -63,21 +55,24 @@ public class LoginController extends HttpServlet {
 
             HttpSession session = req.getSession();
             //setting the maximum inactive to be 30 minutes.
-            session.setMaxInactiveInterval(1800);
+            //session.setMaxInactiveInterval(1800);
             session.setAttribute("user", user);
 
             req.setAttribute("user", user);
 
             // resp.setHeader("location", "http://localhost:8080");
             resp.setStatus(200);
-            jsp = "/pages/home.jsp";
+            if (requestType.equals("new-post")){
+                jsp = "/pages/new_post.jsp";
+            }else {
+                jsp = "/pages/home.jsp";
+            }
         } catch (RuntimeException e) {
             //when the user was not found in database or query failed.
             req.setAttribute("user", null);
             resp.setStatus(405);
             jsp = "/pages/login.jsp";
         }
-
 
         getServletConfig()
                 .getServletContext()

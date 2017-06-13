@@ -43,6 +43,11 @@ public class DBHelper {
     }
 
     public static DataSource getPooledConnection(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        }catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
         Properties properties = loadDbCfgProperties();
         try {
             cpds.setDriverClass("com.mysql.jdbc.Driver"); //loads the jdbc driver

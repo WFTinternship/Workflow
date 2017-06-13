@@ -29,7 +29,7 @@ public class HomeController extends HttpServlet {
 
         getServletConfig()
                 .getServletContext()
-                .getRequestDispatcher("/index.jsp")
+                .getRequestDispatcher("/pages/home.jsp")
                 .forward(req, resp);
     }
 }
