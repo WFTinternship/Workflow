@@ -27,7 +27,7 @@
 
     <servlet-mapping>
         <servlet-name>HomePosts</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern></url-pattern>
     </servlet-mapping>
 
 
@@ -79,6 +79,17 @@
         <servlet-name>Upload</servlet-name>
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Comment</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.CommentController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Comment</servlet-name>
+        <url-pattern>/comment</url-pattern>
+    </servlet-mapping>
+
 
 
 

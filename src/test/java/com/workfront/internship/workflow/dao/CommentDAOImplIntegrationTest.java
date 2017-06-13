@@ -202,6 +202,31 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
     }
 
     /**
+     * @see CommentDAOImpl#getByPostId(long)
+     */
+    @Test
+    public void getByPostId_success(){
+        commentDAO.add(comment);
+        // Test method
+        List<Comment> actualComments = commentDAO.getByPostId(comment.getPost().getId());
+        assertNotNull(actualComments);
+
+        assertTrue(actualComments.contains(comment));
+    }
+
+    /**
+     * @see CommentDAOImpl#getByPostId(long)
+     */
+    @Test
+    public void getByPostId_failure(){
+        // Test method
+        List<Comment> actualComments = commentDAO.getByPostId(100000000);
+        assertNotNull(actualComments);
+
+        assertTrue(actualComments.isEmpty());
+    }
+
+    /**
      * @see CommentDAO#getById(long)
      */
     @Test

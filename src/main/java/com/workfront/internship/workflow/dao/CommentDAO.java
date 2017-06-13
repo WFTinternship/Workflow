@@ -29,6 +29,13 @@ public interface CommentDAO {
     Comment getById(long id);
 
     /**
+     *
+     * @param postId id of the post
+     * @return List of comments of the specified post
+     */
+    List<Comment> getByPostId(long postId);
+
+    /**
      * returns all comments from database as a list
      * @see CommentDAOImpl#getAll()
      * '@return'

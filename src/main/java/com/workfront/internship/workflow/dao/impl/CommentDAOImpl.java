@@ -104,6 +104,37 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
     }
 
     /**
+     * @see CommentDAO#getByPostId(long)
+     * @param postId id of the post
+     * @return
+     */
+    @Override
+    public List<Comment> getByPostId(long postId) {
+        List<Comment> commentList = new ArrayList<>();
+        final String sql = "SELECT comment.id, comment.user_id, first_name, last_name, " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
+                " post.content, comment_time, comment.content FROM comment " +
+                " INNER JOIN user ON comment.user_id = user.id " +
+                " INNER JOIN post ON comment.post_id = post.id WHERE comment.post_id = ?";;
+        ResultSet rs = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, postId);
+            rs = stmt.executeQuery();
+            while (rs.next()){
+                Comment comment = CommentDAOImpl.fromResultSet(rs);
+                commentList.add(comment);
+            }
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            close(rs);
+        }
+        return commentList;
+    }
+
+    /**
      * @see CommentDAO#delete(long)
      * @param id
      * '@return'

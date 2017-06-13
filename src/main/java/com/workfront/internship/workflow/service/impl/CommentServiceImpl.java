@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.CommentService;
 import org.apache.log4j.Logger;
 
@@ -55,6 +56,20 @@ public class CommentServiceImpl implements CommentService {
             return null;
         }
         return comments;
+    }
+
+    @Override
+    public List<Comment> getByPostId(long id) {
+        if(id < 1 ) {
+            logger.error("Id is invalid !");
+            throw new InvalidObjectException("Invalid id !");
+        }
+        try {
+            return commentDAO.getByPostId(id);
+        }catch(RuntimeException e) {
+            logger.error("Failed to get comments by the specified post id!");
+            throw new ServiceLayerException();
+        }
     }
 
     @Override
