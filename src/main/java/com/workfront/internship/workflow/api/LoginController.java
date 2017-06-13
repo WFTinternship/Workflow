@@ -66,6 +66,8 @@ public class LoginController extends HttpServlet {
             session.setMaxInactiveInterval(1800);
             session.setAttribute("user", user);
 
+            req.setAttribute("user", user);
+
             // resp.setHeader("location", "http://localhost:8080");
             resp.setStatus(200);
             jsp = "/pages/home.jsp";

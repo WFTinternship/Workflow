@@ -70,6 +70,16 @@
         <url-pattern>/signup/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>NewAnswer</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.api.NewAnswerController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>NewAnswer</servlet-name>
+        <url-pattern>/new-answer/*</url-pattern>
+    </servlet-mapping>
+
     <!--<servlet>-->
         <!--<servlet-name>AppAreaPosts</servlet-name>-->
         <!--<servlet-class>com.workfront.internship.workflow.api.AppAreaPostsController</servlet-class>-->

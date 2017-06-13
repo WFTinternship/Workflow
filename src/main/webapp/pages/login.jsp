@@ -229,9 +229,9 @@
 
                                     <!-- POST -->
                                     <div class="post">
-                                        <form action="/signup" class="form newtopic" method="post">
+                                        <form action="/login" class="form newtopic" method="post">
                                             <div class="postinfotop">
-                                                <h2>Create New Account</h2>
+                                                <h2>Log in to ccount</h2>
                                             </div>
 
                                             <!-- acc section -->
@@ -269,7 +269,7 @@
 
                                                 <div class="pull-right postreply">
                                                     <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
-                                                    <div class="pull-left"><button type="submit" class="btn btn-primary">Sign Up</button></div>
+                                                    <div class="pull-left"><button type="submit" class="btn btn-primary">Login</button></div>
                                                     <div class="clearfix"></div>
                                                 </div>
 
