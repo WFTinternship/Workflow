@@ -1,11 +1,7 @@
 package com.workfront.internship.workflow.util;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mchange.v2.c3p0.PooledDataSource;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -50,6 +46,11 @@ public class DBHelper {
     public static DataSource getPooledConnection(){
         Properties properties = loadDbCfgProperties();
 
+        try{
+            cpds.setDriverClass("com.mysql.jdbc.Driver");
+        }catch(PropertyVetoException e){
+            e.printStackTrace();
+        }
         cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));
         cpds.setUser(properties.getProperty("USERNAME"));
         cpds.setPassword(properties.getProperty("PASSWORD"));

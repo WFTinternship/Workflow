@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -13,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertNull;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
 import java.sql.SQLException;

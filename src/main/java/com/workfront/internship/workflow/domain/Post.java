@@ -3,7 +3,7 @@ package com.workfront.internship.workflow.domain;
 import java.sql.Timestamp;
 
 /**
- * Created by nane on 5/26/17.
+ * Created by nane on 5/26/17
  */
 public class Post {
     private long id;

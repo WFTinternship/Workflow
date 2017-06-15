@@ -9,8 +9,6 @@ import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 
-import com.workfront.internship.workflow.util.ConnectionType;
-import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -27,7 +25,7 @@ import static junit.framework.TestCase.*;
 
 
 /**
- * Created by angel on 30.05.2017
+ * Created by Angel on 30.05.2017
  */
 public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
     private Comment comment;

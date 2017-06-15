@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.util.ConnectionType;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
@@ -18,8 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
- * Created by angel on 27.05.2017.
+ * Created by Angel on 27.05.2017
  */
 public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
