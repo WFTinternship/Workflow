@@ -34,6 +34,13 @@ public interface UserService {
     User getById(long id);
 
     /**
+     * Gets user by the given email
+     * @param email
+     * @return
+     */
+    User getByEmail(String email);
+
+    /**
      * Gets the list of AppAreas which the user with the given id is subscribed to
      * @param id
      * @return

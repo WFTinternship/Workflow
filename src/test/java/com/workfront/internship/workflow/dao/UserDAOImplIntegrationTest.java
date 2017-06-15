@@ -208,7 +208,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     public void getByEmail_failure() {
         //Test method
         User actualUser = userDAO.getByEmail("123");
-        assertNull(actualUser.getFirstName());
+        assertNull(actualUser);
     }
 
     /**

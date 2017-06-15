@@ -428,7 +428,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             answer.setId(rs.getLong(id));
 
             User user= new User();
-            user = UserDAOImpl.fromResultSet(user, rs);
+            user = UserDAOImpl.fromResultSet(rs);
             user.setId(rs.getLong(userId));
             answer.setUser(user);
 
@@ -450,8 +450,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         try {
             post.setId(rs.getLong(id));
 
-            User user = new User();
-            user = UserDAOImpl.fromResultSet(user, rs);
+            User user = UserDAOImpl.fromResultSet(rs);
             user.setId(rs.getLong(userId));
             post.setUser(user);
 

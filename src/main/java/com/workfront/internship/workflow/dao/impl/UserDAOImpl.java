@@ -39,7 +39,8 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     /**
      * Sets users fields values from result set
      */
-    public static User fromResultSet(User user, ResultSet rs) {
+    public static User fromResultSet(ResultSet rs) {
+        User user = new User();
         try {
             user.setId(rs.getLong(id));
             user.setFirstName(rs.getString(firstName));
@@ -162,8 +163,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.setString(1, filteredName + "%");
             rs = stmt.executeQuery();
             while (rs.next()) {
-                User user = new User();
-                userList.add(fromResultSet(user, rs));
+                userList.add(fromResultSet(rs));
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
@@ -191,8 +191,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                user = new User();
-                user = fromResultSet(user, rs);
+                user = fromResultSet(rs);
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
@@ -208,7 +207,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
      */
     @Override
     public User getByEmail(String email) {
-        User user = new User();
+        User user = null;
         String sql = "SELECT * FROM user " +
                 "WHERE user.email = ?";
         Connection conn = null;
@@ -220,7 +219,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.setString(1, email);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                user = fromResultSet(user, rs);
+                user = fromResultSet(rs);
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");

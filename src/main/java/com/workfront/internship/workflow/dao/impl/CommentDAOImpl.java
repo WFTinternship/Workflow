@@ -246,7 +246,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             comment.setId(rs.getLong(CommentDAOImpl.id));
 
             User user = new User();
-            user = UserDAOImpl.fromResultSet(user,rs);
+            user = UserDAOImpl.fromResultSet(rs);
             user.setId(rs.getLong(CommentDAOImpl.userId));
             comment.setUser(user);
 

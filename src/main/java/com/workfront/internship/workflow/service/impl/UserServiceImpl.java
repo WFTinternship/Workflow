@@ -115,6 +115,22 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User getByEmail(String email) {
+        User user;
+        if (isEmpty(email)){
+            LOGGER.error("Email is not valid");
+            throw new InvalidObjectException("Not valid email");
+        }
+        try {
+            user = userDAO.getByEmail(email);
+        } catch (RuntimeException e){
+            LOGGER.error("Couldn't get the user");
+            throw new ServiceLayerException("Failed to find such a user", e);
+        }
+        return user;
+    }
+
     /**
      * @param id
      * @return
@@ -213,19 +229,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * @see UserService#authenticate(String, String)
+     * @param email is input from client
+     * @param password is input from client
+     */
     @Override
     public User authenticate(String email, String password) {
-        if (isEmpty(email)){
-            LOGGER.error("Email is not valid");
-            throw new InvalidObjectException("Not valid email");
-        }
-
         if (isEmpty(password)){
             LOGGER.error("Password is not valid");
             throw new InvalidObjectException("Not valid password");
         }
 
-        User user = userDAO.getByEmail(email);
+        User user = getByEmail(email);
 
         //TODO: Password should be hashed
         if (user != null && user.getPassword().equals(password)){

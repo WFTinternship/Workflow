@@ -47,7 +47,6 @@
 
 </head>
 <body class="topic">
-
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -298,6 +297,7 @@
                     <!-- POST -->
                     <div class="post">
                         <form action="/new-answer/${post.id}" class="form" method="post">
+                            <hidden ></hidden>
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">

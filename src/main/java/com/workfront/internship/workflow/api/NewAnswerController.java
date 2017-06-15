@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class NewAnswerController extends HttpServlet{
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         PostService postService = new PostServiceImpl();
 

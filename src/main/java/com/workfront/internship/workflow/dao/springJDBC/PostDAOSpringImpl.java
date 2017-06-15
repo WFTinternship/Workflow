@@ -52,7 +52,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             post.setAppArea(appArea);
 
             User user = new User();
-            user = UserDAOImpl.fromResultSet(user, rs);
+            user = UserDAOImpl.fromResultSet(rs);
             user.setId(rs.getLong(userId));
             post.setUser(user);
 
@@ -76,7 +76,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             answer.setAppArea(appArea);
 
             User user = new User();
-            user = UserDAOImpl.fromResultSet(user, rs);
+            user = UserDAOImpl.fromResultSet(rs);
             user.setId(rs.getLong(userId));
             answer.setUser(user);
 

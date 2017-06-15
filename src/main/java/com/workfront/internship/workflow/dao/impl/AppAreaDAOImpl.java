@@ -108,9 +108,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.setLong(1, appAreaId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                User user = new User();
-                user = UserDAOImpl.fromResultSet(user, rs);
-                userList.add(user);
+                userList.add(UserDAOImpl.fromResultSet(rs));
             }
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
