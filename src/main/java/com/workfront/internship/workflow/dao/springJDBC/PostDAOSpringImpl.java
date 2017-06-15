@@ -96,7 +96,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO post (user_id, apparea_id,post_id," +
                 " post_time, title, content) VALUE(?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, post.getUser().getId(), post.getAppArea().getId());
+        jdbcTemplate.update(sql, post.getUser().getId(), post.getAppArea().getId(),
+                post.getPost().getId(), post.getPostTime(), post.getTitle(), post.getContent());
         return keyHolder.getKey().longValue();
     }
 
@@ -123,7 +124,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.user_id = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> fromResultSet(rs));
+        return jdbcTemplate.query(sql, new Object[]{userId}, (rs, rowNum) -> fromResultSet(rs));
     }
 
     @Override
@@ -136,7 +137,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.apparea_id = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> fromResultSet(rs));
+        return jdbcTemplate.query(sql, new Object[]{id}, (rs, rowNum) -> fromResultSet(rs));
     }
 
     @Override
@@ -149,7 +150,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL AND post.title LIKE ? ";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> fromResultSet(rs));
+        return jdbcTemplate.query(sql, new Object[]{title},(rs, rowNum) -> fromResultSet(rs));
     }
 
     @Override
@@ -161,7 +162,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.id = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> fromResultSet(rs));
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> fromResultSet(rs));
 
     }
 
@@ -176,7 +177,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.post_id = ?" +
                 " ORDER BY answer_time DESC";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> fromResultSet(rs));
+        return jdbcTemplate.query(sql, new Object[]{postId}, (rs, rowNum) -> fromResultSet(rs));
     }
 
     @Override
@@ -190,7 +191,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE  best_answer.post_id = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> answerFromResultSet(rs));
+        return jdbcTemplate.queryForObject(sql, new Object[]{postId}, (rs, rowNum) -> answerFromResultSet(rs));
     }
 
     @Override
