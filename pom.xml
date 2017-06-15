@@ -68,6 +68,14 @@
             <version>2.4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+
     </dependencies>
 
 

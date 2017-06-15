@@ -278,7 +278,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     @Override
     public List<Post> getAnswersByPostId(long postId) {
         List<Post> answerList = new ArrayList<>();
-        final String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
+        String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title," +
@@ -317,7 +317,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     @Override
     public Post getBestAnswer(long postId) {
         Post bestAnswer = null;
-        final String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
+        String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title, " +
@@ -353,7 +353,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public void setBestAnswer(long postId, long answerId) {
-        final String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
+        String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
