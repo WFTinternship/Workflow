@@ -18,15 +18,14 @@ import java.util.List;
  */
 public class PostDAOImpl extends AbstractDao implements PostDAO {
 
-    private static final Logger LOG = Logger.getLogger(PostDAOImpl.class);
-
     // Post fileds
     public static final String id = "id";
     public static final String postId = "post_id";
     public static final String appAreaId = "apparea_id";
     public static final String dateTime = "post_time";
-    public static final String content  = "content";
-    public static final String isCorrect  = "is_correct";
+    public static final String content = "content";
+    public static final String isCorrect = "is_correct";
+    private static final Logger LOG = Logger.getLogger(PostDAOImpl.class);
     public static String postTitle = "title";
 
     // Answer fields
@@ -37,17 +36,61 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public static String title = "answer_title";
 
     public PostDAOImpl() {
-           dataSource = DBHelper.getPooledConnection();
+        dataSource = DBHelper.getPooledConnection();
     }
 
     public PostDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    public static Post answerFromResultSet(Post answer, ResultSet rs) {
+        try {
+            answer.setId(rs.getLong(id));
+
+            User user = new User();
+            user = UserDAOImpl.fromResultSet(rs);
+            user.setId(rs.getLong(userId));
+            answer.setUser(user);
+
+            AppArea appArea = AppArea.getById(
+                    rs.getLong(appAreaId));
+            answer.setAppArea(appArea);
+            answer.setPostTime(rs.getTimestamp(answerTime));
+            answer.setTitle(rs.getString(title));
+            answer.setContent(rs.getString(answerContent));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return answer;
+    }
+
+    public static Post fromResultSet(Post post, ResultSet rs) {
+        try {
+            post.setId(rs.getLong(id));
+
+            User user = UserDAOImpl.fromResultSet(rs);
+            user.setId(rs.getLong(userId));
+            post.setUser(user);
+
+            AppArea appArea = AppArea.getById(
+                    rs.getLong(appAreaId));
+
+            post.setAppArea(appArea);
+            post.setPostTime(rs.getTimestamp(dateTime));
+            post.setTitle(rs.getString(postTitle));
+            post.setContent(rs.getString(content));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return post;
+    }
+
     /**
-     * @see PostDAO#add(Post) ()
-     *
      * @return
+     * @see PostDAO#add(Post) ()
      */
     public long add(Post post) {
         long id = 0;
@@ -61,9 +104,9 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, post.getUser().getId());
             stmt.setLong(2, post.getAppArea().getId());
-            if (post.getPost() == null){
+            if (post.getPost() == null) {
                 stmt.setNull(3, Types.BIGINT);
-            }else {
+            } else {
                 stmt.setLong(3, post.getPost().getId());
             }
             stmt.setTimestamp(4, post.getPostTime());
@@ -73,10 +116,10 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             PreparedStatement st = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0", Statement.RETURN_GENERATED_KEYS);
             st.execute();
             stmt.execute();
-            PreparedStatement t = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=1",Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement t = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=1", Statement.RETURN_GENERATED_KEYS);
             t.execute();
             rs = stmt.getGeneratedKeys();
-            if(rs.next()){
+            if (rs.next()) {
                 id = rs.getLong(1);
             }
             post.setId(id);
@@ -84,7 +127,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException();
-        }finally {
+        } finally {
             closeResources(conn, stmt, rs);
         }
         return post.getId();
@@ -111,15 +154,15 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
 
-           rs = stmt.executeQuery();
-            if (rs.next()){
+            rs = stmt.executeQuery();
+            if (rs.next()) {
                 post = new Post();
                 post = fromResultSet(post, rs);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
-        }finally {
+        } finally {
             closeResources(conn, stmt, rs);
         }
         return post;
@@ -127,7 +170,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getAll()
-     *
      */
     @Override
     public List<Post> getAll() {
@@ -147,7 +189,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             conn = dataSource.getConnection();
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 Post post = new Post();
                 post = fromResultSet(post, rs);
                 allPosts.add(post);
@@ -184,7 +226,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, userId);
             rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 Post post = new Post();
                 post = fromResultSet(post, rs);
                 posts.add(post);
@@ -199,8 +241,8 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#getByAppAreaId(long)
      * @param id id of the app area
+     * @see PostDAO#getByAppAreaId(long)
      */
     @Override
     public List<Post> getByAppAreaId(long id) {
@@ -221,7 +263,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 Post post = new Post();
                 post = fromResultSet(post, rs);
                 posts.add(post);
@@ -257,7 +299,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, "%" + title.trim() + "%");
             rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 Post post = new Post();
                 post = fromResultSet(post, rs);
                 posts.add(post);
@@ -295,7 +337,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 Post answer = new Post();
                 answer = answerFromResultSet(answer, rs);
                 answerList.add(answer);
@@ -309,7 +351,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         }
         return answerList;
     }
-
 
     /**
      * @see PostDAO#getBestAnswer(long)
@@ -334,7 +375,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 bestAnswer = new Post();
                 bestAnswer = answerFromResultSet(bestAnswer, rs);
             }
@@ -366,7 +407,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException("Foreign Key constraint fails");
-        }finally {
+        } finally {
             closeResources(conn, stmt);
         }
     }
@@ -392,7 +433,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException("SQL exception has occurred");
-        }finally {
+        } finally {
             closeResources(conn, stmt);
         }
     }
@@ -415,56 +456,11 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
-        }finally {
+        } finally {
             closeResources(conn, stmt);
         }
-        if (numberOfRowsAffected == 0){
+        if (numberOfRowsAffected == 0) {
             LOG.info("No rows affected");
         }
-    }
-
-    public static Post answerFromResultSet(Post answer, ResultSet rs){
-        try {
-            answer.setId(rs.getLong(id));
-
-            User user= new User();
-            user = UserDAOImpl.fromResultSet(rs);
-            user.setId(rs.getLong(userId));
-            answer.setUser(user);
-
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(id));
-            answer.setAppArea(appArea);
-            answer.setPostTime(rs.getTimestamp(answerTime));
-            answer.setTitle(rs.getString(title));
-            answer.setContent(rs.getString(answerContent));
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return answer;
-    }
-
-    public static Post fromResultSet(Post post, ResultSet rs){
-        try {
-            post.setId(rs.getLong(id));
-
-            User user = UserDAOImpl.fromResultSet(rs);
-            user.setId(rs.getLong(userId));
-            post.setUser(user);
-
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(AppAreaDAOImpl.id));
-
-            post.setAppArea(appArea);
-            post.setPostTime(rs.getTimestamp(dateTime));
-            post.setTitle(rs.getString(postTitle));
-            post.setContent(rs.getString(content));
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return post;
     }
 }

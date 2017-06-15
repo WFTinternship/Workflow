@@ -38,15 +38,16 @@ public class NewAnswerController extends HttpServlet{
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute("appAreas", appAreas);
 
+        AppArea appArea = post.getAppArea();
         Post answer = new Post();
         answer.setUser(user)
                 .setContent(content)
-                .setAppArea(post.getAppArea())
+                .setAppArea(appArea)
                 .setTitle(post.getTitle())
                 .setPost(post);
 
         try {
-            postService.add(post);
+            postService.add(answer);
         }catch (RuntimeException e){
             //TODO: send message that the answer was not added.
         }
