@@ -6,6 +6,11 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
+<c:set var="post" value='<%=request.getAttribute("post")%>'/>
+<c:set var="user" value='<%=request.getSession().getAttribute("name")%>'/>
+<c:set var="answers" value='<%=request.getAttribute("answers")%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute("appAreas")%>'/>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,7 +42,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen"/>
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css"
+          media="screen"/>
 
 </head>
 <body class="topic">
@@ -51,23 +57,25 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <span id="form-img"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height="60px" width="60px/"></span>
+                    <span id="form-img"><img
+                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            height="60px" width="60px/"></span>
                 </div>
                 <form action="http://localhost:8080/login" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="usr">Name:</label>
-                        <input type="text" class="form-control" name="email" id="usr">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Name:</label>
+                            <input type="text" class="form-control" name="email" id="usr">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" name="password" id="pwd">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="pwd">Password:</label>
-                        <input type="password" class="form-control" name="password" id="pwd">
-                    </div>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-login">Login</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Login</button>
+                    </div>
                 </form>
             </div>
 
@@ -80,7 +88,8 @@
                 <!-- SLIDE  -->
                 <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
                     <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
+                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
+                         data-bgposition="left top"
                          data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
                 </li>
@@ -93,18 +102,20 @@
     <div class="headernav">
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px/></a></div>
-                <div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">
-                    <div class="dropdown">
-                        <a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>
-                        <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>
+                <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img
+                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                        height=60px width=60px/></a></div>
+                <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
+                <%--<div class="dropdown">--%>
+                <%--<a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>--%>
+                <%--<ul class="dropdown-menu" role="menu">--%>
+                <%--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>--%>
+                <%--<li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>--%>
+                <%--<li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>--%>
 
-                        </ul>
-                    </div>
-                </div>
+                <%--</ul>--%>
+                <%--</div>--%>
+                <%--</div>--%>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
                         <form action="#" method="post" class="form">
@@ -117,28 +128,44 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                    <div class="stnt pull-left">
+                <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
+                    <div class="stnt">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+                        <c:choose>
 
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+                            <c:when test="${user == null}">
+                          <span>
+                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
+                          </span>
+                            </c:when>
 
+                            <c:when test="${user != null}">
+                                <div class="avatar pull-left dropdown">
+                                    <a data-toggle="dropdown" href="#"><img
+                                            src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                        class="caret"></b>
+                                    <div class="status green">&nbsp;</div>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                        </li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a>
+                                        </li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
+                                            account</a></li>
+                                    </ul>
+                                </div>
+
+                            </c:when>
+
+                        </c:choose>
                     </div>
-                    <div class="env pull-left"><i class="fa fa-envelope"></i></div>
 
-                    <div class="avatar pull-left dropdown">
-                        <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
-                            class="caret"></b>
-                        <div class="status green">&nbsp;</div>
-                        <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-4" href="login.jsp">Create
-                                account</a></li>
-                        </ul>
-                    </div>
                     <div class="clearfix"></div>
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -170,8 +197,10 @@
                                 </div>
 
                                 <div class="icons">
-                                    <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
+                                    <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
+                                        src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
+                                        src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
+                                        src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
                                 </div>
                             </div>
                             <div class="posttext pull-left">
@@ -225,8 +254,10 @@
                                     </div>
 
                                     <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -266,7 +297,7 @@
 
                     <!-- POST -->
                     <div class="post">
-                        <form action="#" class="form" method="post">
+                        <form action="/new-answer/${post.id}" class="form" method="post">
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
@@ -275,8 +306,10 @@
                                     </div>
 
                                     <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -322,8 +355,8 @@
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}" >
-                                <li><a href="#">${appArea.name} <span class="badge pull-right">20</span></a></li>
+                                <c:forEach var="appArea" items="${appAreas}">
+                                    <li><a href="#">${appArea.name} <span class="badge pull-right">20</span></a></li>
                                 </c:forEach>
                             </ul>
                         </div>
@@ -434,7 +467,9 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px/></a></div>
+                <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img
+                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                        height=60px width=60px/></a></div>
                 <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">

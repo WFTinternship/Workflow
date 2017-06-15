@@ -45,13 +45,14 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() {
-        userDAO = new UserDAOImpl();
+        userDAO = new UserDAOImpl(dataSource);
+        postDAO = new PostDAOImpl(dataSource);
+
+        appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
         userDAO.add(user);
-        appArea = AppArea.values()[0];
-        postDAO = new PostDAOImpl();
         post = DaoTestUtil.getRandomPost(user, appArea);
-        dataSource = DBHelper.getPooledConnection();
+
         LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {

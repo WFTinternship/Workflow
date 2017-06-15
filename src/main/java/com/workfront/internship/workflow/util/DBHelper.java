@@ -19,6 +19,7 @@ import java.util.Properties;
  * Created by nane on 5/27/17
  */
 public class DBHelper {
+    static ComboPooledDataSource cpds = new ComboPooledDataSource();
 
     public static Properties loadDbCfgProperties(){
         Properties properties = new Properties();
@@ -47,21 +48,16 @@ public class DBHelper {
     }
 
     public static DataSource getPooledConnection(){
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
         Properties properties = loadDbCfgProperties();
-        try {
-            cpds.setDriverClass("com.mysql.jdbc.Driver");
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
+
         cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));
         cpds.setUser(properties.getProperty("USERNAME"));
         cpds.setPassword(properties.getProperty("PASSWORD"));
 
-        cpds.setInitialPoolSize(1);
-        cpds.setMinPoolSize(0);
-        cpds.setAcquireIncrement(0);
-        cpds.setMaxPoolSize(10);
+        cpds.setInitialPoolSize(5);
+        cpds.setMinPoolSize(5);
+        cpds.setAcquireIncrement(5);
+        cpds.setMaxPoolSize(20);
 
         return cpds;
     }

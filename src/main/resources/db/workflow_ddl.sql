@@ -13,6 +13,7 @@ CREATE TABLE IF NOT exists user(
   last_name VARCHAR(45) NOT NULL,
   email VARCHAR(45) NOT NULL UNIQUE,
   passcode VARCHAR(45),
+  avatar_url VARCHAR(100) DEFAULT 'images/default/user_avatar.png',
   rating INT NOT NULL,
   PRIMARY KEY (id));
 

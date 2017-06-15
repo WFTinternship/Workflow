@@ -32,11 +32,11 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
      */
     @Before
     public void setup(){
-        appAreaDAO = new AppAreaDAOImpl();
-        userDAO = new UserDAOImpl();
+        appAreaDAO = new AppAreaDAOImpl(dataSource);
+        userDAO = new UserDAOImpl(dataSource);
         appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
-        dataSource = DBHelper.getPooledConnection();
+
         LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {

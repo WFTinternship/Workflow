@@ -36,7 +36,7 @@ website:   	http://www.themepunch.com
 		position:relative;
 		padding:0;
 }
-.btn-login{
+.btn-signup{
 	background: #f77f29;
 	color: white;
 }
@@ -62,9 +62,14 @@ website:   	http://www.themepunch.com
 	font-size: 14px;
 	line-height: 1.42857143;
 	color: white;
-	background-color: #fff3;}
+	background-color: rgba(0, 0, 0, 0.37);
+}
 #form-img{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+.stnt {
+	display: flex;
+	justify-content: space-between;
 }

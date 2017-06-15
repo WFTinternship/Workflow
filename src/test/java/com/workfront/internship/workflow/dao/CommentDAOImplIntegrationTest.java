@@ -47,21 +47,20 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
         AppArea appArea;
         commentList = new ArrayList<>();
 
-        userDAO = new UserDAOImpl();
+        userDAO = new UserDAOImpl(dataSource);
         user=  DaoTestUtil.getRandomUser();
         userDAO.add(user);
 
         appArea = DaoTestUtil.getRandomAppArea();
 
-        postDAO = new PostDAOImpl();
+        postDAO = new PostDAOImpl(dataSource);
         post=  DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(post);
 
-        commentDAO = new CommentDAOImpl();
+        commentDAO = new CommentDAOImpl(dataSource);
         comment = DaoTestUtil.getRandomComment(user, post);
         commentList.add(comment);
 
-        dataSource = DBHelper.getPooledConnection();
         LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
@@ -198,6 +197,31 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
         // Test method
         int n = commentDAO.delete(commentId+1000000);
         assertEquals(n,0);
+    }
+
+    /**
+     * @see CommentDAOImpl#getByPostId(long)
+     */
+    @Test
+    public void getByPostId_success(){
+        commentDAO.add(comment);
+        // Test method
+        List<Comment> actualComments = commentDAO.getByPostId(comment.getPost().getId());
+        assertNotNull(actualComments);
+
+        assertTrue(actualComments.contains(comment));
+    }
+
+    /**
+     * @see CommentDAOImpl#getByPostId(long)
+     */
+    @Test
+    public void getByPostId_failure(){
+        // Test method
+        List<Comment> actualComments = commentDAO.getByPostId(100000000);
+        assertNotNull(actualComments);
+
+        assertTrue(actualComments.isEmpty());
     }
 
     /**

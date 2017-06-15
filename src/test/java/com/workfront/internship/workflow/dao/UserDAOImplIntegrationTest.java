@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.sql.DataSource;
+
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -27,17 +29,16 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     private UserDAO userDAO;
     private AppAreaDAO appAreaDAO;
     private User user;
-
     private List<User> userList;
 
     @Before
     public void setup() {
-        userDAO = new UserDAOImpl();
+        userDAO = new UserDAOImpl(dataSource);
         appAreaDAO = new AppAreaDAOImpl();
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
 
-        dataSource = DBHelper.getPooledConnection();
+
         LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
@@ -49,12 +50,13 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         for (User user : userList) {
             if (userDAO.getById(user.getId()) != null) {
                 userDAO.deleteById(user.getId());
             }
         }
+
         userDAO.deleteById(user.getId());
         if (dataSource instanceof ComboPooledDataSource) {
             try {

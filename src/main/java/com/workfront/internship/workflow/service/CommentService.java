@@ -34,6 +34,14 @@ public interface CommentService {
      */
     List<Comment> getAll();
 
+    /**
+     *
+     * @param id id of the post
+     * @return List of comments of the specified post
+     */
+    List<Comment> getByPostId(long id);
+
+
     // UPDATE
 
     /**

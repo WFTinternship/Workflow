@@ -31,7 +31,7 @@ public class PostController extends HttpServlet {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute("appAreas", appAreas);
 
-        List<Post> answers = postService.getAnswersByPostId(222);
+        List<Post> answers = postService.getAnswersByPostId(id);
         req.setAttribute("answers", answers);
 
         getServletConfig()
