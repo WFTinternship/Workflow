@@ -42,7 +42,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
      */
     @Override
     public long add(AppArea appArea) {
-        final String sql = "INSERT INTO apparea (id, name, description, team_name) " +
+        String sql = "INSERT INTO apparea (id, name, description, team_name) " +
                 "VALUES (?, ?, ?, ?)";
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -98,7 +98,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
     @Override
     public List<User> getUsersById(long appAreaId) {
         List<User> userList = new ArrayList<>();
-        final String sql = "SELECT * FROM user " +
+        String sql = "SELECT * FROM user " +
                 "WHERE id IN (SELECT user_id FROM user_apparea WHERE apparea_id = ?) ";
         Connection conn = null;
         PreparedStatement stmt = null;

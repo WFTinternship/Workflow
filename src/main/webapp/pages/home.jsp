@@ -8,7 +8,7 @@
 
 <c:set var="allPosts" value='<%=request.getAttribute("allPosts")%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute("appAreas")%>'/>
-<c:set var="user" value='<%=request.getAttribute("name")%>'/>
+<c:set var="user" value='<%=session.getAttribute("user")%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
