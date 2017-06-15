@@ -36,10 +36,9 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     public static String userId = "user_id";
     public static String title = "answer_title";
 
-    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
     public PostDAOSpringImpl() {
         dataSource = DBHelper.getPooledConnection();
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public static Post fromResultSet(ResultSet rs) {

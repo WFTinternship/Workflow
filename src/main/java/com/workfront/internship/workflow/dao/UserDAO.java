@@ -18,7 +18,9 @@ public interface UserDAO {
      */
     long add(User user);
 
-    long add(User user, DataSource dataSource);
+    default long add(User user, DataSource dataSource){
+        return 0;
+    };
 
 
 
@@ -29,7 +31,7 @@ public interface UserDAO {
      * @param name name of the searched user
      * @return list of the user satisfying to the given name
      */
-    List<User> getByName(String name);
+    List getByName(String name);
 
     /**
      * Gets the user by the given id
