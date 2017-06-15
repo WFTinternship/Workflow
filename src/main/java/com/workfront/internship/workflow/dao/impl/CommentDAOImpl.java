@@ -17,8 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
- * Created by angel on 27.05.2017.
+ * Created by Angel on 27.05.2017
  */
 public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 

@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.exceptions.dao;
 
 /**
- * Created by Vahag on 6/2/2017.
+ * Created by Vahag on 6/2/2017
  */
 public class NoSuchUserException extends RuntimeException {
 

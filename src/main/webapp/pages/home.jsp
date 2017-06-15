@@ -247,7 +247,7 @@
                         <div class="blocktxt">
                             <ul class="cats">
                                 <c:forEach var="appArea" items="${appAreas}">
-                                    <li><a href="<%=request.getContextPath()%>/${appArea.id}">${appArea.name}<span
+                                    <li><a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
                                             class="badge pull-right"></span></a></li>
                                 </c:forEach>
                             </ul>

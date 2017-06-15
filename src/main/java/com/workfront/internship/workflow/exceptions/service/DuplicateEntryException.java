@@ -1,9 +1,7 @@
 package com.workfront.internship.workflow.exceptions.service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 /**
- * Created by Vahag on 6/6/2017.
+ * Created by Vahag on 6/6/2017
  */
 public class DuplicateEntryException extends RuntimeException {
 

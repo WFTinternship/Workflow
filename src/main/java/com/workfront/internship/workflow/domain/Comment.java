@@ -1,8 +1,6 @@
 package com.workfront.internship.workflow.domain;
 
-
 import java.sql.Timestamp;
-
 
 public class Comment {
     private long id;
