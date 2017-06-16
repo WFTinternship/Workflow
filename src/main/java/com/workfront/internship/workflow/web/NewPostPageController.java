@@ -27,13 +27,13 @@ public class NewPostPageController extends HttpServlet {
 
         PostService postService = new PostServiceImpl();
 
-        String title = req.getParameter("answerTitle");
-        String content = req.getParameter("postContent");
+        String title = req.getParameter(PageAttributes.title);
+        String content = req.getParameter(PageAttributes.content);
 
         HttpSession session = req.getSession();
-        User user = (User)session.getAttribute("user");
+        User user = (User)session.getAttribute(PageAttributes.user);
 
-        AppArea appArea = AppArea.getById(Integer.parseInt(req.getParameter("appArea")));
+        AppArea appArea = AppArea.getById(Integer.parseInt(req.getParameter(PageAttributes.appArea)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Post post = new Post();

@@ -9,4 +9,7 @@ public interface PageAttributes {
     String user = "user";
     String post = "post";
     String answers = "answers";
+    String title = "title";
+    String content = "content";
+    String appArea = "appArea";
 }
