@@ -73,7 +73,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
      */
     @Override
     public void deleteById(long id) {
-        final String sql = "DELETE FROM apparea " +
+        String sql = "DELETE FROM apparea " +
                 "WHERE id = ?";
         Connection conn = null;
         PreparedStatement stmt = null;

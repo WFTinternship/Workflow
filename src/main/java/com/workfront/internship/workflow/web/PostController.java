@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
@@ -26,13 +26,13 @@ public class PostController extends HttpServlet {
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         Post post = postService.getById(id);
-        req.setAttribute("post", post);
+        req.setAttribute(PageAttributes.post, post);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
+        req.setAttribute(PageAttributes.appAreas, appAreas);
 
         List<Post> answers = postService.getAnswersByPostId(id);
-        req.setAttribute("answers", answers);
+        req.setAttribute(PageAttributes.answers, answers);
 
         getServletConfig()
                 .getServletContext()

@@ -1,5 +1,7 @@
 package com.workfront.internship.workflow.dao;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,6 +14,7 @@ import java.sql.Statement;
  */
 public abstract class AbstractDao {
     protected DataSource dataSource;
+    protected JdbcTemplate jdbcTemplate;
 
     public static void closeResources(Connection conn, Statement stmt, ResultSet rs) {
 

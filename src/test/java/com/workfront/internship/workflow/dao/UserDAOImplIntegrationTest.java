@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.dao;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
@@ -31,7 +32,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
 
     @Before
     public void setup() {
-        userDAO = new UserDAOImpl(dataSource);
+        userDAO = new UserDAOSpringImpl(dataSource);
         appAreaDAO = new AppAreaDAOImpl();
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
@@ -131,7 +132,6 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
         userDAO.add(user);
         //Test method
         userDAO.subscribeToArea(user.getId(), 15);
-
     }
 
     /**
@@ -214,10 +214,10 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
      */
     @Test
     public void getByEmail_success() {
-        user.setEmail("vahag@gmail.com");
+        user.setEmail("vahagn@gmail.com");
         userDAO.add(user);
         //Test method
-        User actualUser = userDAO.getByEmail("vahag@gmail.com");
+        User actualUser = userDAO.getByEmail("vahagn@gmail.com");
 
         assertTrue(actualUser.equals(user));
     }

@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

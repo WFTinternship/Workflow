@@ -6,14 +6,14 @@
 
     <listener>
         <listener-class>
-            com.workfront.internship.workflow.api.ContextListener
+            com.workfront.internship.workflow.web.ContextListener
         </listener-class>
     </listener>
 
 
     <!--<filter>-->
         <!--<filter-name>LoginFilter</filter-name>-->
-        <!--<filter-class>com.workfront.internship.workflow.api.LoginFilter</filter-class>-->
+        <!--<filter-clcom.workfront.internship.workflow.web.api.LoginFilter</filter-class>-->
     <!--</filter>-->
     <!--<filter-mapping>-->
         <!--<filter-name>LoginFilter</filter-name>-->
@@ -22,7 +22,7 @@
 
     <servlet>
         <servlet-name>HomePosts</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.HomeController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.HomeController</servlet-class>
     </servlet>
     
     <servlet-mapping>
@@ -33,7 +33,7 @@
 
     <servlet>
         <servlet-name>Post</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.PostController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.PostController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -43,7 +43,7 @@
 
     <servlet>
         <servlet-name>NewPost</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.NewPostPageController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.NewPostPageController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>NewPost</servlet-name>
@@ -52,7 +52,7 @@
 
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.LoginController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.LoginController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -62,7 +62,7 @@
 
     <servlet>
         <servlet-name>SignUp</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.SignUpController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.SignUpController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -72,7 +72,7 @@
 
     <servlet>
         <servlet-name>NewAnswer</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.NewAnswerController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.NewAnswerController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -82,7 +82,7 @@
 
     <servlet>
         <servlet-name>Upload</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.FileUploadHandler</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.FileUploadHandler</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -92,7 +92,7 @@
 
     <servlet>
         <servlet-name>Comment</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.CommentController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.CommentController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -100,9 +100,9 @@
         <url-pattern>/comment</url-pattern>
     </servlet-mapping>
 
-    <servlet>
+     <servlet>
         <servlet-name>AppAreaPosts</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.api.AppAreaPostsController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.AppAreaPostsController</servlet-class>
     </servlet>
 
     <servlet-mapping>

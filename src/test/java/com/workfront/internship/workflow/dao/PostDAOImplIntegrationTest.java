@@ -3,6 +3,8 @@ package com.workfront.internship.workflow.dao;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
+import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -44,8 +46,8 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() {
-        userDAO = new UserDAOImpl(dataSource);
-        postDAO = new PostDAOImpl(dataSource);
+        userDAO = new UserDAOSpringImpl(dataSource);
+        postDAO = new PostDAOSpringImpl(dataSource);
 
         appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
@@ -210,7 +212,6 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
         postDAO.add(anotherPost);
         List<Post> posts = postDAO.getByTitle(post.getTitle().substring(1, 5));
         assertTrue(posts.contains(post) && posts.contains(anotherPost));
-
     }
 
     /**
