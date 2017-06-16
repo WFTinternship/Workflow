@@ -320,6 +320,8 @@ ul.cats li {
 ul.cats {
     margin: 0;
     padding: 0;
+    height: 200px;
+    overflow-y: auto;
 }
 
 ul.cats li a {

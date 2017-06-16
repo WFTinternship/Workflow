@@ -234,6 +234,16 @@
 
                             <div class="clearfix"></div>
                         </div>
+                        <div class="post-coment">
+                            <ul class="post-ul">
+                                <li>
+                                    asdasdsad
+                                </li>
+                                <li>
+                                    vvbadasd
+                                </li>
+                            </ul>
+                        </div>
                     </div><!-- POST -->
 
                     <div class="paginationf">
