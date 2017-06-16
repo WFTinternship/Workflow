@@ -62,7 +62,7 @@
             <div class="headernav">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img
+                        <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
                                 src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                                 height=60px width=60px/></a></div>
                         <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
