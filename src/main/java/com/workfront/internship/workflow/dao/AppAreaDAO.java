@@ -10,7 +10,7 @@ public interface AppAreaDAO {
 
     String id = "id";
     String name = "name";
-    String description = "description"; 
+    String description = "description";
     String teamName = "team_name";
 
     //CREATE
