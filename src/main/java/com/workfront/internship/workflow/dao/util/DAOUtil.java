@@ -74,7 +74,6 @@ public class DAOUtil {
             user.setPassword(rs.getString(password));
             user.setAvatarURL(rs.getString(avatarURl));
             user.setRating(rs.getInt(rating));
-
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
             throw new RuntimeException(e);

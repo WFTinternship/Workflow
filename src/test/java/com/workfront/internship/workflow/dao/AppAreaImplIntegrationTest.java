@@ -50,9 +50,9 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest {
      */
     @After
     public void tearDown() {
-//        if (appAreaDAO.getById(appArea.getId()) == null) {
-//            appAreaDAO.add(appArea);
-//        }
+        if (appAreaDAO.getById(appArea.getId()) == null) {
+            appAreaDAO.add(appArea);
+        }
         userDAO.deleteById(user.getId());
 
         if (dataSource instanceof ComboPooledDataSource) {
