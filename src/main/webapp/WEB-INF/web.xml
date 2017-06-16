@@ -100,7 +100,7 @@
         <url-pattern>/comment</url-pattern>
     </servlet-mapping>
 
-    <servlet>
+     <servlet>
         <servlet-name>AppAreaPosts</servlet-name>
         <servlet-class>com.workfront.internship.workflow.web.AppAreaPostsController</servlet-class>
     </servlet>

@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 /**
- * Created by nane on 6/5/17.
+ * Created by nane on 6/5/17
  */
 public class AppAreaServiceImpl implements AppAreaService {
 

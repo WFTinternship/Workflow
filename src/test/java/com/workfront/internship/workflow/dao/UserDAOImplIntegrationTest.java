@@ -13,11 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
 import java.sql.*;

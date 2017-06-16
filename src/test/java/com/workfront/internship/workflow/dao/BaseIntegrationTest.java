@@ -9,6 +9,6 @@ import javax.sql.DataSource;
  * Created by nane on 6/8/17
  */
 abstract class BaseIntegrationTest {
-    protected DataSource dataSource = DBHelper.getPooledConnection();;
+    protected DataSource dataSource = DBHelper.getPooledConnection();
     Logger LOG;
 }

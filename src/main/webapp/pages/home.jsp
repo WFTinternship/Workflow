@@ -230,7 +230,7 @@
 
                                 </div>
                                 <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
+                                <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -249,7 +249,7 @@
                         <div class="blocktxt">
                             <ul class="cats">
                                 <c:forEach var="appArea" items="${appAreas}">
-                                    <li><a href="<%=request.getContextPath()%>/${appArea.id}">${appArea.name}<span
+                                    <li><a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
                                             class="badge pull-right"></span></a></li>
                                 </c:forEach>
                             </ul>

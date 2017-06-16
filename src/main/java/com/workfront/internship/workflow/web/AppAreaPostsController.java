@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Vahag on 6/9/2017
  */
-public class AppAreaPostsController extends HttpServlet{
+public class AppAreaPostsController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostServiceImpl postService = new PostServiceImpl();
