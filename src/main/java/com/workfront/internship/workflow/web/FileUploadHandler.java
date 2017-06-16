@@ -22,7 +22,7 @@ public class FileUploadHandler extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //process only if its multipart content
+        //process only if its multipart postContent
         if(ServletFileUpload.isMultipartContent(request)){
             try {
                 List<FileItem> multiparts = new ServletFileUpload(

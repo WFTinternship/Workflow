@@ -27,7 +27,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
     private static final String id = "id";
     private static final String userId = "user_id";
     private static final String postId = "post_id";
-    private static final String content = "content";
+    private static final String content = "postContent";
     private static final String dateTime = "comment_time";
 
     public CommentDAOImpl(){

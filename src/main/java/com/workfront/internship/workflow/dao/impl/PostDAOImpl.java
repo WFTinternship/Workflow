@@ -23,10 +23,10 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public static final String postId = "post_id";
     public static final String appAreaId = "apparea_id";
     public static final String dateTime = "post_time";
-    public static final String content = "content";
+    public static final String content = "postContent";
     public static final String isCorrect = "is_correct";
     private static final Logger LOG = Logger.getLogger(PostDAOImpl.class);
-    public static String postTitle = "title";
+    public static String postTitle = "answerTitle";
 
     // Answer fields
 

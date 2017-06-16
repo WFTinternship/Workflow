@@ -26,8 +26,8 @@ public class NewPostPageController extends HttpServlet {
 
         PostService postService = new PostServiceImpl();
 
-        String title = req.getParameter("title");
-        String content = req.getParameter("content");
+        String title = req.getParameter("answerTitle");
+        String content = req.getParameter("postContent");
 
         HttpSession session = req.getSession();
         User user = (User)session.getAttribute("user");

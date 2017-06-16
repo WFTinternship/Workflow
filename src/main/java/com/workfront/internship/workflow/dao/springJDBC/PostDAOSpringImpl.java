@@ -4,6 +4,8 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AnswerRowMapper;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -26,22 +28,6 @@ import java.util.List;
  */
 public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
 
-    // Post fileds
-    public static final String id = "id";
-    public static final String postId = "post_id";
-    public static final String appAreaId = "apparea_id";
-    public static final String dateTime = "post_time";
-    public static final String content = "content";
-    public static final String isCorrect = "is_correct";
-    public static String postTitle = "title";
-
-    // Answer fields
-
-    public static String answerTime = "answer_time";
-    public static String answerContent = "answer_content";
-    public static String userId = "user_id";
-    public static String title = "answer_title";
-
     public PostDAOSpringImpl() {
         dataSource = DBHelper.getPooledConnection();
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -50,55 +36,6 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     public PostDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    public static Post fromResultSet(ResultSet rs) {
-        Post post = new Post();
-        try {
-            post.setId(rs.getLong(id));
-
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(AppAreaDAOImpl.id));
-            post.setAppArea(appArea);
-
-            User user = new User();
-            user = UserDAOImpl.fromResultSet(rs);
-            user.setId(rs.getLong(userId));
-            post.setUser(user);
-
-            post.setPostTime(rs.getTimestamp(dateTime));
-            post.setTitle(rs.getString(postTitle));
-            post.setContent(rs.getString(content));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return post;
-    }
-
-    public static Post answerFromResultSet(ResultSet rs) {
-        Post answer = new Post();
-        try {
-            answer.setId(rs.getLong(id));
-
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(id));
-            answer.setAppArea(appArea);
-
-            User user = new User();
-            user = UserDAOImpl.fromResultSet(rs);
-            user.setId(rs.getLong(userId));
-            answer.setUser(user);
-
-            answer.setPostTime(rs.getTimestamp(answerTime));
-            answer.setTitle(rs.getString(title));
-            answer.setContent(rs.getString(answerContent));
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return answer;
     }
 
     @Override
@@ -142,7 +79,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " WHERE post_id IS NULL" +
                 " ORDER BY post_time DESC";
         try {
-            return jdbcTemplate.query(sql, (rs, rowNum) -> fromResultSet(rs));
+            return jdbcTemplate.query(sql, new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -161,7 +98,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.user_id = ?";
         try {
-            return jdbcTemplate.query(sql, new Object[]{userId}, (rs, rowNum) -> fromResultSet(rs));
+            return jdbcTemplate.query(sql, new Object[]{userId},
+                    new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -180,7 +118,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.apparea_id = ?";
         try {
-            return jdbcTemplate.query(sql, new Object[]{id}, (rs, rowNum) -> fromResultSet(rs));
+            return jdbcTemplate.query(sql, new Object[]{id},
+                    new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -199,7 +138,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post_id IS NULL AND post.title LIKE ? ";
         try {
-            return jdbcTemplate.query(sql, new Object[]{"%" + title + "%"}, (rs, rowNum) -> fromResultSet(rs));
+            return jdbcTemplate.query(sql, new Object[]{"%" + title + "%"},
+                    new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -217,7 +157,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.id = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> fromResultSet(rs));
+            return (Post) jdbcTemplate.queryForObject(sql, new Object[]{id},
+                    new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -237,7 +178,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " WHERE post.post_id = ?" +
                 " ORDER BY answer_time DESC";
         try {
-            return jdbcTemplate.query(sql, new Object[]{postId}, (rs, rowNum) -> fromResultSet(rs));
+            return jdbcTemplate.query(sql, new Object[]{postId},
+                    new AnswerRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -257,8 +199,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE  best_answer.post_id = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{postId},
-                    (rs, rowNum) -> answerFromResultSet(rs));
+            return (Post) jdbcTemplate.queryForObject(sql, new Object[]{postId},
+                    new AnswerRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
