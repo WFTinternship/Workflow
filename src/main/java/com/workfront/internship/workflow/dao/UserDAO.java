@@ -9,6 +9,14 @@ import java.util.List;
 
 public interface UserDAO {
 
+    String id = "id";
+    String firstName = "first_name";
+    String lastName = "last_name";
+    String email = "email";
+    String password = "passcode";
+    String avatarURl = "avatar_url";
+    String rating = "rating";
+
     //CREATE
 
     /**

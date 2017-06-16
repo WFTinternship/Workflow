@@ -131,7 +131,8 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     public void subscribeToArea_failure(){
         userDAO.add(user);
         //Test method
-        userDAO.subscribeToArea(user.getId(), 15);
+        userDAO.subscribeToArea(user.getId(), 10000);
+
     }
 
     /**

@@ -18,13 +18,7 @@ import java.util.Map;
 
 public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
-    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
-
-    public static final String id = "id";
-    public static final String name = "name";
-    public static final String description = "description";
-    public static final String teamName = "team_name";
-
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
     public AppAreaDAOImpl(){
         dataSource = DBHelper.getPooledConnection();
@@ -57,7 +51,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception occurred");
             throw new RuntimeException(e);
         } finally {
             closeResources(conn, stmt);
@@ -83,7 +77,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.setLong(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception occurred");
             throw new RuntimeException(e);
         } finally {
             closeResources(conn, stmt);
@@ -111,7 +105,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
                 userList.add(UserDAOImpl.fromResultSet(rs));
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception occurred");
             throw new RuntimeException(e);
         } finally {
             closeResources(conn, stmt);
@@ -132,7 +126,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             return null;
         }
         if(!isTheActualAppArea(appArea, actualAppArea)){
-            LOG.error("AppArea does not exist");
+            LOGGER.error("AppArea does not exist");
             throw new NotExistingAppAreaException();
         }
         return appArea;
@@ -155,12 +149,12 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                fieldsMap.put("Name",rs.getString(AppAreaDAOImpl.name));
-                fieldsMap.put("Description",rs.getString(AppAreaDAOImpl.description));
-                fieldsMap.put("TeamName",rs.getString(AppAreaDAOImpl.teamName));
+                fieldsMap.put("Name",rs.getString(name));
+                fieldsMap.put("Description",rs.getString(description));
+                fieldsMap.put("TeamName",rs.getString(teamName));
             }
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
+            LOGGER.error("SQL exception occurred");
             throw new RuntimeException(e);
         } finally {
             closeResources(conn, stmt, rs);

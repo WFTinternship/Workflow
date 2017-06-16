@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
+import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -22,12 +23,6 @@ import java.util.List;
 public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
-
-    private static final String id = "id";
-    private static final String userId = "user_id";
-    private static final String postId = "post_id";
-    private static final String content = "content";
-    private static final String dateTime = "comment_time";
 
     public CommentDAOImpl(){
         dataSource = DBHelper.getPooledConnection();
@@ -250,7 +245,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             comment.setUser(user);
 
             Post post = new Post();
-            post = PostDAOImpl.fromResultSet(post,rs);
+            post = DAOUtil.postFromResultSet(rs);
             post.setId(rs.getLong(CommentDAOImpl.postId));
             comment.setPost(post);
 

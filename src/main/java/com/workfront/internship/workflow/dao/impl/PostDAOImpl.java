@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -23,10 +24,10 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     public static final String postId = "post_id";
     public static final String appAreaId = "apparea_id";
     public static final String dateTime = "post_time";
-    public static final String content = "content";
+    public static final String content = "postContent";
     public static final String isCorrect = "is_correct";
     private static final Logger LOG = Logger.getLogger(PostDAOImpl.class);
-    public static String postTitle = "title";
+    public static String postTitle = "answerTitle";
 
     // Answer fields
 
@@ -41,51 +42,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     public PostDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    public static Post answerFromResultSet(Post answer, ResultSet rs) {
-        try {
-            answer.setId(rs.getLong(id));
-
-            User user = new User();
-            user = UserDAOImpl.fromResultSet(rs);
-            user.setId(rs.getLong(userId));
-            answer.setUser(user);
-
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(appAreaId));
-            answer.setAppArea(appArea);
-            answer.setPostTime(rs.getTimestamp(answerTime));
-            answer.setTitle(rs.getString(title));
-            answer.setContent(rs.getString(answerContent));
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return answer;
-    }
-
-    public static Post fromResultSet(Post post, ResultSet rs) {
-        try {
-            post.setId(rs.getLong(id));
-
-            User user = UserDAOImpl.fromResultSet(rs);
-            user.setId(rs.getLong(userId));
-            post.setUser(user);
-
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(appAreaId));
-
-            post.setAppArea(appArea);
-            post.setPostTime(rs.getTimestamp(dateTime));
-            post.setTitle(rs.getString(postTitle));
-            post.setContent(rs.getString(content));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return post;
     }
 
     /**
@@ -157,7 +113,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             rs = stmt.executeQuery();
             if (rs.next()) {
                 post = new Post();
-                post = fromResultSet(post, rs);
+                post = DAOUtil.postFromResultSet(rs);
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
@@ -191,7 +147,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Post post = new Post();
-                post = fromResultSet(post, rs);
+                post = DAOUtil.postFromResultSet(rs);
                 allPosts.add(post);
             }
 
@@ -228,7 +184,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Post post = new Post();
-                post = fromResultSet(post, rs);
+                post = DAOUtil.postFromResultSet(rs);
                 posts.add(post);
             }
         } catch (SQLException e) {
@@ -265,7 +221,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Post post = new Post();
-                post = fromResultSet(post, rs);
+                post = DAOUtil.postFromResultSet(rs);
                 posts.add(post);
             }
         } catch (SQLException e) {
@@ -301,7 +257,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Post post = new Post();
-                post = fromResultSet(post, rs);
+                post = DAOUtil.postFromResultSet(rs);
                 posts.add(post);
             }
 
@@ -339,7 +295,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 Post answer = new Post();
-                answer = answerFromResultSet(answer, rs);
+                answer = DAOUtil.answerFromResultSet(rs);
                 answerList.add(answer);
             }
 
@@ -376,8 +332,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                bestAnswer = new Post();
-                bestAnswer = answerFromResultSet(bestAnswer, rs);
+                bestAnswer = DAOUtil.answerFromResultSet(rs);
             }
 
         } catch (SQLException e) {

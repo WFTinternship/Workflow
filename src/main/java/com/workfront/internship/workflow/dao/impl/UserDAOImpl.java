@@ -19,13 +19,6 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public class UserDAOImpl extends AbstractDao implements UserDAO {
 
-    public static final String id = "id";
-    public static final String firstName = "first_name";
-    public static final String lastName = "last_name";
-    public static final String email = "email";
-    public static final String password = "passcode";
-    public static final String avatarURl = "avatar_url";
-    public static final String rating = "rating";
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
     public UserDAOImpl() {

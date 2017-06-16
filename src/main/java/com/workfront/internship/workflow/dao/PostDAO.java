@@ -9,6 +9,22 @@ import java.util.List;
  */
 
 public interface PostDAO {
+    // Post fileds
+    String id = "id";
+    String postId = "post_id";
+    String appAreaId = "apparea_id";
+    String postTime = "post_time";
+    String postContent = "content";
+    String isCorrect = "is_correct";
+    String postTitle = "title";
+
+    // Answer fields
+
+    String answerTime = "answer_time";
+    String answerContent = "answer_content";
+    String userId = "user_id";
+    String answerTitle = "answer_title";
+
     /**
      *
      * @param post is to be added to the database
@@ -74,7 +90,7 @@ public interface PostDAO {
 
     /**
      *
-     * @param post the post whose title and content can be updated
+     * @param post the post whose answerTitle and postContent can be updated
      */
     void update(Post post);
 

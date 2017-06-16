@@ -1,5 +1,11 @@
 package com.workfront.internship.workflow.dao.util;
 
+import com.workfront.internship.workflow.dao.CommentDAO;
+import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
+import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -15,45 +21,26 @@ public class DAOUtil {
 
     private static final Logger LOGGER = Logger.getLogger(DAOUtil.class);
 
-
-    // USER FIELDS
-    public static final String user_id = "id";
-    public static final String firstName = "first_name";
-    public static final String lastName = "last_name";
-    public static final String email = "email";
-    public static final String password = "passcode";
-    public static final String avatarURl = "avatar_url";
-    public static final String rating = "rating";
-
-    // COMMENT FIELDS
-    public static final String comment_id = "id";
-    public static final String comment_user_id = "user_id";
-    public static final String comment_post_id = "post_id";
-    public static final String comment_content = "content";
-    public static final String comment_time = "comment_time";
-
-    // POST FIELDS
-    public static final String post_id = "id";
     /**
      * Sets comemnts values from result set
      */
     public static Comment commentFromResultSet(ResultSet rs){
 
-        User user = new User();
-        Post post = new Post();
+        User user;
+        Post post;
         Comment comment = new Comment();
         try{
             user = userFromResultSet(rs);
-            user.setId(rs.getLong(user_id));
+            user.setId(rs.getLong(UserDAO.id));
 
             post = postFromResultSet(rs);
-            post.setId(rs.getLong(post_id));
+            post.setId(rs.getLong(PostDAO.id));
 
-            comment.setId(rs.getLong(comment_id));
+            comment.setId(rs.getLong(CommentDAO.id));
             comment.setUser(user);
             comment.setPost(post);
-            comment.setContent(rs.getString(comment_content));
-            comment.setCommentTime(rs.getTimestamp(comment_time));
+            comment.setContent(rs.getString(CommentDAO.content));
+            comment.setCommentTime(rs.getTimestamp(CommentDAO.dateTime));
 
         }catch (SQLException e) {
             LOGGER.error("SQL exception");
@@ -67,14 +54,13 @@ public class DAOUtil {
     public static User userFromResultSet(ResultSet rs) {
         User user = new User();
         try {
-            user.setId(rs.getLong(user_id));
-            user.setFirstName(rs.getString(firstName));
-            user.setLastName(rs.getString(lastName));
-            user.setEmail(rs.getString(email));
-            user.setPassword(rs.getString(password));
-            user.setAvatarURL(rs.getString(avatarURl));
-            user.setRating(rs.getInt(rating));
-
+            user.setId(rs.getLong(UserDAO.id));
+            user.setFirstName(rs.getString(UserDAO.firstName));
+            user.setLastName(rs.getString(UserDAO.lastName));
+            user.setPassword(rs.getString(UserDAO.password));
+            user.setEmail(rs.getString(UserDAO.email));
+            user.setAvatarURL(rs.getString(UserDAO.avatarURl));
+            user.setRating(rs.getInt(UserDAO.rating));
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
             throw new RuntimeException(e);
@@ -85,8 +71,54 @@ public class DAOUtil {
     /**
      * Sets posts fields values from result set
      */
-    public static Post postFromResultSet(ResultSet rs){
+    public static Post postFromResultSet(ResultSet rs) {
         Post post = new Post();
+        try {
+            post.setId(rs.getLong(PostDAO.id));
+
+            AppArea appArea = AppArea.getById(
+                    rs.getLong(PostDAO.appAreaId));
+            post.setAppArea(appArea);
+
+            User user = UserDAOImpl.fromResultSet(rs);
+            user.setId(rs.getLong(PostDAO.userId));
+            post.setUser(user);
+
+            post.setPostTime(rs.getTimestamp(PostDAO.postTime));
+            post.setTitle(rs.getString(PostDAO.postTitle));
+            post.setContent(rs.getString(PostDAO.postContent));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return post;
+    }
+
+
+    /**
+     * Sets answers fields values from result set
+     */
+    public static Post answerFromResultSet(ResultSet rs) {
+        Post answer = new Post();
+        try {
+            answer.setId(rs.getLong(PostDAO.id));
+
+            AppArea appArea = AppArea.getById(
+                    rs.getLong(PostDAO.appAreaId));
+            answer.setAppArea(appArea);
+
+            User user = UserDAOImpl.fromResultSet(rs);
+            user.setId(rs.getLong(PostDAO.userId));
+            answer.setUser(user);
+
+            answer.setPostTime(rs.getTimestamp(PostDAO.answerTime));
+            answer.setTitle(rs.getString(PostDAO.answerTitle));
+            answer.setContent(rs.getString(PostDAO.answerContent));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return answer;
     }
 }

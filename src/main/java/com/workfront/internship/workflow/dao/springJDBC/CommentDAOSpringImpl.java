@@ -21,12 +21,6 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    private static final String id = "id";
-    private static final String userId = "user_id";
-    private static final String postId = "post_id";
-    private static final String content = "content";
-    private static final String dateTime = "comment_time";
-
     public CommentDAOSpringImpl(DataSource dataSource)
     {
         this.dataSource = dataSource;

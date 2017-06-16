@@ -4,9 +4,12 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AppAreaRowMapper;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
+import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,10 +27,7 @@ import java.util.Map;
  */
 public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
 
-    public static final String id = "id";
-    public static final String name = "name";
-    public static final String description = "description";
-    public static final String teamName = "team_name";
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
     public AppAreaDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -36,19 +36,11 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
 
     @Override
     public long add(AppArea appArea) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO apparea (id, name, description, team_name) " +
                 "VALUES (?, ?, ?, ?)";
         try {
-            jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(
-                        sql, new String[]{"id"});
-                ps.setLong(1, appArea.getId());
-                ps.setString(2, appArea.getName());
-                ps.setString(3, appArea.getDescription());
-                ps.setString(4, appArea.getTeamName());
-                return ps;
-            }, keyHolder);
+            jdbcTemplate.update(sql, appArea.getId(), appArea.getName(),
+                    appArea.getDescription(), appArea.getTeamName());
         }catch (DataAccessException e){
             throw new RuntimeException(e);
         }
@@ -60,7 +52,7 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         String sql = "SELECT * FROM user " +
                 "WHERE id IN (SELECT user_id FROM user_apparea WHERE apparea_id = ?) ";
         try {
-            return jdbcTemplate.query(sql, new Object[]{appAreaId}, (rs, rowNum) -> new UserDAOImpl().fromResultSet(rs));
+            return jdbcTemplate.query(sql, new Object[]{appAreaId}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -84,11 +76,29 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
     /**
      * Returns Map of appArea fields from database
      */
-    private Map<String, Object> getAppAreaFieldsById(long id) {
+    private Map<String, Object> getAppAreaFieldsById(long id){
         Map<String, Object> fieldsMap = new HashMap<>();
-        String sql = "SELECT * FROM apparea " +
+        final String sql = "SELECT * FROM apparea " +
                 "WHERE id = ?";
-
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                fieldsMap.put("Name",rs.getString(name));
+                fieldsMap.put("Description",rs.getString(description));
+                fieldsMap.put("TeamName",rs.getString(teamName));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception occurred");
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(conn, stmt, rs);
+        }
         return fieldsMap;
     }
 
