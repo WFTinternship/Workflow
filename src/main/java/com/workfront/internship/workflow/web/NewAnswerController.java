@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,11 +40,14 @@ public class NewAnswerController extends HttpServlet{
         req.setAttribute(PageAttributes.appAreas, appAreas);
 
         AppArea appArea = post.getAppArea();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
         Post answer = new Post();
         answer.setUser(user)
                 .setContent(content)
                 .setAppArea(appArea)
                 .setTitle(post.getTitle())
+                .setPostTime(timestamp)
                 .setPost(post);
 
         try {
