@@ -73,3 +73,7 @@ website:   	http://www.themepunch.com
 	display: flex;
 	justify-content: space-between;
 }
+.col-lg-7.col-xs-12.col-sm-5.col-md-7.logedin {
+	display: flex;
+	justify-content: space-between;
+}

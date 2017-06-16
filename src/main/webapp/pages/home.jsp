@@ -53,7 +53,7 @@
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
 
-            <!-- MopostContenttent-->
+            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -126,7 +126,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
+                <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
                         <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
                         <c:choose>
