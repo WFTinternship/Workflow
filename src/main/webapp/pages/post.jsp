@@ -14,6 +14,7 @@
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.user)%>'/>
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.post)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.answers)%>'/>
+<c:set var="comments" value='<%=request.getAttribute(PageAttributes.postComments)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -105,7 +106,7 @@
     <div class="headernav">
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img
+                <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
                         src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                         height=60px width=60px/></a></div>
                 <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
@@ -236,12 +237,11 @@
                         </div>
                         <div class="post-coment">
                             <ul class="post-ul">
-                                <li>
-                                    asdasdsad
-                                </li>
-                                <li>
-                                    vvbadasd
-                                </li>
+                                <c:forEach var="comment" items="${comments}">
+                                    <li>
+                                        ${comment.content}
+                                    </li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div><!-- POST -->
@@ -311,7 +311,7 @@
                     <!-- POST -->
                     <div class="post">
                         <form action="/new-answer/${post.id}" class="form" method="post">
-                            <hidden ></hidden>
+                            <hidden></hidden>
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
@@ -370,8 +370,9 @@
                         <div class="blocktxt">
                             <ul class="cats">
                                 <c:forEach var="appArea" items="${appAreas}">
-                                    <li><a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                            class="badge pull-right"></span></a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
+                                                class="badge pull-right"></span></a></li>
                                 </c:forEach>
                             </ul>
                         </div>

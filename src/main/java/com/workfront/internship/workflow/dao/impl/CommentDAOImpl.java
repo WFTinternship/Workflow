@@ -122,7 +122,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
             while (rs.next()){
-                Comment comment = CommentDAOImpl.fromResultSet(rs);
+                Comment comment = CommentDAOImpl.fromResultSet(rs, "comment");
                 commentList.add(comment);
             }
         } catch (SQLException e) {
@@ -220,7 +220,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery(query );
             while (rs.next()) {
-                comment = fromResultSet(rs);
+                comment = fromResultSet(rs, "comment");
                 comments.add(comment);
             }
         } catch (SQLException e){
@@ -243,20 +243,20 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
         Comment comment = new Comment();
 
         try {
-            comment.setId(rs.getLong(CommentDAOImpl.id));
+            comment.setId(rs.getLong(id));
 
             User user = new User();
             user = UserDAOImpl.fromResultSet(rs);
-            user.setId(rs.getLong(CommentDAOImpl.userId));
+            user.setId(rs.getLong(userId));
             comment.setUser(user);
 
             Post post = new Post();
             post = DAOUtil.postFromResultSet(rs);
-            post.setId(rs.getLong(CommentDAOImpl.postId));
+            post.setId(rs.getLong(postId));
             comment.setPost(post);
 
-            comment.setContent(rs.getString(getColumnName(CommentDAOImpl.content, tableAlias)));
-            comment.setCommentTime(rs.getTimestamp(CommentDAOImpl.dateTime));
+            comment.setContent(rs.getString(getColumnName(content, tableAlias)));
+            comment.setCommentTime(rs.getTimestamp(dateTime));
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
         }

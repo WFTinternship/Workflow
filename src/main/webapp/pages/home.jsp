@@ -43,7 +43,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen"/>
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css"
+          media="screen"/>
 
 </head>
 <body>
@@ -88,7 +89,8 @@
                 <!-- SLIDE  -->
                 <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
                     <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
+                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
+                         data-bgposition="left top"
                          data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
                 </li>
@@ -100,7 +102,7 @@
     <div class="headernav">
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="home.jsp"><img
+                <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
                         src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                         height=60px width=60px/></a></div>
                 <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
@@ -128,7 +130,9 @@
                 </div>
                 <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+                        <button class="btn btn-primary"
+                                <c:if test="${user == null}"> data-toggle="modal" data-target="#myModal"> </c:if> Add New Post
+                        </button>
                         <c:choose>
 
                             <c:when test="${user != null}">
@@ -184,7 +188,8 @@
                                     </div>
 
                                     <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -221,8 +226,9 @@
                         <div class="blocktxt">
                             <ul class="cats">
                                 <c:forEach var="appArea" items="${appAreas}">
-                                    <li><a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                            class="badge pull-right"></span></a></li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
+                                                class="badge pull-right"></span></a></li>
                                 </c:forEach>
                             </ul>
                         </div>
@@ -373,8 +379,8 @@
 
 
 <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-<%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>--%>
-<%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>--%>
+    <%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>--%>
+    <%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>--%>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 

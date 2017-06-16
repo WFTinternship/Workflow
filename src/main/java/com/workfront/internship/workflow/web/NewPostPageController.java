@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class NewPostPageController extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.appAreas, appAreas);
 

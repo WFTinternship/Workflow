@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class HomeController extends HttpServlet {
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostService postService = new PostServiceImpl();
 
         List<Post> posts = postService.getAll();

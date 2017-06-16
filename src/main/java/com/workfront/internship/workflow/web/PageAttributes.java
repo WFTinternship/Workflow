@@ -12,4 +12,5 @@ public interface PageAttributes {
     String title = "title";
     String content = "content";
     String appArea = "appArea";
+    String postComments = "postComments";
 }

@@ -41,7 +41,6 @@ public interface CommentService {
      */
     List<Comment> getByPostId(long id);
 
-
     // UPDATE
 
     /**
