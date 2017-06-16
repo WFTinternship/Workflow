@@ -29,11 +29,6 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    public static final String id = "id";
-    public static final String name = "name";
-    public static final String description = "description";
-    public static final String teamName = "team_name";
-
     public AppAreaDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);

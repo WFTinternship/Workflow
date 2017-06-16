@@ -8,6 +8,12 @@ import java.util.List;
 
 public interface CommentDAO {
 
+    String id = "id";
+    String userId = "user_id";
+    String postId = "post_id";
+    String content = "content";
+    String dateTime = "comment_time";
+
     // CREATE
 
     /**
