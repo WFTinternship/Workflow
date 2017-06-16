@@ -295,9 +295,10 @@
                                 <div class="divline"></div>
                                 <div class="blocktxt">
                                     <ul class="cats">
-                                        <c:forEach var="appArea" items="${appAreas}" >
-                                            <li><a href="#">${appArea.name} <span class="badge pull-right">20</span></a></li>
-                                        </c:forEach></ul>
+                                        <c:forEach var="appArea" items="${appAreas}">
+                                        <li><a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
+                                                class="badge pull-right"></span></a></li>
+                                        </c:forEach>
                                 </div>
                             </div>
 
@@ -389,7 +390,7 @@
             <footer>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px/></a></div>
+                        <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt="" height=60px width=60px/></a></div>
                         <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                         <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                             <ul class="socialicons">

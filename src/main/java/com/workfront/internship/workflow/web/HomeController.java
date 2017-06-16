@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
@@ -22,10 +22,10 @@ public class HomeController extends HttpServlet {
         PostService postService = new PostServiceImpl();
 
         List<Post> posts = postService.getAll();
-        req.setAttribute("allPosts", posts);
+        req.setAttribute(PageAttributes.allPosts, posts);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
+        req.setAttribute(PageAttributes.appAreas, appAreas);
 
         getServletConfig()
                 .getServletContext()

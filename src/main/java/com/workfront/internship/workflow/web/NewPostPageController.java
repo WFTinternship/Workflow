@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
@@ -16,48 +16,43 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by nane on 6/12/17
+ * Created by Vahag on 6/8/2017
  */
-public class NewAnswerController extends HttpServlet{
+public class NewPostPageController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute(PageAttributes.appAreas, appAreas);
 
         PostService postService = new PostServiceImpl();
 
-        String url = req.getRequestURL().toString();
-        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
-
-        String content = req.getParameter("reply");
-
-        Post post = postService.getById(postId);
-        req.setAttribute("post", post);
+        String title = req.getParameter("title");
+        String content = req.getParameter("content");
 
         HttpSession session = req.getSession();
         User user = (User)session.getAttribute("user");
 
-        List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
+        AppArea appArea = AppArea.getById(Integer.parseInt(req.getParameter("appArea")));
 
-        AppArea appArea = post.getAppArea();
-        Post answer = new Post();
-        answer.setUser(user)
-                .setContent(content)
+        Post post = new Post();
+        post.setTitle(title)
                 .setAppArea(appArea)
-                .setTitle(post.getTitle())
-                .setPost(post);
-
+                .setContent(content)
+                .setUser(user);
+        String jsp;
         try {
-            postService.add(answer);
+            postService.add(post);
+            jsp = "/pages/home.jsp";
         }catch (RuntimeException e){
-            //TODO: send message that the answer was not added.
+            jsp = "/pages/new_post.jsp";
         }
 
-        List<Post> answers = postService.getAnswersByPostId(postId);
-        req.setAttribute("answers", answers);
+        List<Post> posts = postService.getAll();
+        req.setAttribute(PageAttributes.allPosts, posts);
 
         getServletConfig().
                 getServletContext().
-                getRequestDispatcher("/pages/post.jsp").
+                getRequestDispatcher(jsp).
                 forward(req,resp);
     }
 }
