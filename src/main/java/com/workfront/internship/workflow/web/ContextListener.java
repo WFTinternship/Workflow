@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
@@ -16,12 +16,11 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         AppAreaDAO appAreaDAO = new AppAreaDAOImpl();
         AppArea[] appAreas = AppArea.values();
-        for (AppArea appArea: appAreas) {
-            if(appAreaDAO.getById(appArea.getId()) == null){
+        for (AppArea appArea : appAreas) {
+            if (appAreaDAO.getById(appArea.getId()) == null) {
                 appAreaDAO.add(appArea);
             }
         }
-
     }
 
     @Override

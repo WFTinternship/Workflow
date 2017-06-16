@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
@@ -21,7 +21,7 @@ public class SignUpController extends HttpServlet{
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
+        req.setAttribute(PageAttributes.appAreas, appAreas);
 
         String url = req.getRequestURL().toString();
         String requestType = url.substring(url.lastIndexOf('/') + 1);

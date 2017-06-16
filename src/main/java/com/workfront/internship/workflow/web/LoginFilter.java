@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

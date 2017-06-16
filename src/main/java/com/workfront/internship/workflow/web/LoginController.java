@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
         PostService postService = new PostServiceImpl();
 
         List<Post> posts = postService.getAll();
-        req.setAttribute("allPosts", posts);
+        req.setAttribute(PageAttributes.allPosts, posts);
 
         String url = req.getRequestURL().toString();
         String requestType = url.substring(url.lastIndexOf('/') + 1);
@@ -56,9 +56,8 @@ public class LoginController extends HttpServlet {
             HttpSession session = req.getSession();
             //setting the maximum inactive to be 30 minutes.
             //session.setMaxInactiveInterval(1800);
-            session.setAttribute("user", user);
-
-            req.setAttribute("user", user);
+            session.setAttribute(PageAttributes.user, user);
+            req.setAttribute(PageAttributes.user, user);
 
             // resp.setHeader("location", "http://localhost:8080");
             resp.setStatus(200);

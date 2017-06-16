@@ -1,14 +1,15 @@
-package com.workfront.internship.workflow.api;
+package com.workfront.internship.workflow.web;
 
-import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
+import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,17 +18,21 @@ import java.util.List;
 public class AppAreaPostsController extends HttpServlet{
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PostDAO postDAO = new PostDAOImpl();
+        PostServiceImpl postService = new PostServiceImpl();
 
         String url = req.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
-        List<Post> posts = postDAO.getByAppAreaId(id);
-        req.setAttribute("appAreaPosts", posts);
+        List<Post> posts = postService.getByAppAreaId(id);
+        req.setAttribute(PageAttributes.allPosts, posts);
+
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute(PageAttributes.appAreas, appAreas);
 
         getServletConfig()
                 .getServletContext()
-                .getRequestDispatcher("/home.jsp")
+                .getRequestDispatcher("/pages/home.jsp")
                 .forward(req, resp);
     }
 }
+

@@ -134,7 +134,6 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
         userDAO.add(user);
         //Test method
         userDAO.subscribeToArea(user.getId(), 15);
-
     }
 
     /**

@@ -2,25 +2,23 @@ package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.AppAreaDAOSpringImpl;
+import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNull;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
-
 import java.sql.SQLException;
 import java.util.List;
 
-public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
+import static junit.framework.Assert.assertNull;
+import static junit.framework.TestCase.assertTrue;
+
+public class AppAreaImplIntegrationTest extends BaseIntegrationTest {
 
     private AppAreaDAO appAreaDAO;
     private UserDAO userDAO;
@@ -31,9 +29,9 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
      * Gets AppArea and creates new User
      */
     @Before
-    public void setup(){
-        appAreaDAO = new AppAreaDAOImpl(dataSource);
-        userDAO = new UserDAOImpl(dataSource);
+    public void setup() {
+        appAreaDAO = new AppAreaDAOSpringImpl(dataSource);
+        userDAO = new UserDAOSpringImpl(dataSource);
         appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
 
@@ -51,11 +49,11 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
      * Deletes all the users created during the test
      */
     @After
-    public void tearDown(){
-        if(appAreaDAO.getById(appArea.getId()) == null){
-            appAreaDAO.add(appArea);
-        }
-            userDAO.deleteById(user.getId());
+    public void tearDown() {
+//        if (appAreaDAO.getById(appArea.getId()) == null) {
+//            appAreaDAO.add(appArea);
+//        }
+        userDAO.deleteById(user.getId());
 
         if (dataSource instanceof ComboPooledDataSource) {
             try {
@@ -72,7 +70,7 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
      * @see AppAreaDAOImpl#add(AppArea)
      */
     @Test
-    public void add_success(){
+    public void add_success() {
         appAreaDAO.deleteById(appArea.getId());
         //Test method
         long appAreaId = appAreaDAO.add(appArea);
@@ -85,7 +83,7 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
      * @see AppAreaDAOImpl#deleteById(long)
      */
     @Test
-    public void deleteById_success(){
+    public void deleteById_success() {
         //Test method
         appAreaDAO.deleteById(appArea.getId());
 
@@ -96,7 +94,7 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
      * @see AppAreaDAOImpl#getUsersById(long)
      */
     @Test
-    public void getUsersById_success(){
+    public void getUsersById_success() {
         long userId = userDAO.add(user);
         userDAO.subscribeToArea(userId, appArea.getId());
         //Test method
@@ -106,7 +104,7 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
     }
 
     @Test
-    public void getById_success(){
+    public void getById_success() {
         //Test method
         AppArea actualAppArea = appAreaDAO.getById(1);
 
@@ -116,7 +114,6 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest{
     // endregion
 
     // region <HELPERS>
-
 
 
     // endregion
