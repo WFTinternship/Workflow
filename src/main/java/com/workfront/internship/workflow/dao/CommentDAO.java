@@ -67,7 +67,7 @@ public interface CommentDAO {
      * @param id
      * '@return'
      */
-    int delete(long id);
+    void delete(long id);
 
 
 }

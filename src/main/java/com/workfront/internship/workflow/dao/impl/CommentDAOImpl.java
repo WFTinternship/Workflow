@@ -108,17 +108,17 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
     @Override
     public List<Comment> getByPostId(long postId) {
         List<Comment> commentList = new ArrayList<>();
-        final String sql = "SELECT comment.id, comment.user_id, first_name, last_name, " +
+        String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
                 " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
                 " post.content, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
-                " INNER JOIN post ON comment.post_id = post.id WHERE comment.post_id = ?";;
+                " INNER JOIN post ON comment.post_id = post.id WHERE comment.post_id = ?";
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             conn = dataSource.getConnection();
-            stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(query);
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -140,23 +140,29 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
      * '@return'
      */
     @Override
-    public int delete(long id) {
-        int n ;
+    public void delete(long id) {
+        int numberOfRowsAffected = 0 ;
         String query = "DELETE FROM comment WHERE id=?";
+
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = dataSource.getConnection();
             stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
-            n = stmt.executeUpdate();
+
+            numberOfRowsAffected = stmt.executeUpdate();
+
         }catch (SQLException e){
             LOG.error("SQL exception occurred");
-            return 0;
+            throw new RuntimeException();
+
         } finally {
             closeResources(connection, stmt);
         }
-        return n;
+        if(numberOfRowsAffected == 0){
+            LOG.error("No rows affected");
+        }
     }
 
     /**
@@ -169,7 +175,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
         Comment comment = null;
         String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
                 " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
-                " post.content, comment_time, comment.content FROM comment " +
+                " post.content,post.apparea_id, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id WHERE comment.id = ?";
 

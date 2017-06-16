@@ -3,9 +3,12 @@ package com.workfront.internship.workflow.dao.springJDBC;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.CommentRowMapper;
+import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.domain.Comment;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -38,8 +41,8 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
                         query, new String[]{"id"});
-                ps.setObject(1, comment.getUser());
-                ps.setObject(2, comment.getPost());
+                ps.setLong(1, comment.getUser().getId());
+                ps.setLong(2, comment.getPost().getId());
                 ps.setString(3, comment.getContent());
                 ps.setTimestamp(4, comment.getCommentTime());
                 return ps;
@@ -54,27 +57,90 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
     }
       @Override
     public Comment getById(long id) {
-        return null;
+          String query = "SELECT comment.id, comment.user_id, user.first_name, user.last_name, " +
+                  " user.email, user.passcode, user.avatar_url, user.rating, comment.post_id," +
+                  " post.post_time, post.title,post.content,post.apparea_id, comment.comment_time," +
+                  "comment.content FROM comment INNER JOIN user ON comment.user_id = user.id " +
+                  " INNER JOIN post ON comment.post_id = post.id WHERE comment.id = ?";
+
+          try {
+              return (Comment) jdbcTemplate.queryForObject(query,
+                      new Object[]{id}, new CommentRowMapper());
+          } catch (EmptyResultDataAccessException e) {
+              return null;
+          } catch (DataAccessException e) {
+              throw new RuntimeException(e);
+          }
     }
+    /*
+    try {
+            return jdbcTemplate.query(sql, new Object[]{userId},
+                    new PostRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+     */
 
     @Override
     public List<Comment> getByPostId(long postId) {
-        return null;
+        String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
+                " post.content, comment_time,apparea_id comment.content" +
+                " FROM comment INNER JOIN user ON comment.user_id = user.id " +
+                " INNER JOIN post ON comment.post_id = post.id WHERE comment.post_id = ?";
+        try {
+            return jdbcTemplate.query(query, (rs, rowNum) -> DAOUtil.commentFromResultSet(rs));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<Comment> getAll() {
-        return null;
+    public List<Comment> getAll()
+    {
+        String query = " SELECT comment.id, comment.user_id, first_name, last_name, " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
+                " post.content, comment_time, comment.content FROM comment " +
+                " INNER JOIN user ON comment.user_id = user.id " +
+                " INNER JOIN post ON comment.post_id = post.id ";
+        try {
+            return jdbcTemplate.query(query, (rs, rowNum) -> DAOUtil.commentFromResultSet(rs));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean update(long id, String newComment) {
-        return false;
+        String query = "UPDATE comment SET content = ?," +
+                " comment_time = ?" +
+                " WHERE comment.id = ?";
+        try{
+            jdbcTemplate.update(query,id);
+        }catch (DataAccessException e){
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 
     @Override
-    public int delete(long id) {
-        return 0;
+    public void delete(long id)
+    {
+        String query = "DELETE FROM  comment " +
+                "WHERE id = ?";
+        try {
+            jdbcTemplate.update(query, id);
+        } catch (DataAccessException e){
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
     }
 }
 

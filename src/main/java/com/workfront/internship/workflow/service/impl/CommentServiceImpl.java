@@ -94,7 +94,8 @@ public class CommentServiceImpl implements CommentService {
             throw new InvalidObjectException("Invalid id");
         }
         try {
-            return commentDAO.delete(id);
+             commentDAO.delete(id);
+             return (int)id;
         } catch(RuntimeException e){
             logger.error("Failed to delete the comment !");
             return -1 ;
