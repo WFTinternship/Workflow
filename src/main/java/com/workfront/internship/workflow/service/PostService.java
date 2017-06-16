@@ -40,7 +40,7 @@ public interface PostService {
     Post getById(long id);
 
     /**
-     * Gets all post which titles contain the specified title string.
+     * Gets all post which titles contain the specified answerTitle string.
      * @param title
      * @return
      */
@@ -77,7 +77,7 @@ public interface PostService {
     //UPDATE
 
     /**
-     * Updates the title, content of both of the post.
+     * Updates the answerTitle, postContent of both of the post.
      * @param post
      * @return
      */

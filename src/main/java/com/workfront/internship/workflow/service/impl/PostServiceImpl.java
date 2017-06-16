@@ -100,14 +100,14 @@ public class PostServiceImpl implements PostService{
     public List<Post> getByTitle(String title) {
         if (isEmpty(title)){
             logger.error("Title is not valid");
-            throw new InvalidObjectException("Not valid title");
+            throw new InvalidObjectException("Not valid answerTitle");
         }
         List<Post> posts;
         try {
             posts = postDAO.getByTitle(title);
             return posts;
         }catch (RuntimeException e){
-            throw new ServiceLayerException("Failed to get posts by specified title");
+            throw new ServiceLayerException("Failed to get posts by specified answerTitle");
         }
 
     }

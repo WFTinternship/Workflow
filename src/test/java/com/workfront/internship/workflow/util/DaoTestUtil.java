@@ -34,7 +34,7 @@ public class DaoTestUtil {
         }
         comment.setUser(getRandomUser())
                 .setPost(getRandomPost())
-                .setContent("content")
+                .setContent("postContent")
                 .setCommentTime(new Timestamp(date.getTime()));
         return comment;
     }
@@ -61,8 +61,8 @@ public class DaoTestUtil {
         post.setAppArea(getRandomAppArea())
                 .setPostTime(new Timestamp(parsedDate.getTime()))
                 .setPost(null)
-                .setTitle("title")
-                .setContent("content");
+                .setTitle("answerTitle")
+                .setContent("postContent");
 
         return post;
     }
@@ -89,7 +89,7 @@ public class DaoTestUtil {
                 .setTitle(post.getTitle())
                 .setPostTime(new Timestamp(parsedDate.getTime()))
                 .setAppArea(post.getAppArea())
-                .setContent("answer's content");
+                .setContent("answer's postContent");
         return answer;
     }
 
