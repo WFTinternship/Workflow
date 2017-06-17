@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,8 +29,14 @@ import static junit.framework.TestCase.assertNull;
  */
 public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     private List<Post> postList = new ArrayList<>();
+
+    @Autowired
+    @Qualifier("userDAOSpring")
     private UserDAO userDAO;
     private User user;
+
+    @Autowired
+    @Qualifier("postDAOSpring")
     private PostDAO postDAO;
     private Post post;
     private AppArea appArea;
@@ -46,9 +54,6 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() {
-        userDAO = new UserDAOSpringImpl(dataSource);
-        postDAO = new PostDAOSpringImpl(dataSource);
-
         appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
         userDAO.add(user);

@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -23,7 +25,12 @@ import static junit.framework.TestCase.assertTrue;
 
 public class AppAreaImplIntegrationTest extends BaseIntegrationTest {
 
+    @Autowired
+    @Qualifier("appAreaDAOSpring")
     private AppAreaDAO appAreaDAO;
+
+    @Autowired
+    @Qualifier("userDAOSpring")
     private UserDAO userDAO;
     private AppArea appArea;
     private User user;
@@ -33,8 +40,6 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest {
      */
     @Before
     public void setup() {
-        appAreaDAO = new AppAreaDAOSpringImpl(dataSource);
-        userDAO = new UserDAOSpringImpl(dataSource);
         appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
 

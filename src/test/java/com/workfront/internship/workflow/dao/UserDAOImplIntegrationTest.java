@@ -28,8 +28,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-config.xml"})
+
 public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
 
     @Autowired

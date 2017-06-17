@@ -18,6 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,13 +35,19 @@ import static junit.framework.TestCase.*;
 public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
     private Comment comment;
 
+    @Autowired
+    @Qualifier("commentDAOSpring")
     private CommentDAO commentDAO;
 
-    private User user;
+    @Autowired
+    @Qualifier("userDAOSpring")
     private UserDAO userDAO;
+    private User user;
 
-    private Post post;
+    @Autowired
+    @Qualifier("postDAOSpring")
     private PostDAO postDAO;
+    private Post post;
 
     private List<Comment> commentList = new ArrayList<>();
 
@@ -50,17 +57,14 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
         AppArea appArea;
         commentList = new ArrayList<>();
 
-        userDAO = new UserDAOSpringImpl(dataSource);
         user=  DaoTestUtil.getRandomUser();
         userDAO.add(user);
 
         appArea = DaoTestUtil.getRandomAppArea();
 
-        postDAO = new PostDAOSpringImpl(dataSource);
         post=  DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(post);
 
-        commentDAO = new CommentDAOSpringImpl(dataSource);
         comment = DaoTestUtil.getRandomComment(user, post);
         commentList.add(comment);
 
