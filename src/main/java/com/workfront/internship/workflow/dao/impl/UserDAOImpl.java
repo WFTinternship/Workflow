@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * Created by Vahag on 5/27/2017
  */
-@SuppressWarnings("WeakerAccess")
 public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);

@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * Created by Vahag on 6/15/2017
  */
-
 public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);

@@ -25,6 +25,7 @@ import java.util.Map;
 /**
  * Created by nane on 6/15/17
  */
+
 public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);

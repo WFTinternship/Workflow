@@ -12,8 +12,12 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import static junit.framework.Assert.assertNull;
@@ -24,21 +28,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
 
     @Autowired
     @Qualifier("userDAOSpring")
     private UserDAO userDAO;
 
+    @Autowired
+    @Qualifier("appAreaDAOSpring")
     private AppAreaDAO appAreaDAO;
+
     private User user;
     private List<User> userList;
 
     @Before
     public void setup() {
-        userDAO = new UserDAOSpringImpl(dataSource);
-        appAreaDAO = new AppAreaDAOImpl();
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
 

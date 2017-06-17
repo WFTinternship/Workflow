@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import static junit.framework.TestCase.*;
  */
 public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
     private Comment comment;
+
     private CommentDAO commentDAO;
 
     private User user;
