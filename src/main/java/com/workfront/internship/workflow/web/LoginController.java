@@ -23,28 +23,40 @@ import java.util.List;
 public class LoginController extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
-
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-
-        PostService postService = new PostServiceImpl();
-
-        List<Post> posts = postService.getAll();
-        req.setAttribute(PageAttributes.allPosts, posts);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
         String url = req.getRequestURL().toString();
         String requestType = url.substring(url.lastIndexOf('/') + 1);
 
-        if (requestType.equals("user")){
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute("appAreas", appAreas);
+
+        if (requestType.equals("login")){
             getServletConfig()
                     .getServletContext()
                     .getRequestDispatcher("/pages/login.jsp")
                     .forward(req, resp);
         }
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String url = req.getRequestURL().toString();
+        String requestType = url.substring(url.lastIndexOf('/') + 1);
+
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute("appAreas", appAreas);
+
+        PostService postService = new PostServiceImpl();
+        List<Post> posts = postService.getAll();
+        req.setAttribute(PageAttributes.allPosts, posts);
+
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
 
         UserService userService = new UserServiceImpl();
 
