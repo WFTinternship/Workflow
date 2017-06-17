@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:spring/spring-database.xml"/>
+
+    <bean id="userDAOSpring" class="com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="userDAO" class="com.workfront.internship.workflow.dao.impl.UserDAOImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="commentDAOSpring" class="com.workfront.internship.workflow.dao.springJDBC.CommentDAOSpringImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="commentDAO" class="com.workfront.internship.workflow.dao.impl.CommentDAOImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="postDAOSpring" class="com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="postDAO" class="com.workfront.internship.workflow.dao.impl.PostDAOImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="appAreaDAOSpring" class="com.workfront.internship.workflow.dao.springJDBC.AppAreaDAOSpringImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="appAeraDAO" class="com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+</beans>

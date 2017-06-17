@@ -107,7 +107,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
     {
         String query = " SELECT comment.id, comment.user_id, first_name, last_name, " +
                 " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
-                " post.content, comment_time, comment.content FROM comment " +
+                " post.content, post.apparea_id, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id ";
         try {

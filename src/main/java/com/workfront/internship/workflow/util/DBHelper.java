@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.util;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
