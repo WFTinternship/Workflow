@@ -15,6 +15,6 @@ public class CommentRowMapper implements RowMapper {
 
     @Override
     public Comment mapRow(ResultSet rs, int i) throws SQLException {
-        return DAOUtil.commentFromResultSet(rs);
+        return DAOUtil.commentFromResultSet(rs, "comment");
     }
 }
