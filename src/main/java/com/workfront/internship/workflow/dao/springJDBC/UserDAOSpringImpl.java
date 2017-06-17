@@ -13,31 +13,19 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Vahag on 6/15/2017
  */
-public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
-    public static final String id = "id";
-    public static final String firstName = "first_name";
-    public static final String lastName = "last_name";
-    public static final String email = "email";
-    public static final String password = "passcode";
-    public static final String avatarURl = "avatar_url";
-    public static final String rating = "rating";
+public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
