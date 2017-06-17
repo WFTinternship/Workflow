@@ -235,7 +235,7 @@
 
                             <div class="clearfix"></div>
                         </div>
-                        <div class="post-coment">
+                        <div class="post-comment">
                             <ul class="post-ul">
                                 <c:forEach var="comment" items="${comments}">
                                     <li>
@@ -300,16 +300,17 @@
 
                                 <div class="clearfix"></div>
                             </div>
+                            <div class="post-comment">
+                                <ul class="post-ul">
+                                    <c:forEach var="comment" items="${answer.commentList}">
+                                        <li>
+                                                ${comment.content}
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="post-coment">
-                            <ul class="post-ul">
-                                <c:forEach var="comment" items="${comments}">
-                                    <li>
-                                            ${comment.content}
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </div>
+
                     </c:forEach>
                     <!-- POST -->
 

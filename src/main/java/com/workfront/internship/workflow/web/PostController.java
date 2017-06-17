@@ -41,6 +41,10 @@ public class PostController extends HttpServlet {
         List<Post> answers = postService.getAnswersByPostId(id);
         req.setAttribute(PageAttributes.answers, answers);
 
+        for (Post answer: answers) {
+            answer.setCommentList(commentService.getByPostId(answer.getId()));
+        }
+
         getServletConfig()
                 .getServletContext()
                 .getRequestDispatcher("/pages/post.jsp")

@@ -22,7 +22,7 @@ public class DAOUtil {
     private static final Logger LOGGER = Logger.getLogger(DAOUtil.class);
 
     /**
-     * Sets comemnts values from result set
+     * Sets comments values from result set
      */
     public static Comment commentFromResultSet(ResultSet rs){
 
@@ -76,8 +76,7 @@ public class DAOUtil {
         try {
             post.setId(rs.getLong(PostDAO.id));
 
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(PostDAO.appAreaId));
+            AppArea appArea = AppArea.getById(rs.getLong(PostDAO.appAreaId));
             post.setAppArea(appArea);
 
             User user = UserDAOImpl.fromResultSet(rs);
