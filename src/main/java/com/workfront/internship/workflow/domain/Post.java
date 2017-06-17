@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by nane on 5/26/17
@@ -13,6 +14,8 @@ public class Post {
     private Timestamp postTime;
     private String title;
     private String content;
+
+    private List<Comment> commentList;
     private boolean isCorrect;
 
     public long getId() {
@@ -75,6 +78,15 @@ public class Post {
 
     public Post setContent(String content) {
         this.content = content;
+        return this;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public Post setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
         return this;
     }
 

@@ -231,7 +231,7 @@
                                     <div class="post">
                                         <form action="/login" class="form newtopic" method="post">
                                             <div class="postinfotop">
-                                                <h2>Log in to ccount</h2>
+                                                <h2>Log in to account</h2>
                                             </div>
 
                                             <!-- acc section -->

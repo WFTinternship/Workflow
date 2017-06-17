@@ -15,6 +15,9 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,14 +87,14 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
      */
 
     @Override
-    public List<Comment> getByPostId(long postId) {
+    public List<Comment> getByPostId(long id) {
         String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
                 " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
-                " post.content, comment_time,apparea_id comment.content" +
+                " post.content, apparea_id, comment_time, comment.content " +
                 " FROM comment INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id WHERE comment.post_id = ?";
         try {
-            return jdbcTemplate.query(query, (rs, rowNum) -> DAOUtil.commentFromResultSet(rs));
+            return jdbcTemplate.query(query, new Object[]{id}, new CommentRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -108,7 +111,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
                 " INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id ";
         try {
-            return jdbcTemplate.query(query, (rs, rowNum) -> DAOUtil.commentFromResultSet(rs));
+            return jdbcTemplate.query(query, new CommentRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
@@ -118,11 +121,13 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
 
     @Override
     public boolean update(long id, String newComment) {
-        String query = "UPDATE comment SET content = ?," +
-                " comment_time = ?" +
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        String query = "UPDATE comment SET content = ?, " +
+                " comment_time = ? " +
                 " WHERE comment.id = ?";
         try{
-            jdbcTemplate.update(query,id);
+            jdbcTemplate.update(query, newComment,  dateFormat.format(date), id);
         }catch (DataAccessException e){
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);

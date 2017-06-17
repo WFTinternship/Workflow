@@ -22,32 +22,39 @@ public class DAOUtil {
     private static final Logger LOGGER = Logger.getLogger(DAOUtil.class);
 
     /**
-     * Sets comemnts values from result set
+     * Sets comments values from result set
      */
-    public static Comment commentFromResultSet(ResultSet rs){
+    public static Comment commentFromResultSet(ResultSet rs) {
+        return commentFromResultSet(rs, null);
+    }
 
-        User user;
-        Post post;
+    public static Comment commentFromResultSet(ResultSet rs, String tableAlias) {
         Comment comment = new Comment();
-        try{
-            user = userFromResultSet(rs);
-            user.setId(rs.getLong(UserDAO.id));
 
-            post = postFromResultSet(rs);
-            post.setId(rs.getLong(PostDAO.id));
-
+        try {
             comment.setId(rs.getLong(CommentDAO.id));
-            comment.setUser(user);
-            comment.setPost(post);
-            comment.setContent(rs.getString(CommentDAO.content));
-            comment.setCommentTime(rs.getTimestamp(CommentDAO.dateTime));
 
-        }catch (SQLException e) {
-            LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            User user = UserDAOImpl.fromResultSet(rs);
+            user.setId(rs.getLong(UserDAO.id));
+            comment.setUser(user);
+
+            Post post = DAOUtil.postFromResultSet(rs);
+            post.setId(rs.getLong(PostDAO.id));
+            comment.setPost(post);
+
+            comment.setContent(rs.getString(getColumnName(CommentDAO.content, tableAlias)));
+            comment.setCommentTime(rs.getTimestamp(CommentDAO.dateTime));
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception occurred");
         }
         return comment;
     }
+
+    private static String getColumnName(String column, String tableName) {
+        return tableName == null ? column : tableName + "." + column;
+    }
+
+
     /**
      * Sets users fields values from result set
      */
@@ -76,8 +83,7 @@ public class DAOUtil {
         try {
             post.setId(rs.getLong(PostDAO.id));
 
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(PostDAO.appAreaId));
+            AppArea appArea = AppArea.getById(rs.getLong(PostDAO.appAreaId));
             post.setAppArea(appArea);
 
             User user = UserDAOImpl.fromResultSet(rs);
