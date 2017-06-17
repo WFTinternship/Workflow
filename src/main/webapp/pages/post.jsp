@@ -301,6 +301,15 @@
                                 <div class="clearfix"></div>
                             </div>
                         </div>
+                        <div class="post-coment">
+                            <ul class="post-ul">
+                                <c:forEach var="comment" items="${comments}">
+                                    <li>
+                                            ${comment.content}
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
                     </c:forEach>
                     <!-- POST -->
 
