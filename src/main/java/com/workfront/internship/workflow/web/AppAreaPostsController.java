@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class AppAreaPostsController extends HttpServlet {
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostServiceImpl postService = new PostServiceImpl();
 
         String url = req.getRequestURL().toString();

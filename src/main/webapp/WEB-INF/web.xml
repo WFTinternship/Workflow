@@ -71,6 +71,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.workfront.internship.workflow.web.LogoutController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>NewAnswer</servlet-name>
         <servlet-class>com.workfront.internship.workflow.web.NewAnswerController</servlet-class>
     </servlet>
