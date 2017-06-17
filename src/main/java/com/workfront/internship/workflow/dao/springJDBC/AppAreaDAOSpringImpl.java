@@ -90,8 +90,8 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 fieldsMap.put("Name",rs.getString(name));
-                fieldsMap.put("Description",rs.getString(description));
                 fieldsMap.put("TeamName",rs.getString(teamName));
+                fieldsMap.put("Description",rs.getString(description));
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
