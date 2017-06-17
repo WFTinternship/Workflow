@@ -30,7 +30,7 @@ public class LoginController extends HttpServlet {
         String requestType = url.substring(url.lastIndexOf('/') + 1);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         if (requestType.equals("login")){
             getServletConfig()
@@ -48,13 +48,6 @@ public class LoginController extends HttpServlet {
         String url = req.getRequestURL().toString();
         String requestType = url.substring(url.lastIndexOf('/') + 1);
 
-        List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute("appAreas", appAreas);
-
-        PostService postService = new PostServiceImpl();
-        List<Post> posts = postService.getAll();
-        req.setAttribute(PageAttributes.allPosts, posts);
-
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
@@ -68,22 +61,28 @@ public class LoginController extends HttpServlet {
             HttpSession session = req.getSession();
             //setting the maximum inactive to be 30 minutes.
             //session.setMaxInactiveInterval(1800);
-            session.setAttribute(PageAttributes.user, user);
-            req.setAttribute(PageAttributes.user, user);
+            session.setAttribute(PageAttributes.USER, user);
+            req.setAttribute(PageAttributes.USER, user);
 
-            // resp.setHeader("location", "http://localhost:8080");
             resp.setStatus(200);
             if (requestType.equals("new-post")){
                 jsp = "/pages/new_post.jsp";
             }else {
-                jsp = "/pages/home.jsp";
+                jsp = "/home";
             }
         } catch (RuntimeException e) {
             //when the user was not found in database or query failed.
-            req.setAttribute("user", null);
+            req.setAttribute(PageAttributes.USER, null);
             resp.setStatus(405);
-            jsp = "/pages/login.jsp";
+            jsp = "/login";
         }
+
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+        PostService postService = new PostServiceImpl();
+        List<Post> posts = postService.getAll();
+        req.setAttribute(PageAttributes.ALLPOSTS, posts);
 
         getServletConfig()
                 .getServletContext()

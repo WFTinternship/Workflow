@@ -8,9 +8,9 @@
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
-<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.allPosts)%>'/>
-<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.appAreas)%>'/>
-<c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.user)%>'/>
+<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -101,17 +101,6 @@
                     <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
                             src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                             height=60px width=60px/></a></div>
-                    <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
-                    <%--<div class="dropdown">--%>
-                    <%--<a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>--%>
-                    <%--<ul class="dropdown-menu" role="menu">--%>
-                    <%--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>--%>
-                    <%--<li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>--%>
-                    <%--<li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>--%>
-
-                    <%--</ul>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
                     <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                         <div class="wrap">
                             <form action="#" method="post" class="form">

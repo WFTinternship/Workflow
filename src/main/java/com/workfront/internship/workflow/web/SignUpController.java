@@ -21,7 +21,7 @@ public class SignUpController extends HttpServlet{
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.appAreas, appAreas);
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         String url = req.getRequestURL().toString();
         String requestType = url.substring(url.lastIndexOf('/') + 1);

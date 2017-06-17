@@ -23,19 +23,18 @@ public class NewPostPageController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.appAreas, appAreas);
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
-        PostService postService = new PostServiceImpl();
-
-        String title = req.getParameter(PageAttributes.title);
-        String content = req.getParameter(PageAttributes.content);
+        String title = req.getParameter(PageAttributes.TITLE);
+        String content = req.getParameter(PageAttributes.CONTENT);
 
         HttpSession session = req.getSession();
-        User user = (User)session.getAttribute(PageAttributes.user);
+        User user = (User)session.getAttribute(PageAttributes.USER);
 
-        AppArea appArea = AppArea.getById(Integer.parseInt(req.getParameter(PageAttributes.appArea)));
+        AppArea appArea = AppArea.getById(Integer.parseInt(req.getParameter(PageAttributes.APPAREA)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        PostService postService = new PostServiceImpl();
         Post post = new Post();
         post.setTitle(title)
                 .setAppArea(appArea)
@@ -51,11 +50,13 @@ public class NewPostPageController extends HttpServlet {
         }
 
         List<Post> posts = postService.getAll();
-        req.setAttribute(PageAttributes.allPosts, posts);
+        req.setAttribute(PageAttributes.ALLPOSTS, posts);
 
         getServletConfig().
                 getServletContext().
                 getRequestDispatcher(jsp).
                 forward(req,resp);
     }
+
+
 }

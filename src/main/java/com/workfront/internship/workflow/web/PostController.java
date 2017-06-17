@@ -30,16 +30,16 @@ public class PostController extends HttpServlet {
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         Post post = postService.getById(id);
-        req.setAttribute(PageAttributes.post, post);
+        req.setAttribute(PageAttributes.POST, post);
 
         List<Comment> postComments = commentService.getByPostId(id);
-        req.setAttribute(PageAttributes.postComments, postComments);
+        req.setAttribute(PageAttributes.POSTCOMMENTS, postComments);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.appAreas, appAreas);
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         List<Post> answers = postService.getAnswersByPostId(id);
-        req.setAttribute(PageAttributes.answers, answers);
+        req.setAttribute(PageAttributes.ANSWERS, answers);
 
         getServletConfig()
                 .getServletContext()

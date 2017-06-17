@@ -8,18 +8,18 @@
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
-<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.allPosts)%>'/>
-<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.appAreas)%>'/>
-<c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.user)%>'/>
+<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from forum.azyrusthemes.home.jsphtml by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
+<!-- Mirrored from forum.azyrusthemes.com/03_new_topic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:11 GMT -->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forum :: Home Page</title>
+    <title>Forum :: New topic</title>
 
     <!-- Bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -35,20 +35,17 @@
     <![endif]-->
 
     <!-- fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
-          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome-4.0.3/css/font-awesome.min.css">
 
     <!-- CSS STYLE-->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen" />
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css"
-          media="screen"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css" media="screen" />
 
 </head>
 <body>
-
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -89,8 +86,7 @@
                 <!-- SLIDE  -->
                 <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
                     <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
-                         data-bgposition="left top"
+                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
                          data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
                 </li>
@@ -105,17 +101,6 @@
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
                         src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                         height=60px width=60px/></a></div>
-                <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
-                <%--<div class="dropdown">--%>
-                <%--<a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>--%>
-                <%--<ul class="dropdown-menu" role="menu">--%>
-                <%--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>--%>
-                <%--<li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>--%>
-                <%--<li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>--%>
-
-                <%--</ul>--%>
-                <%--</div>--%>
-                <%--</div>--%>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
                         <form action="#" method="post" class="form">
@@ -130,38 +115,36 @@
                 </div>
                 <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
-                        <button class="btn btn-primary"
-                                <c:if test="${user == null}"> data-toggle="modal" data-target="#myModal"> </c:if> Add New Post
-                        </button>
-                        <c:choose>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
 
-                            <c:when test="${user != null}">
-                                <div class="avatar pull-left dropdown">
-                                    <a data-toggle="dropdown" href="#"><img
-                                            src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
-                                        class="caret"></b>
-                                    <div class="status green">&nbsp;</div>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
-                                        </li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
-                                        </li>
-                                    </ul>
-                                </div>
 
-                            </c:when>
 
-                            <c:when test="${user == null}">
+                        <c:if test="${user == null}">
                           <span>
                               <a href="/signup/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
                               <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
                           </span>
-                            </c:when>
+                        </c:if>
 
-                        </c:choose>
+
                     </div>
 
                     <div class="clearfix"></div>
+                    <c:if test="${user != null}">
+                        <div class="avatar pull-left dropdown">
+                            <a data-toggle="dropdown" href="#"><img
+                                    src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                class="caret"></b>
+                            <div class="status green">&nbsp;</div>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </c:if>
                 </div>
 
             </div>

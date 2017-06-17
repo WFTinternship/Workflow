@@ -23,15 +23,8 @@ public class LogoutController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         HttpSession session = req.getSession();
-        session.setAttribute("user", null);
+        session.setAttribute(PageAttributes.USER, null);
         session.invalidate();
-
-//        PostService postService = new PostServiceImpl();
-//        List<Post> posts = postService.getAll();
-//        req.setAttribute(PageAttributes.allPosts, posts);
-//
-//        List<AppArea> appAreas = Arrays.asList(AppArea.values());
-//        req.setAttribute(PageAttributes.appAreas, appAreas);
 
         getServletContext().
                 getRequestDispatcher("/home").

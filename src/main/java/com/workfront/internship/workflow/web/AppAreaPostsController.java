@@ -24,10 +24,10 @@ public class AppAreaPostsController extends HttpServlet {
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         List<Post> posts = postService.getByAppAreaId(id);
-        req.setAttribute(PageAttributes.allPosts, posts);
+        req.setAttribute(PageAttributes.ALLPOSTS, posts);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.appAreas, appAreas);
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         getServletConfig()
                 .getServletContext()

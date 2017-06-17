@@ -31,13 +31,13 @@ public class NewAnswerController extends HttpServlet{
         String content = req.getParameter("reply");
 
         Post post = postService.getById(postId);
-        req.setAttribute(PageAttributes.post, post);
+        req.setAttribute(PageAttributes.POST, post);
 
         HttpSession session = req.getSession();
         User user = (User)session.getAttribute("user");
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.appAreas, appAreas);
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         AppArea appArea = post.getAppArea();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());

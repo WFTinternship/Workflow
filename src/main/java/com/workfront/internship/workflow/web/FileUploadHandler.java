@@ -46,7 +46,8 @@ public class FileUploadHandler extends HttpServlet {
                     "Sorry this Servlet only handles file upload request");
         }
 
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/login.jsp")
+                .forward(request, response);
 
     }
 

@@ -20,16 +20,20 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PostService postService = new PostServiceImpl();
-
         List<Post> posts = postService.getAll();
-        req.setAttribute(PageAttributes.allPosts, posts);
+        req.setAttribute(PageAttributes.ALLPOSTS, posts);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.appAreas, appAreas);
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         getServletConfig()
                 .getServletContext()
                 .getRequestDispatcher("/pages/home.jsp")
                 .forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
     }
 }

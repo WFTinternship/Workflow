@@ -9,12 +9,12 @@
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
-<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.allPosts)%>'/>
-<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.appAreas)%>'/>
-<c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.user)%>'/>
-<c:set var="post" value='<%=request.getAttribute(PageAttributes.post)%>'/>
-<c:set var="answers" value='<%=request.getAttribute(PageAttributes.answers)%>'/>
-<c:set var="comments" value='<%=request.getAttribute(PageAttributes.postComments)%>'/>
+<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+<c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
+<c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
+<c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
