@@ -39,7 +39,7 @@ public class DBHelper {
         Properties properties = loadDbCfgProperties();
 
         return DriverManager.getConnection(properties.getProperty("DB_TEST_URL"),
-                properties.getProperty("USERNAME"),
+                properties.getProperty("USER_NAME"),
                 properties.getProperty("PASSWORD"));
     }
 
@@ -51,7 +51,7 @@ public class DBHelper {
             e.printStackTrace();
         }
         cpds.setJdbcUrl(properties.getProperty("DB_TEST_URL"));
-        cpds.setUser(properties.getProperty("USERNAME"));
+        cpds.setUser(properties.getProperty("USER_NAME"));
         cpds.setPassword(properties.getProperty("PASSWORD"));
 
         cpds.setInitialPoolSize(5);

@@ -41,8 +41,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
 
-
-        LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
+        LOG = Logger.getLogger(UserDAOImplIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());

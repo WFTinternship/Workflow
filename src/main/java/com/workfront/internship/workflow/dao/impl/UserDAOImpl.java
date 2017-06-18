@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -24,6 +25,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         dataSource = DBHelper.getPooledConnection();
     }
 
+    @Autowired
     public UserDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
