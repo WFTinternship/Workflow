@@ -2,9 +2,6 @@ package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
-import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -28,7 +25,7 @@ import static junit.framework.TestCase.assertNull;
  * Created by nane on 5/29/17
  */
 public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
-    private List<Post> postList = new ArrayList<>();
+    private List<User> userList;
 
     @Autowired
     @Qualifier("userDAOSpring")
@@ -54,8 +51,10 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() {
+        userList = new ArrayList<>();
         appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
+        userList.add(user);
         userDAO.add(user);
         post = DaoTestUtil.getRandomPost(user, appArea);
 
@@ -71,15 +70,13 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
 
     @After
     public void tearDown() {
-        try {
-            for (Post user : postList) {
-                postDAO.delete(user.getId());
-            }
-            userDAO.deleteById(user.getId());
-            postDAO.delete(post.getId());
-        } catch (RuntimeException e) {
 
+        for (User user : userList) {
+            if (userDAO.getById(user.getId()) != null) {
+                userDAO.deleteById(user.getId());
+            }
         }
+        userDAO.deleteById(user.getId());
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
@@ -162,7 +159,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
      * @see PostDAOImpl#getByAppAreaId(long)
      */
     @Test
-    public void getByAppAreaId_failure(){
+    public void getByAppAreaId_failure() {
         //Test method
         List<Post> actualPosts = postDAO.getByAppAreaId(100000);
         assertEquals(actualPosts.size(), 0);
@@ -172,7 +169,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
      * @see PostDAOImpl#getByAppAreaId(long)
      */
     @Test
-    public void getByAppAreaId_success(){
+    public void getByAppAreaId_success() {
         postDAO.add(post);
         //Test method
         List<Post> actualPosts = postDAO.getByAppAreaId(appArea.getId());
@@ -191,12 +188,8 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
         Post otherComment = DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(otherComment);
 
-        postList.add(otherComment);
-
         Post anotherComment = DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(anotherComment);
-
-        postList.add(anotherComment);
 
         otherList = postDAO.getAll();
         assertNotNull(otherList);
@@ -226,6 +219,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     public void getAnswersByPostId_failure() {
         postDAO.add(post);
         User user = DaoTestUtil.getRandomUser();
+        userList.add(user);
         userDAO.add(user);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(user);
@@ -247,6 +241,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     public void getAnswersByPostId_success() {
         postDAO.add(post);
         User user = DaoTestUtil.getRandomUser();
+        userList.add(user);
         userDAO.add(user);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(user);
@@ -266,6 +261,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     public void setBestAnswer_failure() {
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
+        userList.add(anotherUser);
         userDAO.add(anotherUser);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         // not added to db
@@ -289,6 +285,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     public void setBestAnswer_success() {
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
+        userList.add(anotherUser);
         userDAO.add(anotherUser);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(anotherUser);
@@ -312,6 +309,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     public void getBestAnswer_success() {
         postDAO.add(post);
         User user = DaoTestUtil.getRandomUser();
+        userList.add(user);
         userDAO.add(user);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(user);
