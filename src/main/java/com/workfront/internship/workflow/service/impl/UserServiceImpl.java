@@ -10,6 +10,8 @@ import com.workfront.internship.workflow.exceptions.service.ServiceLayerExceptio
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -23,7 +25,13 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
-    private UserDAO userDAO = new UserDAOImpl();
+    @Autowired
+    @Qualifier("userDAOSpring")
+    private UserDAO userDAO;
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.trim().length() == 0;
+    }
 
     /**
      * @param user
@@ -118,13 +126,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         User user;
-        if (isEmpty(email)){
+        if (isEmpty(email)) {
             LOGGER.error("Email is not valid");
             throw new InvalidObjectException("Not valid email");
         }
         try {
             user = userDAO.getByEmail(email);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Couldn't get the user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
@@ -230,13 +238,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#authenticate(String, String)
-     * @param email is input from client
+     * @param email    is input from client
      * @param password is input from client
+     * @see UserService#authenticate(String, String)
      */
     @Override
     public User authenticate(String email, String password) {
-        if (isEmpty(password)){
+        if (isEmpty(password)) {
             LOGGER.error("Password is not valid");
             throw new InvalidObjectException("Not valid password");
         }
@@ -244,16 +252,12 @@ public class UserServiceImpl implements UserService {
         User user = getByEmail(email);
 
         //TODO: Password should be hashed
-        if (user != null && user.getPassword().equals(password)){
+        if (user != null && user.getPassword().equals(password)) {
             return user;
-        }else {
+        } else {
             LOGGER.error("Invalid email-password combination!");
             throw new ServiceLayerException("Invalid email-password combination!");
         }
-    }
-
-    public static boolean isEmpty(String string) {
-        return string == null || string.trim().length() == 0;
     }
 
 }
