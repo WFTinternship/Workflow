@@ -1,12 +1,18 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.dataModel.Comment;
+import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 
 import java.util.List;
 
 
 public interface CommentDAO {
+
+    String id = "id";
+    String userId = "user_id";
+    String postId = "post_id";
+    String content = "content";
+    String dateTime = "comment_time";
 
     // CREATE
 
@@ -27,6 +33,13 @@ public interface CommentDAO {
      * '@return'
      */
     Comment getById(long id);
+
+    /**
+     *
+     * @param postId id of the post
+     * @return List of comments of the specified post
+     */
+    List<Comment> getByPostId(long postId);
 
     /**
      * returns all comments from database as a list
@@ -54,7 +67,7 @@ public interface CommentDAO {
      * @param id
      * '@return'
      */
-    int delete(long id);
+    void delete(long id);
 
 
 }

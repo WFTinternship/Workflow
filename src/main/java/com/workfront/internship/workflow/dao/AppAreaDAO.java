@@ -1,20 +1,24 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.app.App;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
 
 import java.util.List;
 
 
 public interface AppAreaDAO {
 
+    String id = "id";
+    String name = "name";
+    String description = "description";
+    String teamName = "team_name";
+
     //CREATE
 
     /**
      * Adds AppArea to the database
-     * @param appArea
-     * @return
+     * @param appArea app area to be added
+     * @return id of the added app area
      */
     long add(AppArea appArea);
 
@@ -22,15 +26,15 @@ public interface AppAreaDAO {
 
     /**
      * Gets the list of users who are subscribed to the appArea with the given id
-     * @param appAreaId
-     * @return
+     * @param appAreaId app area id
+     * @return users of the given app area
      */
     List<User> getUsersById(long appAreaId);
 
     /**
      * Gets the AppArea with the given id
-     * @param id
-     * @return
+     * @param id id of the searched app area
+     * @return app area with the given id
      */
     AppArea getById(long id);
 
@@ -40,8 +44,8 @@ public interface AppAreaDAO {
 
     /**
      * Deletes AppArea with the given id
-     * @param id
+     * @param id app area id that has to be deleted
      */
     void deleteById(long id);
 
-}
+   }

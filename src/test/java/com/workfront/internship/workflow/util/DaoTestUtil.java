@@ -1,34 +1,26 @@
 package com.workfront.internship.workflow.util;
 
-import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
-import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Comment;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.domain.Comment;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
 /**
- * Created by Karen on 5/29/2017.
+ * Created by Vahag on 5/29/2017
  */
 public class DaoTestUtil {
 
     public static User getRandomUser(){
         User user = new User();
         user.setFirstName("name" + uuid()).setLastName("surname" + uuid())
-                .setEmail("name@gmail.com")
-                .setPassword("password" + uuid()).setRating(12);
+                .setEmail("name@gmail.com"  + uuid().substring(0,15))
+                .setPassword("password" + uuid()).setAvatarURL("images/default/user_avatar.png").setRating(12);
         return user;
     }
     public static Comment getRandomComment(){
@@ -42,7 +34,7 @@ public class DaoTestUtil {
         }
         comment.setUser(getRandomUser())
                 .setPost(getRandomPost())
-                .setContent("content")
+                .setContent("postContent")
                 .setCommentTime(new Timestamp(date.getTime()));
         return comment;
     }
@@ -69,8 +61,8 @@ public class DaoTestUtil {
         post.setAppArea(getRandomAppArea())
                 .setPostTime(new Timestamp(parsedDate.getTime()))
                 .setPost(null)
-                .setTitle("title")
-                .setContent("content");
+                .setTitle("answerTitle")
+                .setContent("postContent");
 
         return post;
     }
@@ -97,7 +89,7 @@ public class DaoTestUtil {
                 .setTitle(post.getTitle())
                 .setPostTime(new Timestamp(parsedDate.getTime()))
                 .setAppArea(post.getAppArea())
-                .setContent("answer's content");
+                .setContent("answer's postContent");
         return answer;
     }
 

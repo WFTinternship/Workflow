@@ -1,18 +1,21 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
 import java.sql.*;
@@ -20,32 +23,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDAOImplIntegrationTest {
+public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
 
+    @Autowired
+    @Qualifier("userDAOSpring")
     private UserDAO userDAO;
-    private AppAreaDAO appAreaDAO;
-    private User user;
 
-    List<User> userList;
+    @Autowired
+    @Qualifier("appAreaDAOSpring")
+    private AppAreaDAO appAreaDAO;
+
+    private User user;
+    private List<User> userList;
 
     @Before
     public void setup() {
-        userDAO = new UserDAOImpl();
-        appAreaDAO = new AppAreaDAOImpl();
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
+
+        LOG = Logger.getLogger(UserDAOImplIntegrationTest.class);
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         for (User user : userList) {
             if (userDAO.getById(user.getId()) != null) {
                 userDAO.deleteById(user.getId());
             }
         }
-        if (userDAO.getById(user.getId()) != null) {
-            userDAO.deleteById(user.getId());
+
+        userDAO.deleteById(user.getId());
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     // region <TEST CASE>
@@ -112,7 +134,7 @@ public class UserDAOImplIntegrationTest {
     public void subscribeToArea_failure(){
         userDAO.add(user);
         //Test method
-        userDAO.subscribeToArea(user.getId(), 15);
+        userDAO.subscribeToArea(user.getId(), 10000);
 
     }
 
@@ -179,6 +201,29 @@ public class UserDAOImplIntegrationTest {
         List<User> actualUsers = userDAO.getByName("Vahagn Vard");
 
         assertTrue(actualUsers.contains(user));
+    }
+
+    /**
+     * @see UserDAOImpl#getByEmail(String)
+     */
+    @Test
+    public void getByEmail_failure() {
+        //Test method
+        User actualUser = userDAO.getByEmail("123");
+        assertNull(actualUser);
+    }
+
+    /**
+     * @see UserDAOImpl#getByEmail(String)
+     */
+    @Test
+    public void getByEmail_success() {
+        user.setEmail("vahagn@gmail.com");
+        userDAO.add(user);
+        //Test method
+        User actualUser = userDAO.getByEmail("vahagn@gmail.com");
+
+        assertTrue(actualUser.equals(user));
     }
 
     /**
@@ -253,7 +298,7 @@ public class UserDAOImplIntegrationTest {
      */
     private void verifyAllUsersAreDeleted() {
         final String sql = "SELECT * FROM user";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             assertEquals(rs.last() ? rs.getRow() : 0, 0);

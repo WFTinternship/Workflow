@@ -1,0 +1,59 @@
+package com.workfront.internship.workflow.service.impl;
+
+import com.workfront.internship.workflow.dao.AppAreaDAO;
+import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
+import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.service.AppAreaService;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.util.List;
+
+/**
+ * Created by nane on 6/5/17
+ */
+public class AppAreaServiceImpl implements AppAreaService {
+
+    private static final Logger logger = Logger.getLogger(PostDAOImpl.class);
+
+    private final AppAreaDAO appAreaDAO;
+
+    @Autowired
+    public AppAreaServiceImpl(@Qualifier("appAreaDAOSpring") AppAreaDAO appAreaDAO) {
+        this.appAreaDAO = appAreaDAO;
+    }
+
+    @Override
+    public long add(AppArea appArea) {
+        if (!appArea.isValid()){
+            logger.error("Application Area is invalid. Failed to add to the database");
+            throw new InvalidObjectException("Invalid Application Area");
+        }
+        long id = 0;
+        try{
+            id = appAreaDAO.add(appArea);
+        }catch (RuntimeException e){
+            logger.error("Failed to add the application area to database");
+        }
+        return id;
+    }
+
+    @Override
+    public List<User> getUsersById(long appAreaId) {
+        return appAreaDAO.getUsersById(appAreaId);
+    }
+
+    @Override
+    public AppArea getById(long id) {
+        return appAreaDAO.getById(id);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        appAreaDAO.deleteById(id);
+    }
+}

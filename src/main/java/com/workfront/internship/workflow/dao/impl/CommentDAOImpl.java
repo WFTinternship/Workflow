@@ -1,12 +1,15 @@
 package com.workfront.internship.workflow.dao.impl;
 
+import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
-import com.workfront.internship.workflow.dataModel.Comment;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.dao.util.DAOUtil;
+import com.workfront.internship.workflow.domain.Comment;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,18 +18,19 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
- * Created by angel on 27.05.2017.
+ * Created by Angel on 27.05.2017
  */
-public class CommentDAOImpl implements CommentDAO {
+public class CommentDAOImpl extends AbstractDao implements CommentDAO {
+
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
 
+    public CommentDAOImpl(){
+        dataSource = DBHelper.getPooledConnection();
+    }
 
-        private static final String id = "id";
-        private static final String userId = "user_id";
-        private static final String postId = "post_id";
-        private static final String content = "content";
-        private static final String dateTime = "comment_time";
+    public CommentDAOImpl(DataSource dataSource){
+        this.dataSource = dataSource;
+    }
 
     /**
      * @see CommentDAO#add
@@ -36,17 +40,20 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public long add(Comment comment) {
         long id = 0;
-        String query = "INSERT INTO comment(user_id,post_id,content,comment_time)"+
+        String query = "INSERT INTO comment(user_id,post_id,content,comment_time) "+
                 "VALUE(?,?,?,?)";
+        Connection connection = null;
+        PreparedStatement stmt = null;
+        ResultSet resultSet;
         try {
-            Connection connection = DBHelper.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            connection = dataSource.getConnection();
+            stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, comment.getUser().getId());
             stmt.setLong(2, comment.getPost().getId());
             stmt.setString(3, comment.getContent());
             stmt.setTimestamp(4, comment.getCommentTime());
             stmt.execute();
-            ResultSet resultSet = stmt.getGeneratedKeys();
+            resultSet = stmt.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
@@ -54,6 +61,8 @@ public class CommentDAOImpl implements CommentDAO {
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
             throw new RuntimeException();
+        } finally {
+            closeResources(connection, stmt);
         }
         return comment.getId();
     }
@@ -68,15 +77,13 @@ public class CommentDAOImpl implements CommentDAO {
     public boolean update(long id , String newContent) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        String query = "UPDATE comment SET content = ?," +
+        String query = "UPDATE comment SET content = ?, " +
                        " comment_time = ?" +
                        " WHERE comment.id = ?";
-
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
-            connection = DBHelper.getConnection();
-
+            connection = dataSource.getConnection();
             stmt = connection.prepareStatement(query);
             stmt.setString(1 , newContent);
             stmt.setString(2, dateFormat.format(date) );
@@ -85,11 +92,45 @@ public class CommentDAOImpl implements CommentDAO {
             int rows = stmt.executeUpdate();
             return rows == 1;
         } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
-            return false;
+            LOG.error("SQL exception");
+            throw new RuntimeException(e);
         } finally {
             closeResources(connection, stmt);
         }
+    }
+
+    /**
+     * @see CommentDAO#getByPostId(long)
+     * @param postId id of the post
+     * @return
+     */
+    @Override
+    public List<Comment> getByPostId(long postId) {
+        List<Comment> commentList = new ArrayList<>();
+        String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
+                " post.content, apparea_id, comment_time, comment.content FROM comment " +
+                " INNER JOIN user ON comment.user_id = user.id " +
+                " INNER JOIN post ON comment.post_id = post.id WHERE comment.post_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(query);
+            stmt.setLong(1, postId);
+            rs = stmt.executeQuery();
+            while (rs.next()){
+                Comment comment = DAOUtil.commentFromResultSet(rs, "comment");
+                commentList.add(comment);
+            }
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt, rs);
+        }
+        return commentList;
     }
 
     /**
@@ -98,19 +139,29 @@ public class CommentDAOImpl implements CommentDAO {
      * '@return'
      */
     @Override
-    public int delete(long id) {
-        int n ;
+    public void delete(long id) {
+        int numberOfRowsAffected = 0 ;
         String query = "DELETE FROM comment WHERE id=?";
+
+        Connection connection = null;
+        PreparedStatement stmt = null;
         try {
-            Connection connection = DBHelper.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query);
+            connection = dataSource.getConnection();
+            stmt = connection.prepareStatement(query);
             stmt.setLong(1,id);
-            n = stmt.executeUpdate();
+
+            numberOfRowsAffected = stmt.executeUpdate();
+
         }catch (SQLException e){
             LOG.error("SQL exception occurred");
-            return 0;
+            throw new RuntimeException();
+
+        } finally {
+            closeResources(connection, stmt);
         }
-        return n;
+        if(numberOfRowsAffected == 0){
+            LOG.error("No rows affected");
+        }
     }
 
     /**
@@ -122,8 +173,8 @@ public class CommentDAOImpl implements CommentDAO {
     public Comment getById(long id) {
         Comment comment = null;
         String query = "SELECT comment.id, comment.user_id, first_name, last_name, " +
-                " email, passcode, rating, comment.post_id, post_time, title, " +
-                " post.content, comment_time, comment.content FROM comment " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
+                " post.content, post.apparea_id, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id WHERE comment.id = ?";
 
@@ -131,19 +182,18 @@ public class CommentDAOImpl implements CommentDAO {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            connection = DBHelper.getConnection();
+            connection = dataSource.getConnection();
             stmt = connection.prepareStatement(query);
             stmt.setLong(1, id);
 
             rs = stmt.executeQuery();
             while (rs.next()) {
-                comment = fromResultSet(rs, "comment");
+                comment = DAOUtil.commentFromResultSet(rs, "comment");
             }
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
         } finally {
-            close(rs);
-            closeResources(connection, stmt);
+            closeResources(connection, stmt, rs);
         }
 
         return comment;
@@ -158,84 +208,28 @@ public class CommentDAOImpl implements CommentDAO {
         Comment comment ;
         List<Comment> comments = new ArrayList<>();
         String query = " SELECT comment.id, comment.user_id, first_name, last_name, " +
-                " email, passcode, rating, comment.post_id, post_time, title, " +
+                " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
                 " post.content, comment_time, comment.content FROM comment " +
                 " INNER JOIN user ON comment.user_id = user.id " +
                 " INNER JOIN post ON comment.post_id = post.id ";
+        Connection connection = null;
+        PreparedStatement stmt = null;
         try {
-
-            Connection connection=DBHelper.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(query);
+            connection = dataSource.getConnection();
+            stmt = connection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery(query );
             while (rs.next()) {
-                comment = fromResultSet(rs);
+                comment = DAOUtil.commentFromResultSet(rs, "comment");
                 comments.add(comment);
             }
-
         } catch (SQLException e){
             LOG.error("SQL exception occurred");
             return null;
+        } finally {
+            closeResources(connection, stmt);
         }
 
         return comments;
-    }
-
-    private static Comment fromResultSet(ResultSet rs) {
-
-        return fromResultSet(rs, null);
-
-    }
-
-    private static Comment fromResultSet(ResultSet rs, String tableAlias) {
-        Comment comment = new Comment();
-
-        try {
-            comment.setId(rs.getLong(CommentDAOImpl.id));
-
-            User user = new User();
-            user = UserDAOImpl.fromResultSet(user,rs);
-            user.setId(rs.getLong(CommentDAOImpl.userId));
-            comment.setUser(user);
-
-            Post post = new Post();
-            post = PostDAOImpl.fromResultSet(post,rs);
-            post.setId(rs.getLong(CommentDAOImpl.postId));
-            comment.setPost(post);
-
-            comment.setContent(rs.getString(getColumnName(CommentDAOImpl.content, tableAlias)));
-            comment.setCommentTime(rs.getTimestamp(CommentDAOImpl.dateTime));
-        } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
-        }
-        return comment;
-    }
-
-    private void close(ResultSet rs) {
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void closeResources(Connection connection, Statement statement) {
-        try {
-            if (statement != null) {
-                statement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            LOG.error("SQL exception occurred");
-        }
-    }
-
-
-    private static String getColumnName(String column, String tableName) {
-        return tableName == null ? column : tableName + "." + column;
     }
 
 }

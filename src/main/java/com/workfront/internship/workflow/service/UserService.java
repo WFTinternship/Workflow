@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.service;
 
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.User;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface UserService {
     //CREATE
 
     /**
-     * Adds user
+     * Adds user if is valid
      * @param user
      * @return
      */
@@ -32,6 +32,13 @@ public interface UserService {
      * @return
      */
     User getById(long id);
+
+    /**
+     * Gets user by the given email
+     * @param email
+     * @return
+     */
+    User getByEmail(String email);
 
     /**
      * Gets the list of AppAreas which the user with the given id is subscribed to
@@ -68,4 +75,18 @@ public interface UserService {
      * Deletes all the existing users
      */
     void deleteAll();
+
+    /**
+     * Checks whether the email and password combination exists in database
+     * @param email is input from client
+     * @param password is input from client
+     * @return user with specified email, is the password is correct
+     */
+    User authenticate(String email, String password);
+
+    /**
+     * Sends email to a new user
+     * @param user is the one to sign up
+     */
+    void sendEmail(User user);
 }

@@ -1,53 +1,89 @@
 package com.workfront.internship.workflow.dao;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dataModel.AppArea;
-import com.workfront.internship.workflow.dataModel.Post;
-import com.workfront.internship.workflow.dataModel.User;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
 
-/** 
- * Created by nane on 5/29/17.
+/**
+ * Created by nane on 5/29/17
  */
-public class PostDAOImplIntegrationTest {
-    List<Post> postList = new ArrayList<>();
+public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
+    private List<User> userList;
+
+    @Autowired
+    @Qualifier("userDAOSpring")
     private UserDAO userDAO;
     private User user;
+
+    @Autowired
+    @Qualifier("postDAOSpring")
     private PostDAO postDAO;
     private Post post;
     private AppArea appArea;
 
+
     // region <TEST CASE>
+
+    public static void verifyPost(Post post, Post actualPost) {
+        UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
+        assertEquals(post.getTitle(), actualPost.getTitle());
+        assertEquals(post.getContent(), actualPost.getContent());
+        assertEquals(post.getPostTime(), actualPost.getPostTime());
+        assertEquals(post.isCorrect(), actualPost.isCorrect());
+    }
 
     @Before
     public void setUp() {
-        userDAO = new UserDAOImpl();
-        user = DaoTestUtil.getRandomUser();
-        userDAO.add(user);
+        userList = new ArrayList<>();
         appArea = AppArea.values()[0];
-        postDAO = new PostDAOImpl();
+        user = DaoTestUtil.getRandomUser();
+        userList.add(user);
+        userDAO.add(user);
         post = DaoTestUtil.getRandomPost(user, appArea);
+
+        LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @After
     public void tearDown() {
-        for (Post user : postList) {
-            postDAO.delete(user.getId());
+
+        for (User user : userList) {
+            if (userDAO.getById(user.getId()) != null) {
+                userDAO.deleteById(user.getId());
+            }
         }
         userDAO.deleteById(user.getId());
-        postDAO.delete(post.getId());
+        if (dataSource instanceof ComboPooledDataSource) {
+            try {
+                LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -62,6 +98,7 @@ public class PostDAOImplIntegrationTest {
 
         Post post = postDAO.getById(postId);
         assertNull(post);
+
     }
 
     /**
@@ -102,10 +139,9 @@ public class PostDAOImplIntegrationTest {
      * @see PostDAOImpl#getByUserId(long)
      */
     @Test
-    public void getByUserId_failure(){
-        postDAO.add(post);
+    public void getByUserId_failure() {
         List<Post> posts = postDAO.getByUserId(1000000);
-        assertEquals(posts.size(),  0);
+        assertEquals(posts.size(), 0);
     }
 
     /**
@@ -114,24 +150,52 @@ public class PostDAOImplIntegrationTest {
     @Test
     public void getByUserId_success() {
         postDAO.add(post);
+        //Test method
         List<Post> userPosts = postDAO.getByUserId(user.getId());
-        assertEquals(userPosts.get(0).getUser().getId(), user.getId());
+        assertTrue(userPosts.contains(post));
+    }
+
+    /**
+     * @see PostDAOImpl#getByAppAreaId(long)
+     */
+    @Test
+    public void getByAppAreaId_failure() {
+        //Test method
+        List<Post> actualPosts = postDAO.getByAppAreaId(100000);
+        assertEquals(actualPosts.size(), 0);
+    }
+
+    /**
+     * @see PostDAOImpl#getByAppAreaId(long)
+     */
+    @Test
+    public void getByAppAreaId_success() {
+        postDAO.add(post);
+        //Test method
+        List<Post> actualPosts = postDAO.getByAppAreaId(appArea.getId());
+        assertTrue(actualPosts.contains(post));
     }
 
     /**
      * @see PostDAOImpl#getAll()
      */
     @Test
-    public void getAll_success(){
-        postDAO.add(post);
-        Post anotherPost = DaoTestUtil.getRandomPost(user, appArea);
-        postDAO.add(anotherPost);
+    public void getAll_success() {
+        List<Post> otherList = postDAO.getAll();
+        int size = otherList.size();
+        assertNotNull(otherList);
 
-        //Test Method
-        List<Post> allPosts = postDAO.getAll();
+        Post otherComment = DaoTestUtil.getRandomPost(user, appArea);
+        postDAO.add(otherComment);
 
-        assertNotNull(allPosts);
-        assertTrue(allPosts.size() == 2 && allPosts.contains(post) && allPosts.contains(anotherPost));
+        Post anotherComment = DaoTestUtil.getRandomPost(user, appArea);
+        postDAO.add(anotherComment);
+
+        otherList = postDAO.getAll();
+        assertNotNull(otherList);
+        assertTrue(otherList.size() == size + 2 && otherList.contains(otherComment) &&
+                otherList.contains(anotherComment));
+
     }
 
     /**
@@ -146,16 +210,16 @@ public class PostDAOImplIntegrationTest {
         postDAO.add(anotherPost);
         List<Post> posts = postDAO.getByTitle(post.getTitle().substring(1, 5));
         assertTrue(posts.contains(post) && posts.contains(anotherPost));
-
     }
 
     /**
      * @see PostDAOImpl#getAnswersByPostId(long)
      */
     @Test(expected = RuntimeException.class)
-    public void getAnswersByPostId_failure(){
+    public void getAnswersByPostId_failure() {
         postDAO.add(post);
         User user = DaoTestUtil.getRandomUser();
+        userList.add(user);
         userDAO.add(user);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(user);
@@ -174,9 +238,10 @@ public class PostDAOImplIntegrationTest {
      * @see PostDAOImpl#getAnswersByPostId(long)
      */
     @Test
-    public void getAnswersByPostId_success(){
+    public void getAnswersByPostId_success() {
         postDAO.add(post);
         User user = DaoTestUtil.getRandomUser();
+        userList.add(user);
         userDAO.add(user);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(user);
@@ -187,16 +252,16 @@ public class PostDAOImplIntegrationTest {
         assertEquals(answers.get(0), answer);
 
         userDAO.deleteById(user.getId());
-        postDAO.delete(answer.getId());
     }
 
     /**
      * @see PostDAOImpl#setBestAnswer(long, long)
      */
     @Test(expected = RuntimeException.class)
-    public void setBestAnswer_failure(){
+    public void setBestAnswer_failure() {
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
+        userList.add(anotherUser);
         userDAO.add(anotherUser);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         // not added to db
@@ -217,13 +282,15 @@ public class PostDAOImplIntegrationTest {
      * @see PostDAOImpl#setBestAnswer(long, long)
      */
     @Test
-    public void setBestAnswer_success(){
+    public void setBestAnswer_success() {
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
+        userList.add(anotherUser);
         userDAO.add(anotherUser);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(anotherUser);
-        postDAO.add(answer);
+        long id = postDAO.add(answer);
+        answer.setId(id);
 
         //Test Method
         postDAO.setBestAnswer(post.getId(), answer.getId());
@@ -232,7 +299,6 @@ public class PostDAOImplIntegrationTest {
         verifyPost(bestAnswer, answer);
 
         userDAO.deleteById(anotherUser.getId());
-        postDAO.delete(answer.getId());
 
     }
 
@@ -240,9 +306,10 @@ public class PostDAOImplIntegrationTest {
      * @see PostDAOImpl#getBestAnswer(long)
      */
     @Test
-    public void getBestAnswer_success(){
+    public void getBestAnswer_success() {
         postDAO.add(post);
         User user = DaoTestUtil.getRandomUser();
+        userList.add(user);
         userDAO.add(user);
         Post answer = DaoTestUtil.getRandomAnswer(post);
         answer.setUser(user);
@@ -255,14 +322,13 @@ public class PostDAOImplIntegrationTest {
         assertEquals(bestAnswer, answer);
 
         userDAO.deleteById(user.getId());
-        postDAO.delete(answer.getId());
     }
 
     /**
      * @see PostDAOImpl#update(Post)
      */
-    @Test
-    public void update_failure(){
+    @Test(expected = RuntimeException.class)
+    public void update_failure() {
         postDAO.add(post);
         Post newPost = post.setContent(null);
         postDAO.update(newPost);
@@ -284,11 +350,16 @@ public class PostDAOImplIntegrationTest {
      * @see PostDAOImpl#delete(long)
      */
     @Test
-    public void delete_failure(){
+    public void delete_failure() {
         long postId = postDAO.add(post);
-        int n = postDAO.delete(postId + 100000);
-        assertEquals(n, 0);
+        postDAO.delete(postId + 100000);
+        assertNotSame(post, postDAO.getById(postId));
     }
+
+
+    // endregion
+
+    // region <HELPERS>
 
     /**
      * @see PostDAOImpl#delete(long)
@@ -298,20 +369,6 @@ public class PostDAOImplIntegrationTest {
         long postId = postDAO.add(post);
         postDAO.delete(postId);
         assertNull(postDAO.getById(postId));
-
-    }
-
-
-    // endregion
-
-    // region <HELPERS>
-
-    public static void verifyPost(Post post, Post actualPost) {
-        UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
-        assertEquals(post.getTitle(), actualPost.getTitle());
-        assertEquals(post.getContent(), actualPost.getContent());
-        assertEquals(post.getPostTime(), actualPost.getPostTime());
-        assertEquals(post.isCorrect(), actualPost.isCorrect());
     }
     // endregion
 
