@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
@@ -9,6 +10,7 @@ import com.workfront.internship.workflow.service.PostService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -19,9 +21,12 @@ public class PostServiceImpl implements PostService {
 
     private static final Logger logger = Logger.getLogger(PostDAO.class);
 
-    @Autowired
-    @Qualifier("postDAOSpring")
     private PostDAO postDAO;
+
+    @Autowired
+    public PostServiceImpl(@Qualifier("postDAOSpring") PostDAO postDAO) {
+        this.postDAO = postDAO;
+    }
 
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();

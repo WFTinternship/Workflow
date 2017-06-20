@@ -1,7 +1,9 @@
 package com.workfront.internship.workflow.service.impl;
 
+import com.sun.mail.smtp.SMTPTransport;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
@@ -10,13 +12,19 @@ import com.workfront.internship.workflow.exceptions.service.ServiceLayerExceptio
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.sql.DataSource;
+import java.security.Security;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import static com.workfront.internship.workflow.dao.UserDAO.password;
 
 /**
  * Created by Vahag on 6/4/2017
@@ -25,9 +33,7 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    @Qualifier("userDAOSpring")
-    private UserDAO userDAO;
+    private UserDAO userDAO = new UserDAOSpringImpl();
 
     public static boolean isEmpty(String string) {
         return string == null || string.trim().length() == 0;
@@ -260,4 +266,49 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * @param user is input from client
+     * @see UserService#sendEmail(User)
+     */
+    @Override
+    public void sendEmail(User user) {
+        if (!user.isValid()) {
+            LOGGER.error("Not valid user. Failed to add.");
+            throw new InvalidObjectException();
+        }
+
+        String EMAIL = "nanevardanyants@gmail.com";
+        String PASSWORD = "3modern!012";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(EMAIL, PASSWORD);
+                    }
+                });
+        try {
+            //Creating MimeMessage object
+            MimeMessage mm = new MimeMessage(session);
+            //Setting sender address
+            mm.setFrom(new InternetAddress(EMAIL));
+            //Adding receiver
+            mm.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(user.getEmail()));
+            //Adding subject
+            mm.setSubject("Hello");
+            //Adding message
+            mm.setText("Here is the message");
+            //sending Email
+            Transport.send(mm);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
+

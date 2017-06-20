@@ -8,6 +8,8 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.AppAreaService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -18,7 +20,12 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     private static final Logger logger = Logger.getLogger(PostDAOImpl.class);
 
-    private AppAreaDAO appAreaDAO = new AppAreaDAOImpl();
+    private final AppAreaDAO appAreaDAO;
+
+    @Autowired
+    public AppAreaServiceImpl(@Qualifier("appAreaDAOSpring") AppAreaDAO appAreaDAO) {
+        this.appAreaDAO = appAreaDAO;
+    }
 
     @Override
     public long add(AppArea appArea) {

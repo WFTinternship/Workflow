@@ -83,4 +83,10 @@ public interface UserService {
      * @return user with specified email, is the password is correct
      */
     User authenticate(String email, String password);
+
+    /**
+     * Sends email to a new user
+     * @param user is the one to sign up
+     */
+    void sendEmail(User user);
 }

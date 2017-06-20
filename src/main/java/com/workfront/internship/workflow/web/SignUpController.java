@@ -16,9 +16,10 @@ import java.util.List;
 /**
  * Created by nane on 6/10/17
  */
-public class SignUpController extends HttpServlet{
+public class SignUpController extends HttpServlet {
+
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
@@ -26,30 +27,36 @@ public class SignUpController extends HttpServlet{
         String url = req.getRequestURL().toString();
         String requestType = url.substring(url.lastIndexOf('/') + 1);
 
-        if (requestType.equals("user")){
+        if (requestType.equals("login")) {
             getServletConfig()
                     .getServletContext()
                     .getRequestDispatcher("/pages/login.jsp")
                     .forward(req, resp);
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String email = req.getParameter("email");
-        String password = req.getParameter("password");
 
         User user = new User();
         user.setFirstName(firstName)
                 .setLastName(lastName)
-                .setEmail(email)
-                .setPassword(password);
+                .setEmail(email);
         UserService userService = new UserServiceImpl();
         String jsp;
         try {
+            userService.sendEmail(user);
             userService.add(user);
             resp.setStatus(200);
             jsp = "/pages/login.jsp";
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             resp.setStatus(405);
             // need to try again, go to sign up page
             jsp = "/pages/login.jsp";

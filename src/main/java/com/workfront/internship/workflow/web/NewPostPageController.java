@@ -34,7 +34,7 @@ public class NewPostPageController extends HttpServlet {
         AppArea appArea = AppArea.getById(Integer.parseInt(req.getParameter(PageAttributes.APPAREA)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        PostService postService = new PostServiceImpl();
+        PostService postService = BeanProvider.getPostService();
         Post post = new Post();
         post.setTitle(title)
                 .setAppArea(appArea)

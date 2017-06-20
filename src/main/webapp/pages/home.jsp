@@ -9,7 +9,7 @@
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
-<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>F
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 
 <!DOCTYPE html>
