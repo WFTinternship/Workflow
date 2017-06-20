@@ -11,6 +11,7 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,15 +30,9 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    public UserDAOSpringImpl() {
-        dataSource = DBHelper.getPooledConnection();
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
     public UserDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
 
     /**
      * @see UserDAO#add(User)
@@ -61,7 +56,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
                 return ps;
             }, keyHolder);
             id = keyHolder.getKey().longValue();
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -78,7 +73,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
                 "VALUES (?, ?)";
         try {
             jdbcTemplate.update(sql, userId, appAreaId);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -93,7 +88,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
                 " WHERE user_id = ? AND apparea_id = ?";
         try {
             jdbcTemplate.update(sql, userId, appAreaId);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -112,7 +107,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return jdbcTemplate.query(sql, new Object[]{filteredName + "%"}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -129,7 +124,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return (User) jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -146,7 +141,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return (User) jdbcTemplate.queryForObject(sql, new Object[]{email}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -163,7 +158,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return jdbcTemplate.query(sql, new Object[]{userId}, new AppAreaRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -178,7 +173,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
                 "WHERE id = ?";
         try {
             jdbcTemplate.update(sql, id);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
@@ -192,7 +187,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         String sql = "DELETE FROM  user ";
         try {
             jdbcTemplate.update(sql);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }

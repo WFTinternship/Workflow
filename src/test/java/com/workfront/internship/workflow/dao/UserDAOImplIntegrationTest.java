@@ -298,7 +298,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
      */
     private void verifyAllUsersAreDeleted() {
         final String sql = "SELECT * FROM user";
-        try (Connection conn = DBHelper.getConnection();
+        try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             assertEquals(rs.last() ? rs.getRow() : 0, 0);

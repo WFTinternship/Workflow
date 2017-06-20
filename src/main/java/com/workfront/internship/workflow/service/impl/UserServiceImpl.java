@@ -10,6 +10,11 @@ import com.workfront.internship.workflow.exceptions.service.ServiceLayerExceptio
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -19,17 +24,30 @@ import java.util.List;
 /**
  * Created by Vahag on 6/4/2017
  */
+
+@Service
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
-    private UserDAO userDAO = new UserDAOImpl();
+    @Autowired
+    private UserDAO userDAO;
+
+
+    public UserServiceImpl(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public UserServiceImpl() {
+
+    }
 
     /**
      * @param user
      * @return
      * @see UserService#add(User)
      */
+    @Transactional
     @Override
     public long add(User user) {
         long id = 0;
@@ -37,38 +55,13 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
-        if (userDAO.getByEmail(user.getEmail()).getFirstName() != null) {
+        if (userDAO.getByEmail(user.getEmail()) != null) {
             LOGGER.error("Failed to add. User already exists");
             throw new DuplicateEntryException("User already exists");
         }
-        userDAO = new UserDAOImpl();
-        DataSource dataSource;
-        try {
-            dataSource = DBHelper.getPooledConnection();
-            Connection connection = null;
-            try {
-                connection = dataSource.getConnection();
-                connection.setAutoCommit(false);
-                id = userDAO.add(user, dataSource);
-                for (AppArea appArea : AppArea.values()) {
-                    userDAO.subscribeToArea(user.getId(), appArea.getId());
-                }
-                connection.commit();
-            } catch (RuntimeException e) {
-                if (connection != null) {
-                    connection.rollback();
-                }
-                LOGGER.error("Failed to add the user");
-                throw new ServiceLayerException("Failed to add the user", e);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.close();
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        id = userDAO.add(user);
+        for (AppArea appArea : AppArea.values()) {
+            userDAO.subscribeToArea(user.getId(), appArea.getId());
         }
         return id;
     }
@@ -118,13 +111,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByEmail(String email) {
         User user;
-        if (isEmpty(email)){
+        if (isEmpty(email)) {
             LOGGER.error("Email is not valid");
             throw new InvalidObjectException("Not valid email");
         }
         try {
             user = userDAO.getByEmail(email);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Couldn't get the user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
@@ -230,13 +223,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#authenticate(String, String)
-     * @param email is input from client
+     * @param email    is input from client
      * @param password is input from client
+     * @see UserService#authenticate(String, String)
      */
     @Override
     public User authenticate(String email, String password) {
-        if (isEmpty(password)){
+        if (isEmpty(password)) {
             LOGGER.error("Password is not valid");
             throw new InvalidObjectException("Not valid password");
         }
@@ -244,9 +237,9 @@ public class UserServiceImpl implements UserService {
         User user = getByEmail(email);
 
         //TODO: Password should be hashed
-        if (user != null && user.getPassword().equals(password)){
+        if (user != null && user.getPassword().equals(password)) {
             return user;
-        }else {
+        } else {
             LOGGER.error("Invalid email-password combination!");
             throw new ServiceLayerException("Invalid email-password combination!");
         }
