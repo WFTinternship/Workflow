@@ -23,7 +23,7 @@ public class NewAnswerController extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        PostService postService = new PostServiceImpl();
+        PostService postService = BeanProvider.getPostService();
 
         String url = req.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));

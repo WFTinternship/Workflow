@@ -7,6 +7,8 @@ import com.workfront.internship.workflow.exceptions.service.InvalidObjectExcepti
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.CommentService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -17,7 +19,12 @@ public class CommentServiceImpl implements CommentService {
 
     private  static final Logger logger = Logger.getLogger(CommentDAOImpl.class);
 
-    private CommentDAO commentDAO = new CommentDAOImpl() ;
+    private final CommentDAO commentDAO;
+
+    @Autowired
+    public CommentServiceImpl(@Qualifier("commentDAOSpring") CommentDAO commentDAO) {
+        this.commentDAO = commentDAO;
+    }
 
     @Override
     public long add(Comment comment) {

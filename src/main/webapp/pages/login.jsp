@@ -6,6 +6,9 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
+
+<c:set var="message" value='<%=request.getAttribute("message")%>'/>
+
 <!DOCTYPE html>
 <html lang="en">
     
@@ -131,7 +134,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 breadcrumbf">
-                            <a href="#">Create New account</a> 
+                            <font color="red">${message}</font>
                         </div>
                     </div>
                 </div>

@@ -87,8 +87,8 @@ public class User {
         return this != null
                 && !isEmpty(this.getFirstName())
                 && !isEmpty(this.getLastName())
-                && !isEmpty(this.getEmail())
-                && !isEmpty(this.getPassword());
+                && !isEmpty(this.getEmail());
+//                && !isEmpty(this.getPassword());
     }
 
     public static boolean isEmpty(String string) {

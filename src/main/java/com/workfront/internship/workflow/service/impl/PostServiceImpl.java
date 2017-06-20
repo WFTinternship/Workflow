@@ -2,36 +2,49 @@ package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by nane on 6/4/17
  */
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
-    private static final Logger logger = Logger.getLogger(PostDAOImpl.class);
+    private static final Logger logger = Logger.getLogger(PostDAO.class);
 
-    private PostDAO postDAO = new PostDAOImpl();
+    private PostDAO postDAO;
+
+    @Autowired
+    public PostServiceImpl(@Qualifier("postDAOSpring") PostDAO postDAO) {
+        this.postDAO = postDAO;
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 
     /**
      * @see PostDAOImpl#add(Post)
      */
     @Override
     public long add(Post post) {
-        if (!post.isValid()){
+        if (!post.isValid()) {
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
         long id;
-        try{
+        try {
             id = postDAO.add(post);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             logger.error("Failed to add the post to database");
             throw new ServiceLayerException("Failed to add the post to database", e);
         }
@@ -53,7 +66,7 @@ public class PostServiceImpl implements PostService{
         }
         try {
             postDAO.setBestAnswer(postId, answerId);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             logger.error("Failed during setting the best answer");
             throw new ServiceLayerException("Failed during setting the best answer", e);
         }
@@ -68,7 +81,7 @@ public class PostServiceImpl implements PostService{
         try {
             posts = postDAO.getAll();
             return posts;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get all posts");
         }
@@ -79,7 +92,7 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public Post getById(long id) {
-        if (id < 1){
+        if (id < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Invalid post id");
         }
@@ -87,7 +100,7 @@ public class PostServiceImpl implements PostService{
         try {
             post = postDAO.getById(id);
             return post;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get post with specified id");
         }
@@ -98,7 +111,7 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public List<Post> getByTitle(String title) {
-        if (isEmpty(title)){
+        if (isEmpty(title)) {
             logger.error("Title is not valid");
             throw new InvalidObjectException("Not valid answerTitle");
         }
@@ -106,7 +119,7 @@ public class PostServiceImpl implements PostService{
         try {
             posts = postDAO.getByTitle(title);
             return posts;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to get posts by specified answerTitle");
         }
 
@@ -117,7 +130,7 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public List<Post> getByUserId(long id) {
-        if (id < 1){
+        if (id < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -125,20 +138,20 @@ public class PostServiceImpl implements PostService{
         try {
             posts = postDAO.getByUserId(id);
             return posts;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to get posts by specified user id");
         }
 
     }
 
     /**
-     * @see PostService#getByAppAreaId(long)
      * @param id
      * @return
+     * @see PostService#getByAppAreaId(long)
      */
     @Override
     public List<Post> getByAppAreaId(long id) {
-        if (id < 1){
+        if (id < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -146,7 +159,7 @@ public class PostServiceImpl implements PostService{
         try {
             posts = postDAO.getByAppAreaId(id);
             return posts;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to get posts by specified app area id");
         }
 
@@ -157,7 +170,7 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public List<Post> getAnswersByPostId(long id) {
-        if (id < 1){
+        if (id < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -165,7 +178,7 @@ public class PostServiceImpl implements PostService{
         try {
             posts = postDAO.getAnswersByPostId(id);
             return posts;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             e.printStackTrace();
             throw new ServiceLayerException("Failed to get answers of the specified post");
         }
@@ -177,7 +190,7 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public Post getBestAnswer(long id) {
-        if (id < 1){
+        if (id < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -185,7 +198,7 @@ public class PostServiceImpl implements PostService{
         try {
             post = postDAO.getBestAnswer(id);
             return post;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to get the best answer of the specified post");
         }
 
@@ -196,13 +209,13 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public void update(Post post) {
-        if (!post.isValid()){
+        if (!post.isValid()) {
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
         try {
             postDAO.update(post);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             logger.error("Failed to update the post");
             throw new ServiceLayerException("Failed to update the post", e);
         }
@@ -213,19 +226,15 @@ public class PostServiceImpl implements PostService{
      */
     @Override
     public void delete(long id) {
-        if (id < 1){
+        if (id < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
         try {
             postDAO.delete(id);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             logger.error("Failed to delete specified posts");
             throw new ServiceLayerException("Failed to delete specified posts", e);
         }
-    }
-
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
     }
 }

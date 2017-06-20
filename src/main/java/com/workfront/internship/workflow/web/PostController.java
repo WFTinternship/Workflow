@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.impl.CommentServiceImpl;
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
+import org.springframework.context.annotation.Bean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,8 +24,8 @@ public class PostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PostService postService = new PostServiceImpl();
-        CommentService commentService = new CommentServiceImpl();
+        PostService postService = BeanProvider.getPostService();
+        CommentService commentService = BeanProvider.getCommentService();
 
         String url = req.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));

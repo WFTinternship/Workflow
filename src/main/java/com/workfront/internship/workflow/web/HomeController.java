@@ -19,7 +19,7 @@ import java.util.List;
 public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PostService postService = new PostServiceImpl();
+        PostService postService = BeanProvider.getPostService();
         List<Post> posts = postService.getAll();
         req.setAttribute(PageAttributes.ALLPOSTS, posts);
 

@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
+import jdk.nashorn.internal.objects.NativeUint8Array;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -73,6 +74,7 @@ public class LoginController extends HttpServlet {
         } catch (RuntimeException e) {
             //when the user was not found in database or query failed.
             req.setAttribute(PageAttributes.USER, null);
+//            req.setAttribute("message", "The email or password is incorrect");
             resp.setStatus(405);
             jsp = "/login";
         }
@@ -80,7 +82,7 @@ public class LoginController extends HttpServlet {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
-        PostService postService = new PostServiceImpl();
+        PostService postService = BeanProvider.getPostService();
         List<Post> posts = postService.getAll();
         req.setAttribute(PageAttributes.ALLPOSTS, posts);
 

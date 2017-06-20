@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.web;
 
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import java.util.List;
 public class AppAreaPostsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PostServiceImpl postService = new PostServiceImpl();
+        PostService postService = BeanProvider.getPostService();
 
         String url = req.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
