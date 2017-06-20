@@ -52,7 +52,7 @@ public class LoginController extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        UserService userService = new UserServiceImpl();
+        UserService userService = BeanProvider.getUserService();
 
         String jsp;
         User user;

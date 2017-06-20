@@ -44,12 +44,14 @@ public class SignUpController extends HttpServlet {
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String email = req.getParameter("email");
+        String password = req.getParameter("password");
 
         User user = new User();
         user.setFirstName(firstName)
                 .setLastName(lastName)
-                .setEmail(email);
-        UserService userService = new UserServiceImpl();
+                .setEmail(email)
+                .setPassword(password);
+        UserService userService = BeanProvider.getUserService();
         String jsp;
         try {
             userService.sendEmail(user);

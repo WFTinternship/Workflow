@@ -21,7 +21,7 @@ public class PostServiceImpl implements PostService {
 
     private static final Logger logger = Logger.getLogger(PostDAO.class);
 
-    private PostDAO postDAO;
+    private final PostDAO postDAO;
 
     @Autowired
     public PostServiceImpl(@Qualifier("postDAOSpring") PostDAO postDAO) {

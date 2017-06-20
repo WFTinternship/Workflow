@@ -40,18 +40,12 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
+    private final UserDAO userDAO;
+
     @Autowired
-    private UserDAO userDAO;
-
-
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(@Qualifier("userDAOSpring") UserDAO userDAO) {
         this.userDAO = userDAO;
     }
-
-    public UserServiceImpl() {
-
-    }
-    private UserDAO userDAO = new UserDAOSpringImpl();
 
     public static boolean isEmpty(String string) {
         return string == null || string.trim().length() == 0;
