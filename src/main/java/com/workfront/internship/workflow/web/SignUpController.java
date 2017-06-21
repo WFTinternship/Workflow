@@ -3,7 +3,6 @@ package com.workfront.internship.workflow.web;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

@@ -5,9 +5,6 @@ import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.service.impl.CommentServiceImpl;
-import com.workfront.internship.workflow.service.impl.PostServiceImpl;
-import org.springframework.context.annotation.Bean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

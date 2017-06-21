@@ -7,10 +7,13 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
+<%@ page import="com.workfront.internship.workflow.web.ContextListener" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
-<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>F
+<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -205,10 +208,11 @@
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}">
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                                class="badge pull-right"></span></a></li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name} ${postsBySameAppAreaID[status.index]}</a>
+                                        <span class="badge pull-right"></span>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </div>
