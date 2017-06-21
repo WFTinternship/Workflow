@@ -71,25 +71,26 @@ public class LoginController extends HttpServlet {
             }else {
                 jsp = "/home";
             }
+
+            List<AppArea> appAreas = Arrays.asList(AppArea.values());
+            req.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+            PostService postService = BeanProvider.getPostService();
+            List<Post> posts = postService.getAll();
+            req.setAttribute(PageAttributes.ALLPOSTS, posts);
+
+            getServletConfig()
+                    .getServletContext()
+                    .getRequestDispatcher(jsp)
+                    .forward(req, resp);
+
         } catch (RuntimeException e) {
             //when the user was not found in database or query failed.
             req.setAttribute(PageAttributes.USER, null);
-//            req.setAttribute("message", "The email or password is incorrect");
+            req.setAttribute("message", "The email or password is incorrect. Please try again.");
             resp.setStatus(405);
-            jsp = "/login";
+            doGet(req, resp);
         }
-
-        List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.APPAREAS, appAreas);
-
-        PostService postService = BeanProvider.getPostService();
-        List<Post> posts = postService.getAll();
-        req.setAttribute(PageAttributes.ALLPOSTS, posts);
-
-        getServletConfig()
-                .getServletContext()
-                .getRequestDispatcher(jsp)
-                .forward(req, resp);
     }
 
 }

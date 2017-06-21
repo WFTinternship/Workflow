@@ -11,6 +11,7 @@
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>F
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+<c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -153,6 +154,14 @@
 
 
     <section class="content totop">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 breadcrumbf">
+                    <font color="red">${message}</font>
+                </div>
+            </div>
+        </div>
 
         <div class="container">
             <div class="row">

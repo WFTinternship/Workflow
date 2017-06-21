@@ -30,6 +30,10 @@ public class AppAreaPostsController extends HttpServlet {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
+        if (posts.size() == 0){
+            req.setAttribute(PageAttributes.MESSAGE, "No posts were found in this Application Area.");
+        }
+
         getServletConfig()
                 .getServletContext()
                 .getRequestDispatcher("/pages/home.jsp")
