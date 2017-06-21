@@ -20,6 +20,23 @@ import java.util.List;
  * Created by Vahag on 6/8/2017
  */
 public class NewPostPageController extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+        PostService postService = BeanProvider.getPostService();
+        List<Post> posts = postService.getAll();
+        req.setAttribute(PageAttributes.ALLPOSTS, posts);
+
+        getServletConfig().
+                getServletContext().
+                getRequestDispatcher("/pages/new_post.jsp").
+                forward(req,resp);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
