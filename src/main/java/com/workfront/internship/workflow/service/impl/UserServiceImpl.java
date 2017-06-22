@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public long add(User user) {
-        long id = 0;
-        if (!user.isValid()) {
+        long id;
+        if (user == null || !user.isValid()) {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
