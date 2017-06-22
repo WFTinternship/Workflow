@@ -1,16 +1,18 @@
 package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
-import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,11 @@ public class UserServiceImplUnitTest extends BaseUnitTest {
 
     @Mock
     UserDAOSpringImpl userDAOMock;
+
+    @Before
+    public void init(){
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test(expected = InvalidObjectException.class)
     public void add_nullUser() {
