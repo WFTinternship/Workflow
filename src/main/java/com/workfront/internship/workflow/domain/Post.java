@@ -18,6 +18,10 @@ public class Post {
     private List<Comment> commentList;
     private boolean isCorrect;
 
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
+
     public long getId() {
         return id;
     }
@@ -110,14 +114,10 @@ public class Post {
     }
 
     public boolean isValid() {
-        return this != null
-                && this.getUser().isValid()
+        return this.getUser().isValid()
                 && !isEmpty(this.getTitle())
                 && !isEmpty(this.getContent())
+                && this.postTime != null
                 && this.getAppArea() != null;
-    }
-
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
     }
 }
