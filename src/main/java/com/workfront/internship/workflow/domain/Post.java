@@ -114,7 +114,8 @@ public class Post {
     }
 
     public boolean isValid() {
-        return this.getUser().isValid()
+        return user != null
+                && this.getUser().isValid()
                 && !isEmpty(this.getTitle())
                 && !isEmpty(this.getContent())
                 && this.postTime != null
