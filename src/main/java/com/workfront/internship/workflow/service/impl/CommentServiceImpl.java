@@ -38,7 +38,6 @@ public class CommentServiceImpl implements CommentService {
             logger.error("Failed to add the comment to database !");
             return 0;
         }
-
     }
 
     @Override
