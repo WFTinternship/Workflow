@@ -210,8 +210,8 @@
                             <ul class="cats">
                                 <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name} ${postsBySameAppAreaID[status.index]}</a>
-                                        <span class="badge pull-right"></span>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
                                     </li>
                                 </c:forEach>
                             </ul>

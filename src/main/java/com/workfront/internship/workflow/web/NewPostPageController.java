@@ -25,7 +25,7 @@ public class NewPostPageController extends HttpServlet {
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         String title = req.getParameter(PageAttributes.TITLE);
-        String content = req.getParameter(PageAttributes.CONTENT);
+        String content = req.getParameter(PageAttributes.POSTCONTENT);
 
         HttpSession session = req.getSession();
         User user = (User)session.getAttribute(PageAttributes.USER);

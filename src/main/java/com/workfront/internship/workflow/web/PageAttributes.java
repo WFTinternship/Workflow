@@ -11,7 +11,8 @@ public interface PageAttributes {
     String POST = "post";
     String ANSWERS = "answers";
     String TITLE = "title";
-    String CONTENT = "content";
+    String POSTCONTENT = "content";
+    String COMMENTCONTENT = "content";
     String APPAREA = "appArea";
     String POSTCOMMENTS = "postComments";
 }
