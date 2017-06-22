@@ -8,5 +8,5 @@ import org.mockito.runners.MockitoJUnitRunner;
  * Created by nane on 6/21/17
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BaseUnitTest {
+public abstract class BaseUnitTest extends BaseTest{
 }

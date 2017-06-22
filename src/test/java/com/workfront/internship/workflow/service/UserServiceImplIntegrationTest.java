@@ -8,10 +8,8 @@ import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 
 
 import static junit.framework.TestCase.assertTrue;
@@ -22,9 +20,8 @@ import java.util.List;
 /**
  * Created by Vahag on 6/6/2017
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-config.xml"})
-public class UserServiceImplIntegrationTest {
+
+public class UserServiceImplIntegrationTest extends BaseIntegrationTest{
 
     @Autowired
     private UserService userService;
