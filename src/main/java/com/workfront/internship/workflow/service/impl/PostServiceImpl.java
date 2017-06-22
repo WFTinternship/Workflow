@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public long add(Post post) {
-        if (!post.isValid()) {
+        if (post == null || !post.isValid()) {
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
@@ -213,7 +213,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public void update(Post post) {
-        if (!post.isValid()) {
+        if (post == null || !post.isValid()) {
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }

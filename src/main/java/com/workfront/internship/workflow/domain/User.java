@@ -86,8 +86,8 @@ public class User {
     public boolean isValid() {
         return !isEmpty(this.getFirstName())
                 && !isEmpty(this.getLastName())
-                && !isEmpty(this.getEmail());
-//                && !isEmpty(this.getPassword());
+                && !isEmpty(this.getEmail())
+                && !isEmpty(this.getPassword());
     }
 
     public static boolean isEmpty(String string) {
