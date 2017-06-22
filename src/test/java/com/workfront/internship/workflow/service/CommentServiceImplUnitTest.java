@@ -8,13 +8,19 @@ import com.workfront.internship.workflow.exceptions.service.InvalidObjectExcepti
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.impl.CommentServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertTrue;
+
 import static junit.framework.TestCase.fail;
 import static org.mockito.Mockito.*;
 
@@ -30,39 +36,48 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     @Mock
     CommentDAOSpringImpl commentDAOMock;
 
+    @Before
+    public void init(){
+        MockitoAnnotations.initMocks(this);
+    }
+
+
     /**
      * @see CommentServiceImpl#add(Comment)
      */
     @Test
     public void add_commentNotValid() {
        Comment comment = DaoTestUtil.getRandomComment();
-       Post post = DaoTestUtil.getRandomPost();
-       User user =DaoTestUtil.getRandomUser();
+
        comment.setUser(null);
        try{
+           //Test method
            commentService.add(comment);
            fail();
        }catch(Exception e){
            assertTrue(e instanceof InvalidObjectException);
        }
-       comment.setUser(user);
+       comment.setUser(DaoTestUtil.getRandomUser());
+
        comment.setPost(null);
        try{
+           //Test method
            commentService.add(comment);
            fail();
        }catch(Exception e){
            assertTrue(e instanceof InvalidObjectException);
        }
-       comment.setPost(post);
+       comment.setPost(DaoTestUtil.getRandomPost());
+
        comment.setContent(null);
        try{
+           //Test method
            commentService.add(comment);
            fail();
        }catch(Exception e){
            assertTrue(e instanceof InvalidObjectException);
        }
     }
-
 
     /**
      * @see CommentServiceImpl#add(Comment)
@@ -70,12 +85,14 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     @Test
     public void add_success() {
         Comment comment = DaoTestUtil.getRandomComment();
+
         long id = 7;
         when(commentDAOMock.add(comment)).thenReturn(id);
+
+        //Test method
         long actualId = commentService.add(comment);
         assertEquals(actualId, id);
     }
-
 
     /**
      * @see CommentServiceImpl#add(Comment)
@@ -91,15 +108,14 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
         assertEquals(id, actualId);
     }
 
-
     /**
      * @see CommentServiceImpl#getById(long)
      */
     @Test(expected = InvalidObjectException.class)
     public void getById_negativeId() {
+        //Test method
         commentService.getById(-7);
     }
-
 
     /**
      * @see CommentServiceImpl#getById(long)
@@ -108,16 +124,22 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     public void getById_DAOException() {
         long id = 7;
         when(commentDAOMock.getById(id)).thenThrow(RuntimeException.class);
+
+        //Test method
         commentService.getById(id);
     }
+
     /**
      * @see CommentServiceImpl#getById(long)
      */
     @Test
     public void getById_success() {
         Comment comment = DaoTestUtil.getRandomComment();
+
         long id = 7;
         when(commentDAOMock.getById(id)).thenReturn(comment);
+
+        //Test method
         Comment actualComment = commentService.getById(id);
         assertEquals(comment,actualComment);
     }
@@ -128,6 +150,8 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getAll_DAOException() {
         when(commentDAOMock.getAll()).thenThrow(RuntimeException.class);
+
+        //Test method
         commentService.getAll();
     }
 
@@ -136,8 +160,105 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
      */
     @Test
     public void getAll_success() {
-        commentService.getAll();
-        verify(commentDAOMock, times(1)).getAll();
+        List<Comment> commentsList = new ArrayList<>();
+        doReturn(commentsList).when(commentDAOMock).getAll();
+
+        //Test method
+        List<Comment> actualCommentsList = commentService.getAll();
+        assertEquals(commentsList,actualCommentsList );
     }
 
+    /**
+     * @see CommentServiceImpl#getByPostId(long)
+     */
+    @Test
+    public void getByPostId_success() {
+        List<Comment> commentsList = new ArrayList<>();
+        doReturn(commentsList).when(commentDAOMock).getByPostId(anyLong());
+
+        //Test method
+        List<Comment> actualCommentsList = commentService.getByPostId(7);
+        assertEquals(commentsList,actualCommentsList );
+    }
+
+    /**
+     * @see CommentServiceImpl#getByPostId(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getByPostId_negativeId() {
+        commentService.getById(-7);
+    }
+
+    /**
+     * @see CommentServiceImpl#getByPostId(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getByPostId_DAOException() {
+        long id = 7;
+        when(commentDAOMock.getByPostId(id)).thenThrow(RuntimeException.class);
+        commentService.getByPostId(id);
+    }
+
+    /**
+     * @see CommentServiceImpl#update(long, String)
+     */
+    @Test
+    public void update_CommentNotValid(){
+        try{
+            commentService.update(-7,"abc");
+        }catch(Exception e){
+            assertTrue(e instanceof InvalidObjectException);
+        }
+        try{
+            commentService.update(7,null);
+        }catch(Exception e){
+            assertTrue(e instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see CommentServiceImpl#update(long, String)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void update_DAOException(){
+        when(commentDAOMock.update(7,"abc")).thenThrow(RuntimeException.class);
+        commentService.update(7,"abc");
+    }
+
+    /**
+     * @see CommentServiceImpl#update(long, String)
+     */
+    @Test
+    public void update_success(){
+        commentService.update(7,"abc");
+        verify(commentDAOMock,times(1)).update(anyInt(),anyString());
+
+    }
+
+    /**
+     * @see CommentServiceImpl#delete(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void delete_negativeId(){
+        commentService.delete(-7);
+    }
+
+    /**
+     * @see CommentServiceImpl#delete(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void delete_DAOException(){
+        doThrow(RuntimeException.class).when(commentDAOMock).delete(anyInt());
+        commentService.delete(7);
+    }
+
+    /**
+     * @see CommentServiceImpl#delete(long)
+     */
+    @Test
+    public void delete_success(){
+        commentService.delete(7);
+        verify(commentDAOMock,times(1)).delete(anyInt());
+
+    }
 }

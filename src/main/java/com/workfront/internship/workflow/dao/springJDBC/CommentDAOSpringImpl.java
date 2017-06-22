@@ -120,14 +120,14 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
     }
 
     @Override
-    public boolean update(long id, String newComment) {
+    public boolean update(long id, String newContent) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String query = "UPDATE comment SET content = ?, " +
                 " comment_time = ? " +
                 " WHERE comment.id = ?";
         try{
-            jdbcTemplate.update(query, newComment,  dateFormat.format(date), id);
+            jdbcTemplate.update(query, newContent,  dateFormat.format(date), id);
         }catch (DataAccessException e){
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);

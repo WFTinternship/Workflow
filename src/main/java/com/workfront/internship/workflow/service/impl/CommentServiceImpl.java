@@ -69,12 +69,6 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<Comment> getAll() {
-        List<Comment> comments ;
-        /*if(comments == null) {
-            logger.error("No comments were found");
-            throw new ServiceLayerException("Failed to get all comments");
-        }
-        return comments;*/
         try {
             return commentDAO.getAll();
         } catch (RuntimeException e) {
@@ -104,15 +98,13 @@ public class CommentServiceImpl implements CommentService {
      *@see CommentDAOImpl#update(long, String)
      */
     @Override
-    public boolean update(long id, String newComment) {
-        if( id < 1 ){
+    public boolean update(long id, String newContent) {
+        if( id < 1 || newContent == null){
             logger.error(" There is no such comment for update !");
             throw new InvalidObjectException();
         }
         try{
-
-            return commentDAO.update(id,newComment);
-
+            return commentDAO.update(id,newContent);
         }catch(RuntimeException e) {
             logger.error("Failed to update the comment !");
             throw new ServiceLayerException("Failed to update comment");
