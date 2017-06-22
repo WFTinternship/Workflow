@@ -5,6 +5,7 @@ import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,10 +30,6 @@ public class AppAreaPostsController extends HttpServlet {
         List<Post> posts = postService.getByAppAreaId(id);
         req.setAttribute(PageAttributes.ALLPOSTS, posts);
 
-       /* int size = posts.size();
-        req.setAttribute(PageAttributes.COUNT_OF_POSTS,size);*/
-
-
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
@@ -42,6 +39,10 @@ public class AppAreaPostsController extends HttpServlet {
             sizeOfPostsBySameAppAreaID.add(postDAO.getByAppAreaId(appArea.getId()).size());
         }
         req.setAttribute(PageAttributes.POSTS_OF_APPAAREA,sizeOfPostsBySameAppAreaID);
+
+        if (posts.size() == 0){
+            req.setAttribute(PageAttributes.MESSAGE, "No posts were found in this Application Area.");
+        }
 
         getServletConfig()
                 .getServletContext()

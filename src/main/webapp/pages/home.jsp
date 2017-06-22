@@ -13,6 +13,7 @@
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+<c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 
 
 <!DOCTYPE html>
@@ -38,14 +39,16 @@
     <![endif]-->
 
     <!-- fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/font-awesome-4.0.3/css/font-awesome.min.css">
 
     <!-- CSS STYLE-->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css" media="screen"/>
 
     <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/rs-plugin/css/settings.css"
+          media="screen"/>
 
 </head>
 <body>
@@ -89,7 +92,8 @@
                 <!-- SLIDE  -->
                 <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
                     <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="left top"
+                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
+                         data-bgposition="left top"
                          data-bgrepeat="no-repeat">
                     <!-- LAYERS -->
                 </li>
@@ -118,9 +122,16 @@
                 </div>
                 <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+                        <c:if test="${user == null}">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
+                            </button>
+                        </c:if>
 
-
+                        <c:if test="${user != null}">
+                            <a href="/new-post">
+                                <button class="btn btn-primary">Add New Post</button>
+                            </a>
+                        </c:if>
 
                         <c:if test="${user == null}">
                           <span>
@@ -156,6 +167,14 @@
 
 
     <section class="content totop">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 breadcrumbf">
+                    <font color="red">${message}</font>
+                </div>
+            </div>
+        </div>
 
         <div class="container">
             <div class="row">
@@ -363,8 +382,8 @@
 
 
 <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-    <%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>--%>
-    <%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>--%>
+<%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>--%>
+<%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>--%>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 

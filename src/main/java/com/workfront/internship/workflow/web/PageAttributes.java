@@ -15,4 +15,5 @@ public interface PageAttributes {
     String COMMENTCONTENT = "content";
     String APPAREA = "appArea";
     String POSTCOMMENTS = "postComments";
+    String MESSAGE = "message";
 }

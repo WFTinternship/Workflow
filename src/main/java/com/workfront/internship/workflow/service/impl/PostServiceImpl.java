@@ -21,11 +21,15 @@ public class PostServiceImpl implements PostService {
 
     private static final Logger logger = Logger.getLogger(PostDAO.class);
 
-    private final PostDAO postDAO;
+    private PostDAO postDAO;
 
     @Autowired
     public PostServiceImpl(@Qualifier("postDAOSpring") PostDAO postDAO) {
         this.postDAO = postDAO;
+    }
+
+    public PostServiceImpl() {
+
     }
 
     public static boolean isEmpty(String string) {
