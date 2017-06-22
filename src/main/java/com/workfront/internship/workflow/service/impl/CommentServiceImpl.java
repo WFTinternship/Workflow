@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public long add(Comment comment) {
-        if(!comment.isValid()) {
+        if(comment == null || !comment.isValid()) {
             logger.error("Comment is invalid ! Failed to add to the database");
             throw new InvalidObjectException("Invalid Comment !");
         }
