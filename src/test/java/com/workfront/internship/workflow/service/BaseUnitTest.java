@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.service;
 
+import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
