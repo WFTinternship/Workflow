@@ -481,7 +481,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
         // Test method
         postService.update(post);
     }
-    
+
     /**
      * @see PostService#update(Post)
      */
