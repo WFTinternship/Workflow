@@ -2,8 +2,6 @@ package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.CommentDAOSpringImpl;
 import com.workfront.internship.workflow.domain.Comment;
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.impl.CommentServiceImpl;
@@ -43,7 +41,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
 
 
     /**
-     * @see CommentServiceImpl#add(Comment)
+     * @see CommentService#add(Comment)
      */
     @Test
     public void add_commentNotValid() {
@@ -80,7 +78,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#add(Comment)
+     * @see CommentService#add(Comment)
      */
     @Test
     public void add_success() {
@@ -95,7 +93,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#add(Comment)
+     * @see CommentService#add(Comment)
      */
     @Test
     public void add_failure() {
@@ -109,7 +107,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getById(long)
+     * @see CommentService#getById(long)
      */
     @Test(expected = InvalidObjectException.class)
     public void getById_negativeId() {
@@ -118,7 +116,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getById(long)
+     * @see CommentService#getById(long)
      */
     @Test(expected = ServiceLayerException.class)
     public void getById_DAOException() {
@@ -130,7 +128,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getById(long)
+     * @see CommentService#getById(long)
      */
     @Test
     public void getById_success() {
@@ -145,7 +143,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getAll()
+     * @see CommentService#getAll()
      */
     @Test(expected = ServiceLayerException.class)
     public void getAll_DAOException() {
@@ -156,7 +154,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getAll()
+     * @see CommentService#getAll()
      */
     @Test
     public void getAll_success() {
@@ -169,7 +167,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getByPostId(long)
+     * @see CommentService#getByPostId(long)
      */
     @Test
     public void getByPostId_success() {
@@ -182,7 +180,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getByPostId(long)
+     * @see CommentService#getByPostId(long)
      */
     @Test(expected = InvalidObjectException.class)
     public void getByPostId_negativeId() {
@@ -190,7 +188,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#getByPostId(long)
+     * @see CommentService#getByPostId(long)
      */
     @Test(expected = ServiceLayerException.class)
     public void getByPostId_DAOException() {
@@ -200,7 +198,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#update(long, String)
+     * @see CommentService#update(long, String)
      */
     @Test
     public void update_CommentNotValid(){
@@ -217,7 +215,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#update(long, String)
+     * @see CommentService#update(long, String)
      */
     @Test(expected = ServiceLayerException.class)
     public void update_DAOException(){
@@ -226,7 +224,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#update(long, String)
+     * @see CommentService#update(long, String)
      */
     @Test
     public void update_success(){
@@ -236,7 +234,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#delete(long)
+     * @see CommentService#delete(long)
      */
     @Test(expected = InvalidObjectException.class)
     public void delete_negativeId(){
@@ -244,7 +242,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#delete(long)
+     * @see CommentService#delete(long)
      */
     @Test(expected = ServiceLayerException.class)
     public void delete_DAOException(){
@@ -253,7 +251,7 @@ public class CommentServiceImplUnitTest extends  BaseUnitTest {
     }
 
     /**
-     * @see CommentServiceImpl#delete(long)
+     * @see CommentService#delete(long)
      */
     @Test
     public void delete_success(){

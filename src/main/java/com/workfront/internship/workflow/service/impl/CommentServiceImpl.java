@@ -22,7 +22,8 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDAO commentDAO;
 
     @Autowired
-    public CommentServiceImpl(@Qualifier("commentDAOSpring") CommentDAO commentDAO) {
+    public CommentServiceImpl(@Qualifier("commentDAOSpring") CommentDAO commentDAO)
+    {
         this.commentDAO = commentDAO;
     }
 
