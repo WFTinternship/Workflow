@@ -42,7 +42,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     // region <TEST CASE>
 
     public static void verifyPost(Post post, Post actualPost) {
-        UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
+        UserDAOIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
         assertEquals(post.getTitle(), actualPost.getTitle());
         assertEquals(post.getContent(), actualPost.getContent());
         assertEquals(post.getPostTime(), actualPost.getPostTime());

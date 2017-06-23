@@ -281,7 +281,7 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
 
     private void isCommentsEqual(Comment comment, Comment actualComment, boolean skipDate) {
         PostDAOImplIntegrationTest.verifyPost(comment.getPost(), actualComment.getPost());
-        UserDAOImplIntegrationTest.verifyAddedUser(comment.getUser(), actualComment.getUser());
+        UserDAOIntegrationTest.verifyAddedUser(comment.getUser(), actualComment.getUser());
 
         assertEquals(comment.getContent(), actualComment.getContent());
 

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
+public class UserDAOIntegrationTest extends BaseIntegrationTest{
 
     @Autowired
     @Qualifier("userDAOSpring")
@@ -40,7 +40,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
 
-        LOG = Logger.getLogger(UserDAOImplIntegrationTest.class);
+        LOG = Logger.getLogger(UserDAOIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
@@ -72,7 +72,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     // region <TEST CASE>
 
     /**
-     * @see UserDAOImpl#add(User)
+     * @see UserDAO#add(User)
      */
     @Test(expected = RuntimeException.class)
     public void add_failure() {
@@ -85,7 +85,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#add(User)
+     * @see UserDAO#add(User)
      */
     @Test
     public void add_success() {
@@ -97,7 +97,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#deleteById(long)
+     * @see UserDAO#deleteById(long)
      */
     @Test
     public void deleteById_success() {
@@ -110,7 +110,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#deleteAll()
+     * @see UserDAO#deleteAll()
      */
     @Test
     public void deleteAll_success() {
@@ -127,7 +127,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#subscribeToArea(long, long)
+     * @see UserDAO#subscribeToArea(long, long)
      */
     @Test(expected = RuntimeException.class)
     public void subscribeToArea_failure(){
@@ -138,7 +138,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#subscribeToArea(long, long)
+     * @see UserDAO#subscribeToArea(long, long)
      */
     @Test
     public void subscribeToArea_success() {
@@ -151,7 +151,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#unsubscribeToArea(long, long)
+     * @see UserDAO#unsubscribeToArea(long, long)
      */
     @Test
     public void unsubscribeToArea_failure() {
@@ -164,7 +164,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#unsubscribeToArea(long, long)
+     * @see UserDAO#unsubscribeToArea(long, long)
      */
     @Test
     public void unsubscribeToArea_success() {
@@ -177,7 +177,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getByName(String)
+     * @see UserDAO#getByName(String)
      */
     @Test
     public void getByName_failure() {
@@ -190,7 +190,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getByName(String)
+     * @see UserDAO#getByName(String)
      */
     @Test
     public void getByName_success() {
@@ -203,7 +203,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getByEmail(String)
+     * @see UserDAO#getByEmail(String)
      */
     @Test
     public void getByEmail_failure() {
@@ -213,7 +213,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getByEmail(String)
+     * @see UserDAO#getByEmail(String)
      */
     @Test
     public void getByEmail_success() {
@@ -226,7 +226,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getById(long)
+     * @see UserDAO#getById(long)
      */
     @Test
     public void getById_failure() {
@@ -238,7 +238,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getById(long)
+     * @see UserDAO#getById(long)
      */
     @Test
     public void getById_success() {
@@ -250,7 +250,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getAppAreasById(long)
+     * @see UserDAO#getAppAreasById(long)
      */
     @Test
     public void getAppAreasById_failure() {
@@ -263,7 +263,7 @@ public class UserDAOImplIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see UserDAOImpl#getAppAreasById(long)
+     * @see UserDAO#getAppAreasById(long)
      */
     @Test
     public void getAppAreasById_success() {
