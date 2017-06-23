@@ -41,7 +41,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#add(Post)
+     * @see PostService#add(Post)
      */
     @Test
     public void add_postNotValid() {
@@ -98,13 +98,25 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#add(Post)
+     * @see PostService#add(Post)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void add_DAOException() {
+        Post post = DaoTestUtil.getRandomPost();
+        doThrow(RuntimeException.class).when(postDAOMock).add(any(Post.class));
+
+        // Test method
+        postService.add(post);
+    }
+
+    /**
+     * @see PostService#add(Post)
      */
     @Test
     public void add_success() {
         Post post = DaoTestUtil.getRandomPost();
         long id = 50;
-        doReturn(id).when(postDAOMock).add(post);
+        doReturn(id).when(postDAOMock).add(any(Post.class));
 
         // Test method
         long actualId = postService.add(post);
@@ -112,7 +124,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#setBestAnswer(long, long)
+     * @see PostService#setBestAnswer(long, long)
      */
     @Test
     public void setBestAnswer_negativeId() {
@@ -136,7 +148,18 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#setBestAnswer(long, long)
+     * @see PostService#setBestAnswer(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void setBestAnswer_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).setBestAnswer(anyLong(), anyLong());
+
+        // Test method
+        postService.setBestAnswer(15, 17);
+    }
+
+    /**
+     * @see PostService#setBestAnswer(long, long)
      */
     @Test
     public void setBestAnswer_success() {
@@ -148,7 +171,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getAll()
+     * @see PostService#getAll()
      */
     @Test(expected = ServiceLayerException.class)
     public void getAll_DAOException() {
@@ -158,7 +181,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getAll()
+     * @see PostService#getAll()
      */
     @Test
     public void getAll_success() {
@@ -168,7 +191,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getById(long)
+     * @see PostService#getById(long)
      */
     @Test(expected = InvalidObjectException.class)
     public void getById_NegativeId() {
@@ -177,7 +200,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getById(long)
+     * @see PostService#getById(long)
      */
     @Test(expected = ServiceLayerException.class)
     public void getById_DAOException() {
@@ -188,7 +211,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getById(long)
+     * @see PostService#getById(long)
      */
     @Test
     public void getById_success() {
@@ -201,7 +224,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByTitle(String)
+     * @see PostService#getByTitle(String)
      */
     @Test(expected = InvalidObjectException.class)
     public void getByTitle_titleNotValid() {
@@ -210,7 +233,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByTitle(String)
+     * @see PostService#getByTitle(String)
      */
     @Test(expected = ServiceLayerException.class)
     public void getByTitle_DAOException() {
@@ -222,7 +245,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByTitle(String)
+     * @see PostService#getByTitle(String)
      */
     @Test
     public void getByTitle_success() {
@@ -235,7 +258,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByUserId(long)
+     * @see PostService#getByUserId(long)
      */
     @Test
     public void getByUserId_negativeId() {
@@ -249,7 +272,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByUserId(long)
+     * @see PostService#getByUserId(long)
      */
     @Test(expected = ServiceLayerException.class)
     public void getByUserId_DAOException() {
@@ -261,7 +284,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByUserId(long)
+     * @see PostService#getByUserId(long)
      */
     @Test
     public void getByUserId_success() {
@@ -274,7 +297,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByAppAreaId(long)
+     * @see PostService#getByAppAreaId(long)
      */
     @Test
     public void getByAppAreaId_negativeId() {
@@ -288,7 +311,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByAppAreaId(long)
+     * @see PostService#getByAppAreaId(long)
      */
     @Test(expected = ServiceLayerException.class)
     public void getByAppAreaId_DAOException() {
@@ -300,7 +323,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getByAppAreaId(long)
+     * @see PostService#getByAppAreaId(long)
      */
     @Test
     public void getByAppAreaId_success() {
@@ -312,9 +335,8 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
         assertEquals(posts, actualPosts);
     }
 
-
     /**
-     * @see PostServiceImpl#getAnswersByPostId(long)
+     * @see PostService#getAnswersByPostId(long)
      */
     @Test
     public void getAnswersByPostId_negativeId() {
@@ -328,7 +350,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getAnswersByPostId(long)
+     * @see PostService#getAnswersByPostId(long)
      */
     @Test(expected = ServiceLayerException.class)
     public void getAnswersByPostId_DAOException() {
@@ -340,7 +362,7 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
     }
 
     /**
-     * @see PostServiceImpl#getAnswersByPostId(long)
+     * @see PostService#getAnswersByPostId(long)
      */
     @Test
     public void getAnswersByPostId_success() {
@@ -350,5 +372,164 @@ public class PostServiceImplUnitTest extends BaseUnitTest {
         // Test method
         List<Post> actualPosts = postService.getAnswersByPostId(15);
         assertEquals(posts, actualPosts);
+    }
+
+    /**
+     * @see PostService#getBestAnswer(long)
+     */
+    @Test
+    public void getBestAnswer_negativeId() {
+        try {
+            // Test method
+            postService.getBestAnswer(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#getBestAnswer(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getBestAnswer_DAOException() {
+        long id = 15;
+        doThrow(RuntimeException.class).when(postDAOMock).getBestAnswer(id);
+
+        // Test method
+        postService.getBestAnswer(id);
+    }
+
+    /**
+     * @see PostService#getBestAnswer(long)
+     */
+    @Test
+    public void getBestAnswer_success() {
+        Post post = DaoTestUtil.getRandomPost();
+        doReturn(post).when(postDAOMock).getBestAnswer(anyLong());
+
+        // Test method
+        Post actualPost = postService.getBestAnswer(15);
+        assertEquals(post, actualPost);
+    }
+
+    /**
+    * @see PostServiceImpl#update(Post)
+    */
+    @Test
+    public void update_postNotValid(){
+        Post post = DaoTestUtil.getRandomPost();
+        post.setUser(null);
+
+        try {
+            // Test method
+            postService.update(post);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+
+        post.setUser(DaoTestUtil.getRandomUser());
+        post.setAppArea(null);
+        try {
+            // Test method
+            postService.update(post);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+
+        post.setAppArea(AppArea.AGILE);
+        post.setPostTime(null);
+        try {
+            // Test method
+            postService.update(post);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+
+        post.setPostTime(new Timestamp(System.currentTimeMillis()));
+        post.setTitle(null);
+        try {
+            // Test method
+            postService.update(post);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+
+        post.setTitle("my title");
+        post.setContent(null);
+        try {
+            // Test method
+            postService.update(post);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#update(Post)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void update_DAOException() {
+        Post post = DaoTestUtil.getRandomPost();
+        doThrow(RuntimeException.class).when(postDAOMock).update(any(Post.class));
+
+        // Test method
+        postService.update(post);
+    }
+    
+    /**
+     * @see PostService#update(Post)
+     */
+    @Test
+    public void update_success() {
+        Post post = DaoTestUtil.getRandomPost();
+
+        // Test method
+        postService.update(post);
+        verify(postDAOMock, times(1)).update(post);
+    }
+
+    /**
+     * @see PostService#delete(long)
+     */
+    @Test
+    public void delete_negativeId() {
+        try {
+            // Test method
+            postService.delete(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#delete(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void delete_DAOException() {
+        long id = 15;
+        doThrow(RuntimeException.class).when(postDAOMock).delete(anyLong());
+
+        // Test method
+        postService.delete(id);
+    }
+
+    /**
+     * @see PostService#delete(long)
+     */
+    @Test
+    public void delete_success() {
+        long id = 5;
+
+        // Test method
+        postService.delete(id);
+        verify(postDAOMock, times(1)).delete(id);
+
     }
 }
