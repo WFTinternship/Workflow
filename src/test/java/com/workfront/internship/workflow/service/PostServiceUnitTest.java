@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
  * Created by nane on 6/21/17
  */
 
-public class PostServiceImplUnitTest extends BaseUnitTest {
+public class PostServiceUnitTest extends BaseUnitTest {
 
     @InjectMocks
     private PostServiceImpl postService;
