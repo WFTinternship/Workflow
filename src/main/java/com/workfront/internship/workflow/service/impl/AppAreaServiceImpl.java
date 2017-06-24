@@ -38,6 +38,7 @@ public class AppAreaServiceImpl implements AppAreaService {
             id = appAreaDAO.add(appArea);
         }catch (RuntimeException e){
             LOGGER.error("Failed to add the application area to database");
+            throw new RuntimeException(e);
         }
         return id;
     }
