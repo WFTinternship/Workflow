@@ -9,12 +9,14 @@ import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -116,11 +118,15 @@ public class PostServiceUnitTest extends BaseUnitTest {
     public void add_success() {
         Post post = DaoTestUtil.getRandomPost();
         long id = 50;
-        doReturn(id).when(postDAOMock).add(any(Post.class));
+        doReturn(id).when(postDAOMock).add(post);
 
         // Test method
         long actualId = postService.add(post);
         assertEquals(id, actualId);
+
+        ArgumentCaptor<Post> argumentCaptor = ArgumentCaptor.forClass(Post.class);
+        verify(postDAOMock, only()).add(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), post);
     }
 
     /**
@@ -164,10 +170,15 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void setBestAnswer_success() {
         long id = 17, answerId = 15;
+        List<Long> expected = Arrays.asList(id, answerId);
 
         // Test method
         postService.setBestAnswer(id, answerId);
         verify(postDAOMock, times(1)).setBestAnswer(id, answerId);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).setBestAnswer(argumentCaptor.capture(), argumentCaptor.capture());
+        assertEquals(argumentCaptor.getAllValues(), expected);
     }
 
     /**
@@ -215,12 +226,17 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getById_success() {
+        Long id = 15L;
         Post post = DaoTestUtil.getRandomPost();
-        doReturn(post).when(postDAOMock).getById(anyLong());
+        doReturn(post).when(postDAOMock).getById(id);
 
         // Test method
-        Post actualPost = postService.getById(15);
+        Post actualPost = postService.getById(id);
         assertEquals(post, actualPost);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getById(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
     }
 
     /**
@@ -249,12 +265,17 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getByTitle_success() {
+        String title = "title";
         List<Post> posts = new ArrayList<>();
         doReturn(posts).when(postDAOMock).getByTitle(anyString());
 
         // Test method
-        List<Post> actualPostList = postService.getByTitle("title");
+        List<Post> actualPostList = postService.getByTitle(title);
         assertEquals(posts, actualPostList);
+
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(postDAOMock, only()).getByTitle(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), title);
     }
 
     /**
@@ -288,12 +309,17 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getByUserId_success() {
+        Long id = 15L;
         List<Post> posts = new ArrayList<>();
         doReturn(posts).when(postDAOMock).getByUserId(anyLong());
 
         // Test method
-        List<Post> actualPosts = postService.getByUserId(15);
+        List<Post> actualPosts = postService.getByUserId(id);
         assertEquals(posts, actualPosts);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getByUserId(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
     }
 
     /**
@@ -327,12 +353,17 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getByAppAreaId_success() {
+        Long id = 15L;
         List<Post> posts = new ArrayList<>();
         doReturn(posts).when(postDAOMock).getByAppAreaId(anyLong());
 
         // Test method
-        List<Post> actualPosts = postService.getByAppAreaId(15);
+        List<Post> actualPosts = postService.getByAppAreaId(id);
         assertEquals(posts, actualPosts);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getByAppAreaId(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
     }
 
     /**
@@ -366,12 +397,17 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getAnswersByPostId_success() {
+        Long id = 15L;
         List<Post> posts = new ArrayList<>();
         doReturn(posts).when(postDAOMock).getAnswersByPostId(anyLong());
 
         // Test method
-        List<Post> actualPosts = postService.getAnswersByPostId(15);
+        List<Post> actualPosts = postService.getAnswersByPostId(id);
         assertEquals(posts, actualPosts);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getAnswersByPostId(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
     }
 
     /**
@@ -405,12 +441,17 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getBestAnswer_success() {
+        Long id = 15L;
         Post post = DaoTestUtil.getRandomPost();
         doReturn(post).when(postDAOMock).getBestAnswer(anyLong());
 
         // Test method
-        Post actualPost = postService.getBestAnswer(15);
+        Post actualPost = postService.getBestAnswer(id);
         assertEquals(post, actualPost);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getBestAnswer(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
     }
 
     /**
@@ -492,6 +533,10 @@ public class PostServiceUnitTest extends BaseUnitTest {
         // Test method
         postService.update(post);
         verify(postDAOMock, times(1)).update(post);
+
+        ArgumentCaptor<Post> argumentCaptor = ArgumentCaptor.forClass(Post.class);
+        verify(postDAOMock, only()).update(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), post);
     }
 
     /**
@@ -525,11 +570,14 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void delete_success() {
-        long id = 5;
+        Long id = 15L;
 
         // Test method
         postService.delete(id);
         verify(postDAOMock, times(1)).delete(id);
 
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).delete(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
     }
 }
