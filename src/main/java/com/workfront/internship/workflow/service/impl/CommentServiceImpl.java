@@ -22,49 +22,65 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDAO commentDAO;
 
     @Autowired
-    public CommentServiceImpl(@Qualifier("commentDAOSpring") CommentDAO commentDAO) {
+    public CommentServiceImpl(@Qualifier("commentDAOSpring") CommentDAO commentDAO)
+    {
         this.commentDAO = commentDAO;
     }
 
+    /**
+     *@see CommentDAOImpl#add(Comment)
+     */
     @Override
     public long add(Comment comment) {
-        if(!comment.isValid()) {
-            logger.error("Comment is invalid ! Failed to add to the database");
-            throw new InvalidObjectException("Invalid Comment !");
+        if(comment == null || !comment.isValid()) {
+            logger.error("Comment is invalid. Failed to add to the database");
+            throw new InvalidObjectException("Invalid Comment");
         }
+        long id;
         try {
-            return commentDAO.add(comment);
+            id = commentDAO.add(comment);
         }catch (RuntimeException e) {
-            logger.error("Failed to add the comment to database !");
-            return 0;
+            logger.error("Failed to add the comment to database");
+            throw new ServiceLayerException("Failed to add the comment to database", e);
         }
-
+        return id;
     }
 
+    /**
+     *@see CommentDAOImpl#getById(long)
+     */
     @Override
     public Comment getById(long id) {
         if(id < 1 ) {
-            logger.error("Id is invalid !");
-            throw new InvalidObjectException("Invalid id !");
+            logger.error("Id is invalid");
+            throw new InvalidObjectException("Invalid id");
         }
+        Comment comment ;
         try {
-           return commentDAO.getById(id);
+           comment = commentDAO.getById(id);
         }catch(RuntimeException e) {
             logger.error("Failed to get the comment by id from database!");
-            return null;
+            throw new ServiceLayerException("Failed to get comment with specified id");
         }
+        return comment;
     }
 
+    /**
+     * @see CommentDAOImpl#getAll()
+     */
     @Override
     public List<Comment> getAll() {
-        List<Comment> comments = commentDAO.getAll();
-        if(comments == null) {
-            logger.error("No comments were found");
-            return null;
+        try {
+            return commentDAO.getAll();
+        } catch (RuntimeException e) {
+            logger.error(e.getStackTrace());
+            throw new ServiceLayerException("Failed to get all comments");
         }
-        return comments;
     }
 
+    /**
+     *@see CommentDAOImpl#getByPostId(long)
+     */
     @Override
     public List<Comment> getByPostId(long id) {
         if(id < 1 ) {
@@ -75,37 +91,41 @@ public class CommentServiceImpl implements CommentService {
             return commentDAO.getByPostId(id);
         }catch(RuntimeException e) {
             logger.error("Failed to get comments by the specified post id!");
-            throw new ServiceLayerException();
+            throw new ServiceLayerException("Failed to get comments with specified id");
         }
     }
 
+    /**
+     *@see CommentDAOImpl#update(long, String)
+     */
     @Override
-    public boolean update(long id, String newComment) {
-        if( id < 1 ){
+    public boolean update(long id, String newContent) {
+        if( id < 1 || newContent == null){
             logger.error(" There is no such comment for update !");
             throw new InvalidObjectException();
         }
         try{
-            commentDAO.update(id,newComment);
-            return true;
+            return commentDAO.update(id,newContent);
         }catch(RuntimeException e) {
             logger.error("Failed to update the comment !");
-            return false ;
+            throw new ServiceLayerException("Failed to update comment");
         }
     }
 
+    /**
+     *@see CommentDAOImpl#delete(long)
+     */
     @Override
-    public int delete(long id) {
+    public void delete(long id) {
         if (id < 1) {
             logger.error("Id is invalid");
             throw new InvalidObjectException("Invalid id");
         }
         try {
              commentDAO.delete(id);
-             return (int)id;
         } catch(RuntimeException e){
-            logger.error("Failed to delete the comment !");
-            return -1 ;
+            logger.error("Failed to delete the comment");
+            throw new ServiceLayerException("Failed to delete comment");
         }
     }
 }

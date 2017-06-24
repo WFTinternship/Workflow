@@ -66,8 +66,9 @@ public class Comment {
 
 
     public  boolean isValid(){
-        return this != null
+        return this.getUser() != null
                 && this.getUser().isValid()
+                && this.getPost() != null
                 && this.getPost().isValid()
                 && !isEmpty(this.getContent());
     }

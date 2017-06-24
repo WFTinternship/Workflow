@@ -102,7 +102,7 @@
 
     <servlet>
         <servlet-name>Comment</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.CommentController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.NewCommentController</servlet-class>
     </servlet>
 
     <servlet-mapping>

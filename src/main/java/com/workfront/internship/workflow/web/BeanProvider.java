@@ -3,7 +3,6 @@ package com.workfront.internship.workflow.web;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
-import org.springframework.context.ApplicationContext;
 
 /**
  * Created by nane on 6/20/17

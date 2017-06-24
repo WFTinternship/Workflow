@@ -137,7 +137,7 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
         Comment otherComment = DaoTestUtil.getRandomComment(user, post);
         commentList.add(otherComment);
 
-        String newContent = "some new comment";
+        String newContent = "some new content";
 
         Long id = commentDAO.add(otherComment);
         assertNotNull(id);
@@ -154,7 +154,9 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
         isCommentsEqual(otherComment, updatedComment, false);
     }
 
-
+    /**
+     * @see CommentDAO#update(long, String)
+     */
     @Test(expected = RuntimeException.class)
     public void update_failure() {
         Comment otherComment = DaoTestUtil.getRandomComment( user , post ) ;
@@ -186,6 +188,9 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
 
     }
 
+    /**
+     * @see CommentDAO#delete(long)
+     */
     @Test
     public void delete_failure() {
         Comment otherComment = DaoTestUtil.getRandomComment(user,post) ;
@@ -272,14 +277,13 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
         assertTrue(otherList.size() == size + 2 && otherList.contains(otherComment) &&
                 otherList.contains(anotherComment));
 
-
     }
 
     // endregion
 
     // region <HELPERS>
 
-    private void isCommentsEqual(Comment comment, Comment actualComment, boolean skipDate) {
+    public static void isCommentsEqual(Comment comment, Comment actualComment, boolean skipDate) {
         PostDAOImplIntegrationTest.verifyPost(comment.getPost(), actualComment.getPost());
         UserDAOIntegrationTest.verifyAddedUser(comment.getUser(), actualComment.getUser());
 

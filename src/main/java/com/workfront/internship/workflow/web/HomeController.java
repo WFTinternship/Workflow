@@ -1,15 +1,17 @@
 package com.workfront.internship.workflow.web;
 
+import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +27,12 @@ public class HomeController extends HttpServlet {
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
+        PostDAO postDAO = new PostDAOImpl();
+        List<Integer> sizeOfPostsBySameAppAreaID = new ArrayList<>();
+        for(AppArea appArea : appAreas){
+            sizeOfPostsBySameAppAreaID.add(postDAO.getByAppAreaId(appArea.getId()).size());
+        }
+        req.setAttribute(PageAttributes.POSTS_OF_APPAAREA,sizeOfPostsBySameAppAreaID);
 
         getServletConfig()
                 .getServletContext()
