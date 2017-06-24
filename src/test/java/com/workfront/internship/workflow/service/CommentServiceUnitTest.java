@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.service.impl.CommentServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -48,31 +49,31 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
        Comment comment = DaoTestUtil.getRandomComment();
 
        comment.setUser(null);
-       try{
+       try {
            //Test method
            commentService.add(comment);
            fail();
-       }catch(Exception e){
+       } catch(Exception e) {
            assertTrue(e instanceof InvalidObjectException);
        }
        comment.setUser(DaoTestUtil.getRandomUser());
 
        comment.setPost(null);
-       try{
+       try {
            //Test method
            commentService.add(comment);
            fail();
-       }catch(Exception e){
+       } catch(Exception e) {
            assertTrue(e instanceof InvalidObjectException);
        }
        comment.setPost(DaoTestUtil.getRandomPost());
 
        comment.setContent(null);
-       try{
+       try {
            //Test method
            commentService.add(comment);
            fail();
-       }catch(Exception e){
+       } catch(Exception e) {
            assertTrue(e instanceof InvalidObjectException);
        }
     }
@@ -82,14 +83,22 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void add_success() {
+
         Comment comment = DaoTestUtil.getRandomComment();
 
         long id = 7;
-        when(commentDAOMock.add(comment)).thenReturn(id);
+        doReturn(id).when(commentDAOMock).add(comment);
 
         //Test method
         long actualId = commentService.add(comment);
         assertEquals(actualId, id);
+
+        ArgumentCaptor<Comment> argument = ArgumentCaptor.forClass(Comment.class);
+
+        verify(commentDAOMock, times(1)).add(argument.capture());
+        verifyNoMoreInteractions(commentDAOMock);
+
+        assertEquals(argument.getValue(),comment);
     }
 
     /**
@@ -120,8 +129,9 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getById_DAOException() {
-        long id = 7;
-        when(commentDAOMock.getById(id)).thenThrow(RuntimeException.class);
+        Long id = 7L;
+
+        doThrow(RuntimeException.class).when(commentDAOMock).getById(id);
 
         //Test method
         commentService.getById(id);
@@ -134,12 +144,18 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
     public void getById_success() {
         Comment comment = DaoTestUtil.getRandomComment();
 
-        long id = 7;
-        when(commentDAOMock.getById(id)).thenReturn(comment);
+        Long id = 7L;
+        doReturn(comment).when(commentDAOMock).getById(id);
 
         //Test method
         Comment actualComment = commentService.getById(id);
         assertEquals(comment,actualComment);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(commentDAOMock,times(1)).getById(argument.capture());
+        verifyNoMoreInteractions(commentDAOMock);
+
+        assertEquals(argument.getValue(),id);
     }
 
     /**
@@ -147,7 +163,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getAll_DAOException() {
-        when(commentDAOMock.getAll()).thenThrow(RuntimeException.class);
+        doThrow(RuntimeException.class).when(commentDAOMock).getAll();
 
         //Test method
         commentService.getAll();
@@ -164,6 +180,8 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
         //Test method
         List<Comment> actualCommentsList = commentService.getAll();
         assertEquals(commentsList,actualCommentsList );
+
+
     }
 
     /**
@@ -193,7 +211,10 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getByPostId_DAOException() {
         long id = 7;
-        when(commentDAOMock.getByPostId(id)).thenThrow(RuntimeException.class);
+
+        doThrow(RuntimeException.class).when(commentDAOMock).getByPostId(id);
+
+        //Test method
         commentService.getByPostId(id);
     }
 
@@ -219,8 +240,13 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void update_DAOException(){
-        when(commentDAOMock.update(7,"abc")).thenThrow(RuntimeException.class);
-        commentService.update(7,"abc");
+        Long id = 7L;
+        String newContent = "new content";
+
+        doThrow(RuntimeException.class).when(commentDAOMock).update(id,newContent);
+
+        //Test method
+        commentService.update(id,newContent);
     }
 
     /**
@@ -228,8 +254,14 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void update_success(){
-        commentService.update(7,"abc");
-        verify(commentDAOMock,times(1)).update(anyInt(),anyString());
+
+        Long id = 7L;
+        String newContent = "new content";
+
+        //Test method
+        commentService.update(id,newContent);
+
+        verify(commentDAOMock, times(1)).update(id, newContent);
 
     }
 
@@ -238,7 +270,11 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = InvalidObjectException.class)
     public void delete_negativeId(){
-        commentService.delete(-7);
+
+        Long id = -7L;
+
+        //Test method
+        commentService.delete(id);
     }
 
     /**
@@ -246,8 +282,14 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void delete_DAOException(){
+
+        Long id = -7L;
+
         doThrow(RuntimeException.class).when(commentDAOMock).delete(anyInt());
-        commentService.delete(7);
+
+        //Test method
+        commentService.delete(id);
+
     }
 
     /**
@@ -255,7 +297,12 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void delete_success(){
-        commentService.delete(7);
+
+        Long id = 7L;
+
+        //Test method
+        commentService.delete(id);
+
         verify(commentDAOMock,times(1)).delete(anyInt());
 
     }

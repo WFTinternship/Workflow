@@ -11,14 +11,14 @@ VALUES ( 'John', 'Smith', 'john@gmail.com', '123465', 0),
 (5, "Announcement Center", "Announcement Center", "Team1"),
 (6, "Application Server", "Application Server", "Team1");*/
 
-INSERT INTO post (post_id, user_id, post_time, title, content, apparea_id)
-VALUES ( NULL, 3, '11/11/11 11:00:00', 'Post12', 'Post 12 postContent',6);
-/*
+
+/*INSERT INTO post (post_id, user_id, post_time, title, content, apparea_id)
+VALUES ( NULL, 415, '11/11/11 11:00:00', 'Post12', 'Post 12 postContent',6),
+ ( NULL, 416, '11/11/11 11:00:00', 'Post12', 'Post 12 postContent',6),
+ ( NULL, 417, '11/11/11 11:00:00', 'Post12', 'Post 12 postContent',6);*/
+
 INSERT INTO comment(user_id, post_id, content,comment_time)
-VALUES ( 1, 4, 'Comment1', '11/11/11 11:00:00'),
-  ( 2, 5, 'Comment2', '10/10/10 11:00:00');
-
-
-SELECT * from post;
-
-*/
+VALUES ( 416, 275, 'Comment1', '11/11/11 11:00:00'),
+  ( 415, 276, 'Comment2', '10/10/10 11:00:00'),
+  ( 417, 275, 'Comment2', '10/10/10 11:00:00'),
+  ( 415, 275, 'Comment2', '10/10/10 11:00:00');
