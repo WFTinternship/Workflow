@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.util.DaoTestUtil;
-import javafx.geometry.Pos;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,7 @@ import static junit.framework.Assert.*;
  * Created by nane on 6/21/17
  */
 
-public class PostServiceImplIntegrationTest extends BaseIntegrationTest {
+public class PostServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private PostService postService;

@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.domain;
 
 
-public enum  AppArea {
+public enum AppArea {
     REPORTING(1, "Reporting", "Some rep description", "Team1"),
     API(2, "API", "API", "Team1"),
     ACCESSLEVELSSECURITY(3, "Access Levels Security", "Access Levels Security", "Team1"),
@@ -35,7 +35,7 @@ public enum  AppArea {
     DATAMAPPING(31, "Data Mapping", "Data Mapping", "Team1"),
     DATAGRID(32, "DataGrid", "DataGrid", "Team1"),
     DATABASEUPGRADE(33, "Database Upgrade", "Database Upgrade", "Team1"),
-    DIAGNOSTICS(34 ,"Diagnostics", "Diagnostics", "Team1"),
+    DIAGNOSTICS(34, "Diagnostics", "Diagnostics", "Team1"),
     DOCUMENTINTEGRATIONS(35, "Document Integrations", "Document Integrations", "Team1"),
     DOCUMENTS(36, "Documents", "Documents", "Team1"),
     EMEADCBETAPROGRAM(37, "EMEA DC Beta Program", "EMEA DC Beta Program", "Team1"),
@@ -94,9 +94,9 @@ public enum  AppArea {
     OTHER(88, "Other", "Other", "Team1"),
     OUTLOOKINTEGRATION(89, "Outlook Integration", "Outlook Integration", "Team1"),
     PHQREVIEWANDAPPROVALTOOL(90, "PHQ Review & approval tool",
-                                       "PHQ Review & approval tool", "Team1"),
+            "PHQ Review & approval tool", "Team1"),
     PHQTABLETANDMOBILEAPPLICATIONS(91, "PHQ Tablet and mobile Applications",
-                                               "PHQ Tablet and mobile Applications", "Team1"),
+            "PHQ Tablet and mobile Applications", "Team1"),
     PHQVIEWER(92, "PHQ Viewer", "PHQ Viewer", "Team1"),
     PEOPLE(93, "People", "People", "Team1"),
     PERFORMANCE(94, "Performance", "Performance", "Team1"),
@@ -130,7 +130,7 @@ public enum  AppArea {
     SEARCHINDEXING(122, "Search Indexing", "Search Indexing", "Team1"),
     SECURITY(123, "Security", "Security", "Team1"),
     SERVICEORIENTEDARCHITECTURE(124, "Service Oriented Architecture",
-                                          "Service Oriented Architecture", "Team1"),
+            "Service Oriented Architecture", "Team1"),
     SLACK(125, "Slack", "Slack", "Team1"),
     SMARTASSIGNMENTS(126, "Smart Assignments", "Smart Assignments", "Team1"),
     SOFTDELETESRECYCLEBIN(127, "Soft Deletes (Recycle Bin)", "Soft Deletes (Recycle Bin)", "Team1"),
@@ -166,6 +166,11 @@ public enum  AppArea {
     IPAD(156, "iPad", "iPad", "Team1"),
     SETUP(157, "Setup", "Setup", "Team1");
 
+    private long id;
+    private String name;
+    private String description;
+    private String teamName;
+
     AppArea(long id, String name, String description, String teamName) {
         this.id = id;
         this.name = name;
@@ -173,10 +178,27 @@ public enum  AppArea {
         this.teamName = teamName;
     }
 
-    private long id;
-    private String name;
-    private String description;
-    private String teamName;
+    public static AppArea getById(long id) {
+        AppArea[] appAreas = AppArea.values();
+        for (AppArea appArea : appAreas) {
+            if (appArea.getId() == id)
+                return appArea;
+        }
+        return null;
+    }
+
+    public static AppArea getByName(String name) {
+        AppArea[] appAreas = AppArea.values();
+        for (AppArea appArea : appAreas) {
+            if (appArea.getName().equals(name))
+                return appArea;
+        }
+        return null;
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 
     public long getId() {
         return id;
@@ -194,31 +216,9 @@ public enum  AppArea {
         return teamName;
     }
 
-    public static AppArea getById(long id){
-        AppArea [] appAreas = AppArea.values();
-        for (AppArea appArea: appAreas) {
-            if(appArea.getId() == id)
-                return appArea;
-        }
-        return null;
-    }
-
-    public static AppArea getByName(String name){
-        AppArea [] appAreas = AppArea.values();
-        for (AppArea appArea: appAreas) {
-            if(appArea.getName().equals(name))
-                return appArea;
-        }
-        return null;
-    }
-
-    public boolean isValid(){
+    public boolean isValid() {
         return !isEmpty(this.getName())
                 && !isEmpty(this.getDescription())
                 && !isEmpty(this.getTeamName());
-    }
-
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
     }
 }
