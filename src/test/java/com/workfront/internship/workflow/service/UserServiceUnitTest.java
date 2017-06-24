@@ -40,11 +40,19 @@ public class UserServiceUnitTest extends BaseUnitTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    // region <TEST_CASE>
+
+    /**
+     * @see UserService#add(User)
+     */
     @Test(expected = InvalidObjectException.class)
     public void add_nullUser() {
         userService.add(null);
     }
 
+    /**
+     * @see UserService#add(User)
+     */
     @Test
     public void add_userNotValid() {
         User user = DaoTestUtil.getRandomUser();
@@ -96,6 +104,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
 
     }
 
+    /**
+     * @see UserService#add(User)
+     */
     @Test(expected = DuplicateEntryException.class)
     public void add_existingUser() {
         User user = DaoTestUtil.getRandomUser();
@@ -105,6 +116,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.add(user);
     }
 
+    /**
+     * @see UserService#add(User)
+     */
     @Test
     public void add_success() {
         User user = DaoTestUtil.getRandomUser();
@@ -116,11 +130,17 @@ public class UserServiceUnitTest extends BaseUnitTest {
         assertEquals(actualId, id);
     }
 
+    /**
+     * @see UserService#getByName(String)
+     */
     @Test(expected = InvalidObjectException.class)
     public void getByName_emptyName() {
         userService.getByName(null);
     }
 
+    /**
+     * @see UserService#getByName(String)
+     */
     @Test(expected = ServiceLayerException.class)
     public void getByName_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).getByName(anyString());
@@ -129,6 +149,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.getByName("123");
     }
 
+    /**
+     * @see UserService#getByName(String)
+     */
     @Test
     public void getByName_success() {
         List<User> userList = new ArrayList<>();
@@ -139,11 +162,17 @@ public class UserServiceUnitTest extends BaseUnitTest {
         assertEquals(actualList, userList);
     }
 
+    /**
+     * @see UserService#getById(long)
+     */
     @Test(expected = InvalidObjectException.class)
     public void getById_negativeId() {
         userService.getById(-1);
     }
 
+    /**
+     * @see UserService#getById(long)
+     */
     @Test(expected = ServiceLayerException.class)
     public void getById_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).getById(anyInt());
@@ -152,6 +181,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.getById(123);
     }
 
+    /**
+     * @see UserService#getById(long)
+     */
     @Test
     public void getById_success() {
         User user = new User();
@@ -162,6 +194,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         assertEquals(actualUser, user);
     }
 
+    /**
+     * @see UserService#getByEmail(String)
+     */
     @Test
     public void getByEmail_emailNotValid() {
         try {
@@ -181,6 +216,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+    /**
+     * @see UserService#getByEmail(String)
+     */
     @Test(expected = ServiceLayerException.class)
     public void getByEmail_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).getByEmail(anyString());
@@ -189,6 +227,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.getByEmail("123");
     }
 
+    /**
+     * @see UserService#getByEmail(String)
+     */
     @Test
     public void getByEmail_success() {
         User user = DaoTestUtil.getRandomUser();
@@ -199,11 +240,17 @@ public class UserServiceUnitTest extends BaseUnitTest {
         assertEquals(actualUser, user);
     }
 
+    /**
+     * @see UserService#getAppAreasById(long)
+     */
     @Test(expected = InvalidObjectException.class)
     public void getAppAreasById_negativeId() {
         userService.getAppAreasById(-1);
     }
 
+    /**
+     * @see UserService#getAppAreasById(long)
+     */
     @Test(expected = ServiceLayerException.class)
     public void getAppAreasById_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).getAppAreasById(anyInt());
@@ -212,6 +259,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.getAppAreasById(123);
     }
 
+    /**
+     * @see UserService#getAppAreasById(long)
+     */
     @Test
     public void getAppAreasById_success() {
         List<AppArea> appAreas = new ArrayList<>();
@@ -222,6 +272,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         assertEquals(appAreas, actualAppAreas);
     }
 
+    /**
+     * @see UserService#subscribeToArea(long, long)
+     */
     @Test
     public void subscribeToArea_negativeId() {
         try {
@@ -241,6 +294,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+    /**
+     * @see UserService#subscribeToArea(long, long)
+     */
     @Test(expected = ServiceLayerException.class)
     public void subscribeToArea_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).subscribeToArea(anyInt(), anyInt());
@@ -249,6 +305,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.subscribeToArea(10, 1);
     }
 
+    /**
+     * @see UserService#subscribeToArea(long, long)
+     */
     @Test
     public void subscribeToArea_success() {
         //Test method
@@ -256,6 +315,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         verify(userDAOMock, times(1)).subscribeToArea(anyInt(), anyInt());
     }
 
+    /**
+     * @see UserService#unsubscribeToArea(long, long)
+     */
     @Test
     public void unsubscribeToArea_negativeId() {
         try {
@@ -275,6 +337,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+    /**
+     * @see UserService#unsubscribeToArea(long, long)
+     */
     @Test(expected = ServiceLayerException.class)
     public void unsubscribeToArea_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).unsubscribeToArea(anyInt(), anyInt());
@@ -283,6 +348,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.unsubscribeToArea(10, 1);
     }
 
+    /**
+     * @see UserService#unsubscribeToArea(long, long)
+     */
     @Test
     public void unsubscribeToArea_success() {
         //Test method
@@ -290,12 +358,18 @@ public class UserServiceUnitTest extends BaseUnitTest {
         verify(userDAOMock, times(1)).unsubscribeToArea(anyInt(), anyInt());
     }
 
+    /**
+     * @see UserService#deleteById(long)
+     */
     @Test(expected = InvalidObjectException.class)
     public void deleteById_negativeId() {
         //Test method
         userService.deleteById(-1);
     }
 
+    /**
+     * @see UserService#deleteById(long)
+     */
     @Test(expected = ServiceLayerException.class)
     public void deleteById_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).deleteById(anyInt());
@@ -304,6 +378,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.deleteById(1);
     }
 
+    /**
+     * @see UserService#deleteById(long)
+     */
     @Test
     public void deleteById_success() {
         //Test method
@@ -311,6 +388,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         verify(userDAOMock, times(1)).deleteById(anyInt());
     }
 
+    /**
+     * @see UserService#deleteAll()
+     */
     @Test(expected = ServiceLayerException.class)
     public void deleteAll_DAOException() {
         doThrow(RuntimeException.class).when(userDAOMock).deleteAll();
@@ -319,6 +399,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.deleteAll();
     }
 
+    /**
+     * @see UserService#deleteAll()
+     */
     @Test
     public void deleteAll_success() {
         //Test method
@@ -326,6 +409,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         verify(userDAOMock, times(1)).deleteAll();
     }
 
+    /**
+     * @see UserService#authenticate(String, String)
+     */
     @Test
     public void authenticate_passwordIsEmpty() {
         try {
@@ -345,6 +431,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         }
     }
 
+    /**
+     * @see UserService#authenticate(String, String)
+     */
     @Test(expected = ServiceLayerException.class)
     public void authenticate_userNotExist() {
         doReturn(null).when(userDAOMock).getByEmail(anyString());
@@ -352,6 +441,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.authenticate("A", "a");
     }
 
+    /**
+     * @see UserService#authenticate(String, String)
+     */
     @Test(expected = ServiceLayerException.class)
     public void authenticate_wrongPassword() {
         User user = DaoTestUtil.getRandomUser();
@@ -361,6 +453,9 @@ public class UserServiceUnitTest extends BaseUnitTest {
         userService.authenticate("A", "a");
     }
 
+    /**
+     * @see UserService#authenticate(String, String)
+     */
     @Test
     public void authenticate_success() {
         User user = DaoTestUtil.getRandomUser();
@@ -370,4 +465,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
         User actualUser = userService.authenticate("A", "123");
         assertEquals(user, actualUser);
     }
+
+    // endregion
+
 }

@@ -42,6 +42,8 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest{
         }
     }
 
+    // region <TEST_CASE>
+
     /**
      * @see UserService#add(User)
      */
@@ -229,5 +231,6 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest{
         assertEquals(userService.getById(user.getId()), null);
     }
 
+    // endregion
 
 }

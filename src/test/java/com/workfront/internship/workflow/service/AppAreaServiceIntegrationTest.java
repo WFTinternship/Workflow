@@ -1,19 +1,15 @@
 package com.workfront.internship.workflow.service;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.workfront.internship.workflow.dao.PostDAOImplIntegrationTest;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
+
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.util.DaoTestUtil;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static junit.framework.Assert.assertNull;
@@ -53,6 +49,8 @@ public class AppAreaServiceIntegrationTest extends BaseIntegrationTest {
             userService.deleteById(user.getId());
         }
     }
+
+    // region <TEST_CASE>
 
     /**
      * @see AppAreaService#add(AppArea)
@@ -136,5 +134,7 @@ public class AppAreaServiceIntegrationTest extends BaseIntegrationTest {
         //Test method
         appAreaService.deleteById(0);
     }
+
+    // endregion
 
 }
