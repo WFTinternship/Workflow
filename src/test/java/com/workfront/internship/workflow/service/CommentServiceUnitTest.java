@@ -46,6 +46,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void add_commentNotValid() {
+
        Comment comment = DaoTestUtil.getRandomComment();
 
        comment.setUser(null);
@@ -106,8 +107,11 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void add_failure() {
+
         Comment comment = DaoTestUtil.getRandomComment();
-        long id = 50;
+
+        long id = 7;
+
         doReturn(id).when(commentDAOMock).add(comment);
 
         // Test method
@@ -120,8 +124,11 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = InvalidObjectException.class)
     public void getById_negativeId() {
+
+        Long id = -7L;
+
         //Test method
-        commentService.getById(-7);
+        commentService.getById(id);
     }
 
     /**
@@ -129,6 +136,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getById_DAOException() {
+
         Long id = 7L;
 
         doThrow(RuntimeException.class).when(commentDAOMock).getById(id);
@@ -142,6 +150,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void getById_success() {
+
         Comment comment = DaoTestUtil.getRandomComment();
 
         Long id = 7L;
@@ -156,6 +165,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
         verifyNoMoreInteractions(commentDAOMock);
 
         assertEquals(argument.getValue(),id);
+
     }
 
     /**
@@ -163,6 +173,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getAll_DAOException() {
+
         doThrow(RuntimeException.class).when(commentDAOMock).getAll();
 
         //Test method
@@ -174,13 +185,13 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void getAll_success() {
+
         List<Comment> commentsList = new ArrayList<>();
         doReturn(commentsList).when(commentDAOMock).getAll();
 
         //Test method
         List<Comment> actualCommentsList = commentService.getAll();
         assertEquals(commentsList,actualCommentsList );
-
 
     }
 
@@ -189,12 +200,21 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void getByPostId_success() {
+
+        Long id = 7L;
         List<Comment> commentsList = new ArrayList<>();
-        doReturn(commentsList).when(commentDAOMock).getByPostId(anyLong());
+        doReturn(commentsList).when(commentDAOMock).getByPostId(id);
 
         //Test method
-        List<Comment> actualCommentsList = commentService.getByPostId(7);
-        assertEquals(commentsList,actualCommentsList );
+        List<Comment> actualCommentsList = commentService.getByPostId(id);
+        assertEquals(commentsList , actualCommentsList );
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+
+        verify(commentDAOMock , times(1)).getByPostId(argument.capture());
+        verifyNoMoreInteractions(commentDAOMock);
+
+        assertEquals(id , argument.getValue());
     }
 
     /**
@@ -202,7 +222,12 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = InvalidObjectException.class)
     public void getByPostId_negativeId() {
-        commentService.getById(-7);
+
+        Long id = -7L;
+
+        //Test method
+        commentService.getById(id);
+
     }
 
     /**
@@ -210,7 +235,8 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getByPostId_DAOException() {
-        long id = 7;
+
+        Long id = 7L;
 
         doThrow(RuntimeException.class).when(commentDAOMock).getByPostId(id);
 
@@ -223,13 +249,17 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test
     public void update_CommentNotValid(){
+
+        Long positiveId = 7L;
+        Long negativeId = -7L;
+        String newContent = "new content";
         try{
-            commentService.update(-7,"abc");
+            commentService.update(negativeId , newContent);
         }catch(Exception e){
             assertTrue(e instanceof InvalidObjectException);
         }
         try{
-            commentService.update(7,null);
+            commentService.update(positiveId , null);
         }catch(Exception e){
             assertTrue(e instanceof InvalidObjectException);
         }
@@ -240,6 +270,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void update_DAOException(){
+
         Long id = 7L;
         String newContent = "new content";
 
@@ -261,7 +292,14 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
         //Test method
         commentService.update(id,newContent);
 
-        verify(commentDAOMock, times(1)).update(id, newContent);
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<String> anotherArgument = ArgumentCaptor.forClass(String.class);
+
+        verify(commentDAOMock,times(1)).update(argument.capture(),anotherArgument.capture());
+        verifyNoMoreInteractions(commentDAOMock);
+
+        assertEquals(argument.getValue(),id);
+        assertEquals(anotherArgument.getValue(),newContent);
 
     }
 
@@ -304,6 +342,13 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
         commentService.delete(id);
 
         verify(commentDAOMock,times(1)).delete(anyInt());
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+
+        verify(commentDAOMock,times(1)).delete(argument.capture());
+        verifyNoMoreInteractions(commentDAOMock);
+
+        assertEquals(id,argument.getValue());
 
     }
 }
