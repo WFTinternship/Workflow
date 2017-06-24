@@ -18,6 +18,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Vahag on 6/24/2017
@@ -44,7 +45,7 @@ public class AppAreaServiceIntegrationTest extends BaseIntegrationTest {
      */
     @After
     public void tearDown() {
-        if (AppArea.getById(appArea.getId()) == null) {
+        if (appAreaService.getById(appArea.getId()) == null) {
             appAreaService.add(appArea);
         }
 
@@ -71,9 +72,8 @@ public class AppAreaServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = InvalidObjectException.class)
     public void add_failure() {
-        appAreaService.deleteById(appArea.getId());
         //Test method
-        appAreaService.add(appArea);
+        appAreaService.add(null);
     }
 
     /**
@@ -98,6 +98,26 @@ public class AppAreaServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see AppAreaService#getUsersById(long)
+     */
+    @Test
+    public void getById_success() {
+        //Test method
+        AppArea actualAppArea = appAreaService.getById(appArea.getId());
+
+        assertEquals(actualAppArea, appArea);
+    }
+
+    /**
+     * @see AppAreaService#getUsersById(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getById_failure() {
+        //Test method
+        appAreaService.getUsersById(0);
+    }
+
+    /**
      * @see AppAreaService#deleteById(long)
      */
     @Test
@@ -107,4 +127,14 @@ public class AppAreaServiceIntegrationTest extends BaseIntegrationTest {
 
         assertNull(appAreaService.getById(appArea.getId()));
     }
+
+    /**
+     * @see AppAreaService#deleteById(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void deleteById_failure() {
+        //Test method
+        appAreaService.deleteById(0);
+    }
+
 }
