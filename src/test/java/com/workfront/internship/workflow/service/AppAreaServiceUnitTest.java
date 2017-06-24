@@ -7,10 +7,10 @@ import com.workfront.internship.workflow.exceptions.service.InvalidObjectExcepti
 import com.workfront.internship.workflow.service.impl.AppAreaServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,12 +62,17 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void add_success() {
+        AppArea appArea = AppArea.AGILE;
         long id = 50;
-        doReturn(id).when(appAreaDAOMock).add(any(AppArea.class));
+        doReturn(id).when(appAreaDAOMock).add(appArea);
 
         // Test method
-        long actualId = appAreaService.add(AppArea.AGILE);
+        long actualId = appAreaService.add(appArea);
         assertEquals(id, actualId);
+
+        ArgumentCaptor<AppArea> argument = ArgumentCaptor.forClass(AppArea.class);
+        verify(appAreaDAOMock, only()).add(argument.capture());
+        assertEquals(appArea, argument.getValue());
     }
 
     /**
@@ -94,12 +99,17 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getUsersById_success() {
+        Long id = 1L;
         List<User> users = new ArrayList<>();
-        doReturn(users).when(appAreaDAOMock).getUsersById(anyLong());
+        doReturn(users).when(appAreaDAOMock).getUsersById(id);
 
         // Test method
-        List<User> actualUsers = appAreaService.getUsersById(15);
+        List<User> actualUsers = appAreaService.getUsersById(id);
         assertEquals(users, actualUsers);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(appAreaDAOMock, only()).getUsersById(argument.capture());
+        assertEquals(id, argument.getValue());
     }
 
     /**
@@ -126,11 +136,16 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getById_success() {
-        doReturn(AppArea.AGILE).when(appAreaDAOMock).getById(anyLong());
+        Long id = 15L;
+        doReturn(AppArea.AGILE).when(appAreaDAOMock).getById(id);
 
         // Test method
-        AppArea actualAppArea = appAreaService.getById(15);
+        AppArea actualAppArea = appAreaService.getById(id);
         assertEquals(AppArea.AGILE, actualAppArea);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(appAreaDAOMock, only()).getById(argument.capture());
+        assertEquals(id, argument.getValue());
     }
 
     /**
@@ -157,10 +172,14 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void deleteById_success() {
-        long id = 5;
+        Long id = 5L;
 
         // Test method
         appAreaService.deleteById(id);
         verify(appAreaDAOMock, times(1)).deleteById(id);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(appAreaDAOMock, only()).deleteById(argument.capture());
+        assertEquals(id, argument.getValue());
     }
 }
