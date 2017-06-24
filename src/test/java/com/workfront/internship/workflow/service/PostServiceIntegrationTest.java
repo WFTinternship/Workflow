@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.service;
 
-import com.workfront.internship.workflow.dao.PostDAOImplIntegrationTest;
+import com.workfront.internship.workflow.dao.PostDAOIntegrationTest;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
@@ -18,7 +18,7 @@ import static junit.framework.Assert.*;
  * Created by nane on 6/21/17
  */
 
-public class PostServiceImplIntegrationTest extends BaseIntegrationTest {
+public class PostServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private PostService postService;
@@ -57,7 +57,7 @@ public class PostServiceImplIntegrationTest extends BaseIntegrationTest {
         //Test method
         postService.add(post);
         Post actualPost = postService.getById(post.getId());
-        PostDAOImplIntegrationTest.verifyPost(post, actualPost);
+        PostDAOIntegrationTest.verifyPost(post, actualPost);
         userService.deleteById(post.getUser().getId());
     }
 
@@ -85,7 +85,7 @@ public class PostServiceImplIntegrationTest extends BaseIntegrationTest {
         postService.setBestAnswer(post.getId(), answer.getId());
 
         Post bestAnswer = postService.getBestAnswer(post.getId());
-        PostDAOImplIntegrationTest.verifyPost(bestAnswer, answer);
+        PostDAOIntegrationTest.verifyPost(bestAnswer, answer);
 
         userService.deleteById(post.getUser().getId());
         userService.deleteById(user.getId());
@@ -135,7 +135,7 @@ public class PostServiceImplIntegrationTest extends BaseIntegrationTest {
 
         // Test Method
         Post expectedPost = postService.getById(post.getId());
-        PostDAOImplIntegrationTest.verifyPost(post, expectedPost);
+        PostDAOIntegrationTest.verifyPost(post, expectedPost);
         userService.deleteById(post.getId());
     }
 

@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.AppAreaDAO;
+import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
@@ -37,6 +38,7 @@ public class AppAreaServiceImpl implements AppAreaService {
             id = appAreaDAO.add(appArea);
         }catch (RuntimeException e){
             LOGGER.error("Failed to add the application area to database");
+            throw new RuntimeException(e);
         }
         return id;
     }

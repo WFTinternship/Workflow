@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.service;
 
-import com.workfront.internship.workflow.dao.CommentDAOImplIntegrationTest;
+import com.workfront.internship.workflow.dao.CommentDAOIntegrationTest;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Angel on 6/22/2017
  */
-public class CommentServiceImplIntegrationTest extends BaseIntegrationTest{
+public class CommentServiceIntegrationTest extends BaseIntegrationTest{
 
     @Autowired
     private CommentService commentService;
@@ -61,7 +61,7 @@ public class CommentServiceImplIntegrationTest extends BaseIntegrationTest{
         commentService.add(comment);
 
         Comment actualComment = commentService.getById(comment.getId());
-        CommentDAOImplIntegrationTest.isCommentsEqual(comment,actualComment,false);
+        CommentDAOIntegrationTest.isCommentsEqual(comment,actualComment,false);
 
         postService.delete(comment.getPost().getId());
         userService.deleteById(comment.getUser().getId());
@@ -91,7 +91,7 @@ public class CommentServiceImplIntegrationTest extends BaseIntegrationTest{
 
         //Test method
         Comment expectedComment = commentService.getById(comment.getId());
-        CommentDAOImplIntegrationTest.isCommentsEqual(comment,expectedComment,false);
+        CommentDAOIntegrationTest.isCommentsEqual(comment,expectedComment,false);
 
         postService.delete(comment.getPost().getId());
         userService.deleteById(comment.getUser().getId());
