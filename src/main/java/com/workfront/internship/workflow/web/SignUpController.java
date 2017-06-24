@@ -51,12 +51,18 @@ public class SignUpController extends HttpServlet {
                 .setEmail(email)
                 .setPassword(password);
         UserService userService = BeanProvider.getUserService();
+
         String jsp;
         try {
-            userService.sendEmail(user);
-            userService.add(user);
-            resp.setStatus(200);
+            if (userService.getByEmail(email) != null){
+                req.setAttribute("message", "The email is already used");
+            }else {
+                userService.sendEmail(user);
+                userService.add(user);
+                resp.setStatus(200);
+            }
             jsp = "/pages/login.jsp";
+
         } catch (RuntimeException e) {
             resp.setStatus(405);
             // need to try again, go to sign up page

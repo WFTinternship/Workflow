@@ -1,3 +1,4 @@
 target/
 Workflow.iml
 .idea
+/src/main/resources/dbConfig.properties
