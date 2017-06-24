@@ -1,10 +1,8 @@
 package com.workfront.internship.workflow.web;
 
-import com.workfront.internship.workflow.dao.AppAreaDAO;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.service.AppAreaService;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -16,14 +14,18 @@ public class ContextListener implements ServletContextListener {
 
     private static ApplicationContext applicationContext;
 
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        applicationContext = new ClassPathXmlApplicationContext("classpath:spring-config.xml");
-        AppAreaDAO appAreaDAO = new AppAreaDAOImpl();
+        applicationContext = (ApplicationContext) sce.getServletContext();
+        AppAreaService appAreaService = BeanProvider.getAppAreaService();
         AppArea[] appAreas = AppArea.values();
         for (AppArea appArea : appAreas) {
-            if (appAreaDAO.getById(appArea.getId()) == null) {
-                appAreaDAO.add(appArea);
+            if (appAreaService.getById(appArea.getId()) == null) {
+                appAreaService.add(appArea);
             }
         }
     }
@@ -31,10 +33,6 @@ public class ContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
 
-    }
-
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
     }
 
 }

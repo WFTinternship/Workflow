@@ -1,6 +1,9 @@
 package com.workfront.internship.workflow.dao;
 
+import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
+import com.workfront.internship.workflow.domain.AppArea;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,5 +22,18 @@ abstract class BaseIntegrationTest {
     @Autowired
     protected DataSource dataSource;
 
+    @Autowired
+    AppAreaDAO appAreaDAO;
+
     Logger LOG;
+
+    @Before
+    public void init(){
+        AppArea[] appAreas = AppArea.values();
+        for (AppArea appArea : appAreas) {
+            if (appAreaDAO.getById(appArea.getId()) == null) {
+                appAreaDAO.add(appArea);
+            }
+        }
+    }
 }
