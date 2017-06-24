@@ -18,7 +18,7 @@ import java.util.List;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertTrue;
 
-public class AppAreaImplIntegrationTest extends BaseIntegrationTest {
+public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     @Qualifier("appAreaDAOSpring")
@@ -27,6 +27,7 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest {
     @Autowired
     @Qualifier("userDAOSpring")
     private UserDAO userDAO;
+
     private AppArea appArea;
     private User user;
 
@@ -56,6 +57,7 @@ public class AppAreaImplIntegrationTest extends BaseIntegrationTest {
         if (appAreaDAO.getById(appArea.getId()) == null) {
             appAreaDAO.add(appArea);
         }
+
         userDAO.deleteById(user.getId());
 
         if (dataSource instanceof ComboPooledDataSource) {
