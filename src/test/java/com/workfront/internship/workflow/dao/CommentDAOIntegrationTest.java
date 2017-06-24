@@ -27,7 +27,7 @@ import static junit.framework.TestCase.*;
 /**
  * Created by Angel on 30.05.2017
  */
-public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
+public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     private Comment comment;
 
     @Autowired
@@ -63,7 +63,7 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
         comment = DaoTestUtil.getRandomComment(user, post);
         commentList.add(comment);
 
-        LOG = Logger.getLogger(CommentDAOImplIntegrationTest.class);
+        LOG = Logger.getLogger(CommentDAOIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
@@ -284,7 +284,7 @@ public class CommentDAOImplIntegrationTest  extends BaseIntegrationTest{
     // region <HELPERS>
 
     public static void isCommentsEqual(Comment comment, Comment actualComment, boolean skipDate) {
-        PostDAOImplIntegrationTest.verifyPost(comment.getPost(), actualComment.getPost());
+        PostDAOIntegrationTest.verifyPost(comment.getPost(), actualComment.getPost());
         UserDAOIntegrationTest.verifyAddedUser(comment.getUser(), actualComment.getUser());
 
         assertEquals(comment.getContent(), actualComment.getContent());

@@ -39,7 +39,7 @@ public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
         appArea = AppArea.values()[0];
         user = DaoTestUtil.getRandomUser();
 
-        LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
+        LOG = Logger.getLogger(PostDAOIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());

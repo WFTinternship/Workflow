@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Angel on 6/22/2017
  */
-public class CommentServiceImplUnitTest extends  BaseUnitTest {
+public class CommentServiceUnitTest extends  BaseUnitTest {
 
     @InjectMocks
     CommentServiceImpl commentService;
