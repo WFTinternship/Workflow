@@ -10,4 +10,5 @@
     <bean id="commentService" class="com.workfront.internship.workflow.service.impl.CommentServiceImpl"/>
 
     <bean id="appAreaService" class="com.workfront.internship.workflow.service.impl.AppAreaServiceImpl"/>
+
 </beans>
