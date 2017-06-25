@@ -4,125 +4,135 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <listener>
-        <listener-class>
-            com.workfront.internship.workflow.web.ContextListener
-        </listener-class>
-    </listener>
+    <servlet>
+        <servlet-name>spring</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    </servlet>
 
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring-config.xml</param-value>
-    </context-param>
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
-    <!--<filter>-->
-        <!--<filter-name>LoginFilter</filter-name>-->
-        <!--<filter-clcom.workfront.internship.workflow.web.api.LoginFilter</filter-class>-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-        <!--<filter-name>LoginFilter</filter-name>-->
+    <!--<listener>-->
+        <!--<listener-class>-->
+            <!--com.workfront.internship.workflow.web.ContextListener-->
+        <!--</listener-class>-->
+    <!--</listener>-->
+
+    <!--<context-param>-->
+        <!--<param-name>contextConfigLocation</param-name>-->
+        <!--<param-value>classpath:spring-config.xml</param-value>-->
+    <!--</context-param>-->
+
+    <!--&lt;!&ndash;<filter>&ndash;&gt;-->
+        <!--&lt;!&ndash;<filter-name>LoginFilter</filter-name>&ndash;&gt;-->
+        <!--&lt;!&ndash;<filter-clcom.workfront.internship.workflow.web.api.LoginFilter</filter-class>&ndash;&gt;-->
+    <!--&lt;!&ndash;</filter>&ndash;&gt;-->
+    <!--&lt;!&ndash;<filter-mapping>&ndash;&gt;-->
+        <!--&lt;!&ndash;<filter-name>LoginFilter</filter-name>&ndash;&gt;-->
+        <!--&lt;!&ndash;<url-pattern>/new-post</url-pattern>&ndash;&gt;-->
+    <!--&lt;!&ndash;</filter-mapping>&ndash;&gt;-->
+
+    <!--<servlet>-->
+        <!--<servlet-name>HomePosts</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.HomeController</servlet-class>-->
+    <!--</servlet>-->
+    <!---->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>HomePosts</servlet-name>-->
+        <!--<url-pattern></url-pattern>-->
+        <!--<url-pattern>/home</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--<servlet>-->
+        <!--<servlet-name>Post</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.PostController</servlet-class>-->
+    <!--</servlet>-->
+
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Post</servlet-name>-->
+        <!--<url-pattern>/post/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <!--<servlet>-->
+        <!--<servlet-name>NewPost</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.NewPostPageController</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>NewPost</servlet-name>-->
         <!--<url-pattern>/new-post</url-pattern>-->
-    <!--</filter-mapping>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>HomePosts</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.HomeController</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>HomePosts</servlet-name>
-        <url-pattern></url-pattern>
-        <url-pattern>/home</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>Login</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.LoginController</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet>
-        <servlet-name>Post</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.PostController</servlet-class>
-    </servlet>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Login</servlet-name>-->
+        <!--<url-pattern>/login/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet-mapping>
-        <servlet-name>Post</servlet-name>
-        <url-pattern>/post/*</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>SignUp</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.SignUpController</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet>
-        <servlet-name>NewPost</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.NewPostPageController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>NewPost</servlet-name>
-        <url-pattern>/new-post</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>SignUp</servlet-name>-->
+        <!--<url-pattern>/signup/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>Login</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.LoginController</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Logout</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.LogoutController</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>Login</servlet-name>
-        <url-pattern>/login/*</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Logout</servlet-name>-->
+        <!--<url-pattern>/logout</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>SignUp</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.SignUpController</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>NewAnswer</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.NewAnswerController</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>SignUp</servlet-name>
-        <url-pattern>/signup/*</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>NewAnswer</servlet-name>-->
+        <!--<url-pattern>/new-answer/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>Logout</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.LogoutController</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Upload</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.FileUploadHandler</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>Logout</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Upload</servlet-name>-->
+        <!--<url-pattern>/upload</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>NewAnswer</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.NewAnswerController</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Comment</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.NewCommentController</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>NewAnswer</servlet-name>
-        <url-pattern>/new-answer/*</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Comment</servlet-name>-->
+        <!--<url-pattern>/comment</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>Upload</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.FileUploadHandler</servlet-class>
-    </servlet>
+     <!--<servlet>-->
+        <!--<servlet-name>AppAreaPosts</servlet-name>-->
+        <!--<servlet-class>com.workfront.internship.workflow.web.AppAreaPostsController</servlet-class>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>Upload</servlet-name>
-        <url-pattern>/upload</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>Comment</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.NewCommentController</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Comment</servlet-name>
-        <url-pattern>/comment</url-pattern>
-    </servlet-mapping>
-
-     <servlet>
-        <servlet-name>AppAreaPosts</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.AppAreaPostsController</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>AppAreaPosts</servlet-name>
-        <url-pattern>/appArea/*</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>AppAreaPosts</servlet-name>-->
+        <!--<url-pattern>/appArea/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
 
 </web-app>

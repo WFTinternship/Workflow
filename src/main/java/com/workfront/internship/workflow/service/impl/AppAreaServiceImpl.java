@@ -33,7 +33,7 @@ public class AppAreaServiceImpl implements AppAreaService {
             LOGGER.error("Application Area is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Application Area");
         }
-        long id = 0;
+        long id;
         try{
             id = appAreaDAO.add(appArea);
         }catch (RuntimeException e){
