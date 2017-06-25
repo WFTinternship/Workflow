@@ -1,8 +1,13 @@
 package com.workfront.internship.workflow.web;
 
+import com.workfront.internship.workflow.dao.AppAreaDAO;
+import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.AppAreaDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.service.AppAreaService;
+import com.workfront.internship.workflow.service.impl.AppAreaServiceImpl;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -20,7 +25,7 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        applicationContext = (ApplicationContext) sce.getServletContext();
+        applicationContext = new ClassPathXmlApplicationContext("classpath:spring-config.xml");
         AppAreaService appAreaService = BeanProvider.getAppAreaService();
         AppArea[] appAreas = AppArea.values();
         for (AppArea appArea : appAreas) {

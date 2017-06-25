@@ -3,5 +3,3 @@ Workflow.iml
 .idea
 logs/
 project-workflow.iml
-
-/src/main/resources/dbConfig.properties
