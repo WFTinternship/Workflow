@@ -5,9 +5,6 @@ import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.service.impl.PostServiceImpl;
-import com.workfront.internship.workflow.service.impl.UserServiceImpl;
-import jdk.nashorn.internal.objects.NativeUint8Array;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

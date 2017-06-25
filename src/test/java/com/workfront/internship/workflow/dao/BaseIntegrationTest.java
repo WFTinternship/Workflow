@@ -27,8 +27,6 @@ abstract class BaseIntegrationTest {
 
     Logger LOG;
 
-
-
     @Before
     public void init(){
         AppArea[] appAreas = AppArea.values();
