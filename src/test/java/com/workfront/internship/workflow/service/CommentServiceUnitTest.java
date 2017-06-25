@@ -318,7 +318,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
     /**
      * @see CommentService#delete(long)
      */
-    @Test(expected = ServiceLayerException.class)
+    @Test(expected = InvalidObjectException.class)
     public void delete_DAOException(){
 
         Long id = -7L;
