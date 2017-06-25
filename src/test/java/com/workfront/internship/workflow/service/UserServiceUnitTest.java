@@ -10,11 +10,13 @@ import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -128,6 +130,10 @@ public class UserServiceUnitTest extends BaseUnitTest {
         //Test method
         long actualId = userService.add(user);
         assertEquals(actualId, id);
+
+        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+        verify(userDAOMock, times(1)).add(argument.capture());
+        assertEquals(user, argument.getValue());
     }
 
     /**
@@ -154,12 +160,17 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getByName_success() {
+        String name = "John";
         List<User> userList = new ArrayList<>();
-        doReturn(userList).when(userDAOMock).getByName(anyString());
+        doReturn(userList).when(userDAOMock).getByName(name);
 
         //Test method
-        List<User> actualList = userService.getByName("abc");
+        List<User> actualList = userService.getByName(name);
         assertEquals(actualList, userList);
+
+        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+        verify(userDAOMock, only()).getByName(argument.capture());
+        assertEquals(name, argument.getValue());
     }
 
     /**
@@ -186,12 +197,17 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getById_success() {
+        Long id = 123L;
         User user = new User();
-        doReturn(user).when(userDAOMock).getById(anyInt());
+        doReturn(user).when(userDAOMock).getById(id);
 
         //Test method
-        User actualUser = userService.getById(123);
+        User actualUser = userService.getById(id);
         assertEquals(actualUser, user);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(userDAOMock, only()).getById(argument.capture());
+        assertEquals(id, argument.getValue());
     }
 
     /**
@@ -232,12 +248,17 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getByEmail_success() {
+        String email = "abc";
         User user = DaoTestUtil.getRandomUser();
-        doReturn(user).when(userDAOMock).getByEmail(anyString());
+        doReturn(user).when(userDAOMock).getByEmail(email);
 
         //Test method
-        User actualUser = userService.getByEmail("abc");
+        User actualUser = userService.getByEmail(email);
         assertEquals(actualUser, user);
+
+        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+        verify(userDAOMock, only()).getByEmail(argument.capture());
+        assertEquals(email, argument.getValue());
     }
 
     /**
@@ -264,12 +285,17 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void getAppAreasById_success() {
+        Long id = 123L;
         List<AppArea> appAreas = new ArrayList<>();
-        doReturn(appAreas).when(userDAOMock).getAppAreasById(anyInt());
+        doReturn(appAreas).when(userDAOMock).getAppAreasById(id);
 
         //Test method
-        List<AppArea> actualAppAreas = userService.getAppAreasById(123);
+        List<AppArea> actualAppAreas = userService.getAppAreasById(id);
         assertEquals(appAreas, actualAppAreas);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(userDAOMock, only()).getAppAreasById(argument.capture());
+        assertEquals(id, argument.getValue());
     }
 
     /**
@@ -310,9 +336,15 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void subscribeToArea_success() {
+        Long userId = 1L, appAreaId = 1L;
+        List<Long> expected = Arrays.asList(userId, appAreaId);
         //Test method
-        userService.subscribeToArea(1, 1);
-        verify(userDAOMock, times(1)).subscribeToArea(anyInt(), anyInt());
+        userService.subscribeToArea(userId, appAreaId);
+        verify(userDAOMock, times(1)).subscribeToArea(userId, appAreaId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(userDAOMock, only()).subscribeToArea(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
     }
 
     /**
@@ -353,9 +385,16 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void unsubscribeToArea_success() {
+        Long userId = 1L, appAreaId = 1L;
+        List<Long> expected = Arrays.asList(userId, appAreaId);
+
         //Test method
         userService.unsubscribeToArea(1, 1);
-        verify(userDAOMock, times(1)).unsubscribeToArea(anyInt(), anyInt());
+        verify(userDAOMock, times(1)).unsubscribeToArea(userId, appAreaId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(userDAOMock, only()).unsubscribeToArea(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
     }
 
     /**
@@ -383,9 +422,14 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void deleteById_success() {
+        Long id = 1L;
         //Test method
-        userService.deleteById(1);
-        verify(userDAOMock, times(1)).deleteById(anyInt());
+        userService.deleteById(id);
+        verify(userDAOMock, times(1)).deleteById(id);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(userDAOMock, only()).deleteById(argument.capture());
+        assertEquals(id, argument.getValue());
     }
 
     /**
