@@ -62,7 +62,8 @@ public class DaoTestUtil {
                 .setPostTime(new Timestamp(parsedDate.getTime()))
                 .setPost(null)
                 .setTitle("answerTitle")
-                .setContent("postContent");
+                .setContent("postContent")
+                .setUser(DaoTestUtil.getRandomUser());
 
         return post;
     }

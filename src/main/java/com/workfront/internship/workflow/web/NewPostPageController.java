@@ -4,7 +4,6 @@ import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,13 +19,30 @@ import java.util.List;
  * Created by Vahag on 6/8/2017
  */
 public class NewPostPageController extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+        req.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+        PostService postService = BeanProvider.getPostService();
+        List<Post> posts = postService.getAll();
+        req.setAttribute(PageAttributes.ALLPOSTS, posts);
+
+        getServletConfig().
+                getServletContext().
+                getRequestDispatcher("/pages/new_post.jsp").
+                forward(req,resp);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
 
         String title = req.getParameter(PageAttributes.TITLE);
-        String content = req.getParameter(PageAttributes.CONTENT);
+        String content = req.getParameter(PageAttributes.POSTCONTENT);
 
         HttpSession session = req.getSession();
         User user = (User)session.getAttribute(PageAttributes.USER);

@@ -2,9 +2,7 @@ package com.workfront.internship.workflow.dao.springJDBC;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.AppAreaDAO;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AppAreaRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
@@ -13,8 +11,6 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.*;

@@ -134,7 +134,17 @@
                 </div>
                 <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
                     <div class="stnt">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post</button>
+                        <c:if test="${user == null}">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
+                            </button>
+                        </c:if>
+
+                        <c:if test="${user != null}">
+                            <a href="/new-post">
+                                <button class="btn btn-primary">Add New Post</button>
+                            </a>
+                        </c:if>
+
                         <c:choose>
 
                             <c:when test="${user == null}">

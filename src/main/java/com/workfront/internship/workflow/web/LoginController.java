@@ -5,9 +5,6 @@ import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.service.impl.PostServiceImpl;
-import com.workfront.internship.workflow.service.impl.UserServiceImpl;
-import jdk.nashorn.internal.objects.NativeUint8Array;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -71,25 +68,26 @@ public class LoginController extends HttpServlet {
             }else {
                 jsp = "/home";
             }
+
+            List<AppArea> appAreas = Arrays.asList(AppArea.values());
+            req.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+            PostService postService = BeanProvider.getPostService();
+            List<Post> posts = postService.getAll();
+            req.setAttribute(PageAttributes.ALLPOSTS, posts);
+
+            getServletConfig()
+                    .getServletContext()
+                    .getRequestDispatcher(jsp)
+                    .forward(req, resp);
+
         } catch (RuntimeException e) {
             //when the user was not found in database or query failed.
             req.setAttribute(PageAttributes.USER, null);
-//            req.setAttribute("message", "The email or password is incorrect");
+            req.setAttribute("message", "The email or password is incorrect. Please try again.");
             resp.setStatus(405);
-            jsp = "/login";
+            doGet(req, resp);
         }
-
-        List<AppArea> appAreas = Arrays.asList(AppArea.values());
-        req.setAttribute(PageAttributes.APPAREAS, appAreas);
-
-        PostService postService = BeanProvider.getPostService();
-        List<Post> posts = postService.getAll();
-        req.setAttribute(PageAttributes.ALLPOSTS, posts);
-
-        getServletConfig()
-                .getServletContext()
-                .getRequestDispatcher(jsp)
-                .forward(req, resp);
     }
 
 }

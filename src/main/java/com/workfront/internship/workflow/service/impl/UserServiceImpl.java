@@ -59,19 +59,21 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public long add(User user) {
-        long id = 0;
-        if (!user.isValid()) {
+        if (user == null || !user.isValid()) {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
+
         if (userDAO.getByEmail(user.getEmail()) != null) {
             LOGGER.error("Failed to add. User already exists");
             throw new DuplicateEntryException("User already exists");
         }
-        id = userDAO.add(user);
+
+        long id = userDAO.add(user);
         for (AppArea appArea : AppArea.values()) {
             userDAO.subscribeToArea(user.getId(), appArea.getId());
         }
+
         return id;
     }
 
@@ -82,17 +84,19 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<User> getByName(String name) {
-        List<User> users;
         if (isEmpty(name)) {
             LOGGER.error("Name is not valid");
             throw new InvalidObjectException("Not valid name");
         }
+
+        List<User> users;
         try {
             users = userDAO.getByName(name);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to find such users");
             throw new ServiceLayerException("Failed to find such users", e);
         }
+
         return users;
     }
 
@@ -103,33 +107,37 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getById(long id) {
-        User user;
         if (id < 1) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid user id");
         }
+
+        User user;
         try {
             user = userDAO.getById(id);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to find such a user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
+
         return user;
     }
 
     @Override
     public User getByEmail(String email) {
-        User user;
         if (isEmpty(email)){
             LOGGER.error("Email is not valid");
             throw new InvalidObjectException("Not valid email");
         }
+
+        User user;
         try {
             user = userDAO.getByEmail(email);
         } catch (RuntimeException e){
             LOGGER.error("Couldn't get the user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
+
         return user;
     }
 
@@ -140,17 +148,19 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<AppArea> getAppAreasById(long id) {
-        List<AppArea> appAreas;
         if (id < 1) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid user id");
         }
+
+        List<AppArea> appAreas;
         try {
             appAreas = userDAO.getAppAreasById(id);
         } catch (RuntimeException e) {
             LOGGER.error("Failed to find app areas");
             throw new ServiceLayerException("Failed to find app areas", e);
         }
+
         return appAreas;
     }
 
@@ -165,10 +175,12 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid user id");
         }
+
         if (appAreaId < 1) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid app area id");
         }
+
         try {
             userDAO.subscribeToArea(userId, appAreaId);
         } catch (RuntimeException e) {
@@ -188,10 +200,12 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid user id");
         }
+
         if (appAreaId < 1) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Invalid app area id");
         }
+
         try {
             userDAO.unsubscribeToArea(userId, appAreaId);
         } catch (RuntimeException e) {
@@ -210,6 +224,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
+
         try {
             userDAO.deleteById(id);
         } catch (RuntimeException e) {

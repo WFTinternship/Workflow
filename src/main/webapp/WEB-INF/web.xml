@@ -10,6 +10,10 @@
         </listener-class>
     </listener>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-config.xml</param-value>
+    </context-param>
 
     <!--<filter>-->
         <!--<filter-name>LoginFilter</filter-name>-->
@@ -102,7 +106,7 @@
 
     <servlet>
         <servlet-name>Comment</servlet-name>
-        <servlet-class>com.workfront.internship.workflow.web.CommentController</servlet-class>
+        <servlet-class>com.workfront.internship.workflow.web.NewCommentController</servlet-class>
     </servlet>
 
     <servlet-mapping>

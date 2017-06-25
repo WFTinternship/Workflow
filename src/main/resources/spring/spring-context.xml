@@ -44,5 +44,19 @@
         <constructor-arg name="userDAO" ref="userDAOSpring"/>
     </bean>
 
+    <!--<bean id="postServiceImpl" class="com.workfront.internship.workflow.service.impl.PostServiceImpl">
+        <constructor-arg name="postDAO" ref="postDAOSpring"/>
+    </bean>
+
+    <bean id="commentServiceImpl" class="com.workfront.internship.workflow.service.impl.CommentServiceImpl">
+        <constructor-arg name="commentDAO" ref="commentDAOSpring"/>
+    </bean>
+
+    <bean id="appAreaServiceImpl" class="com.workfront.internship.workflow.service.impl.AppAreaServiceImpl">
+        <constructor-arg name="appAreaDAO" ref="appAreaDAOSpring"/>
+    </bean>-->
+
+
+
 
 </beans>

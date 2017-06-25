@@ -24,7 +24,7 @@ import static junit.framework.TestCase.assertNull;
 /**
  * Created by nane on 5/29/17
  */
-public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
+public class PostDAOIntegrationTest extends BaseIntegrationTest {
     private List<User> userList;
 
     @Autowired
@@ -42,7 +42,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
     // region <TEST CASE>
 
     public static void verifyPost(Post post, Post actualPost) {
-        UserDAOImplIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
+        UserDAOIntegrationTest.verifyAddedUser(post.getUser(), actualPost.getUser());
         assertEquals(post.getTitle(), actualPost.getTitle());
         assertEquals(post.getContent(), actualPost.getContent());
         assertEquals(post.getPostTime(), actualPost.getPostTime());
@@ -58,7 +58,7 @@ public class PostDAOImplIntegrationTest extends BaseIntegrationTest {
         userDAO.add(user);
         post = DaoTestUtil.getRandomPost(user, appArea);
 
-        LOG = Logger.getLogger(PostDAOImplIntegrationTest.class);
+        LOG = Logger.getLogger(PostDAOIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());

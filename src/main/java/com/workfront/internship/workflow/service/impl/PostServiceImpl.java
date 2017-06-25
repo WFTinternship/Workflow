@@ -21,11 +21,15 @@ public class PostServiceImpl implements PostService {
 
     private static final Logger logger = Logger.getLogger(PostDAO.class);
 
-    private final PostDAO postDAO;
+    private PostDAO postDAO;
 
     @Autowired
     public PostServiceImpl(@Qualifier("postDAOSpring") PostDAO postDAO) {
         this.postDAO = postDAO;
+    }
+
+    public PostServiceImpl() {
+
     }
 
     public static boolean isEmpty(String string) {
@@ -37,7 +41,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public long add(Post post) {
-        if (!post.isValid()) {
+        if (post == null || !post.isValid()) {
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
@@ -209,7 +213,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public void update(Post post) {
-        if (!post.isValid()) {
+        if (post == null || !post.isValid()) {
             logger.error("Post is invalid. Failed to add to the database");
             throw new InvalidObjectException("Invalid Post");
         }
