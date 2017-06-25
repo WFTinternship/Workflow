@@ -54,8 +54,8 @@ public class AppAreaServiceImpl implements AppAreaService {
         try {
             users = appAreaDAO.getUsersById(id);
         } catch (RuntimeException e) {
-            LOGGER.error("Failed to delete the user");
-            throw new ServiceLayerException("Failed to delete the user", e);
+            LOGGER.error("Failed to get users with specified id");
+            throw new ServiceLayerException("Failed to get users with specified id", e);
         }
         return users;
     }
@@ -71,8 +71,8 @@ public class AppAreaServiceImpl implements AppAreaService {
         try {
             appArea = appAreaDAO.getById(id);
         } catch (RuntimeException e) {
-            LOGGER.error("Failed to delete the user");
-            throw new ServiceLayerException("Failed to delete the user", e);
+            LOGGER.error("Failed to get the Application Area");
+            throw new ServiceLayerException("Failed to get the Application Area", e);
         }
         return appArea;
     }
@@ -87,8 +87,8 @@ public class AppAreaServiceImpl implements AppAreaService {
         try {
             appAreaDAO.deleteById(id);
         } catch (RuntimeException e) {
-            LOGGER.error("Failed to delete the user");
-            throw new ServiceLayerException("Failed to delete the user", e);
+            LOGGER.error("Failed to delete the application area");
+            throw new ServiceLayerException("Failed to delete the application area", e);
         }
     }
 }
