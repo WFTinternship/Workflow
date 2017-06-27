@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.controller;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class UserController {
 
     private UserService userService;
 
+    private PostService postService;
+
     private List<AppArea> appAreas;
 
     private List<Post> posts;
@@ -34,10 +37,10 @@ public class UserController {
     }
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PostService postService) {
         this.userService = userService;
         appAreas = Arrays.asList(AppArea.values());
-        posts = new ArrayList<>();
+        this.postService = postService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -49,7 +52,9 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
-        return authenticate(request, response);
+        ModelAndView modelAndView = authenticate(request, response);
+        setAllPosts(modelAndView);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/login/new-post", method = RequestMethod.POST)
@@ -125,5 +130,22 @@ public class UserController {
             modelAndView.setViewName("login");
         }
         return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute(PageAttributes.USER, null);
+        session.invalidate();
+        ModelAndView modelAndView = new ModelAndView("home");
+        setAllPosts(modelAndView);
+        return modelAndView;
+    }
+
+    private void setAllPosts(ModelAndView modelAndView) {
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        posts = postService.getAll();
+        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
     }
 }
