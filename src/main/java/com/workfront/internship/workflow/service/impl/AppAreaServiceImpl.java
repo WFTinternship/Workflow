@@ -10,12 +10,14 @@ import com.workfront.internship.workflow.service.AppAreaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by nane on 6/5/17
  */
+@Component
 public class AppAreaServiceImpl implements AppAreaService {
 
     private static final Logger LOGGER = Logger.getLogger(AppAreaServiceImpl.class);
@@ -23,7 +25,7 @@ public class AppAreaServiceImpl implements AppAreaService {
     private final AppAreaDAO appAreaDAO;
 
     @Autowired
-    public AppAreaServiceImpl(@Qualifier("appAreaDAOSpring") AppAreaDAO appAreaDAO) {
+    public AppAreaServiceImpl(@Qualifier("appAreaDAOSpringImpl") AppAreaDAO appAreaDAO) {
         this.appAreaDAO = appAreaDAO;
     }
 

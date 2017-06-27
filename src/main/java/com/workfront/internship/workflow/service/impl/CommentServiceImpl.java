@@ -9,12 +9,14 @@ import com.workfront.internship.workflow.service.CommentService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * Created by Angel on 6/5/2017
  */
+@Component
 public class CommentServiceImpl implements CommentService {
 
     private  static final Logger logger = Logger.getLogger(CommentDAOImpl.class);
@@ -22,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDAO commentDAO;
 
     @Autowired
-    public CommentServiceImpl(@Qualifier("commentDAOSpring") CommentDAO commentDAO)
+    public CommentServiceImpl(@Qualifier("commentDAOSpringImpl") CommentDAO commentDAO)
     {
         this.commentDAO = commentDAO;
     }

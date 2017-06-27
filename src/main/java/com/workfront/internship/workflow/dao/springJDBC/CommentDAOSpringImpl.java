@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * Created by Angel on 6/15/2017
  */
+@Component
 public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);

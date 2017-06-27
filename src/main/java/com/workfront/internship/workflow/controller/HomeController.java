@@ -18,8 +18,11 @@ import java.util.List;
 @RequestMapping("/")
 public class HomeController {
 
-    private final PostService postService;
+    private PostService postService;
+
     private List<AppArea> appAreas;
+
+    public HomeController(){}
 
     @Autowired
     public HomeController(PostService postService) {
@@ -27,7 +30,7 @@ public class HomeController {
         appAreas = Arrays.asList(AppArea.values());
     }
 
-    @RequestMapping("/")
+    @RequestMapping(value = {"/", "home"})
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject(PageAttributes.ALLPOSTS, postService.getAll());

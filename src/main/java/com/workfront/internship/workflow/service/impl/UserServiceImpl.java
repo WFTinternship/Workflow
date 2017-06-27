@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
 
     @Autowired
-    public UserServiceImpl(@Qualifier("userDAOSpring") UserDAO userDAO) {
+    public UserServiceImpl(@Qualifier("userDAOSpringImpl") UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -289,7 +289,7 @@ public class UserServiceImpl implements UserService {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
+                new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }

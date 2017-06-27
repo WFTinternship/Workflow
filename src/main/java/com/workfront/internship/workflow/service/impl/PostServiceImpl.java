@@ -11,12 +11,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by nane on 6/4/17
  */
+@Component
 public class PostServiceImpl implements PostService {
 
     private static final Logger logger = Logger.getLogger(PostDAO.class);
@@ -24,7 +26,7 @@ public class PostServiceImpl implements PostService {
     private PostDAO postDAO;
 
     @Autowired
-    public PostServiceImpl(@Qualifier("postDAOSpring") PostDAO postDAO) {
+    public PostServiceImpl(@Qualifier("postDAOSpringImpl") PostDAO postDAO) {
         this.postDAO = postDAO;
     }
 

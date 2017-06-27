@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 
@@ -9,6 +10,7 @@ import javax.sql.DataSource;
 /**
  * Created by nane on 6/6/17
  */
+@Component
 public abstract class AbstractDao {
 
     @Autowired

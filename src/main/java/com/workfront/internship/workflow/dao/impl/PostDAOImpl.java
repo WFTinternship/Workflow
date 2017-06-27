@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by nane on 5/26/17
  */
+@Repository
 public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     // Post fileds
