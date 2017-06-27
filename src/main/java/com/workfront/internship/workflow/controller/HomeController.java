@@ -1,17 +1,18 @@
 package com.workfront.internship.workflow.controller;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
+import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,13 +23,15 @@ import java.util.List;
 @Controller
 public class HomeController {
 
+    private List<Integer> sizeOfPostsBySameAppAreaID;
+
+
     private PostService postService;
 
     private List<AppArea> appAreas;
 
     private List<Post> posts;
 
-    private List<Integer> sizeOfPostsBySameAppAreaID;
 
     public HomeController(){}
 
@@ -70,7 +73,6 @@ public class HomeController {
         String url = request.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
-
         // getting and passing all posts to appAreas page
         posts = postService.getByAppAreaId(id);
         if (posts.size() == 0){
@@ -90,5 +92,4 @@ public class HomeController {
 
         return modelAndView ;
     }
-
 }
