@@ -28,22 +28,39 @@ public class HomeController {
 
     private List<Post> posts;
 
+    private List<Integer> sizeOfPostsBySameAppAreaID;
+
     public HomeController(){}
 
     @Autowired
     public HomeController(PostService postService) {
         this.postService = postService;
+
         appAreas = Arrays.asList(AppArea.values());
+
         posts = new ArrayList<>();
+
+        sizeOfPostsBySameAppAreaID = new ArrayList<>();
     }
 
     @RequestMapping(value = {"/", "home"})
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("home");
+
+        // getting and passing all posts to home page
         posts = postService.getAll();
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+
+        // passing all appAreas to home page
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        return modelAndView;
+
+        // getting and passing list of sizes of each posts by same appArea id to home page
+        for(AppArea appArea : appAreas){
+            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
+        }
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
+
+        return modelAndView ;
     }
 
     @RequestMapping(value = {"/appArea/*", "home"}, method = RequestMethod.GET)
@@ -53,14 +70,25 @@ public class HomeController {
         String url = request.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
+
+        // getting and passing all posts to appAreas page
         posts = postService.getByAppAreaId(id);
         if (posts.size() == 0){
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found in this Application Area.");
         }
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+
+        // pass all appAreas to appAreas page
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        return modelAndView;
+
+        // getting and passing list of sizes of each posts by same appArea id to appAreas page
+        for(AppArea appArea : appAreas){
+            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
+        }
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID );
+
+        return modelAndView ;
     }
 
 }
