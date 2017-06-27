@@ -20,6 +20,7 @@ import java.util.List;
  * Created by nane on 6/25/17
  */
 @Controller
+@RequestMapping("/")
 public class HomeController {
 
     private PostService postService;
@@ -37,7 +38,7 @@ public class HomeController {
         posts = new ArrayList<>();
     }
 
-    @RequestMapping(value = {"/", "home"})
+    @RequestMapping(value = {"/", "/home"})
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("home");
         posts = postService.getAll();
@@ -46,7 +47,7 @@ public class HomeController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/appArea/*", "home"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/appArea/*", method = RequestMethod.GET)
     public ModelAndView appArea(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("home");
 
