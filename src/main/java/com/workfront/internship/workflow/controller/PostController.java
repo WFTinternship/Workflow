@@ -8,12 +8,11 @@ import com.workfront.internship.workflow.web.BeanProvider;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,7 +31,8 @@ public class PostController {
 
     private List<Post> posts;
 
-    public PostController(){}
+    public PostController() {
+    }
 
     @Autowired
     public PostController(PostService postService) {
@@ -41,19 +41,16 @@ public class PostController {
         posts = new ArrayList<>();
     }
 
-    @RequestMapping(value = {"/new-post", "new_post"})
-    public ModelAndView newPost(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/new-post", method = RequestMethod.POST)
+    public ModelAndView newPost(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("home");
-
-        posts = postService.getAll();
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        setAllPosts(modelAndView);
 
         String title = request.getParameter(PageAttributes.TITLE);
         String content = request.getParameter(PageAttributes.POSTCONTENT);
 
         HttpSession session = request.getSession();
-        User user = (User)session.getAttribute(PageAttributes.USER);
+        User user = (User) session.getAttribute(PageAttributes.USER);
         AppArea appArea = AppArea.getById(Integer.parseInt(request.getParameter(PageAttributes.APPAREA)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -66,7 +63,7 @@ public class PostController {
                 .setPostTime(timestamp);
         try {
             postService.add(post);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry, your post was not added. Please try again");
             modelAndView.setViewName("new_post");
@@ -74,4 +71,17 @@ public class PostController {
         return modelAndView;
     }
 
+
+    @RequestMapping(value = {"/new-post"}, method = RequestMethod.GET)
+    public ModelAndView newPost() {
+        ModelAndView modelAndView = new ModelAndView("new_post");
+        setAllPosts(modelAndView);
+        return modelAndView;
+    }
+
+    private void setAllPosts(ModelAndView modelAndView) {
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        posts = postService.getAll();
+        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+    }
 }
