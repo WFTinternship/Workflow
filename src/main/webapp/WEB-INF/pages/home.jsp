@@ -135,7 +135,7 @@
 
                         <c:if test="${user == null}">
                           <span>
-                              <a href="/signup/login"><button class="btn btn-signup">Sign Up</button></a>
+                              <a href="/signup"><button class="btn btn-signup">Sign Up</button></a>
                               <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
                           </span>
                         </c:if>

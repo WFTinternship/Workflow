@@ -23,6 +23,7 @@ import java.util.List;
  */
 @Controller
 public class UserController {
+
     private UserService userService;
 
     private List<AppArea> appAreas;
@@ -60,6 +61,45 @@ public class UserController {
         }
         return modelAndView;
     }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public ModelAndView signUp(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("login");
+        request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ModelAndView signUp(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView("login");
+        request.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        User user = new User();
+        user.setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setPassword(password);
+        try {
+            if (userService.getByEmail(email) != null){
+                request.setAttribute("message", "The email is already used");
+            }else {
+                userService.sendEmail(user);
+                userService.add(user);
+                response.setStatus(200);
+                modelAndView.setViewName("home");
+            }
+        } catch (RuntimeException e) {
+            response.setStatus(405);
+            request.setAttribute("message", "Your sign up was successfully canceled, please try again.");
+        }
+        return modelAndView;
+    }
+
 
     private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute(PageAttributes.APPAREAS, appAreas);

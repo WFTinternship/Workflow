@@ -149,7 +149,7 @@
 
                             <c:when test="${user == null}">
                           <span>
-                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/signup"><button type="submit" class="btn btn-signup">Sign Up</button></a>
                               <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
                           </span>
                             </c:when>

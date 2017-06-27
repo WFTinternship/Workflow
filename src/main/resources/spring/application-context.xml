@@ -4,12 +4,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="userService" class="com.workfront.internship.workflow.service.impl.UserServiceImpl"/>
+    <!--<bean id="userService" class="com.workfront.internship.workflow.service.impl.UserServiceImpl"/>-->
 
-    <bean id="postService" class="com.workfront.internship.workflow.service.impl.PostServiceImpl"/>
+    <!--<bean id="postService" class="com.workfront.internship.workflow.service.impl.PostServiceImpl"/>-->
 
-    <bean id="commentService" class="com.workfront.internship.workflow.service.impl.CommentServiceImpl"/>
+    <!--<bean id="commentService" class="com.workfront.internship.workflow.service.impl.CommentServiceImpl"/>-->
 
-    <bean id="appAreaService" class="com.workfront.internship.workflow.service.impl.AppAreaServiceImpl"/>
+    <!--<bean id="appAreaService" class="com.workfront.internship.workflow.service.impl.AppAreaServiceImpl"/>-->
 
 </beans>

@@ -36,6 +36,7 @@ import static com.workfront.internship.workflow.dao.UserDAO.password;
  */
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
@@ -56,7 +57,6 @@ public class UserServiceImpl implements UserService {
      * @return
      * @see UserService#add(User)
      */
-    @Transactional
     @Override
     public long add(User user) {
         if (user == null || !user.isValid()) {
@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
      * @return
      * @see UserService#getByName(String)
      */
+
     @Override
     public List<User> getByName(String name) {
         if (isEmpty(name)) {
