@@ -8,6 +8,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Created by Vahag on 6/22/2017
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/../webapp/WEB-INF/spring-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:spring-servlet.xml"})
 abstract class BaseTest {
 }

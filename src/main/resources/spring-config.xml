@@ -9,5 +9,4 @@
     <import resource="spring/spring-database.xml"/>
     <import resource="spring/application-context.xml"/>
 
-
 </beans>
