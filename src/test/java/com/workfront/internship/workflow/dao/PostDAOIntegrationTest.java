@@ -28,12 +28,12 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     private List<User> userList;
 
     @Autowired
-    @Qualifier("userDAOSpring")
+    @Qualifier("userDAOSpringImpl")
     private UserDAO userDAO;
     private User user;
 
     @Autowired
-    @Qualifier("postDAOSpring")
+    @Qualifier("postDAOSpringImpl")
     private PostDAO postDAO;
     private Post post;
     private AppArea appArea;

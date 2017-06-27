@@ -31,16 +31,16 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     private Comment comment;
 
     @Autowired
-    @Qualifier("commentDAOSpring")
+    @Qualifier("commentDAOSpringImpl")
     private CommentDAO commentDAO;
 
     @Autowired
-    @Qualifier("userDAOSpring")
+    @Qualifier("userDAOSpringImpl")
     private UserDAO userDAO;
     private User user;
 
     @Autowired
-    @Qualifier("postDAOSpring")
+    @Qualifier("postDAOSpringImpl")
     private PostDAO postDAO;
     private Post post;
 
