@@ -1,10 +1,11 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.web.BeanProvider;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class PostController {
 
     private PostService postService;
 
+    private CommentService commentService;
+
     private List<AppArea> appAreas;
 
     private List<Post> posts;
@@ -35,16 +38,40 @@ public class PostController {
     }
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         posts = new ArrayList<>();
+        this.commentService = commentService;
+    }
+
+    @RequestMapping(value = "/post/*", method = RequestMethod.GET)
+    public ModelAndView post(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("post");
+
+        setAllPosts(modelAndView);
+        String url = request.getRequestURL().toString();
+        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        Post post = postService.getById(id);
+        request.setAttribute(PageAttributes.POST, post);
+
+        List<Comment> postComments = commentService.getByPostId(id);
+        request.setAttribute(PageAttributes.POSTCOMMENTS, postComments);
+
+        List<Post> answers = postService.getAnswersByPostId(id);
+        request.setAttribute(PageAttributes.ANSWERS, answers);
+
+        for (Post answer : answers) {
+            answer.setCommentList(commentService.getByPostId(answer.getId()));
+        }
+
+        return modelAndView;
     }
 
     @RequestMapping(value = "/new-post", method = RequestMethod.POST)
     public ModelAndView newPost(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("home");
-        setAllPosts(modelAndView);
 
         String title = request.getParameter(PageAttributes.TITLE);
         String content = request.getParameter(PageAttributes.POSTCONTENT);
@@ -54,7 +81,6 @@ public class PostController {
         AppArea appArea = AppArea.getById(Integer.parseInt(request.getParameter(PageAttributes.APPAREA)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        PostService postService = BeanProvider.getPostService();
         Post post = new Post();
         post.setTitle(title)
                 .setAppArea(appArea)
@@ -68,6 +94,7 @@ public class PostController {
                     "Sorry, your post was not added. Please try again");
             modelAndView.setViewName("new_post");
         }
+        setAllPosts(modelAndView);
         return modelAndView;
     }
 
