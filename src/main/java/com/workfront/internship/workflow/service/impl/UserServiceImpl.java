@@ -2,20 +2,17 @@ package com.workfront.internship.workflow.service.impl;
 
 import com.sun.mail.smtp.SMTPTransport;
 import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
+
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,21 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-
-import static com.workfront.internship.workflow.dao.UserDAO.password;
 
 /**
  * Created by Vahag on 6/4/2017
