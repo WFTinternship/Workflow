@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
         User user = getByEmail(email);
 
         //TODO: Password should be hashed
-        if (user != null && user.getPassword().equals(password)){
+        if (user != null && user.getPassword().equals(hashPassword(password))){
             return user;
         }else {
             LOGGER.error("Invalid email-password combination!");
