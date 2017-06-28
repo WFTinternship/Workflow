@@ -97,6 +97,10 @@ public class UserController {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
+        String file = image.getOriginalFilename();
+        String ext = file.substring(file.lastIndexOf("."));
+
+
         if (image != null) {
             byte[] imageBytes = image.getBytes();
             String uploadPath = "/images/uploads/users/" + email;
@@ -106,10 +110,9 @@ public class UserController {
                 uploadDir.mkdir();
             }
             String fileName = new File(firstName + "Avatar").getName();
-            String filePath = realPath + File.separator + fileName + ".jpg";
+            String filePath = realPath + File.separator + fileName + ext;
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-            user.setAvatarURL(uploadPath + File.separator + fileName + ".jpg");
-
+            user.setAvatarURL(uploadPath + File.separator + fileName + ext);
         }
 
         user.setFirstName(firstName)
