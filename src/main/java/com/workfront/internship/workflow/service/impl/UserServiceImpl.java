@@ -11,23 +11,28 @@ import com.workfront.internship.workflow.exceptions.service.InvalidObjectExcepti
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DBHelper;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.sql.DataSource;
+import java.io.File;
+import java.io.IOException;
 import java.security.Security;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 import static com.workfront.internship.workflow.dao.UserDAO.password;
 
@@ -268,6 +273,45 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Invalid email-password combination!");
             throw new ServiceLayerException("Invalid email-password combination!");
         }
+    }
+
+
+
+
+    public String saveAvatar(String uploadPath, MultipartFile image) throws IOException {
+
+        // creates the directory if it does not exist
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        String fileName = image.getOriginalFilename();
+        String filePath;
+        String uniqueFileName = null;
+
+        if (!fileName.isEmpty()) {
+
+            //get uploaded file extension
+            String ext = fileName.substring(fileName.lastIndexOf("."));
+
+            //generate random image name
+            String uuid = UUID.randomUUID().toString();
+            uniqueFileName = String.format("%s%s", uuid, ext);
+
+            //create file path
+            filePath = uploadPath + File.separator + uniqueFileName;
+            File storeFile = new File(filePath);
+
+            // saves the file on disk
+            FileUtils.writeByteArrayToFile(storeFile, image.getBytes());
+        }
+
+        return uniqueFileName;
+    }
+
+    public boolean isValidImage(MultipartFile image) {
+        return (image.getContentType().equals("image/jpeg") || image.getContentType().equals("image/png"));
     }
 
     /**

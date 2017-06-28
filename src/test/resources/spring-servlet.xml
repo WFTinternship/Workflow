@@ -17,6 +17,7 @@
     <!--Tells spring WHERE to look for annotations-->
     <context:component-scan base-package="com.workfront.internship.workflow" />
 
+
     <!--<mvc:resources mapping="/**" location="/"/>-->
 
 </beans>
