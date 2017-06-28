@@ -93,7 +93,7 @@ public class UserController {
             if (userService.getByEmail(email) != null){
                 request.setAttribute("message", "The email is already used");
             }else {
-                userService.sendEmail(user);
+                //userService.sendEmail(user);
                 userService.add(user);
                 response.setStatus(200);
                 modelAndView.setViewName("home");
