@@ -6,15 +6,23 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +40,7 @@ public class UserController {
     private List<AppArea> appAreas;
 
     private List<Post> posts;
+
 
     public UserController() {
     }
@@ -75,16 +84,34 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ModelAndView signUp(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView signUp(HttpServletRequest request, HttpServletResponse response,
+                               @RequestParam(value = "avatar", required = false) MultipartFile image) throws IOException {
+
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+        User user = new User();
 
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        User user = new User();
+        if (image != null) {
+            byte[] imageBytes = image.getBytes();
+            String uploadPath = "/images/uploads/users/" + email;
+            String realPath = request.getServletContext().getRealPath(uploadPath);
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String fileName = new File(firstName + "Avatar").getName();
+            String filePath = realPath + File.separator + fileName + ".jpg";
+            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+            user.setAvatarURL(uploadPath + File.separator + fileName + ".jpg");
+
+        }
+
         user.setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
@@ -95,7 +122,6 @@ public class UserController {
             }else {
                 //userService.sendEmail(user);
                 userService.add(user);
-                response.setStatus(200);
                 modelAndView.setViewName("home");
             }
         } catch (RuntimeException e) {

@@ -5,11 +5,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 <c:set var="user" value='<%=request.getAttribute(PageAttributes.USER)%>'/>
+<c:set var="avatar" value='<%=request.getAttribute("avatar")%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -197,7 +199,7 @@
 
                             <!-- POST -->
                             <div class="post">
-                                <form action="/signup" class="form newtopic" method="post">
+                                <form action="/signup" class="form newtopic" method="post" enctype="multipart/form-data">
                                     <div class="postinfotop">
                                         <h2>Create New Account</h2>
                                     </div>
@@ -212,13 +214,19 @@
                                         <div class="topwrap">
                                             <div class="userinfo pull-left">
                                                 <div class="avatar">
-                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
-                                                         alt=""/>
-                                                    <div class="status green">&nbsp;</div>
+                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" id="image" alt="" height="60" width="60px"/>
+                                                    <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
+                                                         <%--alt=""/>--%>
                                                 </div>
-                                                <div class="imgsize">60 x 60</div>
-                                                <div>
-                                                    <button class="btn">Add</button>
+                                                <%--<div class="imgsize">60 x 60</div>--%>
+                                                <%--<div>--%>
+                                                    <%--<button class="btn">Add</button>--%>
+                                                    <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
+
+                                                <%--</div>--%>
+                                                <div class="half-width">
+                                                    <input type="file" name="avatar" id="avatar" class="hide"/>
+                                                    <label for="avatar" class="btn">Add</label><br/>
                                                 </div>
                                             </div>
                                             <div class="posttext pull-left">
@@ -504,6 +512,20 @@
     });	//ready
 
 </script>
+
+<script>document.getElementById("avatar").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+</script>
+
 
 <!-- END REVOLUTION SLIDER -->
 </body>

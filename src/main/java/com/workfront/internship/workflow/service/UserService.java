@@ -2,7 +2,9 @@ package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -83,6 +85,11 @@ public interface UserService {
      * @return user with specified email, is the password is correct
      */
     User authenticate(String email, String password);
+
+
+    String saveAvatar(String uploadPath, MultipartFile image)  throws IOException;
+
+    boolean isValidImage(MultipartFile image);
 
     /**
      * Sends email to a new user
