@@ -41,7 +41,6 @@ public class PostController {
     public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
-        posts = new ArrayList<>();
         this.commentService = commentService;
     }
 

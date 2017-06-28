@@ -1,18 +1,20 @@
 package com.workfront.internship.workflow.controller;
 
-import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.web.PageAttributes;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.service.AppAreaService;
+import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.web.BeanProvider;
+import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,26 +27,30 @@ import java.util.List;
 public class HomeController {
 
     private List<Integer> sizeOfPostsBySameAppAreaID;
-
-
     private PostService postService;
-
     private List<AppArea> appAreas;
-
     private List<Post> posts;
+    private AppAreaService appAreaService;
 
-
-    public HomeController(){}
+    public HomeController() {
+    }
 
     @Autowired
-    public HomeController(PostService postService) {
+    public HomeController(PostService postService, AppAreaService appAreaService) {
         this.postService = postService;
-
         appAreas = Arrays.asList(AppArea.values());
-
-        posts = new ArrayList<>();
-
         sizeOfPostsBySameAppAreaID = new ArrayList<>();
+        this.appAreaService = appAreaService;
+    }
+
+    @PostConstruct
+    public void init(){
+        AppArea[] appAreas = AppArea.values();
+        for (AppArea appArea : appAreas) {
+            if (appAreaService.getById(appArea.getId()) == null) {
+                appAreaService.add(appArea);
+            }
+        }
     }
 
     @RequestMapping(value = {"/", "/home"})
@@ -59,12 +65,12 @@ public class HomeController {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 
         // getting and passing list of sizes of each posts by same appArea id to home page
-        for(AppArea appArea : appAreas){
+        for (AppArea appArea : appAreas) {
             sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
         }
         modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
 
-        return modelAndView ;
+        return modelAndView;
     }
 
     @RequestMapping(value = "/appArea/*", method = RequestMethod.GET)
@@ -76,7 +82,7 @@ public class HomeController {
 
         // getting and passing all posts to appAreas page
         posts = postService.getByAppAreaId(id);
-        if (posts.size() == 0){
+        if (posts.size() == 0) {
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found in this Application Area.");
         }
@@ -86,11 +92,11 @@ public class HomeController {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 
         // getting and passing list of sizes of each posts by same appArea id to appAreas page
-        for(AppArea appArea : appAreas){
+        for (AppArea appArea : appAreas) {
             sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
         }
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID );
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
 
-        return modelAndView ;
+        return modelAndView;
     }
 }
