@@ -503,7 +503,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
     @Test
     public void authenticate_success() {
         User user = DaoTestUtil.getRandomUser();
-        user.setPassword("123");
+        user.setPassword(ServiceUtils.hashPassword("123"));
         doReturn(user).when(userDAOMock).getByEmail(anyString());
         //Test method
         User actualUser = userService.authenticate("A", "123");

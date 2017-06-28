@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.service.ServiceUtils;
 import com.workfront.internship.workflow.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Failed to add. User already exists");
             throw new DuplicateEntryException("User already exists");
         }
-        user.setPassword(hashPassword(user.getPassword()));
+        user.setPassword(ServiceUtils.hashPassword(user.getPassword()));
         long id = userDAO.add(user);
         for (AppArea appArea : AppArea.values()) {
             userDAO.subscribeToArea(user.getId(), appArea.getId());
@@ -260,8 +261,7 @@ public class UserServiceImpl implements UserService {
 
         User user = getByEmail(email);
 
-        //TODO: Password should be hashed
-        if (user != null && user.getPassword().equals(hashPassword(password))){
+        if (user != null && user.getPassword().equals(ServiceUtils.hashPassword(password))){
             return user;
         }else {
             LOGGER.error("Invalid email-password combination!");
@@ -349,23 +349,6 @@ public class UserServiceImpl implements UserService {
 
         } catch (MessagingException e) {
             e.printStackTrace();
-        }
-    }
-
-    private static String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] buffer = password.getBytes("UTF-8");
-            md.update(buffer);
-            byte[] digest = md.digest();
-            StringBuilder sb = new StringBuilder();
-            for (byte aDigest : digest) {
-                sb.append(Integer.toString((aDigest & 0xff) + 0x100, 16).substring(1));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return password;
         }
     }
 }
