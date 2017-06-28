@@ -26,6 +26,9 @@ import javax.mail.internet.MimeMessage;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -73,7 +76,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Failed to add. User already exists");
             throw new DuplicateEntryException("User already exists");
         }
-
+        user.setPassword(hashPassword(user.getPassword()));
         long id = userDAO.add(user);
         for (AppArea appArea : AppArea.values()) {
             userDAO.subscribeToArea(user.getId(), appArea.getId());
@@ -356,6 +359,22 @@ public class UserServiceImpl implements UserService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
 
+    private static String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] buffer = password.getBytes("UTF-8");
+            md.update(buffer);
+            byte[] digest = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte aDigest : digest) {
+                sb.append(Integer.toString((aDigest & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return password;
+        }
     }
 }

@@ -15,6 +15,7 @@
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
+<c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -135,13 +136,14 @@
                 <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
                     <div class="stnt">
                         <c:if test="${user == null}">
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
+                            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add
+                                New Post
                             </button>
                         </c:if>
 
                         <c:if test="${user != null}">
                             <a href="/new-post">
-                                <button class="btn btn-primary">Add New Post</button>
+                                <button type="submit" class="btn btn-primary">Add New Post</button>
                             </a>
                         </c:if>
 
@@ -163,7 +165,8 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
                                         </li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log
+                                            Out</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -175,19 +178,17 @@
 
                     <div class="clearfix"></div>
                 </div>
-
-
             </div>
         </div>
     </div>
 
 
     <section class="content">
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <a href="#">Borderlands 2</a> <span class="diviver">&gt;</span> <a href="#">General Discussion</a>
-                    <span class="diviver">&gt;</span> <a href="#">Topic Details</a>
+                    <font color="">something</font>
                 </div>
             </div>
         </div>
@@ -198,7 +199,6 @@
                 <div class="col-lg-8 col-md-8">
 
                     <!-- POST -->
-
                     <div class="post beforepagination">
                         <div class="topwrap">
                             <div class="userinfo pull-left">
@@ -246,7 +246,7 @@
                             <ul class="post-ul">
                                 <c:forEach var="comment" items="${comments}">
                                     <li>
-                                        ${comment.content}
+                                            ${comment.content}
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -324,9 +324,16 @@
 
                     <!-- POST -->
 
-
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 breadcrumbf">
+                                <font color="red">${message}</font>
+                            </div>
+                        </div>
+                    </div>
                     <!-- POST -->
                     <div class="post">
+
                         <form action="/new-answer/${post.id}" class="form" method="post">
                             <hidden></hidden>
                             <div class="topwrap">
@@ -365,7 +372,15 @@
                                 <div class="pull-right postreply">
                                     <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
                                     <div class="pull-left">
-                                        <button type="submit" class="btn btn-primary">Post Reply</button>
+                                        <c:if test="${user == null}">
+                                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                                Post Reply
+                                            </button>
+                                        </c:if>
+
+                                        <c:if test="${user != null}">
+                                            <button class="btn btn-primary">Post Reply</button>
+                                        </c:if>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
