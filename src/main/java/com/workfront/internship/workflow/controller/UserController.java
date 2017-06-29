@@ -41,6 +41,8 @@ public class UserController {
 
     private List<Post> posts;
 
+    public static final String DEFAULT_AVATAR_URL = "images/default/user_avatar.png";
+
 
     public UserController() {
     }
@@ -97,11 +99,10 @@ public class UserController {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        String file = image.getOriginalFilename();
-        String ext = file.substring(file.lastIndexOf("."));
+        if (!image.isEmpty()) {
+            String file = image.getOriginalFilename();
+            String ext = file.substring(file.lastIndexOf("."));
 
-
-        if (image != null) {
             byte[] imageBytes = image.getBytes();
             String uploadPath = "/images/uploads/users/" + email;
             String realPath = request.getServletContext().getRealPath(uploadPath);
@@ -113,6 +114,8 @@ public class UserController {
             String filePath = realPath + File.separator + fileName + ext;
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
             user.setAvatarURL(uploadPath + File.separator + fileName + ext);
+        } else {
+            user.setAvatarURL(DEFAULT_AVATAR_URL);
         }
 
         user.setFirstName(firstName)
@@ -147,8 +150,13 @@ public class UserController {
             user = userService.authenticate(email, password);
             HttpSession session = request.getSession();
 
+            String avatar = request.getServletContext().getRealPath(user.getAvatarURL());
+
             session.setAttribute(PageAttributes.USER, user);
+
+            session.setAttribute(PageAttributes.AVATAR, avatar);
             request.setAttribute(PageAttributes.USER, user);
+            request.setAttribute(PageAttributes.AVATAR, avatar);
             response.setStatus(200);
             modelAndView.setViewName("home");
         } catch (RuntimeException e) {

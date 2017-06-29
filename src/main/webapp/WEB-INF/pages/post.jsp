@@ -12,6 +12,8 @@
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+<c:set var="avatar" value='<%=request.getSession().getAttribute(PageAttributes.AVATAR)%>'/>
+
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
@@ -159,7 +161,8 @@
                             <c:when test="${user != null}">
                                 <div class="avatar pull-left dropdown">
                                     <a data-toggle="dropdown" href="#"><img
-                                            src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                            src="${avatar}" alt="" width="50" height="50"/></a> <b
+                                    <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
                                         class="caret"></b>
                                     <div class="status green">&nbsp;</div>
                                     <ul class="dropdown-menu" role="menu">
