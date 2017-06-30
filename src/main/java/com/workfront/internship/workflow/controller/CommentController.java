@@ -39,20 +39,20 @@ public class CommentController {
     }
 
     @RequestMapping(value = {"/new-comment/*"}, method = RequestMethod.POST)
-    public ModelAndView newAnswer(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView("new_comment");
+    public ModelAndView newComment(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView("post");
 
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
-        String content = request.getParameter("reply");
 
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(PageAttributes.USER);
 
         post = postService.getById(postId);
         request.setAttribute(PageAttributes.POST, post);
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(PageAttributes.USER);
+        String content = request.getParameter(PageAttributes.COMMENTCONTENT) ;
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -71,7 +71,12 @@ public class CommentController {
         comments = commentService.getByPostId(postId);
         request.setAttribute("comments", comments);
         return modelAndView;
+    }
 
+    @RequestMapping(value = {"/comment/*"}, method = RequestMethod.POST)
+    public ModelAndView editComment(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView("post");
+        return modelAndView;
 
     }
 }
