@@ -268,45 +268,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-
-
-    public String saveAvatar(String uploadPath, MultipartFile image) throws IOException {
-
-        // creates the directory if it does not exist
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-
-        String fileName = image.getOriginalFilename();
-        String filePath;
-        String uniqueFileName = null;
-
-        if (!fileName.isEmpty()) {
-
-            //get uploaded file extension
-            String ext = fileName.substring(fileName.lastIndexOf("."));
-
-            //generate random image name
-            String uuid = UUID.randomUUID().toString();
-            uniqueFileName = String.format("%s%s", uuid, ext);
-
-            //create file path
-            filePath = uploadPath + File.separator + uniqueFileName;
-            File storeFile = new File(filePath);
-
-            // saves the file on disk
-            FileUtils.writeByteArrayToFile(storeFile, image.getBytes());
-        }
-
-        return uniqueFileName;
-    }
-
-    public boolean isValidImage(MultipartFile image) {
-        return (image.getContentType().equals("image/jpeg") || image.getContentType().equals("image/png"));
-    }
-
     /**
      * @param user is input from client
      * @see UserService#sendEmail(User)
