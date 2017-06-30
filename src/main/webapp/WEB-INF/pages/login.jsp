@@ -214,7 +214,7 @@
                                         <div class="topwrap">
                                             <div class="userinfo pull-left">
                                                 <div class="avatar">
-                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" id="image" alt="" height="60" width="60px"/>
+                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" id="image" alt="" height="45" width="45"/>
                                                     <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
                                                          <%--alt=""/>--%>
                                                 </div>
