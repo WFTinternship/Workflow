@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,37 +25,32 @@ import java.util.List;
  */
 @Controller
 public class CommentController {
-    private Post post;
-    private Comment comment;
-    private PostService postService;
-    private List<AppArea> appAreas;
+    private final PostService postService;
     private List<Comment> comments;
-    private CommentService commentService;
+    private final CommentService commentService;
 
-
-    public CommentController() {
-
+    @Autowired
+    public CommentController(CommentService commentService, PostService postService) {
+        this.commentService = commentService;
+        this.postService = postService;
+        comments = new ArrayList<>();
     }
-    public CommentController(PostService postService) {
 
-    }
 
     @RequestMapping(value = {"/new-comment/*"}, method = RequestMethod.POST)
-    public ModelAndView newComment(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView newComment(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("post");
 
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
-
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
 
-        post = postService.getById(postId);
+        Post post = postService.getById(postId);
         request.setAttribute(PageAttributes.POST, post);
 
-        String content = request.getParameter(PageAttributes.COMMENTCONTENT) ;
-
+        String content = request.getParameter(PageAttributes.COMMENTCONTENT);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         Comment newComment = new Comment();
@@ -77,6 +74,5 @@ public class CommentController {
     public ModelAndView editComment(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("post");
         return modelAndView;
-
     }
 }

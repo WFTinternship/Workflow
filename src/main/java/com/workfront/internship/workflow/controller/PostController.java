@@ -105,6 +105,20 @@ public class PostController {
         return modelAndView;
     }
 
+    @RequestMapping(value = {"/edit-post"}, method = RequestMethod.POST)
+    public ModelAndView editPost(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("post");
+        Post post = (Post) request.getAttribute(PageAttributes.POST);
+        try {
+            postService.update(post);
+        }catch (RuntimeException e){
+            modelAndView.addObject(PageAttributes.MESSAGE,
+                    "Sorry, your post was not updated. Please try again");
+            modelAndView.setViewName("post");
+        }
+        return modelAndView;
+    }
+
     private void setAllPosts(ModelAndView modelAndView) {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
         posts = postService.getAll();

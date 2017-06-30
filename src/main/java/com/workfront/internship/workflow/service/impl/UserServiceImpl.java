@@ -1,6 +1,5 @@
 package com.workfront.internship.workflow.service.impl;
 
-import com.sun.mail.smtp.SMTPTransport;
 import com.workfront.internship.workflow.dao.UserDAO;
 
 import com.workfront.internship.workflow.domain.AppArea;
@@ -18,17 +17,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.*;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.UUID;
 
 /**
@@ -328,7 +327,7 @@ public class UserServiceImpl implements UserService {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         Session session = Session.getInstance(props,
-                new Authenticator() {
+                new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
@@ -341,9 +340,9 @@ public class UserServiceImpl implements UserService {
             //Adding receiver
             mm.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(user.getEmail()));
             //Adding subject
-            mm.setSubject("Hello");
+            mm.setSubject("Welcome");
             //Adding message
-            mm.setText("Here is the message");
+            mm.setText("Welcome to Workflow!");
             //sending Email
             Transport.send(mm);
 
