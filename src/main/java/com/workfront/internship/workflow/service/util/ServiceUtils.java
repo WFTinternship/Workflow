@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.service;
+package com.workfront.internship.workflow.service.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

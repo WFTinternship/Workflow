@@ -1,0 +1,18 @@
+(-) Add Comment interface.
+(-) Add Like/Dislike functionality (update db).
+(-) Avatars.
+(-) Mailing system.
+(-) Change color of Add New Answer.
+(-) Duxov Remove redundant code.
+(-) Add Best Answer to interface.
+(-) Add Edit post/answer/comment to interface.
+(-) Add "Email me when some one post a reply Post Reply"
+    functionality to Add Post and Add Answer.
+(-) Check the retype your password filed; amota!
+(-) After Sign up redirect to Login page and fill the email.
+(-) Update Login system with third party authentication.
+(-) Change the forest picture, please.
+(-) Add #of posts in certain App Area(in every page, please).
+(-) Add number of Answers in the interface.
+(-) Ignore db password.
+(-) Add User Page.

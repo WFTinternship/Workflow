@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.exceptions.service.DuplicateEntryExcept
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
+import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.Before;
 import org.junit.Test;

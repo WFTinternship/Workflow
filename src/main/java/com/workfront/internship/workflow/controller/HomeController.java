@@ -84,7 +84,7 @@ public class HomeController {
         posts = postService.getByAppAreaId(id);
         if (posts.size() == 0) {
             request.setAttribute(PageAttributes.MESSAGE,
-                    "No posts were found in this Application Area.");
+                    "No posts were found in " + AppArea.getById(id) + " Application Area.");
         }
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
 

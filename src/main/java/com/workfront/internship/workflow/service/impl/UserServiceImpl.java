@@ -7,15 +7,13 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
-import com.workfront.internship.workflow.service.ServiceUtils;
+import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.service.UserService;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -23,12 +21,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Vahag on 6/4/2017
@@ -279,8 +274,8 @@ public class UserServiceImpl implements UserService {
             throw new InvalidObjectException();
         }
 
-        String EMAIL = "nanevardanyants@gmail.com";
-        String PASSWORD = "3modern!012";
+        String EMAIL = "workfront.internship@gmail.com";
+        String PASSWORD = "project2017";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
