@@ -1,7 +1,9 @@
 package com.workfront.internship.workflow.controller.utils;
 
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,5 +20,14 @@ public class ControllerUtils {
             sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
         }
         return sizeOfPostsBySameAppAreaID;
+    }
+
+    public static List<Integer> getNumberOfAnswers(List<Post> postList, PostService postService){
+        List<Integer> numbersOfAnswersForPosts = new ArrayList<>();
+        // getting and passing list of sizes of each posts by same appArea id to home page
+        for (Post post: postList) {
+            numbersOfAnswersForPosts.add(postService.getNumberOfAnswers(post.getId()));
+        }
+        return numbersOfAnswersForPosts;
     }
 }

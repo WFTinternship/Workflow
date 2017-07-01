@@ -148,7 +148,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Post post = new Post();
+                Post post;
                 post = DAOUtil.postFromResultSet(rs);
                 allPosts.add(post);
             }
@@ -258,7 +258,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.setString(1, "%" + title.trim() + "%");
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Post post = new Post();
+                Post post;
                 post = DAOUtil.postFromResultSet(rs);
                 posts.add(post);
             }
@@ -296,7 +296,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.setLong(1, postId);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Post answer = new Post();
+                Post answer;
                 answer = DAOUtil.answerFromResultSet(rs);
                 answerList.add(answer);
             }
@@ -409,11 +409,9 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, likesNumber);
             stmt.setLong(2, post.getId());
-
             stmt.execute();
-
         } catch (SQLException e) {
-            LOG.error("SQL exception");
+            LOG.error("SQL exception has occurred");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
@@ -434,11 +432,9 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, dislikesNumber);
             stmt.setLong(2, post.getId());
-
             stmt.execute();
-
         } catch (SQLException e) {
-            LOG.error("SQL exception");
+            LOG.error("SQL exception has occurred.");
             throw new RuntimeException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
@@ -458,7 +454,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             conn = dataSource.getConnection();
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, id);
-
             numberOfRowsAffected = stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -469,5 +464,26 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         if (numberOfRowsAffected == 0) {
             LOG.info("No rows affected");
         }
+    }
+
+    @Override
+    public Integer getNumberOfAnswers(long postId) {
+        String sql = "SELECT COUNT(*) AS num FROM post WHERE post_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs;
+        Integer numOfAnswers = 0;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, postId);
+            rs = stmt.executeQuery();
+            numOfAnswers = rs.getInt("num");
+        } catch (SQLException e) {
+            LOG.error("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
+        }
+        return numOfAnswers;
     }
 }

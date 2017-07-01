@@ -282,4 +282,20 @@ public class PostServiceImpl implements PostService {
             throw new ServiceLayerException("Failed to delete specified posts", e);
         }
     }
+
+    @Override
+    public Integer getNumberOfAnswers(long postId) {
+        if (postId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+        Integer numbOfAnswers;
+        try {
+            numbOfAnswers = postDAO.getNumberOfAnswers(postId);
+        }catch (RuntimeException e) {
+            logger.error("Failed to delete specified posts");
+            throw new ServiceLayerException("Failed to delete specified posts", e);
+        }
+        return numbOfAnswers;
+    }
 }

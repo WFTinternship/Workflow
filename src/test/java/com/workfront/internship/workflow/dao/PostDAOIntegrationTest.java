@@ -325,6 +325,19 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see PostDAOImpl#getNumberOfAnswers(long)
+     */
+    @Test
+    public void getNumberOfAnswers_success() {
+        postDAO.add(post);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        userDAO.add(answer.getUser());
+        postDAO.add(answer);
+        Integer numOfAnswers = postDAO.getNumberOfAnswers(post.getId());
+        assertTrue(numOfAnswers.equals(1));
+    }
+
+    /**
      * @see PostDAOImpl#update(Post)
      */
     @Test(expected = RuntimeException.class)
@@ -361,7 +374,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAO#like(long)
+     * @see PostDAO#dislike(long)
      */
     @Test
     public void dislike_success() {

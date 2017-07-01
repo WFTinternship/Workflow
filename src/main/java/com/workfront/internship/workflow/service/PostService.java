@@ -103,4 +103,6 @@ public interface PostService {
      * @return
      */
     void delete(long id);
+
+    Integer getNumberOfAnswers(long postId);
 }

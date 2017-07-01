@@ -2,13 +2,9 @@ package com.workfront.internship.workflow.dao.springJDBC;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AnswerRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper;
-import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,12 +12,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
@@ -251,8 +244,15 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         String sql = "DELETE FROM post WHERE id = ?";
         try {
             jdbcTemplate.update(sql, id);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Integer getNumberOfAnswers(long postId) {
+        String sql = "SELECT COUNT(*) AS num FROM post WHERE post_id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{postId},
+                Integer.class);
     }
 }
