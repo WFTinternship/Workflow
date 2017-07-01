@@ -11,6 +11,7 @@
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 <c:set var="user" value='<%=request.getAttribute(PageAttributes.USER)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="avatar" value='<%=request.getAttribute("avatar")%>'/>
 
 <!DOCTYPE html>
@@ -362,10 +363,11 @@
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}">
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                            class="badge pull-right"></span></a></li>
+                                    <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                    <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                </li>
                                 </c:forEach>
                         </div>
                     </div>

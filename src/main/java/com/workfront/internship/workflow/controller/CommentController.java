@@ -70,8 +70,8 @@ public class CommentController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/comment/*"}, method = RequestMethod.POST)
-    public ModelAndView editComment(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = {"/edit-comment/*"}, method = RequestMethod.POST)
+    public ModelAndView editComment(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("post");
         return modelAndView;
     }

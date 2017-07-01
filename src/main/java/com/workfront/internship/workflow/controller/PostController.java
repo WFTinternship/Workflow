@@ -1,16 +1,16 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.service.CommentService;
+import com.workfront.internship.workflow.service.PostService;
+import org.springframework.web.bind.annotation.RequestMethod;
+import com.workfront.internship.workflow.web.PageAttributes;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.service.CommentService;
-import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,19 +26,20 @@ import java.util.List;
 @Controller
 public class PostController {
 
-    private PostService postService;
+    private List<Integer> sizeOfPostsBySameAppAreaID;
 
     private CommentService commentService;
 
-    private List<AppArea> appAreas;
+    private PostService postService;
 
-    private List<Post> posts;
+    private List<AppArea> appAreas;
 
     public PostController() {
     }
 
     @Autowired
     public PostController(PostService postService, CommentService commentService) {
+        sizeOfPostsBySameAppAreaID = new ArrayList<>();
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
@@ -48,7 +49,6 @@ public class PostController {
     public ModelAndView post(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("post");
 
-        setAllPosts(modelAndView);
         String url = request.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
@@ -64,6 +64,13 @@ public class PostController {
         for (Post answer : answers) {
             answer.setCommentList(commentService.getByPostId(answer.getId()));
         }
+
+        for (AppArea appArea : appAreas) {
+            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
+        }
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
+
+        setAllPosts(modelAndView);
 
         return modelAndView;
     }
@@ -121,7 +128,8 @@ public class PostController {
 
     private void setAllPosts(ModelAndView modelAndView) {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        posts = postService.getAll();
+        List<Post> posts = postService.getAll();
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,sizeOfPostsBySameAppAreaID);
     }
 }

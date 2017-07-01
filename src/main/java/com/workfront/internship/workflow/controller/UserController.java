@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletContext;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,20 +31,20 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    private List<Integer> sizeOfPostsBySameAppAreaID;
+
     private UserService userService;
 
     private PostService postService;
 
     private List<AppArea> appAreas;
 
-    private List<Post> posts;
-
-
     public UserController() {
     }
 
     @Autowired
     public UserController(UserService userService, PostService postService) {
+        sizeOfPostsBySameAppAreaID = new ArrayList<>();
         this.userService = userService;
         appAreas = Arrays.asList(AppArea.values());
         this.postService = postService;
@@ -56,12 +54,14 @@ public class UserController {
     public ModelAndView login(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         setAllPosts(modelAndView);
         return modelAndView;
     }
@@ -80,15 +80,22 @@ public class UserController {
     public ModelAndView signUp(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         return modelAndView;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView signUp(HttpServletRequest request, HttpServletResponse response,
-                               @RequestParam(value = "avatar", required = false) MultipartFile image) throws IOException {
+                               @RequestParam(value = "avatar", required = false) MultipartFile image)
+            throws IOException {
 
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+        for (AppArea appArea : appAreas) {
+            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
+        }
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
 
         User user = new User();
 
@@ -133,6 +140,7 @@ public class UserController {
 
     private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
 
         String email = request.getParameter(PageAttributes.EMAIL);
         String password = request.getParameter(PageAttributes.PASSWORD);
@@ -169,8 +177,9 @@ public class UserController {
     }
 
     private void setAllPosts(ModelAndView modelAndView) {
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        posts = postService.getAll();
+        List<Post> posts = postService.getAll();
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
     }
 }
