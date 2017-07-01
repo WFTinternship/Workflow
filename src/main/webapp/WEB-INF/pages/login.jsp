@@ -244,8 +244,15 @@
                                             <div class="userinfo pull-left">
                                                 <div class="avatar">
                                                     <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" id="image" alt="" height="45" width="45"/>
+                                                    <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
+                                                    <%--alt=""/>--%>
                                                 </div>
+                                                <%--<div class="imgsize">60 x 60</div>--%>
+                                                <%--<div>--%>
+                                                <%--<button class="btn">Add</button>--%>
+                                                <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
 
+                                                <%--</div>--%>
                                                 <div class="half-width">
                                                     <input type="file" name="avatar" id="avatar" class="hide"/>
                                                     <label for="avatar" class="btn">Add</label><br/>
