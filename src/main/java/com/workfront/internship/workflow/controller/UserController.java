@@ -114,9 +114,9 @@ public class UserController {
                 uploadDir.mkdir();
             }
             String fileName = new File(firstName + "Avatar").getName();
-            String filePath = realPath + File.separator + fileName + ext;
+            String filePath = realPath + "/" + fileName + ext;
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-            user.setAvatarURL(uploadPath + File.separator + fileName + ext);
+            user.setAvatarURL(uploadPath + "/" + fileName + ext);
         } else {
             user.setAvatarURL(DEFAULT_AVATAR_URL);
         }
@@ -165,10 +165,9 @@ public class UserController {
             user = userService.authenticate(email, password);
             HttpSession session = request.getSession();
 
-            String avatar = request.getServletContext().getRealPath(user.getAvatarURL());
+            String avatar = user.getAvatarURL();
 
             session.setAttribute(PageAttributes.USER, user);
-
             session.setAttribute(PageAttributes.AVATAR, avatar);
             request.setAttribute(PageAttributes.USER, user);
             request.setAttribute(PageAttributes.AVATAR, avatar);

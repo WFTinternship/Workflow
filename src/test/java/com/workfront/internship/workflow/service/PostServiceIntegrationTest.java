@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static junit.framework.Assert.*;
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Created by nane on 6/21/17
@@ -245,6 +246,7 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
         postService.update(null);
     }
 
+
     /**
      * @see PostService#update(Post)
      */
@@ -261,6 +263,54 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
         assertEquals(post.getTitle(), expectedPost.getTitle());
 
         userService.deleteById(post.getId());
+    }
+
+    /**
+     * @see PostService#like(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void like_failure() {
+        //Test method
+        postService.like(-1);
+    }
+
+    /**
+     * @see PostService#like(long)
+     */
+    @Test
+    public void like_success() {
+        userService.add(post.getUser());
+        postService.add(post);
+        long likesNumber = post.getLikesNumber();
+
+        //Test method
+        postService.like(post.getId());
+        long newLikesNumber = post.getLikesNumber();
+        assertEquals(likesNumber, newLikesNumber);
+    }
+
+    /**
+     * @see PostService#dislike(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void dislike_failure() {
+        //Test method
+        postService.dislike(-1);
+    }
+
+    /**
+     * @see PostService#dislike(long)
+     */
+    @Test
+    public void dislike_success() {
+        userService.add(post.getUser());
+        postService.add(post);
+        long dislikesNumber = post.getDislikesNumber();
+
+        //Test method
+        postService.dislike(post.getId());
+        long newDislikesNumber = post.getDislikesNumber();
+        assertEquals(dislikesNumber, newDislikesNumber);
     }
 
     /**
