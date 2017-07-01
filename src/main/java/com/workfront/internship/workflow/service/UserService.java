@@ -86,14 +86,9 @@ public interface UserService {
      */
     User authenticate(String email, String password);
 
-
-    String saveAvatar(String uploadPath, MultipartFile image)  throws IOException;
-
-    boolean isValidImage(MultipartFile image);
-
     /**
      * Sends email to a new user
      * @param user is the one to sign up
      */
-    void sendEmail(User user);
+    String sendEmail(User user);
 }

@@ -1,12 +1,12 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,11 +33,11 @@ public class UserController {
 
     private List<Integer> sizeOfPostsBySameAppAreaID;
 
+    public static final String DEFAULT_AVATAR_URL = "images/default/user_avatar.png";
     private UserService userService;
-
     private PostService postService;
-
     private List<AppArea> appAreas;
+    private String verificationCode;
 
     public UserController() {
     }
@@ -46,7 +46,7 @@ public class UserController {
     public UserController(UserService userService, PostService postService) {
         sizeOfPostsBySameAppAreaID = new ArrayList<>();
         this.userService = userService;
-        appAreas = Arrays.asList(AppArea.values());
+        appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         this.postService = postService;
     }
 
@@ -70,7 +70,7 @@ public class UserController {
     public ModelAndView loginAndRedirect(HttpServletRequest request,
                                          HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
-        if (!modelAndView.getViewName().equals("login")){
+        if (!modelAndView.getViewName().equals("login")) {
             modelAndView.setViewName("new_post");
         }
         return modelAndView;
@@ -103,8 +103,17 @@ public class UserController {
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String retypePass = request.getParameter("confirmPass");
 
-        if (image != null) {
+        if (!password.equals(retypePass)) {
+            modelAndView.addObject(PageAttributes.MESSAGE, "Passwords do not match!");
+            return modelAndView;
+        }
+
+        if (!image.isEmpty()) {
+            String file = image.getOriginalFilename();
+            String ext = file.substring(file.lastIndexOf("."));
+
             byte[] imageBytes = image.getBytes();
             String uploadPath = "/images/uploads/users/" + email;
             String realPath = request.getServletContext().getRealPath(uploadPath);
@@ -113,10 +122,11 @@ public class UserController {
                 uploadDir.mkdir();
             }
             String fileName = new File(firstName + "Avatar").getName();
-            String filePath = realPath + File.separator + fileName + ".jpg";
+            String filePath = realPath + File.separator + fileName + ext;
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-            user.setAvatarURL(uploadPath + File.separator + fileName + ".jpg");
-
+            user.setAvatarURL(uploadPath + File.separator + fileName + ext);
+        } else {
+            user.setAvatarURL(DEFAULT_AVATAR_URL);
         }
 
         user.setFirstName(firstName)
@@ -124,16 +134,29 @@ public class UserController {
                 .setEmail(email)
                 .setPassword(password);
         try {
-            if (userService.getByEmail(email) != null){
+            if (userService.getByEmail(email) != null) {
                 request.setAttribute("message", "The email is already used");
-            }else {
-                userService.sendEmail(user);
+            } else {
+                verificationCode = userService.sendEmail(user);
                 userService.add(user);
             }
         } catch (RuntimeException e) {
             response.setStatus(405);
             request.setAttribute("message", "Your sign up was successfully canceled, please try again.");
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/signup/verify", method = RequestMethod.POST)
+    public ModelAndView verify(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("login");
+        String code = request.getParameter("verify");
+        if (!code.equals(verificationCode)) {
+            modelAndView.addObject(PageAttributes.MESSAGE,
+                    "Sorry, the code is invalid.");
+        }
+        modelAndView.addObject(PageAttributes.MESSAGE,
+                "Congratulations! Your sign up was successful!");
         return modelAndView;
     }
 
@@ -151,8 +174,13 @@ public class UserController {
             user = userService.authenticate(email, password);
             HttpSession session = request.getSession();
 
+            String avatar = request.getServletContext().getRealPath(user.getAvatarURL());
+
             session.setAttribute(PageAttributes.USER, user);
+
+            session.setAttribute(PageAttributes.AVATAR, avatar);
             request.setAttribute(PageAttributes.USER, user);
+            request.setAttribute(PageAttributes.AVATAR, avatar);
             response.setStatus(200);
             modelAndView.setViewName("home");
         } catch (RuntimeException e) {
@@ -181,5 +209,25 @@ public class UserController {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
         List<Post> posts = postService.getAll();
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+    }
+
+    @RequestMapping(value = "/users/*", method = RequestMethod.GET)
+    public ModelAndView profile(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("user");
+
+        String url = request.getRequestURL().toString();
+        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        List<Post> postList = postService.getByUserId(id);
+        modelAndView.addObject(PageAttributes.ALLPOSTS, postList);
+
+        List<AppArea> myAppAreas = userService.getAppAreasById(id);
+        modelAndView.addObject(PageAttributes.MYAPPAREAS, myAppAreas);
+        appAreas.removeAll(myAppAreas);
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+
+        return modelAndView;
     }
 }

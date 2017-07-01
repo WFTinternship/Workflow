@@ -84,6 +84,33 @@
 
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="verify" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="/signup/verify" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="pwd">Verification Code:</label>
+                            <input type="password" class="form-control" name="verify" id="vcode">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Slider -->
     <div class="tp-banner-container">
         <div class="tp-banner">
@@ -200,7 +227,8 @@
 
                             <!-- POST -->
                             <div class="post">
-                                <form action="/signup" class="form newtopic" method="post" enctype="multipart/form-data">
+                                <form action="/signup" class="form newtopic" method="post"
+                                      enctype="multipart/form-data">
                                     <div class="postinfotop">
                                         <h2>Create New Account</h2>
                                     </div>
@@ -215,14 +243,15 @@
                                         <div class="topwrap">
                                             <div class="userinfo pull-left">
                                                 <div class="avatar">
-                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" id="image" alt="" height="60" width="60px"/>
+                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
+                                                         id="image" alt="" height="60" width="60px"/>
                                                     <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
-                                                         <%--alt=""/>--%>
+                                                    <%--alt=""/>--%>
                                                 </div>
                                                 <%--<div class="imgsize">60 x 60</div>--%>
                                                 <%--<div>--%>
-                                                    <%--<button class="btn">Add</button>--%>
-                                                    <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
+                                                <%--<button class="btn">Add</button>--%>
+                                                <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
 
                                                 <%--</div>--%>
                                                 <div class="half-width">
@@ -277,7 +306,7 @@
                                             <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a>
                                             </div>
                                             <div class="pull-left">
-                                                <button type="submit" class="btn btn-primary">Sign Up</button>
+                                                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#verify">Sign Up</button>
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>

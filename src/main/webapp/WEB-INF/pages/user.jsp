@@ -10,6 +10,7 @@
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="myAppAreas" value='<%=request.getAttribute(PageAttributes.MYAPPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
@@ -52,38 +53,6 @@
 </head>
 <body>
 <div class="container-fluid">
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <span id="form-img"><img
-                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                            height="60px" width="60px/"></span>
-                </div>
-                <form action="/login/new-post" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="usr">Name:</label>
-                            <input type="text" class="form-control" name="email" id="usr">
-                        </div>
-                        <div class="form-group">
-                            <label for="pwd">Password:</label>
-                            <input type="password" class="form-control" name="password" id="pwd">
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-login">Login</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
     <!-- Slider -->
     <div class="tp-banner-container">
         <div class="tp-banner">
@@ -121,29 +90,12 @@
                 </div>
                 <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
-                        <c:if test="${user == null}">
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
-                            </button>
-                        </c:if>
-
-                        <c:if test="${user != null}">
                             <a href="/new-post">
                                 <button class="btn btn-primary">Add New Post</button>
                             </a>
-                        </c:if>
-
-                        <c:if test="${user == null}">
-                          <span>
-                              <a href="/signup"><button class="btn btn-signup">Sign Up</button></a>
-                              <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
-                          </span>
-                        </c:if>
-
-
                     </div>
 
                     <div class="clearfix"></div>
-                    <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
                                     src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
@@ -156,10 +108,7 @@
                                 </li>
                             </ul>
                         </div>
-
-                    </c:if>
                 </div>
-
             </div>
         </div>
     </div>
@@ -219,6 +168,22 @@
 
                 </div>
                 <div class="col-lg-4 col-md-4">
+
+                    <!-- -->
+                    <div class="sidebarblock">
+                        <h3>My Application Areas</h3>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <ul class="cats">
+                                <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
 
                     <!-- -->
                     <div class="sidebarblock">

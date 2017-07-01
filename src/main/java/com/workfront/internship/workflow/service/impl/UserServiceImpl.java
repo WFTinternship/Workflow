@@ -7,15 +7,13 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
-import com.workfront.internship.workflow.service.ServiceUtils;
+import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.service.UserService;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -23,12 +21,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Vahag on 6/4/2017
@@ -268,58 +263,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-
-
-    public String saveAvatar(String uploadPath, MultipartFile image) throws IOException {
-
-        // creates the directory if it does not exist
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-
-        String fileName = image.getOriginalFilename();
-        String filePath;
-        String uniqueFileName = null;
-
-        if (!fileName.isEmpty()) {
-
-            //get uploaded file extension
-            String ext = fileName.substring(fileName.lastIndexOf("."));
-
-            //generate random image name
-            String uuid = UUID.randomUUID().toString();
-            uniqueFileName = String.format("%s%s", uuid, ext);
-
-            //create file path
-            filePath = uploadPath + File.separator + uniqueFileName;
-            File storeFile = new File(filePath);
-
-            // saves the file on disk
-            FileUtils.writeByteArrayToFile(storeFile, image.getBytes());
-        }
-
-        return uniqueFileName;
-    }
-
-    public boolean isValidImage(MultipartFile image) {
-        return (image.getContentType().equals("image/jpeg") || image.getContentType().equals("image/png"));
-    }
-
     /**
      * @param user is input from client
      * @see UserService#sendEmail(User)
      */
     @Override
-    public void sendEmail(User user) {
+    public String sendEmail(User user) {
         if (!user.isValid()) {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
 
-        String EMAIL = "nanevardanyants@gmail.com";
-        String PASSWORD = "3modern!012";
+        String EMAIL = "workfront.internship@gmail.com";
+        String PASSWORD = "project2017";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -332,6 +288,7 @@ public class UserServiceImpl implements UserService {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
                 });
+        String verificationCode = ServiceUtils.getRandomString();
         try {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);
@@ -342,12 +299,14 @@ public class UserServiceImpl implements UserService {
             //Adding subject
             mm.setSubject("Welcome");
             //Adding message
-            mm.setText("Welcome to Workflow!");
+            mm.setText("Dear " + user.getFirstName() + " , \n Welcome to Workflow! " +
+                    "Here is your verification code: " + verificationCode + ". \n Please use it to finish your sign up.");
             //sending Email
             Transport.send(mm);
 
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        return verificationCode;
     }
 }
