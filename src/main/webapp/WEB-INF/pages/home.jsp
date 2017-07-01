@@ -146,7 +146,7 @@
                     <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
-                                    src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                    src="${user.avatarURL}" alt="" width="37" height="37"/></a> <b
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
@@ -184,7 +184,7 @@
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/>
+                                        <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status green">&nbsp;</div>
                                     </div>
 

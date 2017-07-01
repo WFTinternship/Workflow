@@ -192,7 +192,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#getBestAnswer(long)
+     * @see PostService#getBestAnswer(long)
      */
     @Override
     public Post getBestAnswer(long id) {
@@ -200,6 +200,7 @@ public class PostServiceImpl implements PostService {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
+
         Post post;
         try {
             post = postDAO.getBestAnswer(id);
@@ -211,7 +212,43 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#update(Post)
+     * @see PostService#like(long)
+     * @param id
+     */
+    @Override
+    public void like(long id) {
+        if (id < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.like(id);
+        } catch (RuntimeException e) {
+            throw new ServiceLayerException("Failed to like the post");
+        }
+    }
+
+    /**
+     * @see PostService#dislike(long)
+     * @param id
+     */
+    @Override
+    public void dislike(long id) {
+        if (id < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.dislike(id);
+        } catch (RuntimeException e) {
+            throw new ServiceLayerException("Failed to dislike the post");
+        }
+    }
+
+    /**
+     * @see PostService#update(Post)
      */
     @Override
     public void update(Post post) {
@@ -227,8 +264,10 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+
+
     /**
-     * @see PostDAOImpl#delete(long)
+     * @see PostService#delete(long)
      */
     @Override
     public void delete(long id) {

@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,8 +34,6 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private List<Integer> sizeOfPostsBySameAppAreaID;
-
     public static final String DEFAULT_AVATAR_URL = "images/default/user_avatar.png";
     private UserService userService;
     private PostService postService;
@@ -44,7 +45,6 @@ public class UserController {
 
     @Autowired
     public UserController(UserService userService, PostService postService) {
-        sizeOfPostsBySameAppAreaID = new ArrayList<>();
         this.userService = userService;
         appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         this.postService = postService;
@@ -54,14 +54,12 @@ public class UserController {
     public ModelAndView login(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
-        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
-        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         setAllPosts(modelAndView);
         return modelAndView;
     }
@@ -80,7 +78,6 @@ public class UserController {
     public ModelAndView signUp(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
-        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         return modelAndView;
     }
 
@@ -91,11 +88,6 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
-
-        for (AppArea appArea : appAreas) {
-            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
-        }
-        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
 
         User user = new User();
 
@@ -122,9 +114,9 @@ public class UserController {
                 uploadDir.mkdir();
             }
             String fileName = new File(firstName + "Avatar").getName();
-            String filePath = realPath + File.separator + fileName + ext;
+            String filePath = realPath + "/" + fileName + ext;
             FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-            user.setAvatarURL(uploadPath + File.separator + fileName + ext);
+            user.setAvatarURL(uploadPath + "/" + fileName + ext);
         } else {
             user.setAvatarURL(DEFAULT_AVATAR_URL);
         }
@@ -163,7 +155,6 @@ public class UserController {
 
     private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
-        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
 
         String email = request.getParameter(PageAttributes.EMAIL);
         String password = request.getParameter(PageAttributes.PASSWORD);
@@ -174,10 +165,9 @@ public class UserController {
             user = userService.authenticate(email, password);
             HttpSession session = request.getSession();
 
-            String avatar = request.getServletContext().getRealPath(user.getAvatarURL());
+            String avatar = user.getAvatarURL();
 
             session.setAttribute(PageAttributes.USER, user);
-
             session.setAttribute(PageAttributes.AVATAR, avatar);
             request.setAttribute(PageAttributes.USER, user);
             request.setAttribute(PageAttributes.AVATAR, avatar);
@@ -205,7 +195,6 @@ public class UserController {
     }
 
     private void setAllPosts(ModelAndView modelAndView) {
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
         List<Post> posts = postService.getAll();
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);

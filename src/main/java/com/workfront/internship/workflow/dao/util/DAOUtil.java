@@ -93,6 +93,8 @@ public class DAOUtil {
             post.setPostTime(rs.getTimestamp(PostDAO.postTime));
             post.setTitle(rs.getString(PostDAO.postTitle));
             post.setContent(rs.getString(PostDAO.postContent));
+            post.setLikesNumber(rs.getLong(PostDAO.likesNumber));
+            post.setDislikesNumber(rs.getLong(PostDAO.dislikesNumber));
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -17,6 +17,8 @@ public interface PostDAO {
     String postContent = "content";
     String isCorrect = "is_correct";
     String postTitle = "title";
+    String likesNumber = "likes_number";
+    String dislikesNumber = "dislikes_number";
 
     // Answer fields
 
@@ -93,6 +95,18 @@ public interface PostDAO {
      * @param post the post whose answerTitle and postContent can be updated
      */
     void update(Post post);
+
+    /**
+     * increases number of likes of the post with the given id by one
+     * @param id
+     */
+    void like(long id);
+
+    /**
+     * increases number of dislikes of the post with the given id by one
+     * @param id
+     */
+    void dislike(long id);
 
     /**
      *
