@@ -226,8 +226,9 @@
                         <div class="postinfobot">
 
                             <div class="likeblock pull-left">
-                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>25</a>
-                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>3</a>
+                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${post.likesNumber}</a>
+                                <%--<a href="#" class="up"><i class="fa fa-thumbs-o-up">--%>
+                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${post.dislikesNumber}</a>
                             </div>
 
                             <div class="prev pull-left">
@@ -291,8 +292,8 @@
                             <div class="postinfobot">
 
                                 <div class="likeblock pull-left">
-                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>10</a>
-                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>1</a>
+                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${answer.likesNumber}</a>
+                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${answer.likesNumber}</a>
                                 </div>
 
                                 <div class="prev pull-left">
