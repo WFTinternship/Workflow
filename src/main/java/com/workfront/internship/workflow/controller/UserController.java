@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -80,7 +83,8 @@ public class UserController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView signUp(HttpServletRequest request, HttpServletResponse response,
-                               @RequestParam(value = "avatar", required = false) MultipartFile image) throws IOException {
+                               @RequestParam(value = "avatar", required = false) MultipartFile image)
+            throws IOException {
 
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
