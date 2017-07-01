@@ -104,7 +104,6 @@ public class PostController {
         return modelAndView;
     }
 
-
     @RequestMapping(value = {"/new-post"}, method = RequestMethod.GET)
     public ModelAndView newPost() {
         ModelAndView modelAndView = new ModelAndView("new_post");
