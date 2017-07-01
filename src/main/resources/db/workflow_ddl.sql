@@ -13,7 +13,7 @@ CREATE TABLE IF NOT exists user(
   last_name VARCHAR(45) NOT NULL,
   email VARCHAR(45) NOT NULL UNIQUE,
   passcode VARCHAR(256),
-  avatar_url VARCHAR(100) DEFAULT 'images/default/user_avatar.png',
+  avatar_url VARCHAR(100),
   rating INT NOT NULL,
   PRIMARY KEY (id));
 
@@ -54,6 +54,8 @@ CREATE TABLE IF NOT exists
   title VARCHAR(45) NOT NULL,
   content VARCHAR(1000) NOT NULL,
   apparea_id BIGINT(25) NOT NULL,
+  likes_number BIGINT(25) DEFAULT 0,
+  dislikes_number BIGINT(25) DEFAULT 0,
   INDEX fk_userId_idx (user_id ASC),
   INDEX fk_appareaId_idx (apparea_id ASC),
   PRIMARY KEY (id),

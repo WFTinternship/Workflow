@@ -347,7 +347,35 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#delete(long)
+     * @see PostDAO#like(long)
+     */
+    @Test
+    public void like_success() {
+        postDAO.add(post);
+        long likesNumber = post.getLikesNumber();
+
+        //Test method
+        postDAO.like(post.getId());
+        long newLikesNumber = post.getLikesNumber();
+        assertEquals(likesNumber, newLikesNumber);
+    }
+
+    /**
+     * @see PostDAO#like(long)
+     */
+    @Test
+    public void dislike_success() {
+        postDAO.add(post);
+        long dislikesNumber = post.getLikesNumber();
+
+        //Test method
+        postDAO.dislike(post.getId());
+        long newDislikesNumber = post.getLikesNumber();
+        assertEquals(dislikesNumber, newDislikesNumber);
+    }
+
+    /**
+     * @see PostDAO#delete(long)
      */
     @Test
     public void delete_failure() {

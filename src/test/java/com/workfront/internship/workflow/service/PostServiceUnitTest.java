@@ -540,6 +540,88 @@ public class PostServiceUnitTest extends BaseUnitTest {
     }
 
     /**
+     * @see PostService#like(long)
+     */
+    @Test
+    public void like_success() {
+        Long id = 1L;
+        
+        // Test method
+        postService.like(id);
+        verify(postDAOMock, times(1)).like(id);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).like(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
+    }
+
+    /**
+     * @see PostService#like(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void like_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).like(anyLong());
+
+        // Test method
+        postService.like(1);
+    }
+
+    /**
+     * @see PostService#like(long)
+     */
+    @Test
+    public void like_negativeId() {
+        try {
+            // Test method
+            postService.like(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#dislike(long)
+     */
+    @Test
+    public void dislike_success() {
+        Long id = 1L;
+
+        // Test method
+        postService.dislike(id);
+        verify(postDAOMock, times(1)).dislike(id);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).dislike(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
+    }
+
+    /**
+     * @see PostService#dislike(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void dislike_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).dislike(anyLong());
+
+        // Test method
+        postService.dislike(1);
+    }
+
+    /**
+     * @see PostService#dislike(long)
+     */
+    @Test
+    public void dislike_negativeId() {
+        try {
+            // Test method
+            postService.dislike(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
      * @see PostService#delete(long)
      */
     @Test

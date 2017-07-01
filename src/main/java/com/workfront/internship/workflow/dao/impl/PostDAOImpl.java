@@ -99,7 +99,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         Post post = null;
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
-                "apparea.description,  apparea.team_name, post_time, title, content  " +
+                "apparea.description,  apparea.team_name, post_time, title, content, likes_number, dislikes_number  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -134,7 +134,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         List<Post> allPosts = new ArrayList<>();
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_name, post_time, title, content  " +
+                " apparea.team_name, post_time, title, content, likes_number, dislikes_number  " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -170,7 +170,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         List<Post> posts = new ArrayList<>();
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
-                " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
+                " apparea.description, apparea.team_name, post_time, title, content, likes_number, dislikes_number, answer_id " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -207,7 +207,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         List<Post> posts = new ArrayList<>();
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
-                " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
+                " apparea.description, apparea.team_name, post_time, title, content, likes_number, dislikes_number, answer_id " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -244,7 +244,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.avatar_url, user.rating, user.passcode," +
                 " apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_name, post_time, title, content " +
+                " apparea.team_name, post_time, title, content, likes_number, dislikes_number " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -281,7 +281,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_name, post_time as answer_time, title as answer_title," +
+                " apparea.team_name , likes_number, dislikes_number,  post_time as answer_time, title as answer_title," +
                 " content as answer_content " +
                 " FROM post JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -320,7 +320,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
                 " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title, " +
-                " content as answer_content " +
+                " content as answer_content, likes_number, dislikes_number " +
                 " FROM best_answer JOIN post ON best_answer.answer_id = post.id " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -384,6 +384,56 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.setString(1, post.getTitle());
             stmt.setString(2, post.getContent());
             stmt.setLong(3, post.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
+
+    @Override
+    public void like(long id) {
+        Post post = getById(id);
+        long likesNumber = post.getLikesNumber();
+        likesNumber += 1;
+        String sql = "UPDATE post SET likes_number = ? " +
+                " WHERE post.id = ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, likesNumber);
+            stmt.setLong(2, post.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
+
+    @Override
+    public void dislike(long id) {
+        Post post = getById(id);
+        long dislikesNumber = post.getDislikesNumber();
+        dislikesNumber += 1;
+        String sql = "UPDATE post SET dislikes_number = ? " +
+                " WHERE post.id = ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, dislikesNumber);
+            stmt.setLong(2, post.getId());
 
             stmt.execute();
 

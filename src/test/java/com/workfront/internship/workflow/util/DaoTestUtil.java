@@ -63,7 +63,9 @@ public class DaoTestUtil {
                 .setPost(null)
                 .setTitle("answerTitle")
                 .setContent("postContent")
-                .setUser(DaoTestUtil.getRandomUser());
+                .setUser(DaoTestUtil.getRandomUser())
+                .setLikesNumber(12)
+                .setDislikesNumber(5);
 
         return post;
     }

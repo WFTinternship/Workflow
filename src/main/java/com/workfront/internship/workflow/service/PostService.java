@@ -83,6 +83,18 @@ public interface PostService {
      */
     void update(Post post);
 
+    /**
+     * increases number of likes of the post with the given id by one
+     * @param id
+     */
+    void like(long id);
+
+    /**
+     * increases number of dislikes of the post with the given id by one
+     * @param id
+     */
+    void dislike(long id);
+
     //DELETE
 
     /**
