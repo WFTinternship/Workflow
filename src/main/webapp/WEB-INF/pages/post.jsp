@@ -161,7 +161,7 @@
 
                             <c:when test="${user != null}">
                                 <div class="avatar pull-left dropdown">
-                                    <a data-toggle="dropdown" href="#"><img src="${user.avatarURL}" alt="" width="37" height="37"/></a>
+                                    <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/></a>
                                     <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
                                     <b class="caret"></b>
                                     <div class="status green">&nbsp;</div>
@@ -206,7 +206,7 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                    <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt="" width="37" height="37"/>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
@@ -226,8 +226,9 @@
                         <div class="postinfobot">
 
                             <div class="likeblock pull-left">
-                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>25</a>
-                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>3</a>
+                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${post.likesNumber}</a>
+                                <%--<a href="#" class="up"><i class="fa fa-thumbs-o-up">--%>
+                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${post.dislikesNumber}</a>
                             </div>
 
                             <div class="prev pull-left">
@@ -272,7 +273,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${pageContext.request.contextPath}/${answer.user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
@@ -291,8 +292,8 @@
                             <div class="postinfobot">
 
                                 <div class="likeblock pull-left">
-                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>10</a>
-                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>1</a>
+                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${answer.likesNumber}</a>
+                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${answer.likesNumber}</a>
                                 </div>
 
                                 <div class="prev pull-left">
@@ -342,7 +343,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
