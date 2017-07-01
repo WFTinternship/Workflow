@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,8 +27,6 @@ import java.util.List;
 @Controller
 public class PostController {
 
-    private List<Integer> sizeOfPostsBySameAppAreaID;
-
     private CommentService commentService;
 
     private PostService postService;
@@ -39,7 +38,6 @@ public class PostController {
 
     @Autowired
     public PostController(PostService postService, CommentService commentService) {
-        sizeOfPostsBySameAppAreaID = new ArrayList<>();
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
@@ -65,10 +63,8 @@ public class PostController {
             answer.setCommentList(commentService.getByPostId(answer.getId()));
         }
 
-        for (AppArea appArea : appAreas) {
-            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
-        }
-        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
         setAllPosts(modelAndView);
 
@@ -100,6 +96,8 @@ public class PostController {
                     "Sorry, your post was not added. Please try again");
             modelAndView.setViewName("new_post");
         }
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         setAllPosts(modelAndView);
         return modelAndView;
     }
@@ -108,6 +106,8 @@ public class PostController {
     @RequestMapping(value = {"/new-post"}, method = RequestMethod.GET)
     public ModelAndView newPost() {
         ModelAndView modelAndView = new ModelAndView("new_post");
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         setAllPosts(modelAndView);
         return modelAndView;
     }
@@ -130,6 +130,5 @@ public class PostController {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
         List<Post> posts = postService.getAll();
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,sizeOfPostsBySameAppAreaID);
     }
 }

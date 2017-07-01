@@ -54,12 +54,16 @@ public class UserController {
     public ModelAndView login(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         setAllPosts(modelAndView);
         return modelAndView;
     }
@@ -78,6 +82,8 @@ public class UserController {
     public ModelAndView signUp(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
@@ -88,6 +94,8 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("login");
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
         User user = new User();
 
