@@ -34,7 +34,7 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    public static final String DEFAULT_AVATAR_URL = "images/default/user_avatar.png";
+    public static final String DEFAULT_AVATAR_URL = "images/default/user-avatar.png";
     private UserService userService;
     private PostService postService;
     private List<AppArea> appAreas;
