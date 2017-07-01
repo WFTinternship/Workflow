@@ -91,3 +91,10 @@ website:   	http://www.themepunch.com
 .totop{
 	padding-top: 16px;
 }
+.newcomment{
+	background: white;
+}
+input#new-comment {
+	color: black;
+	background: white;
+}

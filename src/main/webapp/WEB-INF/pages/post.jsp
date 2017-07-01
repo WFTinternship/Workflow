@@ -254,6 +254,12 @@
                                     </li>
                                 </c:forEach>
                             </ul>
+                            <form action="/add-comment">
+                                <div class="form-group newcomment">
+                                    <input type="comment" class="form-control" id="new-comment" placeholder="Comment" name="new-comment">
+                                </div>
+                                <button type="submit" class="btn btn-default">Add</button>
+                            </form>
                         </div>
                     </div><!-- POST -->
 

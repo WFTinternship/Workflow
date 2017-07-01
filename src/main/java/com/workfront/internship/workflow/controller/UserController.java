@@ -7,7 +7,6 @@ import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletContext;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,7 +31,7 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    public static final String DEFAULT_AVATAR_URL = "images/default/user-avatar.png";
+    private static final String DEFAULT_AVATAR_URL = "images/default/user-avatar.png";
     private UserService userService;
     private PostService postService;
     private List<AppArea> appAreas;
@@ -102,24 +99,24 @@ public class UserController {
             return modelAndView;
         }
 
-        if (!image.isEmpty()) {
-            String file = image.getOriginalFilename();
-            String ext = file.substring(file.lastIndexOf("."));
-
-            byte[] imageBytes = image.getBytes();
-            String uploadPath = "/images/uploads/users/" + email;
-            String realPath = request.getServletContext().getRealPath(uploadPath);
-            File uploadDir = new File(realPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            String fileName = new File(firstName + "Avatar").getName();
-            String filePath = realPath + "/" + fileName + ext;
-            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-            user.setAvatarURL(uploadPath + "/" + fileName + ext);
-        } else {
-            user.setAvatarURL(DEFAULT_AVATAR_URL);
-        }
+//        if (!image.isEmpty()) {
+//            String file = image.getOriginalFilename();
+//            String ext = file.substring(file.lastIndexOf("."));
+//
+//            byte[] imageBytes = image.getBytes();
+//            String uploadPath = "/images/uploads/users/" + email;
+//            String realPath = request.getServletContext().getRealPath(uploadPath);
+//            File uploadDir = new File(realPath);
+//            if (!uploadDir.exists()) {
+//                uploadDir.mkdir();
+//            }
+//            String fileName = new File(firstName + "Avatar").getName();
+//            String filePath = realPath + "/" + fileName + ext;
+//            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+//            user.setAvatarURL(uploadPath + "/" + fileName + ext);
+//        } else {
+//            user.setAvatarURL(DEFAULT_AVATAR_URL);
+//        }
 
         user.setFirstName(firstName)
                 .setLastName(lastName)
@@ -127,14 +124,16 @@ public class UserController {
                 .setPassword(password);
         try {
             if (userService.getByEmail(email) != null) {
-                request.setAttribute("message", "The email is already used");
+                request.setAttribute(PageAttributes.MESSAGE, "The email is already used");
             } else {
                 verificationCode = userService.sendEmail(user);
                 userService.add(user);
+                request.setAttribute(PageAttributes.EMAIL, user.getEmail());
             }
         } catch (RuntimeException e) {
             response.setStatus(405);
-            request.setAttribute("message", "Your sign up was successfully canceled, please try again.");
+            request.setAttribute(PageAttributes.MESSAGE,
+                    "Your sign up was successfully canceled, please try again.");
         }
         return modelAndView;
     }
@@ -142,10 +141,12 @@ public class UserController {
     @RequestMapping(value = "/signup/verify", method = RequestMethod.POST)
     public ModelAndView verify(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
         String code = request.getParameter("verify");
         if (!code.equals(verificationCode)) {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry, the code is invalid.");
+            return modelAndView;
         }
         modelAndView.addObject(PageAttributes.MESSAGE,
                 "Congratulations! Your sign up was successful!");
@@ -212,11 +213,14 @@ public class UserController {
 
         List<AppArea> myAppAreas = userService.getAppAreasById(id);
         modelAndView.addObject(PageAttributes.MYAPPAREAS, myAppAreas);
-        appAreas.removeAll(myAppAreas);
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        List<AppArea> allAppAreas = appAreas;
+        allAppAreas.removeAll(myAppAreas);
+        modelAndView.addObject(PageAttributes.APPAREAS, allAppAreas);
         modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
                 ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
         return modelAndView;
     }
+
+
 }

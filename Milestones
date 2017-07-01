@@ -3,8 +3,10 @@
 (+) Check the retype your password filed; amota!
 (+) Add #of posts in certain App Area(in every page, please).
 (+) Add User Page.
+(+) Add number of Answers in the interface.
+(+) After Sign up redirect to Login page and fill the email.
+(+) Add Comment interface.
 
-(-) Add Comment interface.
 (-) Add Like/Dislike functionality (update db).
 (-) Change color of Add New Answer.
 (-) Duxov Remove redundant code.
@@ -12,8 +14,6 @@
 (-) Add Edit post/answer/comment to interface.
 (-) Add "Email me when some one post a reply Post Reply"
     functionality to Add Post and Add Answer.
-(-) After Sign up redirect to Login page and fill the email.
 (-) Update Login system with third party authentication.
 (-) Change the forest picture, please.
-(+) Add number of Answers in the interface.
 (-) Ignore db password.
