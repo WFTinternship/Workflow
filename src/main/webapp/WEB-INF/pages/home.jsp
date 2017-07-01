@@ -7,7 +7,6 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
-<%@ page import="com.workfront.internship.workflow.web.ContextListener" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
@@ -151,7 +150,7 @@
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>

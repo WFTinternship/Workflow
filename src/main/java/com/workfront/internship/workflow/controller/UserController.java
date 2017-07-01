@@ -1,12 +1,12 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletContext;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,16 +31,11 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private UserService userService;
-
-    private PostService postService;
-
-    private List<AppArea> appAreas;
-
-    private List<Post> posts;
-
     public static final String DEFAULT_AVATAR_URL = "images/default/user_avatar.png";
-
+    private UserService userService;
+    private PostService postService;
+    private List<AppArea> appAreas;
+    private String verificationCode;
 
     public UserController() {
     }
@@ -50,7 +43,7 @@ public class UserController {
     @Autowired
     public UserController(UserService userService, PostService postService) {
         this.userService = userService;
-        appAreas = Arrays.asList(AppArea.values());
+        appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         this.postService = postService;
     }
 
@@ -72,7 +65,7 @@ public class UserController {
     public ModelAndView loginAndRedirect(HttpServletRequest request,
                                          HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
-        if (!modelAndView.getViewName().equals("login")){
+        if (!modelAndView.getViewName().equals("login")) {
             modelAndView.setViewName("new_post");
         }
         return modelAndView;
@@ -98,6 +91,12 @@ public class UserController {
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String retypePass = request.getParameter("confirmPass");
+
+        if (!password.equals(retypePass)) {
+            modelAndView.addObject(PageAttributes.MESSAGE, "Passwords do not match!");
+            return modelAndView;
+        }
 
         if (!image.isEmpty()) {
             String file = image.getOriginalFilename();
@@ -123,16 +122,29 @@ public class UserController {
                 .setEmail(email)
                 .setPassword(password);
         try {
-            if (userService.getByEmail(email) != null){
+            if (userService.getByEmail(email) != null) {
                 request.setAttribute("message", "The email is already used");
-            }else {
-                userService.sendEmail(user);
+            } else {
+                verificationCode = userService.sendEmail(user);
                 userService.add(user);
             }
         } catch (RuntimeException e) {
             response.setStatus(405);
             request.setAttribute("message", "Your sign up was successfully canceled, please try again.");
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/signup/verify", method = RequestMethod.POST)
+    public ModelAndView verify(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("login");
+        String code = request.getParameter("verify");
+        if (!code.equals(verificationCode)) {
+            modelAndView.addObject(PageAttributes.MESSAGE,
+                    "Sorry, the code is invalid.");
+        }
+        modelAndView.addObject(PageAttributes.MESSAGE,
+                "Congratulations! Your sign up was successful!");
         return modelAndView;
     }
 
@@ -181,7 +193,27 @@ public class UserController {
 
     private void setAllPosts(ModelAndView modelAndView) {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        posts = postService.getAll();
+        List<Post> posts = postService.getAll();
         modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+    }
+
+    @RequestMapping(value = "/users/*", method = RequestMethod.GET)
+    public ModelAndView profile(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("user");
+
+        String url = request.getRequestURL().toString();
+        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        List<Post> postList = postService.getByUserId(id);
+        modelAndView.addObject(PageAttributes.ALLPOSTS, postList);
+
+        List<AppArea> myAppAreas = userService.getAppAreasById(id);
+        modelAndView.addObject(PageAttributes.MYAPPAREAS, myAppAreas);
+        appAreas.removeAll(myAppAreas);
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+
+        return modelAndView;
     }
 }

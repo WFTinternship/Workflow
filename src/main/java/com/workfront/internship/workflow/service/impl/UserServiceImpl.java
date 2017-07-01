@@ -268,7 +268,7 @@ public class UserServiceImpl implements UserService {
      * @see UserService#sendEmail(User)
      */
     @Override
-    public void sendEmail(User user) {
+    public String sendEmail(User user) {
         if (!user.isValid()) {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
@@ -288,6 +288,7 @@ public class UserServiceImpl implements UserService {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
                 });
+        String verificationCode = ServiceUtils.getRandomString();
         try {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);
@@ -298,12 +299,14 @@ public class UserServiceImpl implements UserService {
             //Adding subject
             mm.setSubject("Welcome");
             //Adding message
-            mm.setText("Welcome to Workflow!");
+            mm.setText("Dear " + user.getFirstName() + " , \n Welcome to Workflow! " +
+                    "Here is your verification code: " + verificationCode + ". \n Please use it to finish your sign up.");
             //sending Email
             Transport.send(mm);
 
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        return verificationCode;
     }
 }

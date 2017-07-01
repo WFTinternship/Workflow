@@ -19,5 +19,5 @@ public interface PageAttributes {
     String EMAIL = "email";
     String PASSWORD = "password";
     String AVATAR = "avatar";
-
+    String MYAPPAREAS = "myAppAreas";
 }

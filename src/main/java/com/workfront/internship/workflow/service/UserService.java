@@ -90,5 +90,5 @@ public interface UserService {
      * Sends email to a new user
      * @param user is the one to sign up
      */
-    void sendEmail(User user);
+    String sendEmail(User user);
 }

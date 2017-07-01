@@ -10,7 +10,11 @@
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="myAppAreas" value='<%=request.getAttribute(PageAttributes.MYAPPAREAS)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+<c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,38 +53,6 @@
 </head>
 <body>
 <div class="container-fluid">
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <span id="form-img"><img
-                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                            height="60px" width="60px/"></span>
-                </div>
-                <form action="/login/new-post" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="usr">Name:</label>
-                            <input type="text" class="form-control" name="email" id="usr">
-                        </div>
-                        <div class="form-group">
-                            <label for="pwd">Password:</label>
-                            <input type="password" class="form-control" name="password" id="pwd">
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-login">Login</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
     <!-- Slider -->
     <div class="tp-banner-container">
         <div class="tp-banner">
@@ -118,29 +90,12 @@
                 </div>
                 <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
-
-                        <c:if test="${user == null}">
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
-                            </button>
-                        </c:if>
-
-                        <c:if test="${user != null}">
                             <a href="/new-post">
                                 <button class="btn btn-primary">Add New Post</button>
                             </a>
-                        </c:if>
-
-                        <c:if test="${user == null}">
-                          <span>
-                              <a href="/signup"><button type="submit" class="btn btn-signup">Sign Up</button></a>
-                              <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
-                          </span>
-                        </c:if>
-
                     </div>
 
                     <div class="clearfix"></div>
-                    <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
                                     src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
@@ -153,158 +108,25 @@
                                 </li>
                             </ul>
                         </div>
-
-                    </c:if>
                 </div>
-
             </div>
         </div>
     </div>
 
 
-    <section class="content">
+    <section class="content totop">
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <a href="#">Borderlands 2</a> <span class="diviver">&gt;</span> <a href="#">General Discussion</a>
-                    <span class="diviver">&gt;</span> <a href="#">New Topic</a>
+                    <font color="red">${message}</font>
                 </div>
             </div>
         </div>
 
-
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8">
-
-
-                    <!-- POST -->
-                    <div class="post">
-                        <form action="/new-post" class="form newtopic" method="post">
-                            <div class="topwrap">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/images/avatar4.jpg" alt=""/>
-                                        <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
-                                        <img src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-
-                                    <div>
-                                        <input type="text" placeholder="Enter Post Title" class="form-control"
-                                               name="title"/>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6">
-                                            <select name="appArea" id="category" class="form-control">
-                                                <option value="" disabled selected>Select Application Area</option>
-                                                <c:forEach var="appArea" items="${appAreas}">
-                                                    <option value="${appArea.id}">${appArea.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <textarea name="content" id="desc" placeholder="Description"
-                                                  class="form-control"></textarea>
-                                    </div>
-                                    <div class="row newtopcheckbox">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div><p>Who can see this?</p></div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="everyone"/> Everyone
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="friends"/> Only Friends
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div>
-                                                <p>Share on Social Networks</p>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-4">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="fb"/> <i
-                                                                class="fa fa-facebook-square"></i>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-4">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="tw"/> <i
-                                                                class="fa fa-twitter"></i>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-4">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="gp"/> <i
-                                                                class="fa fa-google-plus-square"></i>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfobot">
-
-                                <div class="notechbox pull-left">
-                                    <input type="checkbox" name="note" id="note" class="form-control"/>
-                                </div>
-
-                                <div class="pull-left">
-                                    <label for="note"> Email me when some one post a reply</label>
-                                </div>
-
-                                <div class="pull-right postreply">
-                                    <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
-                                    <div class="pull-left">
-                                        <button type="submit" class="btn btn-primary">Post</button>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-
-
-                                <div class="clearfix"></div>
-                            </div>
-                        </form>
-                    </div><!-- POST -->
-
-                    <div class="row similarposts">
-                        <div class="col-lg-10"><i class="fa fa-info-circle"></i>
-                            <p>Similar Posts according to yours <a href="#">Topic Title</a>.</p></div>
-                        <div class="col-lg-2 loading"><i class="fa fa-spinner"></i></div>
-
-                    </div>
-
                     <!-- POST -->
                     <c:forEach var="post" items="${allPosts}">
                         <div class="post">
@@ -316,8 +138,8 @@
                                     </div>
 
                                     <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/>
-                                        <img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
+                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
+                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -335,16 +157,33 @@
 
                                 </div>
                                 <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
+                                <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <!-- POST -->
                     </c:forEach>
 
+                    <!-- POST -->
 
                 </div>
                 <div class="col-lg-4 col-md-4">
+
+                    <!-- -->
+                    <div class="sidebarblock">
+                        <h3>My Application Areas</h3>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <ul class="cats">
+                                <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
 
                     <!-- -->
                     <div class="sidebarblock">
@@ -352,10 +191,11 @@
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}">
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                                class="badge pull-right"></span></a></li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </div>
@@ -454,20 +294,20 @@
                     <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
                     <div class="pull-left">
                         <ul class="paginationforum">
-                            <li class="hidden-xs"><a href="#">1</a></li>
+                            <li class="hidden-xs"><a href="#" class="active">1</a></li>
                             <li class="hidden-xs"><a href="#">2</a></li>
                             <li class="hidden-xs"><a href="#">3</a></li>
                             <li class="hidden-xs"><a href="#">4</a></li>
                             <li><a href="#">5</a></li>
                             <li><a href="#">6</a></li>
-                            <li><a href="#" class="active">7</a></li>
+                            <li><a href="#">7</a></li>
                             <li><a href="#">8</a></li>
                             <li class="hidden-xs"><a href="#">9</a></li>
                             <li class="hidden-xs"><a href="#">10</a></li>
                             <li class="hidden-xs hidden-md"><a href="#">11</a></li>
                             <li class="hidden-xs hidden-md"><a href="#">12</a></li>
                             <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-                            <li><a href="#">1586</a></li>
+
                         </ul>
                     </div>
                     <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
@@ -482,9 +322,9 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/">
-                    <img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                         height=60px width=60px/></a></div>
+                <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
+                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""/></a>
+                </div>
                 <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">
@@ -504,12 +344,11 @@
 <!-- get jQuery from the google apis -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+
 <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
 <%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>--%>
 <%--<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>--%>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
@@ -536,5 +375,5 @@
 <!-- END REVOLUTION SLIDER -->
 </body>
 
-<!-- Mirrored from forum.azyrusthemes.com/03_new_topic.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:11 GMT -->
+<!-- Mirrored from forum.azyrusthemes.home.jsphtml by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->
 </html>
