@@ -115,4 +115,5 @@ public interface PostDAO {
     void delete(long id);
 
 
+    Integer getNumberOfAnswers(long postId);
 }

@@ -12,7 +12,8 @@
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 <c:set var="user" value='<%=request.getAttribute(PageAttributes.USER)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
-<c:set var="avatar" value='<%=request.getAttribute("avatar")%>'/>
+<c:set var="avatar" value='<%=request.getAttribute(PageAttributes.AVATAR)%>'/>
+<c:set var="email" value='<%=request.getAttribute(PageAttributes.EMAIL)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +99,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="pwd">Verification Code:</label>
-                            <input type="password" class="form-control" name="verify" id="vcode">
+                            <input type="password" class="form-control" name="verify" >
                         </div>
                     </div>
 
@@ -227,8 +228,7 @@
 
                             <!-- POST -->
                             <div class="post">
-                                <form action="/signup" class="form newtopic" method="post"
-                                      enctype="multipart/form-data">
+                                <form class="form newtopic" method="post" enctype="multipart/form-data">
                                     <div class="postinfotop">
                                         <h2>Create New Account</h2>
                                     </div>
@@ -271,7 +271,7 @@
                                                 </div>
                                                 <div>
                                                     <input type="text" placeholder="Email" class="form-control"
-                                                           name="email"/>
+                                                           name="email" id="email"/>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-6">
@@ -305,7 +305,7 @@
                                             <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a>
                                             </div>
                                             <div class="pull-left">
-                                                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#verify">Sign Up</button>
+                                                <input  class="btn btn-primary" data-toggle="modal" data-target="#verify" id="vcodeajax" value="Sign Up">
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
@@ -336,7 +336,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-12 col-md-12">
                                                         <input type="text" placeholder="Email" class="form-control"
-                                                               name="email"/>
+                                                               name="email" />
 
                                                     </div>
                                                     <div class="col-lg-12 col-md-12">
@@ -556,6 +556,8 @@
 };
 </script>
 
+<!-- Custom -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>
 
 <!-- END REVOLUTION SLIDER -->
 </body>

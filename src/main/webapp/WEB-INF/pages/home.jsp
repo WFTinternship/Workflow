@@ -13,6 +13,7 @@
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
 <!DOCTYPE html>
@@ -146,11 +147,13 @@
                     <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
-                                    src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/></a> <b
+                                    src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37"
+                                    height="37"/></a> <b
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My
+                                    Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>
@@ -179,12 +182,13 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8">
                     <!-- POST -->
-                    <c:forEach var="post" items="${allPosts}">
+                    <c:forEach var="post" items="${allPosts}" varStatus="status">
                         <div class="post">
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt=""
+                                             width="37" height="37"/>
                                         <div class="status green">&nbsp;</div>
                                     </div>
 
@@ -202,7 +206,7 @@
                             <div class="postinfo pull-left">
                                 <div class="comments">
                                     <div class="commentbg">
-                                        560
+                                            ${numberOfAnswers[status.index]}
                                         <div class="mark"></div>
                                     </div>
 

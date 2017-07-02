@@ -20,4 +20,5 @@ public interface PageAttributes {
     String PASSWORD = "password";
     String AVATAR = "avatar";
     String MYAPPAREAS = "myAppAreas";
+    String NUMOFANSWERS = "numberOfAnswers";
 }

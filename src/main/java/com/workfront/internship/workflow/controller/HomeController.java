@@ -60,6 +60,8 @@ public class HomeController {
         // passing all appAreas to home page
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 
+        modelAndView.addObject(PageAttributes.NUMOFANSWERS,
+                ControllerUtils.getNumberOfAnswers(posts, postService));
 
         modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
                 ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));

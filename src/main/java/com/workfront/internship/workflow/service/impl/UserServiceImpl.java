@@ -299,7 +299,7 @@ public class UserServiceImpl implements UserService {
             //Adding subject
             mm.setSubject("Welcome");
             //Adding message
-            mm.setText("Dear " + user.getFirstName() + " , \n Welcome to Workflow! " +
+            mm.setText("Dear " + user.getFirstName() + ", \n Welcome to Workflow! " +
                     "Here is your verification code: " + verificationCode + ". \n Please use it to finish your sign up.");
             //sending Email
             Transport.send(mm);
