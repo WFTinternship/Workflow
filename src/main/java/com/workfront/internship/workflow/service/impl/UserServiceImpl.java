@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Failed to add. User already exists");
             throw new DuplicateEntryException("User already exists");
         }
-        user.setPassword(ServiceUtils.hashPassword(user.getPassword()));
+        user.setPassword(ServiceUtils.hashString(user.getPassword()));
         long id = userDAO.add(user);
         for (AppArea appArea : AppArea.values()) {
             userDAO.subscribeToArea(user.getId(), appArea.getId());
@@ -255,7 +255,7 @@ public class UserServiceImpl implements UserService {
 
         User user = getByEmail(email);
 
-        if (user != null && user.getPassword().equals(ServiceUtils.hashPassword(password))){
+        if (user != null && user.getPassword().equals(ServiceUtils.hashString(password))){
             return user;
         }else {
             LOGGER.error("Invalid email-password combination!");
@@ -288,7 +288,7 @@ public class UserServiceImpl implements UserService {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
                 });
-        String verificationCode = ServiceUtils.getRandomString();
+        String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0,6);
         try {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);

@@ -100,6 +100,7 @@
                         <div class="form-group">
                             <label for="pwd">Verification Code:</label>
                             <input type="password" class="form-control" name="verify" >
+                            <input type="hidden" id="afterajaxemail" name="emailajax" >
                         </div>
                     </div>
 
@@ -305,7 +306,7 @@
                                             <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a>
                                             </div>
                                             <div class="pull-left">
-                                                <input  class="btn btn-primary" data-toggle="modal" data-target="#verify" id="vcodeajax" value="Sign Up">
+                                                <input  class="btn btn-primary" id="vcodeajax" value="Sign Up">
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>

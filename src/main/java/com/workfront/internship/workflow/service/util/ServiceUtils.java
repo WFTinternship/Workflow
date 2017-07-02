@@ -10,10 +10,10 @@ import java.util.Random;
  */
 public class ServiceUtils {
 
-    public static String hashPassword(String password) {
+    public static String hashString(String text) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] buffer = password.getBytes("UTF-8");
+            byte[] buffer = text.getBytes("UTF-8");
             md.update(buffer);
             byte[] digest = md.digest();
             StringBuilder sb = new StringBuilder();
@@ -23,15 +23,7 @@ public class ServiceUtils {
             return sb.toString();
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             e.printStackTrace();
-            return password;
+            return text;
         }
-    }
-
-    public static String getRandomString() {
-        Random rnd = new Random();
-        StringBuilder sb = new StringBuilder(4);
-        for (int i = 0; i < 4; i++)
-            sb.append((char) ('0' + rnd.nextInt(10)));
-        return sb.toString();
     }
 }
