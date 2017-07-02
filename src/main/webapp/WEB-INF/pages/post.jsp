@@ -12,9 +12,12 @@
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
-<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<<<<<<<<< Temporary merge branch 1
 <c:set var="avatar" value='<%=request.getSession().getAttribute(PageAttributes.AVATAR)%>'/>
 
+=========
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+>>>>>>>>> Temporary merge branch 2
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
@@ -161,9 +164,10 @@
 
                             <c:when test="${user != null}">
                                 <div class="avatar pull-left dropdown">
-                                    <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/></a>
+                                    <a data-toggle="dropdown" href="#"><img
+                                            src="${avatar}" alt="" width="50" height="50"/></a> <b
                                     <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
-                                    <b class="caret"></b>
+                                        class="caret"></b>
                                     <div class="status green">&nbsp;</div>
                                     <ul class="dropdown-menu" role="menu">
                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
@@ -206,7 +210,7 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                    <img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
@@ -226,9 +230,8 @@
                         <div class="postinfobot">
 
                             <div class="likeblock pull-left">
-                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${post.likesNumber}</a>
-                                <%--<a href="#" class="up"><i class="fa fa-thumbs-o-up">--%>
-                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${post.dislikesNumber}</a>
+                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>25</a>
+                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>3</a>
                             </div>
 
                             <div class="prev pull-left">
@@ -273,7 +276,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${answer.user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${pageContext.request.contextPath}/images/avatar2.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
@@ -292,8 +295,8 @@
                             <div class="postinfobot">
 
                                 <div class="likeblock pull-left">
-                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${answer.likesNumber}</a>
-                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${answer.likesNumber}</a>
+                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>10</a>
+                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>1</a>
                                 </div>
 
                                 <div class="prev pull-left">
@@ -343,7 +346,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${pageContext.request.contextPath}/images/avatar4.jpg" alt=""/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
