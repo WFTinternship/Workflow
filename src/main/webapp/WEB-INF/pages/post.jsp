@@ -161,8 +161,7 @@
 
                             <c:when test="${user != null}">
                                 <div class="avatar pull-left dropdown">
-                                    <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/></a>
-                                    <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
+                                    <a data-toggle="dropdown" href="#"><img src="${user.avatarURL}" alt="" width="37" height="37"/></a>
                                     <b class="caret"></b>
                                     <div class="status green">&nbsp;</div>
                                     <ul class="dropdown-menu" role="menu">
@@ -206,7 +205,7 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                    <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
@@ -226,9 +225,14 @@
                         <div class="postinfobot">
 
                             <div class="likeblock pull-left">
-                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${post.likesNumber}</a>
-                                <%--<a href="#" class="up"><i class="fa fa-thumbs-o-up">--%>
-                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${post.dislikesNumber}</a>
+                                <span onclick="insert_like(${post.id})" id="post-like" class="up">
+                                    <i class="fa fa-thumbs-o-up"></i>
+                                    <span id="likeCnt${post.id}">${post.likesNumber}</span>
+                                </span>
+                                <span onclick="insert_dislike(${post.id})" id="post-dislike" class="down">
+                                    <i class="fa fa-thumbs-o-down"></i>
+                                    <span id="dislikeCnt${post.id}">${post.dislikesNumber}</span>
+                                </span>
                             </div>
 
                             <div class="prev pull-left">
@@ -279,7 +283,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${answer.user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
@@ -298,8 +302,14 @@
                             <div class="postinfobot">
 
                                 <div class="likeblock pull-left">
-                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>${answer.likesNumber}</a>
-                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>${answer.likesNumber}</a>
+                                    <span onclick="insert_like(${answer.id})" id="like" class="up">
+                                        <i class="fa fa-thumbs-o-up"></i>
+                                        <span id="likeCnt${answer.id}">${answer.likesNumber}</span>
+                                    </span>
+                                    <span onclick="insert_dislike(${answer.id})" id="dislike" class="down">
+                                        <i class="fa fa-thumbs-o-down"></i>
+                                        <span id="dislikeCnt${answer.id}">${answer.dislikesNumber}</span>
+                                    </span>
                                 </div>
 
                                 <div class="prev pull-left">
@@ -575,6 +585,39 @@
 
     });	//ready
 
+</script>
+
+<script type="text/javascript">
+
+    function insert_like(x)
+    {
+        $.ajax({
+            type: 'post',
+            url: '/like/'+x,
+            data: {
+                type:"like"
+            },
+            success: function (response) {
+                var likeCnt = "likeCnt"+x;
+                $('#'+likeCnt).html(response);
+            }
+        });
+    }
+
+    function insert_dislike(x)
+    {
+        $.ajax({
+            type: 'post',
+            url: '/dislike/'+x,
+            data: {
+                type:"dislike"
+            },
+            success: function (response) {
+                var dislikeCnt = "dislikeCnt"+x;
+                $('#'+dislikeCnt).html(response);
+            }
+        });
+    }
 </script>
 
 <!-- END REVOLUTION SLIDER -->
