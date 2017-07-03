@@ -161,7 +161,7 @@
 
                             <c:when test="${user != null}">
                                 <div class="avatar pull-left dropdown">
-                                    <a data-toggle="dropdown" href="#"><img src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/></a>
+                                    <a data-toggle="dropdown" href="#"><img src="${user.avatarURL}" alt="" width="37" height="37"/></a>
                                     <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
                                     <b class="caret"></b>
                                     <div class="status green">&nbsp;</div>
@@ -206,7 +206,7 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                    <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
@@ -279,7 +279,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${answer.user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
@@ -349,7 +349,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
