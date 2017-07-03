@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String sendEmail(User user) {
-        if (!user.isValid()) {
+        if (user == null || !user.isValid()) {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
@@ -308,5 +308,35 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return verificationCode;
+    }
+
+    @Override
+    public void updateProfile(User user) {
+        if (user == null || !user.isValid()) {
+            LOGGER.error("Not valid user. Failed to add.");
+            throw new InvalidObjectException();
+        }
+
+        try {
+            userDAO.updateProfile(user);
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to update user's profile");
+            throw new ServiceLayerException("Failed to update user's profile", e);
+        }
+    }
+
+    @Override
+    public void updateAvatar(User user) {
+        if (user == null || !user.isValid()) {
+            LOGGER.error("Not valid user. Failed to add.");
+            throw new InvalidObjectException();
+        }
+
+        try {
+            userDAO.updateAvatar(user);
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to update user's profile");
+            throw new ServiceLayerException("Failed to update user's profile", e);
+        }
     }
 }

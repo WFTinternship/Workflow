@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthenticationRestController {
 
+    private static final String DEFAULT_AVATAR_URL = "images/default/user-avatar.png";
+
     private final UserService userService;
 
     @Autowired
@@ -39,7 +41,8 @@ public class AuthenticationRestController {
         user.setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
-                .setPassword(password);
+                .setPassword(password)
+                .setAvatarURL(DEFAULT_AVATAR_URL);
         try {
             if (userService.getByEmail(email) != null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();

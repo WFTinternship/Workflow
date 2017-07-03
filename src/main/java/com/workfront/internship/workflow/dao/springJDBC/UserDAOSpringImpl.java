@@ -193,4 +193,18 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void updateProfile(User user) {
+        String sql = "UPDATE user SET first_name = ?, last_name = ?, " +
+                " email = ? WHERE user.id = ? ";
+        jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
+                user.getEmail(), user.getId());
+    }
+
+    @Override
+    public void updateAvatar(User user) {
+        String sql = "UPDATE user SET avatar_url = ? WHERE user.id = ? ";
+        jdbcTemplate.update(sql, user.getAvatarURL(), user.getId());
+    }
 }

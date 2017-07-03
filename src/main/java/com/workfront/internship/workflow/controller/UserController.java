@@ -8,17 +8,21 @@ import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.web.PageAttributes;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,24 +103,24 @@ public class UserController {
 //            return modelAndView;
 //        }
 //
-////        if (!image.isEmpty()) {
-////            String file = image.getOriginalFilename();
-////            String ext = file.substring(file.lastIndexOf("."));
-////
-////            byte[] imageBytes = image.getBytes();
-////            String uploadPath = "/images/uploads/users/" + email;
-////            String realPath = request.getServletContext().getRealPath(uploadPath);
-////            File uploadDir = new File(realPath);
-////            if (!uploadDir.exists()) {
-////                uploadDir.mkdir();
-////            }
-////            String fileName = new File(firstName + "Avatar").getName();
-////            String filePath = realPath + "/" + fileName + ext;
-////            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-////            user.setAvatarURL(uploadPath + "/" + fileName + ext);
-////        } else {
-////            user.setAvatarURL(DEFAULT_AVATAR_URL);
-////        }
+//        if (!image.isEmpty()) {
+//            String file = image.getOriginalFilename();
+//            String ext = file.substring(file.lastIndexOf("."));
+//
+//            byte[] imageBytes = image.getBytes();
+//            String uploadPath = "/images/uploads/users/" + email;
+//            String realPath = request.getServletContext().getRealPath(uploadPath);
+//            File uploadDir = new File(realPath);
+//            if (!uploadDir.exists()) {
+//                uploadDir.mkdir();
+//            }
+//            String fileName = new File(firstName + "Avatar").getName();
+//            String filePath = realPath + "/" + fileName + ext;
+//            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+//            user.setAvatarURL(uploadPath + "/" + fileName + ext);
+//        } else {
+//            user.setAvatarURL(DEFAULT_AVATAR_URL);
+//        }
 //
 //        user.setFirstName(firstName)
 //                .setLastName(lastName)
@@ -225,5 +229,39 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/updateAvatar", method = RequestMethod.POST)
+    public ModelAndView updateAvatar(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(value = "avatar", required = false) MultipartFile image)
+            throws IOException {
+        ModelAndView modelAndView = new ModelAndView("user");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(PageAttributes.USER);
+
+        if (!image.isEmpty()) {
+            String file = image.getOriginalFilename();
+            String ext = file.substring(file.lastIndexOf("."));
+
+            byte[] imageBytes = image.getBytes();
+            String uploadPath = "/images/uploads/users/" + user.getEmail();
+            String realPath = request.getServletContext().getRealPath(uploadPath);
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String fileName = new File(user.getFirstName() + "Avatar").getName();
+            String filePath = realPath + "/" + fileName + ext;
+            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
+            user.setAvatarURL(uploadPath + "/" + fileName + ext);
+        } else {
+            user.setAvatarURL(DEFAULT_AVATAR_URL);
+        }
+        try {
+            userService.updateAvatar(user);
+        }catch (RuntimeException e){
+            modelAndView.addObject(PageAttributes.MESSAGE,
+                    "Sorry your avatar was not updated");
+        }
+        return modelAndView;
+    }
 
 }

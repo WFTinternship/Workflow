@@ -99,8 +99,8 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="pwd">Verification Code:</label>
-                            <input type="password" class="form-control" name="verify" >
-                            <input type="hidden" id="afterajaxemail" name="emailajax" >
+                            <input type="password" class="form-control" name="verify">
+                            <input type="hidden" id="afterajaxemail" name="emailajax">
                         </div>
                     </div>
 
@@ -244,7 +244,8 @@
                                         <div class="topwrap">
                                             <div class="userinfo pull-left">
                                                 <div class="avatar">
-                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg" id="image" alt="" height="45" width="45"/>
+                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
+                                                         id="image" alt="" height="45" width="45"/>
                                                     <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
                                                     <%--alt=""/>--%>
                                                 </div>
@@ -306,7 +307,7 @@
                                             <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a>
                                             </div>
                                             <div class="pull-left">
-                                                <input  class="btn btn-primary" id="vcodeajax" value="Sign Up">
+                                                <input class="btn btn-primary" id="vcodeajax" value="Sign Up">
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
@@ -337,7 +338,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-12 col-md-12">
                                                         <input type="text" placeholder="Email" class="form-control"
-                                                               name="email" />
+                                                               name="email"/>
 
                                                     </div>
                                                     <div class="col-lg-12 col-md-12">
@@ -381,8 +382,6 @@
 
                         </div>
                     </div>
-
-
                 </div>
                 <div class="col-lg-4 col-md-4">
 

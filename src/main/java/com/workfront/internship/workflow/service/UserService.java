@@ -91,4 +91,16 @@ public interface UserService {
      * @param user is the one to sign up
      */
     String sendEmail(User user);
+
+    /**
+     * Updates the profile of a user with specified id
+     * @param user is the one whose profile is to be updated
+     */
+    void updateProfile(User user);
+
+    /**
+     * Updates the avatar of a user with specified id
+     * @param user is the one whose avatar is to be updated
+     */
+    void updateAvatar(User user);
 }
