@@ -98,7 +98,7 @@
                     <div class="clearfix"></div>
                     <div class="avatar pull-left dropdown">
                         <a data-toggle="dropdown" href="#"><img
-                                src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37"
+                                src="${user.avatarURL}" alt="" width="37"
                                 height="37"/></a> <b
                             class="caret"></b>
                         <div class="status green">&nbsp;</div>
@@ -168,7 +168,7 @@
 
                                 <div class="pull-right postreply">
                                     <div class="pull-left">
-                                        <input class="btn btn-primary"value="Update Avatar"/>
+                                        <input class="btn btn-primary" type="submit" value="Update Avatar"/>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

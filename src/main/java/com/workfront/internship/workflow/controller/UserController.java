@@ -152,6 +152,7 @@ public class UserController {
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 
         if (!code.equals(verificationCode)) {
+            userService.deleteById(user.getId());
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry, the code is invalid.");
             return modelAndView;
