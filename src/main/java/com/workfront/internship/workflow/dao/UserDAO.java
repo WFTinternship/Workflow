@@ -91,4 +91,13 @@ public interface UserDAO {
      */
     void deleteAll();
 
+    /**
+     * Updated the profile of a user
+     */
+    void updateProfile(User user);
+
+    /**
+     * Updated the avatar of a user
+     */
+    void updateAvatar(User user);
 }

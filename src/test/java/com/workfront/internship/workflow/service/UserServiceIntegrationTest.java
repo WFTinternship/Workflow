@@ -1,10 +1,12 @@
 package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -196,6 +198,31 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest{
         userService.unsubscribeToArea(user.getId(), 1);
         List<AppArea> actualAppAreas = userService.getAppAreasById(user.getId());
         assertTrue(!actualAppAreas.contains(AppArea.getById(1)));
+    }
+
+    /**
+     * @see UserService#updateProfile(User)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void update_failure() {
+        userService.updateProfile(null);
+    }
+
+    /**
+     * @see PostService#update(Post)
+     */
+    @Test
+    public void update_success() {
+        userService.add(user);
+
+        user.setFirstName("some name");
+        // Test Method
+        userService.updateProfile(user);
+        User expectedUser = userService.getById(user.getId());
+
+        TestCase.assertEquals(user.getFirstName(), expectedUser.getFirstName());
+
+        userService.deleteById(user.getId());
     }
 
     /**

@@ -298,4 +298,48 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     }
 
+    @Override
+    public void updateProfile(User user) {
+        String sql = "UPDATE user SET first_name = ?, last_name = ?, " +
+                " email = ? WHERE user.id = ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getLastName());
+            stmt.setString(3, user.getEmail());
+            stmt.setLong(4, user.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
+
+    @Override
+    public void updateAvatar(User user) {
+        String sql = "UPDATE user SET avatar_url = ? WHERE user.id = ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, user.getAvatarURL());
+            stmt.setLong(2, user.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
 }

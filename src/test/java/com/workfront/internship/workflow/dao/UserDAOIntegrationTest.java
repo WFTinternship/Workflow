@@ -1,7 +1,6 @@
 package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DaoTestUtil;
@@ -273,6 +272,28 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         List<AppArea> appAreaList = userDAO.getAppAreasById(userId);
 
         assertTrue(appAreaList.contains(AppArea.getById(1)));
+    }
+
+    /**
+     * @see UserDAO#updateProfile(User)
+     */
+    @Test(expected = RuntimeException.class)
+    public void update_failure() {
+        userDAO.add(user);
+        User updatedUser = user.setFirstName(null);
+        userDAO.updateProfile(updatedUser);
+    }
+
+    /**
+     * @see UserDAO#updateProfile(User)
+     */
+    @Test
+    public void update_success() {
+        userDAO.add(user);
+        user.setLastName("new Last Name");
+        userDAO.updateProfile(user);
+        User updatedUser = userDAO.getById(user.getId());
+        verifyAddedUser(user, updatedUser);
     }
 
     // endregion

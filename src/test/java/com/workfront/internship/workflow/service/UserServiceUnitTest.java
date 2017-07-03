@@ -2,13 +2,16 @@ package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -16,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -504,13 +508,77 @@ public class UserServiceUnitTest extends BaseUnitTest {
     @Test
     public void authenticate_success() {
         User user = DaoTestUtil.getRandomUser();
-        user.setPassword(ServiceUtils.hashPassword("123"));
+        user.setPassword(ServiceUtils.hashString("123"));
         doReturn(user).when(userDAOMock).getByEmail(anyString());
         //Test method
         User actualUser = userService.authenticate("A", "123");
         assertEquals(user, actualUser);
     }
 
-    // endregion
+    /**
+     * @see UserService#updateProfile(User)
+     */
+    @Test
+    public void update_userNotValid(){
+        User user = DaoTestUtil.getRandomUser();
+        user.setFirstName(null);
 
+        try {
+            // Test method
+            userService.updateProfile(user);
+            Assert.fail();
+        } catch (Exception ex) {
+            Assert.assertTrue(ex instanceof InvalidObjectException);
+        }
+
+        user.setFirstName("First Name");
+        user.setLastName(null);
+        try {
+            // Test method
+            userService.updateProfile(user);
+            Assert.fail();
+        } catch (Exception ex) {
+            Assert.assertTrue(ex instanceof InvalidObjectException);
+        }
+
+        user.setLastName("Last Name");
+        user.setEmail(null);
+        try {
+            // Test method
+            userService.updateProfile(user);
+            Assert.fail();
+        } catch (Exception ex) {
+            Assert.assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see UserService#updateProfile(User)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void update_DAOException() {
+        User user= DaoTestUtil.getRandomUser();
+        doThrow(RuntimeException.class).when(userDAOMock).updateProfile(any(User.class));
+
+        // Test method
+        userService.updateProfile(user);
+    }
+
+    /**
+     * @see UserService#updateProfile(User)
+     */
+    @Test
+    public void update_success() {
+        User user= DaoTestUtil.getRandomUser();
+
+        // Test method
+        userService.updateProfile(user);
+        verify(userDAOMock, times(1)).updateProfile(user);
+
+        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userDAOMock, only()).updateProfile(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), user);
+    }
+
+    // endregion
 }

@@ -1,7 +1,6 @@
 package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
@@ -205,7 +204,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see CommentDAOImpl#getByPostId(long)
+     * @see CommentDAO#getByPostId(long)
      */
     @Test
     public void getByPostId_success(){
@@ -219,7 +218,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see CommentDAOImpl#getByPostId(long)
+     * @see CommentDAO#getByPostId(long)
      */
     @Test
     public void getByPostId_failure(){

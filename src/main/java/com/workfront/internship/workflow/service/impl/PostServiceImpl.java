@@ -319,6 +319,9 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    /**
+     * @see PostService#getNumberOfAnswers(long)
+     */
     @Override
     public Integer getNumberOfAnswers(long postId) {
         if (postId < 1) {

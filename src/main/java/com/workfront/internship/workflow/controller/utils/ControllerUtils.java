@@ -55,5 +55,6 @@ public class ControllerUtils {
 
 //    public static void setAppAreas(ModelAndView modelAndView) {
 //        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+//
 //    }
 }

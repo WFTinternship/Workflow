@@ -522,6 +522,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
+            throw new RuntimeException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -530,6 +531,9 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param postId of the post which number of answers should get
+     */
     @Override
     public Integer getNumberOfAnswers(long postId) {
         String sql = "SELECT COUNT(*) AS num FROM post WHERE post_id = ?";
@@ -545,6 +549,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             numOfAnswers = rs.getInt("num");
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
+            throw new RuntimeException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }

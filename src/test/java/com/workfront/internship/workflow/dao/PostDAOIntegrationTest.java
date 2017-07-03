@@ -1,7 +1,6 @@
 package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -87,7 +86,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#add(Post)
+     * @see PostDAO#add(Post)
      */
     @Test(expected = RuntimeException.class)
     public void add_failure() {
@@ -102,7 +101,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#add(Post)
+     * @see PostDAO#add(Post)
      */
     @Test
     public void add_success() {
@@ -114,7 +113,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getById(long)
+     * @see PostDAO#getById(long)
      */
     @Test
     public void getById_failure() {
@@ -124,7 +123,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getById(long)
+     * @see PostDAO#getById(long)
      */
     @Test
     public void getById_success() {
@@ -136,7 +135,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByUserId(long)
+     * @see PostDAO#getByUserId(long)
      */
     @Test
     public void getByUserId_failure() {
@@ -145,7 +144,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByUserId(long)
+     * @see PostDAO#getByUserId(long)
      */
     @Test
     public void getByUserId_success() {
@@ -156,7 +155,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByAppAreaId(long)
+     * @see PostDAO#getByAppAreaId(long)
      */
     @Test
     public void getByAppAreaId_failure() {
@@ -166,7 +165,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByAppAreaId(long)
+     * @see PostDAO#getByAppAreaId(long)
      */
     @Test
     public void getByAppAreaId_success() {
@@ -177,7 +176,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAll()
+     * @see PostDAO#getAll()
      */
     @Test
     public void getAll_success() {
@@ -199,7 +198,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAll()
+     * @see PostDAO#getAll()
      */
     @Test
     public void getByTitle_success() {
@@ -213,7 +212,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAnswersByPostId(long)
+     * @see PostDAO#getAnswersByPostId(long)
      */
     @Test(expected = RuntimeException.class)
     public void getAnswersByPostId_failure() {
@@ -235,7 +234,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAnswersByPostId(long)
+     * @see PostDAO#getAnswersByPostId(long)
      */
     @Test
     public void getAnswersByPostId_success() {
@@ -255,7 +254,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#setBestAnswer(long, long)
+     * @see PostDAO#setBestAnswer(long, long)
      */
     @Test(expected = RuntimeException.class)
     public void setBestAnswer_failure() {
@@ -279,7 +278,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#setBestAnswer(long, long)
+     * @see PostDAO#setBestAnswer(long, long)
      */
     @Test
     public void setBestAnswer_success() {
@@ -303,7 +302,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getBestAnswer(long)
+     * @see PostDAO#getBestAnswer(long)
      */
     @Test
     public void getBestAnswer_success() {
@@ -325,7 +324,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getNumberOfAnswers(long)
+     * @see PostDAO#getNumberOfAnswers(long)
      */
     @Test
     public void getNumberOfAnswers_success() {
@@ -338,7 +337,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#update(Post)
+     * @see PostDAO#update(Post)
      */
     @Test(expected = RuntimeException.class)
     public void update_failure() {
@@ -348,7 +347,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#update(Post)
+     * @see PostDAO#update(Post)
      */
     @Test
     public void update_success() {
@@ -407,7 +406,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     // region <HELPERS>
 
     /**
-     * @see PostDAOImpl#delete(long)
+     * @see PostDAO#delete(long)
      */
     @Test
     public void delete_success() {
