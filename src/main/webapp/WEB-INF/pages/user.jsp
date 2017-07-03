@@ -168,7 +168,7 @@
 
                                 <div class="pull-right postreply">
                                     <div class="pull-left">
-                                        <input class="btn btn-primary"value="Update Avatar"/>
+                                        <input class="btn btn-primary" type="submit" value="Update Avatar"/>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
