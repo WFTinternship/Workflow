@@ -307,11 +307,11 @@
                                 <div class="likeblock pull-left">
                                     <span onclick="insert_like(${answer.id})" id="like" class="up">
                                         <i class="fa fa-thumbs-o-up"></i>
-                                        <span id="likeCnt${answer.id}">${numberOfLikes[status.index]}</span>
+                                        <span id="likeCnt${answer.id}">${numberOfLikes[status.index + 1]}</span>
                                     </span>
                                     <span onclick="insert_dislike(${answer.id})" id="dislike" class="down">
                                         <i class="fa fa-thumbs-o-down"></i>
-                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[status.index]}</span>
+                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[status.index + 1]}</span>
                                     </span>
                                 </div>
 

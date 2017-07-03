@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -86,6 +87,13 @@ public class AnswerController {
 
         answers = postService.getAnswersByPostId(postId);
         request.setAttribute("answers", answers);
+
+        List<Post> allPosts = new ArrayList<>(answers);
+        allPosts.add(0, post);
+
+        request.setAttribute(PageAttributes.NUMOFLIKES, ControllerUtils.getNumberOfLikes(allPosts, postService));
+        request.setAttribute(PageAttributes.NUMOFDISLIKES, ControllerUtils.getNumberOfDislikes(allPosts, postService));
+
         return modelAndView;
 
     }

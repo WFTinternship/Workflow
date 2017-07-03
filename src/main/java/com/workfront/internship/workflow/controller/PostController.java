@@ -62,10 +62,11 @@ public class PostController {
         List<Post> answers = postService.getAnswersByPostId(id);
         request.setAttribute(PageAttributes.ANSWERS, answers);
 
-        List<Post> allPosts = new ArrayList<Post>(answers);
+        List<Post> allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
 
         request.setAttribute(PageAttributes.NUMOFLIKES, ControllerUtils.getNumberOfLikes(allPosts, postService));
+        request.setAttribute(PageAttributes.NUMOFDISLIKES, ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         for (Post answer : answers) {
             answer.setCommentList(commentService.getByPostId(answer.getId()));

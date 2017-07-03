@@ -36,14 +36,14 @@ public class PostRestController {
         try {
             postService.like(user.getId(), postId);
         } catch (RuntimeException e) {
-            return (ResponseEntity) ResponseEntity.badRequest();
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         return ResponseEntity.ok(String.valueOf(postService.getLikesNumber(postId)));
     }
 
     @RequestMapping(value = "/dislike/*", method = RequestMethod.POST)
-    public ResponseEntity dislike(HttpServletRequest request) {
+    public ResponseEntity<?> dislike(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
@@ -52,7 +52,7 @@ public class PostRestController {
         try {
             postService.dislike(user.getId(), postId);
         } catch (RuntimeException e) {
-            return (ResponseEntity) ResponseEntity.badRequest();
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         return ResponseEntity.ok(String.valueOf(postService.getDislikesNumber(postId)));
