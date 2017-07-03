@@ -468,6 +468,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
+     * @see PostDAO#getNumberOfAnswers(long)
      * @param postId of the post which number of answers should get
      */
     @Override
@@ -490,5 +491,59 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             closeResources(conn, stmt);
         }
         return numOfAnswers;
+    }
+
+    /**
+     * @see PostDAO#getNotified(long, long)
+     * @param postId
+     * @param userId
+     */
+    @Override
+    public void getNotified(long postId, long userId) {
+        String sql = "INSERT INTO  notification (post_id, user_id) " +
+                " VALUES (?, ?)";
+        Connection con = null;
+        PreparedStatement stmt = null;
+        try {
+            con = dataSource.getConnection();
+            stmt = con.prepareStatement(sql);
+            stmt.setLong(1, postId);
+            stmt.setLong(2, userId);
+            stmt.execute();
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(con, stmt);
+        }
+    }
+
+    /**
+     * @see PostDAO#getNotificationRecipients(long)
+     * @param postId
+     * @return
+     */
+    @Override
+    public List<User> getNotificationRecipients(long postId) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM user " +
+                "WHERE id IN (SELECT user_id FROM notification WHERE post_id = ?) ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, postId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(UserDAOImpl.fromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            LOG.error("SQL exception occurred");
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(conn, stmt);
+        }
+        return users;
     }
 }

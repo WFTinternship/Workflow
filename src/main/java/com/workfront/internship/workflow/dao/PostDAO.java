@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.dao;
 
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 
 import java.util.List;
 
@@ -118,4 +119,20 @@ public interface PostDAO {
      * @param postId of the post which number of answers should get
      */
     Integer getNumberOfAnswers(long postId);
+
+    /**
+     * Notifies the user with specifies userId when there
+     * is response to the post with specified id
+     * @param postId
+     * @param userId
+     */
+    void getNotified(long postId, long userId);
+
+    /**
+     * Gets all user that should be notified when there
+     * is response to the post with specified id
+     * @param postId
+     * @return
+     */
+    List<User> getNotificationRecipients(long postId);
 }

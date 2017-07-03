@@ -2,10 +2,14 @@ package com.workfront.internship.workflow.dao.springJDBC;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AnswerRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.util.DBHelper;
+import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +28,8 @@ import java.util.List;
 
 @Component
 public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
     public PostDAOSpringImpl() {
         dataSource = DBHelper.getPooledConnection();
@@ -59,6 +65,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             }, keyHolder);
             id = keyHolder.getKey().longValue();
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
         post.setId(id);
@@ -78,8 +85,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         try {
             return jdbcTemplate.query(sql, new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -98,8 +107,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return jdbcTemplate.query(sql, new Object[]{userId},
                     new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -118,8 +129,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return jdbcTemplate.query(sql, new Object[]{id},
                     new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -138,8 +151,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return jdbcTemplate.query(sql, new Object[]{"%" + title + "%"},
                     new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -157,8 +172,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return (Post) jdbcTemplate.queryForObject(sql, new Object[]{id},
                     new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -178,8 +195,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return jdbcTemplate.query(sql, new Object[]{postId},
                     new AnswerRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -199,8 +218,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return (Post) jdbcTemplate.queryForObject(sql, new Object[]{postId},
                     new AnswerRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -245,6 +266,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         try {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
     }
@@ -254,5 +276,32 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         String sql = "SELECT COUNT(*) AS num FROM post WHERE post_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{postId},
                 Integer.class);
+    }
+
+    @Override
+    public void getNotified(long postId, long userId) {
+        String sql = "INSERT INTO notification (post_id, user_id) " +
+                " VALUES (?, ?)";
+        try {
+            jdbcTemplate.update(sql, postId, userId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<User> getNotificationRecipients(long postId) {
+        String sql = "SELECT * FROM user " +
+                "WHERE id IN (SELECT user_id FROM notification WHERE post_id = ?) ";
+        try {
+            return jdbcTemplate.query(sql, new Object[]{postId}, new UserRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
+            return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
     }
 }

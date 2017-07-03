@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.PostDAOIntegrationTest;
+import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by nane on 6/21/17
@@ -336,6 +338,55 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
         assertNull(expectedPost);
 
         userService.deleteById(post.getId());
+    }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getNotified_failure(){
+        //Test method
+        postService.getNotified(0, 1);
+    }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test
+    public void getNotified_success(){
+        userService.add(post.getUser());
+        postService.add(post);
+
+        //Test method
+        postService.getNotified(post.getId(), post.getUser().getId());
+        List<User> actualUsers = postService.getNotificationRecipients(post.getId());
+        assertTrue(actualUsers.contains(post.getUser()));
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getNotificationRecipients_failure() {
+        //Test method
+        postService.getNotificationRecipients(0);
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test
+    public void getNotificationRecipients_success() {
+        User user = DaoTestUtil.getRandomUser();
+        userService.add(user);
+        userService.add(post.getUser());
+        postService.add(post);
+        postService.getNotified(post.getId(), user.getId());
+
+        //Test method
+        List<User> actualUsers = postService.getNotificationRecipients(post.getId());
+
+        assertTrue(actualUsers.contains(user));
     }
 
 }

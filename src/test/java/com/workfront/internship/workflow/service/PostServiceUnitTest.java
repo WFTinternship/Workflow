@@ -1,12 +1,18 @@
 package com.workfront.internship.workflow.service;
 
+import com.workfront.internship.workflow.dao.AppAreaDAOIntegrationTest;
 import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
+import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
+import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.jws.soap.SOAPBinding;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +43,12 @@ public class PostServiceUnitTest extends BaseUnitTest {
 
     @Mock
     private PostDAOSpringImpl postDAOMock;
+
+    @InjectMocks
+    private UserServiceImpl userService;
+
+    @Mock
+    private UserDAOSpringImpl userDAOMock;
 
     @Before
     public void init() {
@@ -662,4 +675,97 @@ public class PostServiceUnitTest extends BaseUnitTest {
         verify(postDAOMock, only()).delete(argumentCaptor.capture());
         assertEquals(argumentCaptor.getValue(), id);
     }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test
+    public void getNotified_negativeId() {
+        User user = DaoTestUtil.getRandomUser();
+        long userId =  userService.add(user);
+        try {
+            //Test method
+            postService.getNotified(-1, userId);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+        Post post = DaoTestUtil.getRandomPost();
+        post.setUser(user);
+        postService.add(post);
+        try {
+            //Test method
+            userService.subscribeToArea(post.getId(), -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getNotified_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).getNotified(anyLong(), anyLong());
+
+        //Test method
+        postService.getNotified(10, 1);
+    }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test
+    public void getNotified_success() {
+        Long postId = 15L, userId = 17L;
+        List<Long> expected = Arrays.asList(postId, userId);
+
+        //Test method
+        postService.getNotified(postId, userId);
+        verify(postDAOMock, times(1)).getNotified(postId, userId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getNotified(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getNotificationRecipients_negativeId() {
+        postService.getNotificationRecipients(-1);
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test(expected = RuntimeException.class)
+    public void getNotificationRecipients_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).getNotificationRecipients(anyLong());
+
+        // Test method
+        postService.getNotificationRecipients(15);
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test
+    public void getNotificationRecipients_success() {
+        Long id = 15L;
+        List<User> users = new ArrayList<>();
+        doReturn(users).when(postDAOMock).getNotificationRecipients(id);
+
+        // Test method
+        List<User> actualUsers = postService.getNotificationRecipients(id);
+        assertEquals(users, actualUsers);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getNotificationRecipients(argument.capture());
+        assertEquals(id, argument.getValue());
+    }
+
+
 }

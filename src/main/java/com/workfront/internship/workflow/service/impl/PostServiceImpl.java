@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
@@ -301,4 +302,40 @@ public class PostServiceImpl implements PostService {
         }
         return numbOfAnswers;
     }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Override
+    public void getNotified(long postId, long userId) {
+        if (postId < 1 || userId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.getNotified(postId, userId);
+        } catch (RuntimeException e) {
+            logger.error("Failed to turn notification on for specified post and user");
+            throw new ServiceLayerException("Failed to delete specified posts", e);
+        }
+    }
+
+    @Override
+    public List<User> getNotificationRecipients(long postId) {
+        if (postId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        List<User> users;
+        try {
+            users = postDAO.getNotificationRecipients(postId);
+        } catch (RuntimeException e) {
+            logger.error("Failed to get users with specified id");
+            throw new ServiceLayerException("Failed to get users with specified id", e);
+        }
+        return users;
+    }
 }
+

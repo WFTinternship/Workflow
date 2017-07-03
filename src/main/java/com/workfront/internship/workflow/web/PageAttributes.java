@@ -21,4 +21,5 @@ public interface PageAttributes {
     String AVATAR = "avatar";
     String MYAPPAREAS = "myAppAreas";
     String NUMOFANSWERS = "numberOfAnswers";
+    String NOTE = "note";
 }

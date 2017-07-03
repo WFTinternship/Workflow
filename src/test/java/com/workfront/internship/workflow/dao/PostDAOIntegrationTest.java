@@ -19,6 +19,7 @@ import java.util.List;
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by nane on 5/29/17
@@ -396,11 +397,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
         assertNotSame(post, postDAO.getById(postId));
     }
 
-
-    // endregion
-
-    // region <HELPERS>
-
     /**
      * @see PostDAO#delete(long)
      */
@@ -409,6 +405,43 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
         long postId = postDAO.add(post);
         postDAO.delete(postId);
         assertNull(postDAO.getById(postId));
+    }
+
+    /**
+     * @see PostDAO#getNotified(long, long)
+     */
+    @Test(expected = RuntimeException.class)
+    public void getNotified_failure(){
+        postDAO.add(post);
+        //Test method
+        postDAO.getNotified(post.getId(), -1);
+
+    }
+
+    /**
+     * @see PostDAO#getNotified(long, long)
+     */
+    @Test
+    public void getNotified_success() {
+        postDAO.add(post);
+        //Test method
+        postDAO.getNotified(post.getId(), post.getUser().getId());
+        List<User> users = postDAO.getNotificationRecipients(post.getId());
+
+        assertTrue(users.contains(user));
+    }
+
+    /**
+     * @see PostDAO#getNotificationRecipients(long)
+     */
+    @Test
+    public void getUsersById_success() {
+        postDAO.add(post);
+        postDAO.getNotified(post.getId(), user.getId());
+
+        //Test method
+        List<User> userList = postDAO.getNotificationRecipients(post.getId());
+        assertTrue(userList.contains(user));
     }
     // endregion
 

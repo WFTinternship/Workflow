@@ -6,29 +6,29 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS apparea;
 
 
-
-CREATE TABLE IF NOT exists user(
-  id BIGINT(25) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS user (
+  id         BIGINT(25)  NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(45) NOT NULL,
-  last_name VARCHAR(45) NOT NULL,
-  email VARCHAR(45) NOT NULL UNIQUE,
-  passcode VARCHAR(256),
+  last_name  VARCHAR(45) NOT NULL,
+  email      VARCHAR(45) NOT NULL UNIQUE,
+  passcode   VARCHAR(256),
   avatar_url VARCHAR(100),
-  rating INT NOT NULL,
-  PRIMARY KEY (id));
+  rating     INT         NOT NULL,
+  PRIMARY KEY (id)
+);
 
-CREATE TABLE IF NOT exists apparea (
-  id BIGINT(25) NOT NULL,
-  name VARCHAR(45) NULL,
+CREATE TABLE IF NOT EXISTS apparea (
+  id          BIGINT(25)  NOT NULL,
+  name        VARCHAR(45) NULL,
   description VARCHAR(45) NULL,
-  team_name VARCHAR (25) NULL,
+  team_name   VARCHAR(25) NULL,
   PRIMARY KEY (id)
 );
 
 
-CREATE TABLE IF NOT exists
+CREATE TABLE IF NOT EXISTS
   user_apparea (
-  user_id BIGINT(25) NOT NULL,
+  user_id    BIGINT(25) NOT NULL,
   apparea_id BIGINT(25) NOT NULL,
   UNIQUE (user_id, apparea_id),
   INDEX fk_appareaId_idx (apparea_id ASC),
@@ -43,19 +43,20 @@ CREATE TABLE IF NOT exists
   REFERENCES
     apparea (id)
     ON DELETE CASCADE
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE
+);
 
-CREATE TABLE IF NOT exists
+CREATE TABLE IF NOT EXISTS
   post (
-  id BIGINT(25) AUTO_INCREMENT NOT NULL,
-  post_id BIGINT(25),
-  user_id BIGINT(25) NOT NULL,
-  post_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  title VARCHAR(45) NOT NULL,
-  content VARCHAR(1000) NOT NULL,
-  apparea_id BIGINT(25) NOT NULL,
-  likes_number BIGINT(25) DEFAULT 0,
-  dislikes_number BIGINT(25) DEFAULT 0,
+  id              BIGINT(25) AUTO_INCREMENT NOT NULL,
+  post_id         BIGINT(25),
+  user_id         BIGINT(25)                NOT NULL,
+  post_time       TIMESTAMP                 NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  title           VARCHAR(45)               NOT NULL,
+  content         VARCHAR(1000)             NOT NULL,
+  apparea_id      BIGINT(25)                NOT NULL,
+  likes_number    BIGINT(25)                         DEFAULT 0,
+  dislikes_number BIGINT(25)                         DEFAULT 0,
   INDEX fk_userId_idx (user_id ASC),
   INDEX fk_appareaId_idx (apparea_id ASC),
   PRIMARY KEY (id),
@@ -70,15 +71,16 @@ CREATE TABLE IF NOT exists
   REFERENCES
     apparea (id)
     ON DELETE CASCADE
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE
+);
 
-CREATE TABLE IF NOT exists
+CREATE TABLE IF NOT EXISTS
   comment (
-  id BIGINT(25) NOT NULL AUTO_INCREMENT,
-  user_id BIGINT(25) NULL,
-  post_id BIGINT(25) NULL,
-  content VARCHAR(500) NOT NULL,
-  comment_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  id           BIGINT(25)   NOT NULL AUTO_INCREMENT,
+  user_id      BIGINT(25)   NULL,
+  post_id      BIGINT(25)   NULL,
+  content      VARCHAR(500) NOT NULL,
+  comment_time TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   INDEX fk_userid_comment_idx (user_id ASC),
   INDEX fk_postid_comment_idx (post_id ASC),
@@ -93,11 +95,12 @@ CREATE TABLE IF NOT exists
   REFERENCES
     post (id)
     ON DELETE CASCADE
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS
-  best_answer(
-  post_id BIGINT(25),
+  best_answer (
+  post_id   BIGINT(25),
   answer_id BIGINT(25),
   PRIMARY KEY (post_id),
   CONSTRAINT fk_post_id
@@ -114,3 +117,18 @@ CREATE TABLE IF NOT EXISTS
     ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS notification (
+  post_id BIGINT(25) NOT NULL,
+  user_id BIGINT(25) NOT NULL,
+  PRIMARY KEY (post_id, user_id),
+  FOREIGN KEY (post_id)
+  REFERENCES
+    post (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (user_id)
+  REFERENCES
+    user (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);

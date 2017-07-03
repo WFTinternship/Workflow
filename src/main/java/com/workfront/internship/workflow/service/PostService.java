@@ -2,7 +2,9 @@ package com.workfront.internship.workflow.service;
 
 
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 public interface PostService {
@@ -105,4 +107,20 @@ public interface PostService {
     void delete(long id);
 
     Integer getNumberOfAnswers(long postId);
+
+    /**
+     * Notifies the user with specifies userId when there
+     * is response to the post with specified id
+     * @param postId
+     * @param userId
+     */
+    void getNotified(long postId, long userId);
+
+    /**
+     * Gets all user that should be notified when there
+     * is response to the post with specified id
+     * @param postId
+     * @return
+     */
+    List<User> getNotificationRecipients(long postId);
 }
