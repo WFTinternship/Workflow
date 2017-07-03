@@ -114,6 +114,8 @@ public interface PostDAO {
      */
     void delete(long id);
 
-
+    /**
+     * @param postId of the post which number of answers should get
+     */
     Integer getNumberOfAnswers(long postId);
 }
