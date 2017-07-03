@@ -1,29 +1,31 @@
 /**
- * Created by nane on 7/1/17.
+ * Created by nane on 7/1/17
  */
 jQuery("#vcodeajax").click(function () {
-    var objFormData = new FormData();
-    var objFile = jQuery("#avatar")[0].files[0];
-    objFormData.append('userfile', objFile);
-    jQuery.ajax({
-        type: 'POST',
+
+    $.ajax({
         url: '/signup',
+        type: 'POST',
         data: {
-            'action': 'radiopl_ajax_request',
             'firstName': jQuery("input[name=firstName]").val(),
             'lastName': jQuery("input[name=lastName]").val(),
             'email': jQuery("#email").val(),
             'password': jQuery("#sgpass").val(),
-            'confirmPass': jQuery("#sgpass2").val(),
-            'avatar': objFormData
+            'confirmPass': jQuery("#sgpass2").val()
+        }, statusCode: {
+            409: function (response) {
+                $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+            },
+            500: function (response) {
+                $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong></div>').fadeIn("slow");
+            }
+        }, success: function () {
+            jQuery("#afterajaxemail").val(jQuery("#email").val());
+            $('#verify').modal('toggle');
         },
-        processData: false,
-        success: function (data) {
-            alert('success');
-
-        },
-        error: function (errorThrown) {
-            console.log('ajaxing')
+        error: function (errorThrow) {
+            console.log('error')
         }
     });
 });
+

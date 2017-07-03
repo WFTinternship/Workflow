@@ -90,24 +90,26 @@
                 </div>
                 <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
-                            <a href="/new-post">
-                                <button class="btn btn-primary">Add New Post</button>
-                            </a>
+                        <a href="/new-post">
+                            <button class="btn btn-primary">Add New Post</button>
+                        </a>
                     </div>
 
                     <div class="clearfix"></div>
-                        <div class="avatar pull-left dropdown">
-                            <a data-toggle="dropdown" href="#"><img
-                                    src="${pageContext.request.contextPath}/${user.avatarURL}" alt="" width="37" height="37"/></a> <b
-                                class="caret"></b>
-                            <div class="status green">&nbsp;</div>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
-                                </li>
-                                <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="avatar pull-left dropdown">
+                        <a data-toggle="dropdown" href="#"><img
+                                src="${user.avatarURL}" alt="" width="37"
+                                height="37"/></a> <b
+                            class="caret"></b>
+                        <div class="status green">&nbsp;</div>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My
+                                Profile</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,8 +126,62 @@
             </div>
         </div>
 
+
         <div class="container">
             <div class="row">
+
+                <%--Edit Avatar Place--%>
+                <div class="col-lg-8 col-md-8">
+                    <!-- POST -->
+                    <div class="post">
+                        <form action="/updateAvatar" class="form newtopic" method="post" enctype="multipart/form-data">
+                            <div class="postinfotop">
+                                <h2>Update Profile</h2>
+                            </div>
+                            <!-- acc section -->
+                            <div class="accsection">
+                                <div class="topwrap">
+                                    <div class="userinfo pull-left">
+                                        <div class="avatar">
+                                            <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
+                                                 id="image" alt="" height="45" width="45"/>
+                                            <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
+                                            <%--alt=""/>--%>
+                                        </div>
+                                        <%--<div class="imgsize">60 x 60</div>--%>
+                                        <%--<div>--%>
+                                        <%--<button class="btn">Add</button>--%>
+                                        <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
+
+                                        <%--</div>--%>
+                                        <div class="half-width">
+                                            <input type="file" name="avatar" id="avatar" class="hide"/>
+                                            <label for="avatar" class="btn">Add</label><br/>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div><!-- acc section END -->
+
+                            <div class="postinfobot">
+
+
+                                <div class="pull-right postreply">
+                                    <div class="pull-left">
+                                        <input class="btn btn-primary" type="submit" value="Update Avatar"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                </div>
+                <%--Edit Avatar Place--%>
+
                 <div class="col-lg-8 col-md-8">
                     <!-- POST -->
                     <c:forEach var="post" items="${allPosts}">
@@ -133,7 +189,8 @@
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                        <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt=""
+                                             width="37" height="37"/>
                                         <div class="status green">&nbsp;</div>
                                     </div>
 
@@ -212,7 +269,8 @@
                                     <tr>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar" aria-valuenow="40"
+                                                <div class="progress-bar color1" role="progressbar"
+                                                     aria-valuenow="40"
                                                      aria-valuemin="0" aria-valuemax="100" style="width: 90%">
                                                     Call of Duty Ghosts
                                                 </div>
@@ -226,7 +284,8 @@
                                     <tr>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar" aria-valuenow="40"
+                                                <div class="progress-bar color2" role="progressbar"
+                                                     aria-valuenow="40"
                                                      aria-valuemin="0" aria-valuemax="100" style="width: 63%">
                                                     Titanfall
                                                 </div>
@@ -240,7 +299,8 @@
                                     <tr>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar" aria-valuenow="40"
+                                                <div class="progress-bar color3" role="progressbar"
+                                                     aria-valuenow="40"
                                                      aria-valuemin="0" aria-valuemax="100" style="width: 75%">
                                                     Battlefield 4
                                                 </div>
@@ -370,6 +430,20 @@
 
     });	//ready
 
+</script>
+
+
+<script>document.getElementById("avatar").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
 </script>
 
 <!-- END REVOLUTION SLIDER -->
