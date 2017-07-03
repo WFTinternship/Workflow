@@ -212,36 +212,72 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostService#like(long)
-     * @param id
+     * @see PostService#getLikesNumber(long)
      */
     @Override
-    public void like(long id) {
-        if (id < 1) {
+    public long getLikesNumber(long postId) {
+        if (postId < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
 
         try {
-            postDAO.like(id);
+            return postDAO.getLikesNumber(postId);
         } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to like the post");
         }
     }
 
     /**
-     * @see PostService#dislike(long)
-     * @param id
+     * @see PostService#getDislikesNumber(long)
      */
     @Override
-    public void dislike(long id) {
-        if (id < 1) {
+    public long getDislikesNumber(long postId) {
+        if (postId < 1) {
             logger.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
 
         try {
-            postDAO.dislike(id);
+            return postDAO.getDislikesNumber(postId);
+        } catch (RuntimeException e) {
+            throw new ServiceLayerException("Failed to like the post");
+        }
+    }
+
+    /**
+     * @see PostService#like(long, long)
+     * @param userId
+     * @param postId
+     */
+    @Override
+    public void like(long userId, long postId) {
+        if (userId < 1 || postId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.like(userId, postId);
+        } catch (RuntimeException e) {
+            throw new ServiceLayerException("Failed to like the post");
+        }
+    }
+
+    /**
+     * @see PostService#like(long, long)
+     * @param userId
+     * @param postId
+     */
+    @Override
+    public void dislike(long userId, long postId) {
+        if (userId < 1 || postId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.dislike(userId, postId);
         } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to dislike the post");
         }

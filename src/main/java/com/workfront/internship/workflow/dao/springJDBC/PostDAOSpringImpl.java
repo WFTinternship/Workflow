@@ -2,10 +2,12 @@ package com.workfront.internship.workflow.dao.springJDBC;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AnswerRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.util.DBHelper;
+import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +26,8 @@ import java.util.List;
 
 @Component
 public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
     public PostDAOSpringImpl() {
         dataSource = DBHelper.getPooledConnection();
@@ -206,6 +210,34 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     @Override
+    public long getLikesNumber(long postId) {
+        String sql = "SELECT COUNT(user_id) " +
+                "FROM user_post_likes " +
+                "WHERE post_id = ? ";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{postId}, Long.class);
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long getDislikesNumber(long postId) {
+        String sql = "SELECT COUNT(user_id) " +
+                "FROM user_post_dislikes " +
+                "WHERE post_id = ? ";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{postId}, Long.class);
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void setBestAnswer(long postId, long answerId) {
         String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
         jdbcTemplate.update(sql, postId, answerId);
@@ -220,23 +252,39 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     @Override
-    public void like(long id) {
-        Post post = getById(id);
-        long likesNumber = post.getLikesNumber();
-        likesNumber += 1;
-        String sql = "UPDATE post SET likes_number = ? " +
-                " WHERE post.id = ? ";
-        jdbcTemplate.update(sql, likesNumber, post.getId());
+    public void like(long userId, long postId) {
+//        Post post = getById(postId);
+//        long likesNumber = post.getLikesNumber();
+//        likesNumber += 1;
+//        String sql = "UPDATE post SET likes_number = ? " +
+//                " WHERE post.id = ? ";
+//        jdbcTemplate.update(sql, likesNumber, post.getId());
+        String sql = "INSERT INTO  user_post_likes (user_id, post_id) " +
+                "VALUES (?, ?)";
+        try {
+            jdbcTemplate.update(sql, userId, postId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void dislike(long id) {
-        Post post = getById(id);
-        long dislikesNumber = post.getDislikesNumber();
-        dislikesNumber += 1;
-        String sql = "UPDATE post SET dislikes_number = ? " +
-                " WHERE post.id = ? ";
-        jdbcTemplate.update(sql, dislikesNumber, post.getId());
+    public void dislike(long userId, long postId) {
+//        Post post = getById(id);
+//        long dislikesNumber = post.getDislikesNumber();
+//        dislikesNumber += 1;
+//        String sql = "UPDATE post SET dislikes_number = ? " +
+//                " WHERE post.id = ? ";
+//        jdbcTemplate.update(sql, dislikesNumber, post.getId());
+        String sql = "INSERT INTO  user_post_dislikes (user_id, post_id) " +
+                "VALUES (?, ?)";
+        try {
+            jdbcTemplate.update(sql, userId, postId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

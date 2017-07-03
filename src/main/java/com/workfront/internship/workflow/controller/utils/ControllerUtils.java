@@ -35,6 +35,24 @@ public class ControllerUtils {
         return numbersOfAnswersForPosts;
     }
 
+    public static List<Long> getNumberOfLikes(List<Post> postList, PostService postService) {
+        List<Long> numbersOfLikesForPosts = new ArrayList<>();
+        // getting and passing list of sizes of each posts by same appArea id to home page
+        for (Post post : postList) {
+            numbersOfLikesForPosts.add(postService.getLikesNumber(post.getId()));
+        }
+        return numbersOfLikesForPosts;
+    }
+
+    public static List<Long> getNumberOfDislikes(List<Post> postList, PostService postService) {
+        List<Long> numbersOfDislikesForPosts = new ArrayList<>();
+        // getting and passing list of sizes of each posts by same appArea id to home page
+        for (Post post : postList) {
+            numbersOfDislikesForPosts.add(postService.getDislikesNumber(post.getId()));
+        }
+        return numbersOfDislikesForPosts;
+    }
+
 //    public static void setAppAreas(ModelAndView modelAndView) {
 //        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 //    }

@@ -84,6 +84,20 @@ public interface PostDAO {
     Post getBestAnswer(long postId);
 
     /**
+     * gets number of likes of the post with the specified id
+     * @param postId
+     * @return
+     */
+    long getLikesNumber(long postId);
+
+    /**
+     * gets number of dislikes of the post with the specified id
+     * @param postId
+     * @return
+     */
+    long getDislikesNumber(long postId);
+
+    /**
      *
      * @param postId id of the post whose best answer is to be set
      * @param answerId id of the answer which is the best one for the post
@@ -97,16 +111,20 @@ public interface PostDAO {
     void update(Post post);
 
     /**
-     * increases number of likes of the post with the given id by one
-     * @param id
+     *
+     * user with specified id likes the post with the specified id
+     * @param userId
+     * @param postId
      */
-    void like(long id);
+    void like(long userId, long postId);
 
     /**
-     * increases number of dislikes of the post with the given id by one
-     * @param id
+     *
+     * user with specified id dislikes the post with the specified id
+     * @param userId
+     * @param postId
      */
-    void dislike(long id);
+    void dislike(long userId, long postId);
 
     /**
      *

@@ -347,6 +347,70 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
+     * @see PostDAO#getLikesNumber(long)
+     * @param postId
+     * @return
+     */
+    @Override
+    public long getLikesNumber(long postId) {
+        String sql = "SELECT COUNT(user_id) AS count " +
+                "FROM user_post_likes " +
+                "WHERE post_id = ? ";
+
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        ResultSet rs = null;
+        long likesNumber = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, postId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                likesNumber = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt, rs);
+        }
+        return likesNumber;
+    }
+
+    /**
+     * @see PostDAO#getDislikesNumber(long)
+     * @param postId
+     * @return
+     */
+    @Override
+    public long getDislikesNumber(long postId) {
+        String sql = "SELECT COUNT(user_id) AS count " +
+                "FROM user_post_dislikes " +
+                "WHERE post_id = ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        long dislikesNumber = 0;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, postId);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                dislikesNumber = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt, rs);
+        }
+        return dislikesNumber;
+    }
+
+    /**
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Override
@@ -395,20 +459,20 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @see PostDAO#like(long, long)
+     */
     @Override
-    public void like(long id) {
-        Post post = getById(id);
-        long likesNumber = post.getLikesNumber();
-        likesNumber += 1;
-        String sql = "UPDATE post SET likes_number = ? " +
-                " WHERE post.id = ? ";
+    public void like(long userId, long postId) {
+        String sql = "INSERT INTO  user_post_likes (user_id, post_id) " +
+                "VALUES (?, ?)";
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
             conn = dataSource.getConnection();
             stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, likesNumber);
-            stmt.setLong(2, post.getId());
+            stmt.setLong(1, userId);
+            stmt.setLong(2, postId);
             stmt.execute();
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
@@ -418,20 +482,20 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @see PostDAO#dislike(long, long)
+     */
     @Override
-    public void dislike(long id) {
-        Post post = getById(id);
-        long dislikesNumber = post.getDislikesNumber();
-        dislikesNumber += 1;
-        String sql = "UPDATE post SET dislikes_number = ? " +
-                " WHERE post.id = ? ";
+    public void dislike(long userId, long postId) {
+        String sql = "INSERT INTO  user_post_dislikes (user_id, post_id) " +
+                "VALUES (?, ?)";
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
             conn = dataSource.getConnection();
             stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, dislikesNumber);
-            stmt.setLong(2, post.getId());
+            stmt.setLong(1, userId);
+            stmt.setLong(2, postId);
             stmt.execute();
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred.");

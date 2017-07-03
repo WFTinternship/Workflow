@@ -27,10 +27,12 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
     private UserService userService;
 
     private Post post;
+    private User user;
 
     @Before
     public void setup() {
         post = DaoTestUtil.getRandomPost();
+        user = DaoTestUtil.getRandomUser();
     }
 
     @After
@@ -266,40 +268,41 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostService#like(long)
+     * @see PostService#like(long, long)
      */
     @Test(expected = InvalidObjectException.class)
     public void like_failure() {
         //Test method
-        postService.like(-1);
+        postService.like(-1, 1);
     }
 
     /**
-     * @see PostService#like(long)
+     * @see PostService#like(long, long)
      */
     @Test
     public void like_success() {
         userService.add(post.getUser());
-        postService.add(post);
+        long userId = userService.add(user);
+        long postId = postService.add(post);
         long likesNumber = post.getLikesNumber();
 
         //Test method
-        postService.like(post.getId());
+        postService.like(userId, postId);
         long newLikesNumber = post.getLikesNumber();
         assertEquals(likesNumber, newLikesNumber);
     }
 
     /**
-     * @see PostService#dislike(long)
+     * @see PostService#dislike(long, long)
      */
     @Test(expected = InvalidObjectException.class)
     public void dislike_failure() {
         //Test method
-        postService.dislike(-1);
+        postService.dislike(-1, 1);
     }
 
     /**
-     * @see PostService#dislike(long)
+     * @see PostService#dislike(long, long)
      */
     @Test
     public void dislike_success() {
@@ -308,7 +311,7 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
         long dislikesNumber = post.getDislikesNumber();
 
         //Test method
-        postService.dislike(post.getId());
+        postService.dislike(post.getId(), 1);
         long newDislikesNumber = post.getDislikesNumber();
         assertEquals(dislikesNumber, newDislikesNumber);
     }

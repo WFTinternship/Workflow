@@ -122,7 +122,8 @@ public class DAOUtil {
             answer.setPostTime(rs.getTimestamp(PostDAO.answerTime));
             answer.setTitle(rs.getString(PostDAO.answerTitle));
             answer.setContent(rs.getString(PostDAO.answerContent));
-
+            answer.setLikesNumber(rs.getLong(PostDAO.likesNumber));
+            answer.setDislikesNumber(rs.getLong(PostDAO.dislikesNumber));
 
         } catch (SQLException e) {
             e.printStackTrace();

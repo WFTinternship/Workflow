@@ -15,6 +15,9 @@
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="avatar" value='<%=request.getSession().getAttribute(PageAttributes.AVATAR)%>'/>
 
+<c:set var="numberOfLikes" value='<%=request.getAttribute(PageAttributes.NUMOFLIKES)%>'/>
+<c:set var="numberOfDislikes" value='<%=request.getAttribute(PageAttributes.NUMOFDISLIKES)%>'/>
+
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
@@ -227,11 +230,11 @@
                             <div class="likeblock pull-left">
                                 <span onclick="insert_like(${post.id})" id="post-like" class="up">
                                     <i class="fa fa-thumbs-o-up"></i>
-                                    <span id="likeCnt${post.id}">${post.likesNumber}</span>
+                                    <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
                                 </span>
                                 <span onclick="insert_dislike(${post.id})" id="post-dislike" class="down">
                                     <i class="fa fa-thumbs-o-down"></i>
-                                    <span id="dislikeCnt${post.id}">${post.dislikesNumber}</span>
+                                    <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
                                 </span>
                             </div>
 
@@ -278,7 +281,7 @@
                     </div>
 
                     <!-- POST -->
-                    <c:forEach var="answer" items="${answers}">
+                    <c:forEach var="answer" items="${answers}" varStatus="status">
                         <div class="post">
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
@@ -304,11 +307,11 @@
                                 <div class="likeblock pull-left">
                                     <span onclick="insert_like(${answer.id})" id="like" class="up">
                                         <i class="fa fa-thumbs-o-up"></i>
-                                        <span id="likeCnt${answer.id}">${answer.likesNumber}</span>
+                                        <span id="likeCnt${answer.id}">${numberOfLikes[status.index]}</span>
                                     </span>
                                     <span onclick="insert_dislike(${answer.id})" id="dislike" class="down">
                                         <i class="fa fa-thumbs-o-down"></i>
-                                        <span id="dislikeCnt${answer.id}">${answer.dislikesNumber}</span>
+                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[status.index]}</span>
                                     </span>
                                 </div>
 

@@ -74,6 +74,20 @@ public interface PostService {
      */
     Post getBestAnswer(long id);
 
+    /**
+     * gets number of likes of the post with the specified id
+     * @param postId
+     * @return
+     */
+    long getLikesNumber(long postId);
+
+    /**
+     * gets number of dislikes of the post with the specified id
+     * @param postId
+     * @return
+     */
+    long getDislikesNumber(long postId);
+
     //UPDATE
 
     /**
@@ -84,16 +98,20 @@ public interface PostService {
     void update(Post post);
 
     /**
-     * increases number of likes of the post with the given id by one
-     * @param id
+     *
+     * user with specified id likes the post with the specified id
+     * @param userId
+     * @param postId
      */
-    void like(long id);
+    void like(long userId, long postId);
 
     /**
-     * increases number of dislikes of the post with the given id by one
-     * @param id
+     *
+     * user with specified id dislikes the post with the specified id
+     * @param userId
+     * @param postId
      */
-    void dislike(long id);
+    void dislike(long userId, long postId);
 
     //DELETE
 

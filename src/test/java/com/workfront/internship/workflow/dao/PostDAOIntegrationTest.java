@@ -360,31 +360,35 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAO#like(long)
+     * @see PostDAO#like(long, long)
      */
     @Test
     public void like_success() {
-        postDAO.add(post);
-        long likesNumber = post.getLikesNumber();
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        long likesNumber = postDAO.getLikesNumber(postId);
 
         //Test method
-        postDAO.like(post.getId());
-        long newLikesNumber = post.getLikesNumber();
-        assertEquals(likesNumber, newLikesNumber);
+        postDAO.like(userId, postId);
+
+        long newLikesNumber = postDAO.getLikesNumber(postId);
+        assertEquals(likesNumber, newLikesNumber - 1);
     }
 
     /**
-     * @see PostDAO#dislike(long)
+     * @see PostDAO#dislike(long, long)
      */
     @Test
     public void dislike_success() {
-        postDAO.add(post);
-        long dislikesNumber = post.getLikesNumber();
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        long dislikesNumber = postDAO.getDislikesNumber(postId);
 
         //Test method
-        postDAO.dislike(post.getId());
-        long newDislikesNumber = post.getLikesNumber();
-        assertEquals(dislikesNumber, newDislikesNumber);
+        postDAO.dislike(userId, postId);
+
+        long newDislikesNumber = postDAO.getDislikesNumber(postId);
+        assertEquals(dislikesNumber, newDislikesNumber - 1);
     }
 
     /**

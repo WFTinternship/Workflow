@@ -1,7 +1,9 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,31 +29,33 @@ public class PostRestController {
     @RequestMapping(value = "/like/*", method = RequestMethod.POST)
     public ResponseEntity like(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
-        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
-        Post post;
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
         try {
-            postService.like(id);
-            post = postService.getById(id);
+            postService.like(user.getId(), postId);
         } catch (RuntimeException e) {
             return (ResponseEntity) ResponseEntity.badRequest();
         }
-        return ResponseEntity.ok(String.valueOf(post.getLikesNumber()));
+
+        return ResponseEntity.ok(String.valueOf(postService.getLikesNumber(postId)));
     }
 
     @RequestMapping(value = "/dislike/*", method = RequestMethod.POST)
     public ResponseEntity dislike(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
-        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
-        Post post;
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
         try {
-            postService.dislike(id);
-            post = postService.getById(id);
+            postService.dislike(user.getId(), postId);
         } catch (RuntimeException e) {
             return (ResponseEntity) ResponseEntity.badRequest();
         }
 
-        return ResponseEntity.ok(String.valueOf(post.getDislikesNumber()));
+        return ResponseEntity.ok(String.valueOf(postService.getDislikesNumber(postId)));
     }
 
 }

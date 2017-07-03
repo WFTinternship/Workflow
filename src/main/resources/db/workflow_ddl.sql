@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS user_post_likes;
+DROP TABLE IF EXISTS user_post_dislikes;
 DROP TABLE IF EXISTS user_apparea;
 DROP TABLE IF EXISTS best_answer;
 DROP TABLE IF EXISTS comment;
@@ -108,6 +110,46 @@ CREATE TABLE IF NOT EXISTS
     ON UPDATE CASCADE,
   CONSTRAINT fk_answer_id
   FOREIGN KEY (answer_id)
+  REFERENCES
+    post (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT exists
+  user_post_likes (
+  user_id BIGINT(25) NOT NULL,
+  post_id BIGINT(25) NOT NULL,
+  UNIQUE (user_id, post_id),
+  INDEX fk_postId_idx (post_id ASC),
+  CONSTRAINT fk_likesUserId
+  FOREIGN KEY (user_id)
+  REFERENCES
+    user (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_likesPostId
+  FOREIGN KEY (post_id)
+  REFERENCES
+    post (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT exists
+  user_post_dislikes (
+  user_id BIGINT(25) NOT NULL,
+  post_id BIGINT(25) NOT NULL,
+  UNIQUE (user_id, post_id),
+  INDEX fk_postId_idx (post_id ASC),
+  CONSTRAINT fk_dislikesUserId
+  FOREIGN KEY (user_id)
+  REFERENCES
+    user (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_dislikesPostId
+  FOREIGN KEY (post_id)
   REFERENCES
     post (id)
     ON DELETE CASCADE
