@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.dao.PostDAOIntegrationTest;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -241,6 +242,54 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see PostService#getLikesNumber(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getLikesNumber_failure() {
+        // test method
+        postService.getLikesNumber(0);
+    }
+
+    /**
+     * @see PostService#getLikesNumber(long)
+     */
+    @Test
+    public void getLikesNumber_success() {
+        long userId = userService.add(post.getUser());
+        long postId = postService.add(post);
+        postService.like(userId, postId);
+
+        // test method
+        long likesNumber = postService.getLikesNumber(postId);
+
+        assertEquals(likesNumber, 1);
+    }
+
+    /**
+     * @see PostService#getDislikesNumber(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getDislikesNumber_failure() {
+        // test method
+       postService.getDislikesNumber(0);
+    }
+
+    /**
+     * @see PostService#getDislikesNumber(long)
+     */
+    @Test
+    public void getDislikesNumber_success() {
+        long userId = userService.add(post.getUser());
+        long postId = postService.add(post);
+        postService.dislike(userId, postId);
+
+        // test method
+        long dislikesNumber = postService.getDislikesNumber(postId);
+
+        assertEquals(dislikesNumber, 1);
+    }
+
+    /**
      * @see PostService#update(Post)
      */
     @Test(expected = InvalidObjectException.class)
@@ -270,10 +319,15 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
     /**
      * @see PostService#like(long, long)
      */
-    @Test(expected = InvalidObjectException.class)
+    @Test(expected = ServiceLayerException.class)
     public void like_failure() {
+        long postId = postService.add(post);
+        long userId = post.getUser().getId();
+
         //Test method
-        postService.like(-1, 1);
+        postService.like(userId, postId);
+
+        postService.like(userId, postId);
     }
 
     /**
@@ -281,24 +335,29 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test
     public void like_success() {
-        userService.add(post.getUser());
-        long userId = userService.add(user);
+        long userId = userService.add(post.getUser());
         long postId = postService.add(post);
-        long likesNumber = post.getLikesNumber();
+        long likesNumber = postService.getLikesNumber(postId);
 
         //Test method
         postService.like(userId, postId);
-        long newLikesNumber = post.getLikesNumber();
-        assertEquals(likesNumber, newLikesNumber);
+
+        long newLikesNumber = postService.getLikesNumber(postId);
+        assertEquals(likesNumber, newLikesNumber - 1);
     }
 
     /**
      * @see PostService#dislike(long, long)
      */
-    @Test(expected = InvalidObjectException.class)
+    @Test(expected = ServiceLayerException.class)
     public void dislike_failure() {
+        long postId = postService.add(post);
+        long userId = post.getUser().getId();
+
         //Test method
-        postService.dislike(-1, 1);
+        postService.dislike(userId, postId);
+
+        postService.dislike(userId, postId);
     }
 
     /**
@@ -306,14 +365,15 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test
     public void dislike_success() {
-        userService.add(post.getUser());
-        postService.add(post);
-        long dislikesNumber = post.getDislikesNumber();
+        long userId = userService.add(post.getUser());
+        long postId = postService.add(post);
+        long dislikesNumber = postService.getDislikesNumber(postId);
 
         //Test method
-        postService.dislike(post.getId(), 1);
-        long newDislikesNumber = post.getDislikesNumber();
-        assertEquals(dislikesNumber, newDislikesNumber);
+        postService.dislike(userId, postId);
+
+        long newDislikesNumber = postService.getDislikesNumber(postId);
+        assertEquals(dislikesNumber, newDislikesNumber - 1);
     }
 
     /**

@@ -455,10 +455,99 @@ public class PostServiceUnitTest extends BaseUnitTest {
     }
 
     /**
-    * @see PostServiceImpl#update(Post)
-    */
+     * @see PostService#getLikesNumber(long)
+     */
     @Test
-    public void update_postNotValid(){
+    public void getLikesNumber_success() {
+        Long postId = 1L;
+        long likesNumber = 10;
+        doReturn(likesNumber).when(postDAOMock).getLikesNumber(anyLong());
+
+        //Test method
+        long actualLikesNumber = postService.getLikesNumber(postId);
+        verify(postDAOMock, times(1)).getLikesNumber(postId);
+        assertEquals(likesNumber, actualLikesNumber);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getLikesNumber(argument.capture());
+        assertEquals(postId, argument.getValue());
+    }
+
+    /**
+     * @see PostService#getLikesNumber(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getLikesNumber_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).getLikesNumber(anyLong());
+
+        // Test method
+        postService.getLikesNumber(1);
+    }
+
+    /**
+     * @see PostService#getLikesNumber(long)
+     */
+    @Test
+    public void getLikesNumber_negativeId() {
+        try {
+            // Test method
+            postService.getLikesNumber(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+
+    }
+
+    /**
+     * @see PostService#dislike(long, long)
+     */
+    @Test
+    public void getDislikesNumber_success() {
+        Long postId = 1L;
+        long dislikesNumber = 10;
+        doReturn(dislikesNumber).when(postDAOMock).getDislikesNumber(anyLong());
+
+        //Test method
+        long actualDislikesNumber = postService.getDislikesNumber(postId);
+        verify(postDAOMock, times(1)).getDislikesNumber(postId);
+        assertEquals(dislikesNumber, actualDislikesNumber);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getDislikesNumber(argument.capture());
+        assertEquals(postId, argument.getValue());
+    }
+
+    /**
+     * @see PostService#dislike(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getDislikesNumber_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).dislike(anyLong(), anyLong());
+
+        // Test method
+        postService.dislike(1, 1);
+    }
+
+    /**
+     * @see PostService#getDislikesNumber(long)
+     */
+    @Test
+    public void getDislikesNumber_negativeId() {
+        try {
+            // Test method
+            postService.dislike(-1, 1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostServiceImpl#update(Post)
+     */
+    @Test
+    public void update_postNotValid() {
         Post post = DaoTestUtil.getRandomPost();
         post.setUser(null);
 
@@ -544,15 +633,15 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void like_success() {
-        Long id = 1L;
-        
-        // Test method
-        postService.like(id, 1);
-        verify(postDAOMock, times(1)).like(id, 1);
+        Long userId = 1L, postId = 1L;
+        List<Long> expected = Arrays.asList(userId, postId);
+        //Test method
+        postService.like(userId, postId);
+        verify(postDAOMock, times(1)).like(userId, postId);
 
-//        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
-//        verify(postDAOMock, only()).like(argumentCaptor.capture());
-//        assertEquals(argumentCaptor.getValue(), id);
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).like(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
     }
 
     /**
@@ -572,11 +661,19 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void like_negativeId() {
         try {
-            // Test method
-            postService.like(-1, 1);
+            //Test method
+            postService.like(-1, 5);
             fail();
-        } catch (Exception ex) {
-            assertTrue(ex instanceof InvalidObjectException);
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+
+        try {
+            //Test method
+            postService.like(5, -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
         }
     }
 
@@ -585,15 +682,15 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void dislike_success() {
-        Long id = 1L;
+        Long userId = 1L, postId = 1L;
+        List<Long> expected = Arrays.asList(userId, postId);
+        //Test method
+        postService.dislike(userId, postId);
+        verify(postDAOMock, times(1)).dislike(userId, postId);
 
-        // Test method
-        postService.dislike(id, 1);
-        verify(postDAOMock, times(1)).dislike(id, 1);
-
-//        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
-//        verify(postDAOMock, only()).dislike(argumentCaptor.capture());
-//        assertEquals(argumentCaptor.getValue(), id);
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).dislike(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
     }
 
     /**
@@ -613,11 +710,19 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void dislike_negativeId() {
         try {
-            // Test method
-            postService.dislike(-1, 1);
+            //Test method
+            postService.dislike(-1, 5);
             fail();
-        } catch (Exception ex) {
-            assertTrue(ex instanceof InvalidObjectException);
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+
+        try {
+            //Test method
+            postService.dislike(5, -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
         }
     }
 
