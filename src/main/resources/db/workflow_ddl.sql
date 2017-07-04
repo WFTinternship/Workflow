@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS user_post_likes;
 DROP TABLE IF EXISTS user_post_dislikes;
 DROP TABLE IF EXISTS user_apparea;
