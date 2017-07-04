@@ -2,7 +2,6 @@ package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
-import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
@@ -12,9 +11,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by nane on 6/4/17
@@ -213,8 +218,8 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostService#like(long)
      * @param id
+     * @see PostService#like(long)
      */
     @Override
     public void like(long id) {
@@ -231,8 +236,8 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostService#dislike(long)
      * @param id
+     * @see PostService#dislike(long)
      */
     @Override
     public void dislike(long id) {
@@ -266,7 +271,6 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     /**
      * @see PostService#delete(long)
      */
@@ -296,7 +300,7 @@ public class PostServiceImpl implements PostService {
         Integer numbOfAnswers;
         try {
             numbOfAnswers = postDAO.getNumberOfAnswers(postId);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             logger.error("Failed to delete specified posts");
             throw new ServiceLayerException("Failed to delete specified posts", e);
         }
@@ -321,6 +325,9 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
     @Override
     public List<User> getNotificationRecipients(long postId) {
         if (postId < 1) {
@@ -336,6 +343,74 @@ public class PostServiceImpl implements PostService {
             throw new ServiceLayerException("Failed to get users with specified id", e);
         }
         return users;
+    }
+
+    /**
+     * @see PostService#notifyUsers(List, Post)
+     */
+    @Override
+    public void notifyUsers(List<User> users, Post post) {
+        if (users == null){
+            logger.error("Not valid userList. Failed to send emails.");
+            throw new InvalidObjectException();
+        }
+
+        for (User user : users) {
+            if (user == null || !user.isValid()) {
+                logger.error("Not valid user. Failed to send email.");
+                throw new InvalidObjectException();
+            }
+        }
+
+        String subject = "Response on '" + post.getTitle() + "' topic.";
+        try {
+            for (User user : users) {
+                String text = "Dear " + user.getFirstName() + ", \nThere has been a new response " +
+                        " on '" + post.getTitle() + "' topic. " +
+                        " You can follow the link below: \n http://localhost:8080/post/" + post.getId() +
+                        " \n \n Best, \n Workflow Team";
+                sendEmail(user, subject, text);
+            }
+        } catch (RuntimeException e) {
+            logger.error("Failed to send emails to all users");
+            throw new ServiceLayerException("Failed to send emails to all users", e);
+        }
+
+    }
+
+    private void sendEmail(User user, String subject, String text) {
+        String EMAIL = "workfront.internship@gmail.com";
+        String PASSWORD = "project2017";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(EMAIL, PASSWORD);
+                    }
+                });
+        try {
+            //Creating MimeMessage object
+            MimeMessage mm = new MimeMessage(session);
+            //Setting sender address
+            mm.setFrom(new InternetAddress(EMAIL));
+            //Adding receiver
+            mm.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(user.getEmail()));
+            //Adding subject
+            mm.setSubject(subject);
+            //Adding message
+            mm.setText(text);
+            //sending Email
+            Transport.send(mm);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }
 

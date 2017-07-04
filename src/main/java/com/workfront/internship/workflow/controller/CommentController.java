@@ -65,6 +65,12 @@ public class CommentController {
             request.setAttribute(PageAttributes.MESSAGE,
                     "Sorry, your comment was not added. Please try again");
         }
+        List<User> users = postService.getNotificationRecipients(postId);
+        try {
+            postService.notifyUsers(users, post);
+        }catch (RuntimeException e){
+
+        }
         comments = commentService.getByPostId(postId);
         request.setAttribute("comments", comments);
         return modelAndView;

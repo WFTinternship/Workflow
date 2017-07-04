@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.controller;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,12 @@ public class AnswerController {
         } catch (RuntimeException e) {
             request.setAttribute(PageAttributes.MESSAGE,
                     "Sorry, your answer was not added. Please try again");
+        }
+        List<User> users = postService.getNotificationRecipients(postId);
+        try {
+            postService.notifyUsers(users, post);
+        }catch (RuntimeException e){
+
         }
 
         answers = postService.getAnswersByPostId(postId);

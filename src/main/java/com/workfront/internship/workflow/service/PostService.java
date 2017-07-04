@@ -123,4 +123,12 @@ public interface PostService {
      * @return
      */
     List<User> getNotificationRecipients(long postId);
+
+    /**
+     * Notifies all users that there was a response to the post
+     * with specified postId
+     * @param users
+     * @param post
+     */
+    void notifyUsers(List<User> users, Post post);
 }
