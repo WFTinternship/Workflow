@@ -96,6 +96,7 @@ public class DAOUtil {
             try {
                 Post parentPost = new Post();
                 parentPost.setId(rs.getLong(PostDAO.parentId));
+
                 if (parentPost.getId() == 0){
                     post.setPost(null);
                     return post;

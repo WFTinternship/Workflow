@@ -51,7 +51,9 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
-        request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
@@ -59,6 +61,9 @@ public class UserController {
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
         setAllPosts(modelAndView);
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
@@ -138,6 +143,9 @@ public class UserController {
         session.invalidate();
         ModelAndView modelAndView = new ModelAndView("home");
         setAllPosts(modelAndView);
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
@@ -159,12 +167,14 @@ public class UserController {
 
         List<AppArea> myAppAreas = userService.getAppAreasById(id);
         modelAndView.addObject(PageAttributes.MYAPPAREAS, myAppAreas);
+
         List<AppArea> allAppAreas = appAreas;
         allAppAreas.removeAll(myAppAreas);
+
         modelAndView.addObject(PageAttributes.APPAREAS, allAppAreas);
         modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
                 ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-
+        modelAndView.addObject(PageAttributes.PROFILEOWNERID, id);
         return modelAndView;
     }
 

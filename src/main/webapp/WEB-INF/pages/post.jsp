@@ -212,7 +212,9 @@
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                    <a href="/users/${post.user.id}">
+                                        <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                    </a>
                                     <div class="status green">&nbsp;</div>
                                 </div>
 
@@ -296,7 +298,9 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
+                                        <a href="/users/${post.user.id}">
+                                            <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
+                                        </a>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
@@ -342,7 +346,8 @@
                             </div>
                             <div class="post-comment">
                                 <ul class="post-ul">
-                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}" varStatus="commentStatus">
+                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
+                                               varStatus="commentStatus">
                                         <li>
                                                 ${comment.content}
                                         </li>
