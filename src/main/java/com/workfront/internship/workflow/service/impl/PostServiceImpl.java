@@ -111,11 +111,11 @@ public class PostServiceImpl implements PostService {
         Post post;
         try {
             post = postDAO.getById(id);
-            return post;
         } catch (RuntimeException e) {
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get post with specified id");
         }
+        return post;
     }
 
     /**

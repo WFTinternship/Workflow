@@ -13,10 +13,10 @@ public interface PostDAO {
     // Post fileds
     String id = "id";
     String postId = "post_id";
+    String userId = "user_id";
     String appAreaId = "apparea_id";
     String postTime = "post_time";
     String postContent = "content";
-    String isCorrect = "is_correct";
     String postTitle = "title";
     String likesNumber = "likes_number";
     String dislikesNumber = "dislikes_number";
@@ -25,8 +25,25 @@ public interface PostDAO {
 
     String answerTime = "answer_time";
     String answerContent = "answer_content";
-    String userId = "user_id";
     String answerTitle = "answer_title";
+
+    // Parent post fields
+
+    String parentId = "parentId";
+
+    String parentUserId = "parentUserId";
+    String parentUserFirstName = "parentUserFirstName";
+    String parentUserLastName = "parentUserLastName";
+    String parentUserEmail = "parentUserEmail";
+    String parentUserPasscode = "parentUserPasscode";
+    String parentUserAvatar = "parentUserAvatar";
+    String parentUserRating = "parentUserRating";
+
+    String parentAppAreaId = "parentAppAreaId";
+
+    String parentTime = "parentTime";
+    String parentContent = "parentContent";
+    String parentTitle = "parentTitle";
 
     /**
      * Adds post to the db

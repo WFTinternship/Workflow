@@ -21,6 +21,7 @@
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
+<c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWERCOMMENTS)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 
 <!DOCTYPE html>
@@ -264,13 +265,18 @@
                                     </li>
                                 </c:forEach>
                             </ul>
-                            <form action="/add-comment">
-                                <div class="form-group newcomment">
-                                    <input type="comment" class="form-control" id="new-comment" placeholder="Comment"
-                                           name="new-comment">
-                                </div>
-                                <button type="submit" class="btn btn-default">Add</button>
-                            </form>
+
+                            <c:if test="${user != null}">
+                                <form action="/new-comment/${post.id}" method="post">
+                                    <div class="form-group newcomment">
+                                        <input type="comment" class="form-control" id="new-comment"
+                                               placeholder="Comment"
+                                               name="content">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Add</button>
+                                </form>
+                            </c:if>
+
                         </div>
                     </div><!-- POST -->
 
@@ -285,7 +291,7 @@
                     </div>
 
                     <!-- POST -->
-                    <c:forEach var="answer" items="${answers}" varStatus="status">
+                    <c:forEach var="answer" items="${answers}" varStatus="answerStatus">
                         <div class="post">
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
@@ -311,11 +317,11 @@
                                 <div class="likeblock pull-left">
                                     <span onclick="insert_like(${answer.id})" id="like" class="up">
                                         <i class="fa fa-thumbs-o-up"></i>
-                                        <span id="likeCnt${answer.id}">${numberOfLikes[status.index + 1]}</span>
+                                        <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
                                     <span onclick="insert_dislike(${answer.id})" id="dislike" class="down">
                                         <i class="fa fa-thumbs-o-down"></i>
-                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[status.index + 1]}</span>
+                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
                                     </span>
                                 </div>
 
@@ -336,13 +342,25 @@
                             </div>
                             <div class="post-comment">
                                 <ul class="post-ul">
-                                    <c:forEach var="comment" items="${answer.commentList}">
+                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}" varStatus="commentStatus">
                                         <li>
                                                 ${comment.content}
                                         </li>
                                     </c:forEach>
                                 </ul>
+                                <c:if test="${user != null}">
+                                    <form action="/new-comment/${answer.id}" method="post">
+                                        <div class="form-group newcomment">
+                                            <input type="comment" class="form-control" id="new-comment"
+                                                   placeholder="Comment"
+                                                   name="content">
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Add</button>
+                                    </form>
+                                </c:if>
                             </div>
+
+
                         </div>
 
                     </c:forEach>
