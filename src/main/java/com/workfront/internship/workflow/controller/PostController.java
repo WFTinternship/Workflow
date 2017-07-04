@@ -88,6 +88,7 @@ public class PostController {
 
         String title = request.getParameter(PageAttributes.TITLE);
         String content = request.getParameter(PageAttributes.POSTCONTENT);
+        String notify = request.getParameter(PageAttributes.NOTE);
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
@@ -106,6 +107,9 @@ public class PostController {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry, your post was not added. Please try again");
             modelAndView.setViewName("new_post");
+        }
+        if (notify.equals("on")){
+            postService.getNotified(post.getId(), post.getUser().getId());
         }
         setAllPosts(modelAndView);
         return modelAndView;

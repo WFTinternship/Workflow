@@ -6,14 +6,14 @@
 (+) Add number of Answers in the interface.
 (+) After Sign up redirect to Login page and fill the email.
 (+) Add Comment interface.
+(+) Update Login system with third party authentication.
+(+) Add Like/Dislike functionality (update db).
 
-(-) Add Like/Dislike functionality (update db).
 (-) Change color of Add New Answer.
 (-) Duxov Remove redundant code.
 (-) Add Best Answer to interface.
 (-) Add Edit post/answer/comment to interface.
 (-) Add "Email me when some one post a reply Post Reply"
     functionality to Add Post and Add Answer.
-(-) Update Login system with third party authentication.
 (-) Change the forest picture, please.
 (-) Ignore db password.

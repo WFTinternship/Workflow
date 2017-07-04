@@ -228,6 +228,8 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     /**
      * @see UserDAO#getAppAreasById(long)
+     * @param userId user id
+     * @return list of app areas of the given user
      */
     @Override
     public List<AppArea> getAppAreasById(long userId) {
@@ -257,6 +259,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     /**
      * @see UserDAO#deleteById(long)
+     * @param id id of the user that has to be deleted
      */
     @Override
     public void deleteById(long id) {
@@ -298,6 +301,10 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     }
 
+    /**
+     * @see UserDAO#updateProfile(User)
+     * @param user the user whose profile is to be updated
+     */
     @Override
     public void updateProfile(User user) {
         String sql = "UPDATE user SET first_name = ?, last_name = ?, " +
@@ -322,6 +329,10 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
         }
     }
 
+    /**
+     * @see UserDAO#updateAvatar(User)
+     * @param user the user whose avatar is to be updated
+     */
     @Override
     public void updateAvatar(User user) {
         String sql = "UPDATE user SET avatar_url = ? WHERE user.id = ? ";
