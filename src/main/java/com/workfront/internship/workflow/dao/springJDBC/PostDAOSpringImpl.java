@@ -85,7 +85,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     public List<Post> getAll() {
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_name, post_time, title, content, likes_number, dislikes_number  " +
+                " apparea.team_name, post_time, title, content " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +

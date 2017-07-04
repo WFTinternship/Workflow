@@ -62,9 +62,9 @@ public interface PostService {
     List<Post> getByAppAreaId(long id);
 
     /**
-     * Gets list of answers of the post by the specified postId
-     * @param postId id of the post
-     * @return List of answers of the specified post
+     * Gets list of answers of the specified post
+     * @param id the id of the post
+     * @return List of answers
      */
     List<Post> getAnswersByPostId(long id);
 

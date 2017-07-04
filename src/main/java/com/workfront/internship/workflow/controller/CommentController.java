@@ -1,5 +1,7 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,14 +29,15 @@ public class CommentController {
     private final PostService postService;
     private final CommentService commentService;
     private List<Comment> comments;
+    private List<AppArea> appAreas;
 
     @Autowired
     public CommentController(CommentService commentService, PostService postService) {
         this.commentService = commentService;
         this.postService = postService;
         comments = new ArrayList<>();
+        appAreas = Arrays.asList(AppArea.values());
     }
-
 
     @RequestMapping(value = {"/new-comment/*"}, method = RequestMethod.POST)
     public ModelAndView newComment(HttpServletRequest request) {
@@ -94,6 +98,10 @@ public class CommentController {
         }
         request.setAttribute(PageAttributes.ANSWERS, answers);
 
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
