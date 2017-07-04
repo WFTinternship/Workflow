@@ -92,12 +92,14 @@ public interface UserDAO {
     void deleteAll();
 
     /**
-     * Updated the profile of a user
+     * Updates the fields of the specified user
+     * @param user the user whose profile is to be updated
      */
     void updateProfile(User user);
 
     /**
-     * Updated the avatar of a user
+     * Updates the avatar of the specified user
+     * @param user the user whose avatar is to be updated
      */
     void updateAvatar(User user);
 }

@@ -12,46 +12,45 @@ public interface PostService {
     //CREATE
 
     /**
-     * Adds a post
-     * @param post
-     * @return the id of added post
+     * Adds post to the db
+     * @param post is to be added to the database
+     * @return the generated id of added post
      */
     long add(Post post);
 
     /**
-     * Sets the specified answer as best one for the specified post
-     * @param postId
-     * @param answerId
-     * @return <tt>true</tt> if the answer was successfully set.
+     * Sets the answer as the best one for the specified post
+     * @param postId id of the post whose best answer is to be set
+     * @param answerId id of the answer which is the best one for the post
      */
     void setBestAnswer(long postId, long answerId);
 
     //READ
 
     /**
-     * Gets all post
-     * @return List of posts
+     * Gets list of all posts form the db
+     * @return list of all posts starting with the most recent one
      */
     List<Post> getAll();
 
     /**
-     * Gets a Post by id.
-     * @param id
-     * @return Post with id
+     * Gets post with specified id
+     * @param id of the the post to be retrieved from database
+     * @return post with the specified id
      */
     Post getById(long id);
 
     /**
-     * Gets all post which titles contain the specified answerTitle string.
-     * @param title
-     * @return
+     * Gets list of posts which titles contain the specified title string.
+     * @param title the phrase to search for posts
+     * @return List of Post that contain the parameter in their titles
      */
     List<Post> getByTitle(String title);
 
     /**
-     * Gets all posts of a specified user
-     * @param id
-     * @return all posts of the specified user.
+     * Gets list of posts posted by the user with the specified userId
+     * @param id the id of the user
+     * @return all List of posts created by the specified user
      */
     List<Post> getByUserId(long id);
 
@@ -63,25 +62,24 @@ public interface PostService {
     List<Post> getByAppAreaId(long id);
 
     /**
-     * Gets all answers of the post by id.
-     * @param id
-     * @return List of answers
+     * Gets list of answers of the post by the specified postId
+     * @param postId id of the post
+     * @return List of answers of the specified post
      */
     List<Post> getAnswersByPostId(long id);
 
     /**
-     * Gets best answer of the post by id.
-     * @param id
-     * @return Best answer
+     * Gets the answer of the post specified by postId, that was marked as best answer
+     * @param id the id of the post
+     * @return the best answer of the specified post
      */
     Post getBestAnswer(long id);
 
     //UPDATE
 
     /**
-     * Updates the answerTitle, postContent of both of the post.
-     * @param post
-     * @return
+     * Updates fields of the specified post
+     * @param post the post whose fields should be updated
      */
     void update(Post post);
 
@@ -100,35 +98,38 @@ public interface PostService {
     //DELETE
 
     /**
-     * Deletes a post with the specified id.
-     * @param id
-     * @return
+     * Deletes the post with the specified id
+     * @param id of the post to be deleted from database
      */
     void delete(long id);
 
+    /**
+     * Gets number of answers of the specified postId
+     * @param postId of the post which number of answers should get
+     */
     Integer getNumberOfAnswers(long postId);
 
     /**
      * Notifies the user with specifies userId when there
-     * is response to the post with specified id
-     * @param postId
-     * @param userId
+     * is response to the post with specified postId
+     * @param postId the id of a post that the user wants to be notified
+     * @param userId the id of a user that will be notified
      */
     void getNotified(long postId, long userId);
 
     /**
      * Gets all user that should be notified when there
      * is response to the post with specified id
-     * @param postId
-     * @return
+     * @param postId the id of a post
+     * @return List of users that need to be notified for the specified post
      */
     List<User> getNotificationRecipients(long postId);
 
     /**
      * Notifies all users that there was a response to the post
      * with specified postId
-     * @param users
-     * @param post
+     * @param users the users that need to be notified
+     * @param post the post that has a new response
      */
     void notifyUsers(List<User> users, Post post);
 }

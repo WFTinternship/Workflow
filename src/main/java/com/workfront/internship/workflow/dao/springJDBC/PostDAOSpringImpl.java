@@ -41,6 +41,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * @param post is to be added to the database
+     * @return the generated id of the post
+     * @see PostDAO#add(Post)
+     */
     @Override
     public long add(Post post) {
         long id;
@@ -72,6 +77,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         return id;
     }
 
+    /**
+     * @return List of all posts
+     * @see PostDAO#getAll()
+     */
     @Override
     public List<Post> getAll() {
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
@@ -93,6 +102,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param userId id of the user
+     * @return List of posts posted by the user with specified userId
+     * @see PostDAO#getByUserId(long)
+     */
     @Override
     public List<Post> getByUserId(long userId) {
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
@@ -115,6 +129,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param id id of the app area
+     * @return List of posts on the specified application area
+     * @see PostDAO#getByAppAreaId(long)
+     */
     @Override
     public List<Post> getByAppAreaId(long id) {
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
@@ -126,8 +145,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " LEFT JOIN best_answer ON post.id = best_answer.post_id " +
                 " WHERE post.post_id IS NULL AND post.apparea_id = ?";
         try {
-            return jdbcTemplate.query(sql, new Object[]{id},
-                    new PostRowMapper());
+            return jdbcTemplate.query(sql, new Object[]{id}, new PostRowMapper());
         } catch (EmptyResultDataAccessException e) {
             LOGGER.info("Empty Result Data AccessException");
             return null;
@@ -137,6 +155,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param title the phrase to search for posts
+     * @return List of Post that contain specified title
+     * @see PostDAO#getByTitle(String)
+     */
     @Override
     public List<Post> getByTitle(String title) {
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
@@ -159,6 +182,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param id of the the post to be retrieved from database
+     * @return post with the specified id
+     * @see PostDAO#getById(long)
+     */
     @Override
     public Post getById(long id) {
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
@@ -180,6 +208,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param postId id of the post
+     * @return List of answers of the post specified with postId
+     * @see PostDAO#getAnswersByPostId(long)
+     */
     @Override
     public List<Post> getAnswersByPostId(long postId) {
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
@@ -203,6 +236,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param postId id of the post
+     * @return the answer that was mark as the Best Answer of the specified post
+     * @see PostDAO#getBestAnswer(long)
+     */
     @Override
     public Post getBestAnswer(long postId) {
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
@@ -226,20 +264,42 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param postId   id of the post whose best answer is to be set
+     * @param answerId id of the answer which is the best one for the post
+     * @see PostDAO#setBestAnswer(long, long)
+     */
     @Override
     public void setBestAnswer(long postId, long answerId) {
         String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
-        jdbcTemplate.update(sql, postId, answerId);
+        try {
+            jdbcTemplate.update(sql, postId, answerId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
     }
 
+    /**
+     * @param post the post whose answerTitle and postContent can be updated
+     * @see PostDAO#update(Post)
+     */
     @Override
     public void update(Post post) {
         String sql = "UPDATE post SET title = ?, content = ? " +
                 " WHERE post.id = ? ";
-        jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
-
+        try {
+            jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
     }
 
+    /**
+     * @see PostDAO#like(long)
+     * @param id of a post which was liked
+     */
     @Override
     public void like(long id) {
         Post post = getById(id);
@@ -250,6 +310,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         jdbcTemplate.update(sql, likesNumber, post.getId());
     }
 
+    /**
+     * @see PostDAO#dislike(long)
+     * @param id of a post which was disliked
+     */
     @Override
     public void dislike(long id) {
         Post post = getById(id);
@@ -260,6 +324,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         jdbcTemplate.update(sql, dislikesNumber, post.getId());
     }
 
+    /**
+     * @see PostDAO#delete(long)
+     * @param id of the post to be deleted from database
+     */
     @Override
     public void delete(long id) {
         String sql = "DELETE FROM post WHERE id = ?";
@@ -271,13 +339,29 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @see PostDAO#getNumberOfAnswers(long)
+     * @param postId of the post which number of answers should get
+     * @return number of answers of the specified post
+     */
     @Override
     public Integer getNumberOfAnswers(long postId) {
         String sql = "SELECT COUNT(*) AS num FROM post WHERE post_id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{postId},
-                Integer.class);
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{postId},
+                    Integer.class);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+
     }
 
+    /**
+     * @see PostDAO#getNotified(long, long)
+     * @param postId the id of a post that the user wants to be notified
+     * @param userId the id of a user that will be notified
+     */
     @Override
     public void getNotified(long postId, long userId) {
         String sql = "INSERT INTO notification (post_id, user_id) " +
@@ -290,6 +374,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @see PostDAO#getNotificationRecipients(long)
+     * @param postId the id of a post
+     * @return List of users that need to be notified for the specified post
+     */
     @Override
     public List<User> getNotificationRecipients(long postId) {
         String sql = "SELECT * FROM user " +

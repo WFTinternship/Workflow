@@ -47,8 +47,9 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @return
-     * @see PostDAO#add(Post) ()
+     * @see PostDAO#add(Post)
+     * @param post is to be added to the database
+     * @return the generated id of added post
      */
     public long add(Post post) {
         long id = 0;
