@@ -189,7 +189,7 @@
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/${post.user.avatarURL}" alt=""
+                                        <img src="${post.user.avatarURL}" alt=""
                                              width="37" height="37"/>
                                         <div class="status green">&nbsp;</div>
                                     </div>
