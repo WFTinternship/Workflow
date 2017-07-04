@@ -108,7 +108,7 @@ public class PostController {
                     "Sorry, your post was not added. Please try again");
             modelAndView.setViewName("new_post");
         }
-        if (notify.equals("on")){
+        if (notify != null && notify.equals("on")){
             postService.getNotified(post.getId(), post.getUser().getId());
         }
         setAllPosts(modelAndView);

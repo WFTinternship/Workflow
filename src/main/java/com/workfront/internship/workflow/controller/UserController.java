@@ -80,68 +80,6 @@ public class UserController {
         return modelAndView;
     }
 
-
-//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-//    public ModelAndView signUp(HttpServletRequest request, HttpServletResponse response,
-//                               @RequestParam(value = "avatar", required = false) MultipartFile image)
-//            throws IOException {
-//
-//        String json = request.getReader().readLine();
-//        ModelAndView modelAndView = new ModelAndView("login");
-//        request.setAttribute(PageAttributes.APPAREAS, appAreas);
-//
-//        User user = new User();
-//
-//        String firstName = request.getParameter("firstName");
-//        String lastName = request.getParameter("lastName");
-//        String email = request.getParameter("email");
-//        String password = request.getParameter("password");
-//        String retypePass = request.getParameter("confirmPass");
-//
-//        if (!password.equals(retypePass)) {
-//            modelAndView.addObject(PageAttributes.MESSAGE, "Passwords do not match!");
-//            return modelAndView;
-//        }
-//
-//        if (!image.isEmpty()) {
-//            String file = image.getOriginalFilename();
-//            String ext = file.substring(file.lastIndexOf("."));
-//
-//            byte[] imageBytes = image.getBytes();
-//            String uploadPath = "/images/uploads/users/" + email;
-//            String realPath = request.getServletContext().getRealPath(uploadPath);
-//            File uploadDir = new File(realPath);
-//            if (!uploadDir.exists()) {
-//                uploadDir.mkdir();
-//            }
-//            String fileName = new File(firstName + "Avatar").getName();
-//            String filePath = realPath + "/" + fileName + ext;
-//            FileUtils.writeByteArrayToFile(new File(filePath), imageBytes);
-//            user.setAvatarURL(uploadPath + "/" + fileName + ext);
-//        } else {
-//            user.setAvatarURL(DEFAULT_AVATAR_URL);
-//        }
-//
-//        user.setFirstName(firstName)
-//                .setLastName(lastName)
-//                .setEmail(email)
-//                .setPassword(password);
-//        try {
-//            if (userService.getByEmail(email) != null) {
-//                request.setAttribute(PageAttributes.MESSAGE, "The email is already used");
-//            } else {
-//                verificationCode = userService.sendEmail(user);
-//                userService.add(user);
-//                request.setAttribute(PageAttributes.EMAIL, user.getEmail());
-//            }
-//        } catch (RuntimeException e) {
-//            response.setStatus(405);
-//            request.setAttribute(PageAttributes.MESSAGE,
-//                    "Your sign up was successfully canceled, please try again.");
-//        }
-//        return modelAndView;
-//    }
-
     @RequestMapping(value = "/signup/verify", method = RequestMethod.POST)
     public ModelAndView verify(@RequestParam("emailajax") String email,
                                @RequestParam("verify") String code) {
@@ -262,6 +200,7 @@ public class UserController {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry your avatar was not updated");
         }
+        setAllPosts(modelAndView);
         return modelAndView;
     }
 

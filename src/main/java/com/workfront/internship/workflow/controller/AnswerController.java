@@ -52,6 +52,9 @@ public class AnswerController {
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
+        post = postService.getById(postId);
+        request.setAttribute(PageAttributes.POST, post);
+
         String content = request.getParameter("reply");
 
         if (StringUtils.isEmpty(content)){
@@ -59,9 +62,6 @@ public class AnswerController {
             setAllPosts(modelAndView);
             return modelAndView;
         }
-
-        post = postService.getById(postId);
-        request.setAttribute(PageAttributes.POST, post);
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);

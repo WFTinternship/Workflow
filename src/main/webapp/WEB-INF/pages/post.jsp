@@ -72,7 +72,7 @@
                             src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
-                <form action="http://localhost:8080/login" method="post">
+                <form action="/login/new-post" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="usr">Name:</label>
@@ -89,9 +89,9 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
+
     <!-- Slider -->
     <div class="tp-banner-container">
         <div class="tp-banner">
@@ -164,12 +164,14 @@
 
                             <c:when test="${user != null}">
                                 <div class="avatar pull-left dropdown">
-                                    <a data-toggle="dropdown" href="#"><img src="${user.avatarURL}" alt="" width="37" height="37"/></a>
-                                    <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
+                                    <a data-toggle="dropdown" href="#"><img src="${user.avatarURL}" alt="" width="37"
+                                                                            height="37"/></a>
+                                        <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
                                     <b class="caret"></b>
                                     <div class="status green">&nbsp;</div>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1"
+                                                                   href="/users/${user.id}">My Profile</a>
                                         </li>
                                         <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log
                                             Out</a>
@@ -264,7 +266,8 @@
                             </ul>
                             <form action="/add-comment">
                                 <div class="form-group newcomment">
-                                    <input type="comment" class="form-control" id="new-comment" placeholder="Comment" name="new-comment">
+                                    <input type="comment" class="form-control" id="new-comment" placeholder="Comment"
+                                           name="new-comment">
                                 </div>
                                 <button type="submit" class="btn btn-default">Add</button>
                             </form>
@@ -356,65 +359,57 @@
                         </div>
                     </div>
                     <!-- POST -->
-                    <div class="post">
+                    <c:if test="${user != null}">
+                        <div class="post">
 
-                        <form action="/new-answer/${post.id}" class="form" method="post">
-                            <hidden></hidden>
-                            <div class="topwrap">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="${user.avatarURL}" alt="" width="37" height="37"/>
-                                        <div class="status red">&nbsp;</div>
+                            <form action="/new-answer/${post.id}" class="form" method="post">
+                                <hidden></hidden>
+                                <div class="topwrap">
+                                    <div class="userinfo pull-left">
+                                        <div class="avatar">
+                                            <img src="${user.avatarURL}" alt="" width="37" height="37"/>
+                                            <div class="status red">&nbsp;</div>
+                                        </div>
+
+                                        <div class="icons">
+                                            <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
+                                                src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
+                                                src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
+                                                src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
+                                        </div>
                                     </div>
-
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <div class="textwraper">
-                                        <div class="postreply">Post a Reply</div>
-                                        <textarea name="reply" id="reply"
-                                                  placeholder="Type your message here"></textarea>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfobot">
-
-                                <div class="notechbox pull-left">
-                                    <input type="checkbox" name="note" id="note" class="form-control"/>
-                                </div>
-
-                                <div class="pull-left">
-                                    <label for="note"> Email me when some one post a reply</label>
-                                </div>
-
-                                <div class="pull-right postreply">
-                                    <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
-                                    <div class="pull-left">
-                                        <c:if test="${user == null}">
-                                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                                Post Reply
-                                            </button>
-                                        </c:if>
-
-                                        <c:if test="${user != null}">
-                                            <button class="btn btn-primary">Post Reply</button>
-                                        </c:if>
+                                    <div class="posttext pull-left">
+                                        <div class="textwraper">
+                                            <div class="postreply">Post a Reply</div>
+                                            <textarea name="reply" id="reply"
+                                                      placeholder="Type your message here"></textarea>
+                                        </div>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
+                                <div class="postinfobot">
 
+                                    <div class="notechbox pull-left">
+                                        <input type="checkbox" name="note" id="note" class="form-control"/>
+                                    </div>
 
-                                <div class="clearfix"></div>
-                            </div>
-                        </form>
-                    </div><!-- POST -->
+                                    <div class="pull-left">
+                                        <label for="note"> Email me when some one post a reply</label>
+                                    </div>
 
+                                    <div class="pull-right postreply">
+                                        <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                        <div class="pull-left">
+                                            <button class="btn btn-primary">Post Reply</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- POST -->
+                    </c:if>
 
                 </div>
                 <div class="col-lg-4 col-md-4">
@@ -593,32 +588,30 @@
 
 <script type="text/javascript">
 
-    function insert_like(x)
-    {
+    function insert_like(x) {
         $.ajax({
             type: 'post',
-            url: '/like/'+x,
+            url: '/like/' + x,
             data: {
-                type:"like"
+                type: "like"
             },
             success: function (response) {
-                var likeCnt = "likeCnt"+x;
-                $('#'+likeCnt).html(response);
+                var likeCnt = "likeCnt" + x;
+                $('#' + likeCnt).html(response);
             }
         });
     }
 
-    function insert_dislike(x)
-    {
+    function insert_dislike(x) {
         $.ajax({
             type: 'post',
-            url: '/dislike/'+x,
+            url: '/dislike/' + x,
             data: {
-                type:"dislike"
+                type: "dislike"
             },
             success: function (response) {
-                var dislikeCnt = "dislikeCnt"+x;
-                $('#'+dislikeCnt).html(response);
+                var dislikeCnt = "dislikeCnt" + x;
+                $('#' + dislikeCnt).html(response);
             }
         });
     }
