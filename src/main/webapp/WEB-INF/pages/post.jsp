@@ -269,7 +269,7 @@
                         </div>
                         <div class="pull-left"><a href="#" class="prevnext last"></a>
                         </div>
-                        <div class="clearfix"></div>
+                        <div class="clearfix"><0/div>
                     </div>
 
                     <!-- POST -->
@@ -519,7 +519,7 @@
                 </div>
             </div>
         </div>
-
+        </div>
     </section>
 
     <footer>

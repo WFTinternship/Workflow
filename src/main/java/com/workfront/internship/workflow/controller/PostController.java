@@ -62,6 +62,13 @@ public class PostController {
             answer.setCommentList(commentService.getByPostId(answer.getId()));
         }
 
+        List<Comment> comments = commentService.getByPostId(id);
+        request.setAttribute(PageAttributes.COMMENTS, comments);
+
+        for (Comment comment : comments) {
+            post.setCommentList(commentService.getByPostId(comment.getPost().getId()));
+        }
+
         request.setAttribute(PageAttributes.POSTS_OF_APPAAREA,
                 ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 

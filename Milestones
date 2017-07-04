@@ -6,9 +6,10 @@
 (+) Add number of Answers in the interface.
 (+) After Sign up redirect to Login page and fill the email.
 (+) Add Comment interface.
+(+) Change color of Add New Answer.
+
 
 (-) Add Like/Dislike functionality (update db).
-(-) Change color of Add New Answer.
 (-) Duxov Remove redundant code.
 (-) Add Best Answer to interface.
 (-) Add Edit post/answer/comment to interface.

@@ -9,6 +9,7 @@ import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,17 +26,17 @@ import java.util.List;
  */
 @Controller
 public class CommentController {
+    private List<Comment> allComments;
     private final PostService postService;
-    private List<Comment> comments;
     private final CommentService commentService;
 
     @Autowired
     public CommentController(CommentService commentService, PostService postService) {
         this.commentService = commentService;
         this.postService = postService;
-        comments = new ArrayList<>();
+        allComments = new ArrayList<>();
+        allComments = new ArrayList<>();
     }
-
 
     @RequestMapping(value = {"/new-comment/*"}, method = RequestMethod.POST)
     public ModelAndView newComment(HttpServletRequest request) {
@@ -44,11 +45,11 @@ public class CommentController {
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(PageAttributes.USER);
-
         Post post = postService.getById(postId);
         request.setAttribute(PageAttributes.POST, post);
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(PageAttributes.USER);
 
         String content = request.getParameter(PageAttributes.COMMENTCONTENT);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -65,8 +66,8 @@ public class CommentController {
             request.setAttribute(PageAttributes.MESSAGE,
                     "Sorry, your comment was not added. Please try again");
         }
-        comments = commentService.getByPostId(postId);
-        request.setAttribute("comments", comments);
+        allComments = commentService.getByPostId(postId);
+        request.setAttribute("comments", allComments);
         return modelAndView;
     }
 
