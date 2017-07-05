@@ -1,6 +1,5 @@
 package com.workfront.internship.workflow.controller;
 
-import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +56,28 @@ public class PostRestController {
         }
 
         return ResponseEntity.ok(String.valueOf(postService.getDislikesNumber(postId)));
+    }
+
+    @RequestMapping(value = "/setBestAnswer/*", method = RequestMethod.POST)
+    public ResponseEntity<?> setBestAnswer(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        long answerId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        long postId = postService.getById(answerId).getPost().getId();
+        try {
+            postService.setBestAnswer(postId, answerId);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/removeBestAnswer/*", method = RequestMethod.POST)
+    public ResponseEntity<?> removeBestAnswer(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        long answerId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

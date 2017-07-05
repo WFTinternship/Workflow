@@ -50,7 +50,6 @@ public class CommentController {
         User user = (User) session.getAttribute(PageAttributes.USER);
 
         Post post = postService.getById(postId);
-        request.setAttribute(PageAttributes.POST, post);
 
         String content = request.getParameter(PageAttributes.COMMENTCONTENT);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -104,15 +103,17 @@ public class CommentController {
             }
             request.setAttribute(PageAttributes.ANSWERCOMMENTS, answerComments);
         }
-        request.setAttribute(PageAttributes.ANSWERS, answers);
+        modelAndView
+                .addObject(PageAttributes.ANSWERS, answers)
+                .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.NUMOFLIKES,
+                        ControllerUtils.getNumberOfLikes(allPosts, postService))
+                .addObject(PageAttributes.NUMOFDISLIKES,
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
-        request.setAttribute(PageAttributes.NUMOFLIKES, ControllerUtils.getNumberOfLikes(allPosts, postService));
-        request.setAttribute(PageAttributes.NUMOFDISLIKES, ControllerUtils.getNumberOfDislikes(allPosts, postService));
-
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 

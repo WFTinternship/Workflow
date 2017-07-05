@@ -1,17 +1,17 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
-import com.workfront.internship.workflow.service.CommentService;
-import com.workfront.internship.workflow.service.PostService;
-import org.springframework.web.bind.annotation.RequestMethod;
-import com.workfront.internship.workflow.web.PageAttributes;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.service.CommentService;
+import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,19 +54,14 @@ public class PostController {
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         Post post = postService.getById(id);
-        request.setAttribute(PageAttributes.POST, post);
 
         List<Comment> postComments = commentService.getByPostId(id);
-        request.setAttribute(PageAttributes.POSTCOMMENTS, postComments);
 
         List<Post> answers = postService.getAnswersByPostId(id);
-        request.setAttribute(PageAttributes.ANSWERS, answers);
 
         List<Post> allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
 
-        request.setAttribute(PageAttributes.NUMOFLIKES, ControllerUtils.getNumberOfLikes(allPosts, postService));
-        request.setAttribute(PageAttributes.NUMOFDISLIKES, ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         for (Post answer : answers) {
             answer.setCommentList(commentService.getByPostId(answer.getId()));
@@ -75,9 +70,20 @@ public class PostController {
         for (AppArea appArea : appAreas) {
             sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
         }
-        request.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
 
-        setAllPosts(modelAndView);
+        List<Post> posts = postService.getAll();
+
+        modelAndView
+                .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.POSTCOMMENTS, postComments)
+                .addObject(PageAttributes.ANSWERS, answers)
+                .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.NUMOFLIKES,
+                        ControllerUtils.getNumberOfLikes(allPosts, postService))
+                .addObject(PageAttributes.NUMOFDISLIKES,
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
+                .addObject(PageAttributes.ALLPOSTS, posts);
 
         return modelAndView;
     }
@@ -105,20 +111,38 @@ public class PostController {
             postService.add(post);
         } catch (RuntimeException e) {
             modelAndView.addObject(PageAttributes.MESSAGE,
-                    "Sorry, your post was not added. Please try again");
-            modelAndView.setViewName("new_post");
+                    "Sorry, your post was not added. Please try again")
+                    .setViewName("new_post");
         }
-        if (notify != null && notify.equals("on")){
+        if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
-        setAllPosts(modelAndView);
+
+        for (AppArea apparea : appAreas) {
+            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(apparea.getId()).size());
+        }
+
+        List<Post> posts = postService.getAll();
+
+        modelAndView
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
+                .addObject(PageAttributes.ALLPOSTS, posts);
+
         return modelAndView;
     }
 
     @RequestMapping(value = {"/new-post"}, method = RequestMethod.GET)
     public ModelAndView newPost() {
         ModelAndView modelAndView = new ModelAndView("new_post");
-        setAllPosts(modelAndView);
+        for (AppArea apparea : appAreas) {
+            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(apparea.getId()).size());
+        }
+
+        List<Post> posts = postService.getAll();
+
+        modelAndView
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
+                .addObject(PageAttributes.ALLPOSTS, posts);
         return modelAndView;
     }
 
@@ -128,18 +152,12 @@ public class PostController {
         Post post = (Post) request.getAttribute(PageAttributes.POST);
         try {
             postService.update(post);
-        }catch (RuntimeException e){
-            modelAndView.addObject(PageAttributes.MESSAGE,
-                    "Sorry, your post was not updated. Please try again");
-            modelAndView.setViewName("post");
+        } catch (RuntimeException e) {
+            modelAndView
+                    .addObject(PageAttributes.MESSAGE,
+                            "Sorry, your post was not updated. Please try again")
+                    .setViewName("post");
         }
         return modelAndView;
-    }
-
-    private void setAllPosts(ModelAndView modelAndView) {
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        List<Post> posts = postService.getAll();
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,sizeOfPostsBySameAppAreaID);
     }
 }
