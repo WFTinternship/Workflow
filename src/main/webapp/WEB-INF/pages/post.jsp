@@ -323,8 +323,7 @@
                                     <a href="#"><i class="fa fa-reply"></i></a>
                                 </div>
 
-                                <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}
-                                </div>
+                                <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}</div>
 
                                 <div class="next pull-right">
                                     <a href="#"><i class="fa fa-share"></i></a>
@@ -587,6 +586,7 @@
 </script>
 
 <script type="text/javascript">
+
 
     function insert_like(x) {
         $.ajax({

@@ -235,28 +235,24 @@
                                 <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
                                     <li>
                                         <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                        <input class="pull-right" type="checkbox" checked="checked"
+                                                   onclick="subscription(this, ${appArea.id})"/>
+                                    </li>
+                                </c:forEach>
+                                <div class="divline"></div>
+                                <h3>Other Application Areas</h3>
+                                <div class="divline"></div>
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <input class="pull-right" type="checkbox"
+                                               onclick="subscription(this, ${appArea.id})"/>
                                     </li>
                                 </c:forEach>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>Application Areas</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                    </div>
 
                     <!-- -->
                     <div class="sidebarblock">
@@ -430,6 +426,44 @@
 
     });	//ready
 
+</script>
+
+<script>
+
+    function subscription(element, x) {
+        element.checked = !element.checked;
+        if(element.checked){
+            unsubscribe(element, x);
+        } else {
+            subscribe(element, x);
+        }
+    }
+
+    function subscribe(element, x) {
+        $.ajax({
+            type: 'post',
+            url: '/subscribe/' + x,
+            data: {
+                type: "subscription"
+            },
+            success: function (response) {
+                element.checked = !element.checked;
+            }
+        });
+    }
+
+    function unsubscribe(element, x) {
+        $.ajax({
+            type: 'post',
+            url: '/unsubscribe/' + x,
+            data: {
+                type: "subscription"
+            },
+            success: function (response) {
+                element.checked = !element.checked;
+            }
+        });
+    }
 </script>
 
 

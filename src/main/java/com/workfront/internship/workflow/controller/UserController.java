@@ -33,7 +33,7 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private static final String DEFAULT_AVATAR_URL = "images/default/user-avatar.png";
+    private static final String DEFAULT_AVATAR_URL = "/images/default/user-avatar.png";
     private UserService userService;
     private PostService postService;
     private List<AppArea> appAreas;
@@ -152,14 +152,15 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("user");
 
         String url = request.getRequestURL().toString();
-        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+        long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
-        List<Post> postList = postService.getByUserId(id);
+        List<Post> postList = postService.getByUserId(userId);
         modelAndView.addObject(PageAttributes.ALLPOSTS, postList);
 
-        List<AppArea> myAppAreas = userService.getAppAreasById(id);
+        List<AppArea> myAppAreas = userService.getAppAreasById(userId);
         modelAndView.addObject(PageAttributes.MYAPPAREAS, myAppAreas);
-        List<AppArea> allAppAreas = appAreas;
+
+        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
         modelAndView.addObject(PageAttributes.APPAREAS, allAppAreas);
         modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
@@ -203,5 +204,7 @@ public class UserController {
         setAllPosts(modelAndView);
         return modelAndView;
     }
+
+
 
 }

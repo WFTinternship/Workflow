@@ -18,6 +18,9 @@ jQuery("#vcodeajax").click(function () {
             },
             500: function (response) {
                 $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong></div>').fadeIn("slow");
+            },
+            400: function (response) {
+                $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
             }
         }, success: function () {
             jQuery("#afterajaxemail").val(jQuery("#email").val());

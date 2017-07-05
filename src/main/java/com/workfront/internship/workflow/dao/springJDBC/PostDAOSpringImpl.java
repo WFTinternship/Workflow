@@ -265,9 +265,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @param postId   id of the post whose best answer is to be set
-     * @param answerId id of the answer which is the best one for the post
-     * @see PostDAO#setBestAnswer(long, long)
+     * @param postId   id of the post whose likes are to be gotten
+     * @see PostDAO#getLikesNumber(long)
      */
     @Override
     public long getLikesNumber(long postId) {
@@ -283,6 +282,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @see PostDAO#getDislikesNumber(long)
+     * @param postId
+     * @return
+     */
     @Override
     public long getDislikesNumber(long postId) {
         String sql = "SELECT COUNT(user_id) " +
@@ -297,6 +301,10 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @param postId   id of the post whose best answer is to be set
+     * @see PostDAO#setBestAnswer(long, long)
+     */
     @Override
     public void setBestAnswer(long postId, long answerId) {
         String sql = "INSERT INTO best_answer(post_id, answer_id) VALUE (?,?)";
@@ -325,17 +333,12 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#like(long)
-     * @param id of a post which was liked
+     * @see PostDAO#like(long, long)
+     * @param postId  id of a post which was liked
+     * @param userId id of a user which liked the post
      */
     @Override
     public void like(long userId, long postId) {
-//        Post post = getById(postId);
-//        long likesNumber = post.getLikesNumber();
-//        likesNumber += 1;
-//        String sql = "UPDATE post SET likes_number = ? " +
-//                " WHERE post.id = ? ";
-//        jdbcTemplate.update(sql, likesNumber, post.getId());
         String sql = "INSERT INTO  user_post_likes (user_id, post_id) " +
                 "VALUES (?, ?)";
         try {
@@ -347,17 +350,12 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#dislike(long)
-     * @param id of a post which was disliked
+     * @see PostDAO#dislike(long, long)
+     * @param postId  id of a post which was disliked
+     * @param userId id of a user which disliked the post
      */
     @Override
     public void dislike(long userId, long postId) {
-//        Post post = getById(id);
-//        long dislikesNumber = post.getDislikesNumber();
-//        dislikesNumber += 1;
-//        String sql = "UPDATE post SET dislikes_number = ? " +
-//                " WHERE post.id = ? ";
-//        jdbcTemplate.update(sql, dislikesNumber, post.getId());
         String sql = "INSERT INTO  user_post_dislikes (user_id, post_id) " +
                 "VALUES (?, ?)";
         try {

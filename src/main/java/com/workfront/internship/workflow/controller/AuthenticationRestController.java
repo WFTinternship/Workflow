@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthenticationRestController {
 
-    private static final String DEFAULT_AVATAR_URL = "images/default/user-avatar.png";
+    private static final String DEFAULT_AVATAR_URL = "/images/default/user-avatar.png";
 
     private final UserService userService;
 
@@ -34,7 +34,7 @@ public class AuthenticationRestController {
                                  @RequestParam("confirmPass") String confirmPassword) {
 
         if (!password.equals(confirmPassword)) {
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         User user = new User();
