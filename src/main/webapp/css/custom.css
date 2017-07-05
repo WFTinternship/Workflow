@@ -85,12 +85,14 @@ ul.socialicons li a:hover {
 .headernav {
     height: 70px;
     border-bottom: 1px solid #c9cccd;
+    background-color: #212121;
+    box-shadow: inset -2px -1px 20px 0px #675f5f;
 }
 
 
 .content {
-    background-color: #ecf0f1;
-    border-top: solid 1px #e0e4e5;
+    background-color: #ddd;
+    border-top: solid 1px #d4dbe0;
 }
 
 .selecttopic {
@@ -348,6 +350,13 @@ ul.cats .badge {
 
 }
 
+.username {
+
+    font-size: 14px;
+    color: #363838;
+    font-family: 'Open Sans Light', sans-serif;
+
+}
 
 .sidebarblock .blocktxt .smal {
     font-size: 12px;
@@ -467,6 +476,11 @@ td.chbox {
     border-top: solid 1px #f1f1f1;
     margin-top: 12px;
     padding-top: 7px;
+    font-size: 23px;
+    text-align: center;
+}
+i.fa.fa-check.green {
+    color: #19bd9b;
 }
 
 .post h2 {

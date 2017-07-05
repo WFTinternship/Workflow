@@ -93,22 +93,22 @@
         </div>
     </div>
 
-    <!-- Slider -->
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <ul>
-                <!-- SLIDE  -->
-                <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
-                    <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
-                         data-bgposition="left top"
-                         data-bgrepeat="no-repeat">
-                    <!-- LAYERS -->
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- //Slider -->
+    <%--<!-- Slider -->--%>
+    <%--<div class="tp-banner-container">--%>
+        <%--<div class="tp-banner">--%>
+            <%--<ul>--%>
+                <%--<!-- SLIDE  -->--%>
+                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+                    <%--<!-- MAIN IMAGE -->--%>
+                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+                         <%--data-bgposition="left top"--%>
+                         <%--data-bgrepeat="no-repeat">--%>
+                    <%--<!-- LAYERS -->--%>
+                <%--</li>--%>
+            <%--</ul>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<!-- //Slider -->--%>
 
 
     <div class="headernav">
@@ -217,7 +217,7 @@
                                     </a>
                                     <div class="status green">&nbsp;</div>
                                 </div>
-
+                                <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
                                 <div class="icons">
                                     <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
                                         src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
@@ -226,6 +226,13 @@
                                 </div>
                             </div>
                             <div class="posttext pull-left">
+                                <div class="edit-post">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+
+                                    <span>
+                                        Edit
+                                    </span>
+                                </div>
                                 <h2>${post.title}</h2>
                                 <p>${post.content}</p>
                             </div>
@@ -275,7 +282,7 @@
                                                placeholder="Comment"
                                                name="content">
                                     </div>
-                                    <button type="submit" class="btn btn-default">Add</button>
+                                    <button type="submit" class="btn btn-default" onclick="">Add</button>
                                 </form>
                             </c:if>
 
@@ -320,7 +327,7 @@
 
                                 <div class="likeblock pull-left">
                                     <span onclick="insert_like(${answer.id})" id="like" class="up">
-                                        <i class="fa fa-thumbs-o-up"></i>
+                                        <i class="fa fa-thumbs-o-up" id="likeColor${answer.id}"></i>
                                         <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
                                     <span onclick="insert_dislike(${answer.id})" id="dislike" class="down">
@@ -392,12 +399,8 @@
                                             <img src="${user.avatarURL}" alt="" width="37" height="37"/>
                                             <div class="status red">&nbsp;</div>
                                         </div>
-
                                         <div class="icons">
-                                            <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                                src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                                src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                                src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
+                                            <i class="fa fa-check" id="tickColor" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                     <div class="posttext pull-left">
@@ -586,6 +589,8 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Custom -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>
 
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
@@ -620,7 +625,10 @@
             },
             success: function (response) {
                 var likeCnt = "likeCnt" + x;
+                var likeColor = "likeColor" + x;
                 $('#' + likeCnt).html(response);
+                $('#'+likeColor).addClass('fa-thumbs-up');
+                $('#'+likeColor).removeClass('fa-thumbs-o-up');
             }
         });
     }

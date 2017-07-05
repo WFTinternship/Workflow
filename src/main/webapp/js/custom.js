@@ -32,3 +32,34 @@ jQuery("#vcodeajax").click(function () {
     });
 });
 
+$( document ).ready(function() {
+    $(".edit-post").on("click", function(){
+        $(this).removeClass('edit-post');
+        $(this).addClass('save-post');
+        $(this).html('<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Save</span>');
+        var editableInput = $("<input class='form-control editable edit-title' name='newTitle'/>");
+        var editableText = $("<textarea class='form-control editable edit-content' rows='5' name='newContent' />");
+        var Title = $(this).closest(".posttext").children('h2').text();
+        var Content = $(this).closest(".posttext").children('p').text();
+        $(this).parent().children("h2").replaceWith(editableInput);
+        $(this).parent().children("p").replaceWith(editableText);
+        $('.edit-title').val(Title);
+        $('.edit-content').val(Content);
+
+    });
+    $(".save-post").on("click", function(){
+        $(this).addClass('edit-post');
+        $(this).removeClass('save-post');
+        $(this).html('<i class="fa fa-pencil-square-o" aria-hidden="true"></i><span>Edit</span>');
+        var confirmTitle= $("<h2 id='confirm-title'></h2>");
+        var confirmContent = $("<p id='confirm-content'></p>");
+        var confirmTitleValue = $(this).closest(".posttext").children('.edit-title').val();
+        var confirmContentValue = $(this).closest(".posttext").children('.edit-content').val();
+        $(this).closest(".edit-title").replaceWith(confirmTitle);
+        $(this).closest(".edit-content").replaceWith(confirmContent);
+        $('#confirm-title').val(confirmTitleValue);
+        $('#confirm-content').val(confirmContentValue);
+
+    });
+});
+

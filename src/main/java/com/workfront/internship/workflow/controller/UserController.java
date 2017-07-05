@@ -174,7 +174,7 @@ public class UserController {
         modelAndView.addObject(PageAttributes.APPAREAS, allAppAreas);
         modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
                 ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-        modelAndView.addObject(PageAttributes.PROFILEOWNERID, id);
+        modelAndView.addObject(PageAttributes.PROFILEOWNERID, userId);
         return modelAndView;
     }
 

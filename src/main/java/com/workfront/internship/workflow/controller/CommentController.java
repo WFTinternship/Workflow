@@ -74,10 +74,15 @@ public class CommentController {
         } catch (RuntimeException e) {
 
         }
+
         List<Post> answers;
+        List<Post> allPosts;
         if (post.getPost() == null) {
 
             answers = postService.getAnswersByPostId(postId);
+
+            allPosts = new ArrayList<>(answers);
+            allPosts.add(0, post);
 
             comments = commentService.getByPostId(postId);
             request.setAttribute(PageAttributes.POSTCOMMENTS, comments);
@@ -85,6 +90,9 @@ public class CommentController {
             Post parentPost = post.getPost();
             request.setAttribute(PageAttributes.POST, parentPost);
             answers = postService.getAnswersByPostId(parentPost.getId());
+
+            allPosts = new ArrayList<>(answers);
+            allPosts.add(0, parentPost);
 
             List<Comment> postComments = commentService.getByPostId(parentPost.getId());
             request.setAttribute(PageAttributes.POSTCOMMENTS, postComments);
@@ -97,6 +105,9 @@ public class CommentController {
             request.setAttribute(PageAttributes.ANSWERCOMMENTS, answerComments);
         }
         request.setAttribute(PageAttributes.ANSWERS, answers);
+
+        request.setAttribute(PageAttributes.NUMOFLIKES, ControllerUtils.getNumberOfLikes(allPosts, postService));
+        request.setAttribute(PageAttributes.NUMOFDISLIKES, ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 

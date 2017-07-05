@@ -54,22 +54,22 @@
 </head>
 <body>
 <div class="container-fluid">
-    <!-- Slider -->
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <ul>
-                <!-- SLIDE  -->
-                <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
-                    <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
-                         data-bgposition="left top"
-                         data-bgrepeat="no-repeat">
-                    <!-- LAYERS -->
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- //Slider -->
+    <%--<!-- Slider -->--%>
+    <%--<div class="tp-banner-container">--%>
+        <%--<div class="tp-banner">--%>
+            <%--<ul>--%>
+                <%--<!-- SLIDE  -->--%>
+                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+                    <%--<!-- MAIN IMAGE -->--%>
+                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+                         <%--data-bgposition="left top"--%>
+                         <%--data-bgrepeat="no-repeat">--%>
+                    <%--<!-- LAYERS -->--%>
+                <%--</li>--%>
+            <%--</ul>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<!-- //Slider -->--%>
 
     <div class="headernav">
         <div class="container">
@@ -463,6 +463,24 @@
             },
             success: function (response) {
                 element.checked = !element.checked;
+            }
+        });
+    }
+</script>
+
+
+<script>
+    function addComment(x) {
+        $.ajax({
+            type: 'post',
+            url: '/new-comment/' + x,
+            data: {
+                type: "comment"
+            },
+            success: function (response) {
+                document.getElementById("all_comments").innerHTML=response+document.getElementById("all_comments").innerHTML;
+                document.getElementById("comment").value="";
+                document.getElementById("username").value="";
             }
         });
     }
