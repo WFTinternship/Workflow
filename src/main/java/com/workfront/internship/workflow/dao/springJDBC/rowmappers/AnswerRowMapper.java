@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by nane on 6/16/17.
+ * Created by nane on 6/16/17
  */
 public class AnswerRowMapper implements RowMapper {
     @Override

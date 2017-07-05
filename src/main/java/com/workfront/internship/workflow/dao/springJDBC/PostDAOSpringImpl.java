@@ -85,7 +85,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     public List<Post> getAll() {
         String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_name, post_time, title, content, likes_number, dislikes_number  " +
+                " apparea.team_name, post_time, title, content " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -189,12 +189,22 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public Post getById(long id) {
-        String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
-                " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
-                "apparea.description,  apparea.team_name, post_time, title, content, likes_number, dislikes_number  " +
+        String sql = "SELECT post.id, post.user_id, user.first_name, user.last_name, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, post.apparea_id, apparea.name, " +
+                " apparea.description,  apparea.team_name, post.post_time, post.title, post.content, " +
+                " PARENT.id AS parentId, PARENT.user_id AS parentUserId, " +
+                " PARENT_USER.first_name AS parentUserFirstName, PARENT_USER.last_name AS parentUserLastName, " +
+                " PARENT_USER.email AS parentUserEmail, PARENT_USER.passcode AS parentUserPasscode, " +
+                " PARENT_USER.avatar_url AS parentUserAvatar, PARENT_USER.rating AS parentUserRating, " +
+                " PARENT.apparea_id AS parentAppAreaId, " +
+                " PARENT.post_time AS parentTime, " +
+                " PARENT.title AS parentTitle, PARENT.content AS parentContent " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " LEFT JOIN post AS PARENT on post.post_id = PARENT.id " +
+                " LEFT JOIN user AS PARENT_USER ON PARENT.user_id = PARENT_USER.id " +
+                " LEFT JOIN apparea AS PARENT_APPAREA ON PARENT.apparea_id = PARENT_APPAREA.id " +
                 " WHERE post.id = ?";
         try {
             return (Post) jdbcTemplate.queryForObject(sql, new Object[]{id},

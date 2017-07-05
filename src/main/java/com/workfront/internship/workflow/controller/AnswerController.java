@@ -2,9 +2,10 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class AnswerController {
 
     private List<AppArea> appAreas;
     private PostService postService;
+    private CommentService commentService;
     private Post post;
     private List<Post> answers;
     private List<Post> posts;
@@ -39,10 +41,11 @@ public class AnswerController {
     }
 
     @Autowired
-    public AnswerController(PostService postService) {
+    public AnswerController(PostService postService, CommentService commentService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         post = new Post();
+        this.commentService = commentService;
     }
 
     @RequestMapping(value = {"/new-answer/*"}, method = RequestMethod.POST)
@@ -57,7 +60,7 @@ public class AnswerController {
 
         String content = request.getParameter("reply");
 
-        if (StringUtils.isEmpty(content)){
+        if (StringUtils.isEmpty(content)) {
             request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
             setAllPosts(modelAndView);
             return modelAndView;
@@ -88,7 +91,7 @@ public class AnswerController {
         List<User> users = postService.getNotificationRecipients(postId);
         try {
             postService.notifyUsers(users, post);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
 
         }
 
@@ -98,11 +101,20 @@ public class AnswerController {
         List<Post> allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
 
+        List<Comment> comments = commentService.getByPostId(postId);
+        request.setAttribute(PageAttributes.POSTCOMMENTS, comments);
+
+        List<Post> answers = postService.getAnswersByPostId(postId);
+        List<List<Comment>> answerComments = new ArrayList<>();
+        for (Post postAnswer : answers) {
+            answerComments.add(commentService.getByPostId(postAnswer.getId()));
+        }
+        request.setAttribute(PageAttributes.ANSWERCOMMENTS, answerComments);
+
         request.setAttribute(PageAttributes.NUMOFLIKES, ControllerUtils.getNumberOfLikes(allPosts, postService));
         request.setAttribute(PageAttributes.NUMOFDISLIKES, ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         return modelAndView;
-
     }
 
     private void setAllPosts(ModelAndView modelAndView) {

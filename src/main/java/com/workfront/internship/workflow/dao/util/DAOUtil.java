@@ -2,10 +2,9 @@ package com.workfront.internship.workflow.dao.util;
 
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
+import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
 import com.workfront.internship.workflow.domain.User;
@@ -93,8 +92,37 @@ public class DAOUtil {
             post.setPostTime(rs.getTimestamp(PostDAO.postTime));
             post.setTitle(rs.getString(PostDAO.postTitle));
             post.setContent(rs.getString(PostDAO.postContent));
-            post.setLikesNumber(rs.getLong(PostDAO.likesNumber));
-            post.setDislikesNumber(rs.getLong(PostDAO.dislikesNumber));
+
+            try {
+                Post parentPost = new Post();
+                parentPost.setId(rs.getLong(PostDAO.parentId));
+
+                if (parentPost.getId() == 0){
+                    post.setPost(null);
+                    return post;
+                }
+
+                User parentUser = new User();
+                parentUser.setId(rs.getLong(PostDAO.parentUserId));
+                parentUser.setFirstName(rs.getString(PostDAO.parentUserFirstName));
+                parentUser.setLastName(rs.getString(PostDAO.parentUserLastName));
+                parentUser.setEmail(rs.getString(PostDAO.parentUserEmail));
+                parentUser.setPassword(rs.getString(PostDAO.parentUserPasscode));
+                parentUser.setAvatarURL(rs.getString(PostDAO.parentUserAvatar));
+                parentUser.setRating(rs.getInt(PostDAO.parentUserRating));
+                parentPost.setUser(parentUser);
+
+                AppArea parentAppArea = AppArea.getById(rs.getLong(PostDAO.parentAppAreaId));
+                parentPost.setAppArea(parentAppArea);
+
+                parentPost.setPostTime(rs.getTimestamp(PostDAO.parentTime));
+                parentPost.setContent(rs.getString(PostDAO.parentContent));
+                parentPost.setTitle(rs.getString(PostDAO.parentTitle));
+
+                post.setPost(parentPost);
+            } catch (SQLException e) {
+                post.setPost(null);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,8 +139,7 @@ public class DAOUtil {
         try {
             answer.setId(rs.getLong(PostDAO.id));
 
-            AppArea appArea = AppArea.getById(
-                    rs.getLong(PostDAO.appAreaId));
+            AppArea appArea = AppArea.getById(rs.getLong(PostDAO.appAreaId));
             answer.setAppArea(appArea);
 
             User user = UserDAOImpl.fromResultSet(rs);

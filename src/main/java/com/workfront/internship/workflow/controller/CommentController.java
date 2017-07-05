@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.domain.AppArea;
 import com.workfront.internship.workflow.domain.Comment;
 import com.workfront.internship.workflow.domain.Post;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,16 +27,17 @@ import java.util.List;
 @Controller
 public class CommentController {
     private final PostService postService;
-    private List<Comment> comments;
     private final CommentService commentService;
+    private List<Comment> comments;
+    private List<AppArea> appAreas;
 
     @Autowired
     public CommentController(CommentService commentService, PostService postService) {
         this.commentService = commentService;
         this.postService = postService;
         comments = new ArrayList<>();
+        appAreas = Arrays.asList(AppArea.values());
     }
-
 
     @RequestMapping(value = {"/new-comment/*"}, method = RequestMethod.POST)
     public ModelAndView newComment(HttpServletRequest request) {
@@ -66,13 +68,40 @@ public class CommentController {
                     "Sorry, your comment was not added. Please try again");
         }
         List<User> users = postService.getNotificationRecipients(postId);
+
         try {
             postService.notifyUsers(users, post);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
 
         }
-        comments = commentService.getByPostId(postId);
-        request.setAttribute("comments", comments);
+        List<Post> answers;
+        if (post.getPost() == null) {
+
+            answers = postService.getAnswersByPostId(postId);
+
+            comments = commentService.getByPostId(postId);
+            request.setAttribute(PageAttributes.POSTCOMMENTS, comments);
+        } else {
+            Post parentPost = post.getPost();
+            request.setAttribute(PageAttributes.POST, parentPost);
+            answers = postService.getAnswersByPostId(parentPost.getId());
+
+            List<Comment> postComments = commentService.getByPostId(parentPost.getId());
+            request.setAttribute(PageAttributes.POSTCOMMENTS, postComments);
+
+            List<List<Comment>> answerComments = new ArrayList<>();
+
+            for (Post postAnswer : answers) {
+                answerComments.add(commentService.getByPostId(postAnswer.getId()));
+            }
+            request.setAttribute(PageAttributes.ANSWERCOMMENTS, answerComments);
+        }
+        request.setAttribute(PageAttributes.ANSWERS, answers);
+
+        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+
+        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 

@@ -187,8 +187,8 @@
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${post.user.avatarURL}" alt=""
-                                             width="37" height="37"/>
+                                       <a href="/users/${post.user.id}"> <img src="${post.user.avatarURL}" alt=""
+                                             width="37" height="37"/> </a>
                                         <div class="status green">&nbsp;</div>
                                     </div>
 

@@ -14,6 +14,7 @@
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILEOWNERID)%>'/>
 
 
 <!DOCTYPE html>
@@ -130,57 +131,58 @@
         <div class="container">
             <div class="row">
 
-                <%--Edit Avatar Place--%>
-                <div class="col-lg-8 col-md-8">
-                    <!-- POST -->
-                    <div class="post">
-                        <form action="/updateAvatar" class="form newtopic" method="post" enctype="multipart/form-data">
-                            <div class="postinfotop">
-                                <h2>Update Profile</h2>
-                            </div>
-                            <!-- acc section -->
-                            <div class="accsection">
-                                <div class="topwrap">
-                                    <div class="userinfo pull-left">
-                                        <div class="avatar">
-                                            <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
-                                                 id="image" alt="" height="45" width="45"/>
-                                            <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
-                                            <%--alt=""/>--%>
-                                        </div>
-                                        <%--<div class="imgsize">60 x 60</div>--%>
-                                        <%--<div>--%>
-                                        <%--<button class="btn">Add</button>--%>
-                                        <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
+                <c:if test="${user.id == profileOwnerId}">
+                    <%--Edit Avatar Place--%>
+                    <div class="col-lg-8 col-md-8">
+                        <!-- POST -->
+                        <div class="post">
+                            <form action="/updateAvatar" class="form newtopic" method="post"
+                                  enctype="multipart/form-data">
+                                <div class="postinfotop">
+                                    <h2>Update Profile</h2>
+                                </div>
+                                <!-- acc section -->
+                                <div class="accsection">
+                                    <div class="topwrap">
+                                        <div class="userinfo pull-left">
+                                            <div class="avatar">
+                                                <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
+                                                     id="image" alt="" height="45" width="45"/>
+                                                    <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
+                                                    <%--alt=""/>--%>
+                                            </div>
+                                                <%--<div class="imgsize">60 x 60</div>--%>
+                                                <%--<div>--%>
+                                                <%--<button class="btn">Add</button>--%>
+                                                <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
 
-                                        <%--</div>--%>
-                                        <div class="half-width">
-                                            <input type="file" name="avatar" id="avatar" class="hide"/>
-                                            <label for="avatar" class="btn">Add</label><br/>
+                                                <%--</div>--%>
+                                            <div class="half-width">
+                                                <input type="file" name="avatar" id="avatar" class="hide"/>
+                                                <label for="avatar" class="btn">Add</label><br/>
+                                            </div>
                                         </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div><!-- acc section END -->
+
+                                <div class="postinfobot">
+
+
+                                    <div class="pull-right postreply">
+                                        <div class="pull-left">
+                                            <input class="btn btn-primary" type="submit" value="Update Avatar"/>
+                                        </div>
+                                        <div class="clearfix"></div>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
-                            </div><!-- acc section END -->
+                            </form>
 
-                            <div class="postinfobot">
-
-
-                                <div class="pull-right postreply">
-                                    <div class="pull-left">
-                                        <input class="btn btn-primary" type="submit" value="Update Avatar"/>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </form>
-
+                        </div>
                     </div>
-
-
-                </div>
-                <%--Edit Avatar Place--%>
+                    <%--Edit Avatar Place--%>
+                </c:if>
 
                 <div class="col-lg-8 col-md-8">
                     <!-- POST -->

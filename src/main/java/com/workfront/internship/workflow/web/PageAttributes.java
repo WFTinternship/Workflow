@@ -24,4 +24,7 @@ public interface PageAttributes {
     String NOTE = "note";
     String NUMOFLIKES = "numberOfLikes";
     String NUMOFDISLIKES = "numberOfDislikes";
+    String ANSWERCOMMENTS = "answerComments";
+    String PROFILEOWNERID = "ownerId";
+
 }
