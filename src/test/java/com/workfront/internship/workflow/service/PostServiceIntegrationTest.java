@@ -431,7 +431,7 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
         assertNull(expectedAnswer);
 
         userService.deleteById(post.getId());
-        userService.deleteById(answer.getId()); 
+        userService.deleteById(answer.getId());
     }
 
     /**

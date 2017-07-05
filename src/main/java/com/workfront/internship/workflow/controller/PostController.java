@@ -82,6 +82,7 @@ public class PostController {
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
                         ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
                 .addObject(PageAttributes.ALLPOSTS, posts);
 
@@ -125,6 +126,7 @@ public class PostController {
         List<Post> posts = postService.getAll();
 
         modelAndView
+                .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
                 .addObject(PageAttributes.ALLPOSTS, posts);
 
@@ -141,6 +143,7 @@ public class PostController {
         List<Post> posts = postService.getAll();
 
         modelAndView
+                .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
                 .addObject(PageAttributes.ALLPOSTS, posts);
         return modelAndView;

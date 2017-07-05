@@ -220,8 +220,20 @@ public class UserController {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry your avatar was not updated");
         }
-        List<Post> posts = postService.getAll();
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+        List<Post> posts = postService.getByUserId(user.getId());
+
+        List<AppArea> myAppAreas = userService.getAppAreasById(user.getId());
+
+        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
+        allAppAreas.removeAll(myAppAreas);
+
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.PROFILEOWNERID, user.getId());
         return modelAndView;
     }
 }
