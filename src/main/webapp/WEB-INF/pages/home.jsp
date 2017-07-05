@@ -62,7 +62,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <span id="form-img"><img
-                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            src="/images/logo.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
                 <form action="/login/new-post" method="post">
@@ -101,8 +101,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                        height=60px width=60px/></a></div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
                         <form action="#" method="post" class="form">
@@ -357,8 +357,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""/></a>
-                </div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">

@@ -89,6 +89,9 @@ ul.socialicons li a:hover {
     box-shadow: inset -2px -1px 20px 0px #675f5f;
 }
 
+.logo {
+    vertical-align: middle;
+}
 
 .content {
     background-color: #ddd;
