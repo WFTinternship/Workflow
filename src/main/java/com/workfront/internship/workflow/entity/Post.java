@@ -21,8 +21,7 @@ public class Post {
     private Timestamp postTime;
     private String title;
     private String content;
-    private long likesNumber;
-    private long dislikesNumber;
+
 
 
     private List<Comment> commentList;
@@ -110,24 +109,6 @@ public class Post {
 
     public Post setCorrect(boolean correct) {
         isCorrect = correct;
-        return this;
-    }
-
-    public long getLikesNumber() {
-        return likesNumber;
-    }
-
-    public Post setLikesNumber(long likesNumber) {
-        this.likesNumber = likesNumber;
-        return this;
-    }
-
-    public long getDislikesNumber() {
-        return dislikesNumber;
-    }
-
-    public Post setDislikesNumber(long dislikesNumber) {
-        this.dislikesNumber = dislikesNumber;
         return this;
     }
 

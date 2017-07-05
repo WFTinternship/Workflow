@@ -58,8 +58,6 @@ CREATE TABLE IF NOT EXISTS
   title           VARCHAR(45)               NOT NULL,
   content         VARCHAR(1000)             NOT NULL,
   apparea_id      BIGINT(25)                NOT NULL,
-  likes_number    BIGINT(25)                         DEFAULT 0,
-  dislikes_number BIGINT(25)                         DEFAULT 0,
   INDEX fk_userId_idx (user_id ASC),
   INDEX fk_appareaId_idx (apparea_id ASC),
   PRIMARY KEY (id),
