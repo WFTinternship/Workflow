@@ -56,13 +56,16 @@ public class AnswerController {
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         post = postService.getById(postId);
-        request.setAttribute(PageAttributes.POST, post);
 
         String content = request.getParameter("reply");
 
         if (StringUtils.isEmpty(content)) {
             request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
-            setAllPosts(modelAndView);
+
+            posts = postService.getAll();
+            modelAndView
+                    .addObject(PageAttributes.APPAREAS, appAreas)
+                    .addObject(PageAttributes.ALLPOSTS, posts);
             return modelAndView;
         }
 
@@ -106,22 +109,22 @@ public class AnswerController {
 
         List<Post> answers = postService.getAnswersByPostId(postId);
         List<List<Comment>> answerComments = new ArrayList<>();
+
         for (Post postAnswer : answers) {
             answerComments.add(commentService.getByPostId(postAnswer.getId()));
         }
-        request.setAttribute(PageAttributes.ANSWERCOMMENTS, answerComments);
 
-        request.setAttribute(PageAttributes.NUMOFLIKES, ControllerUtils.getNumberOfLikes(allPosts, postService));
-        request.setAttribute(PageAttributes.NUMOFDISLIKES, ControllerUtils.getNumberOfDislikes(allPosts, postService));
+        modelAndView
+                .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.ANSWERCOMMENTS, answerComments)
+                .addObject(PageAttributes.NUMOFLIKES,
+                        ControllerUtils.getNumberOfLikes(allPosts, postService))
+                .addObject(PageAttributes.NUMOFDISLIKES,
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         return modelAndView;
     }
 
-    private void setAllPosts(ModelAndView modelAndView) {
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        posts = postService.getAll();
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
-    }
 
    /* @RequestMapping(value = {"/appArea*//**//*", "home"}, method = RequestMethod.GET)
     public ModelAndView editAnswer(HttpServletRequest request, HttpServletResponse response) {

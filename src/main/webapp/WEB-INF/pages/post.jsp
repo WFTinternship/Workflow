@@ -95,18 +95,18 @@
 
     <%--<!-- Slider -->--%>
     <%--<div class="tp-banner-container">--%>
-        <%--<div class="tp-banner">--%>
-            <%--<ul>--%>
-                <%--<!-- SLIDE  -->--%>
-                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
-                    <%--<!-- MAIN IMAGE -->--%>
-                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
-                         <%--data-bgposition="left top"--%>
-                         <%--data-bgrepeat="no-repeat">--%>
-                    <%--<!-- LAYERS -->--%>
-                <%--</li>--%>
-            <%--</ul>--%>
-        <%--</div>--%>
+    <%--<div class="tp-banner">--%>
+    <%--<ul>--%>
+    <%--<!-- SLIDE  -->--%>
+    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+    <%--<!-- MAIN IMAGE -->--%>
+    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+    <%--data-bgposition="left top"--%>
+    <%--data-bgrepeat="no-repeat">--%>
+    <%--<!-- LAYERS -->--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
     <%--</div>--%>
     <%--<!-- //Slider -->--%>
 
@@ -309,13 +309,12 @@
                                             <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
                                         </a>
                                         <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
+                                        <c:if test="${user.id == post.user.id}">
+                                            <div class="icons">
+                                                <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
+                                                   id="tickColor${answer.id}" aria-hidden="true"></i>
+                                            </div>
+                                        </c:if>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -398,9 +397,6 @@
                                         <div class="avatar">
                                             <img src="${user.avatarURL}" alt="" width="37" height="37"/>
                                             <div class="status red">&nbsp;</div>
-                                        </div>
-                                        <div class="icons">
-                                            <i class="fa fa-check" id="tickColor" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                     <div class="posttext pull-left">
@@ -627,8 +623,8 @@
                 var likeCnt = "likeCnt" + x;
                 var likeColor = "likeColor" + x;
                 $('#' + likeCnt).html(response);
-                $('#'+likeColor).addClass('fa-thumbs-up');
-                $('#'+likeColor).removeClass('fa-thumbs-o-up');
+                $('#' + likeColor).addClass('fa-thumbs-up');
+                $('#' + likeColor).removeClass('fa-thumbs-o-up');
             }
         });
     }
@@ -644,8 +640,47 @@
                 var dislikeCnt = "dislikeCnt" + x;
                 $('#' + dislikeCnt).html(response);
             }
+
         });
     }
+
+    function bestAnswer(x) {
+        var tickColor = "tickColor" + x;
+        if($('#' + tickColor).hasClass('greenTick')){
+            removeBestAnswer( x);
+        } else {
+            setBestAnswer(x);
+        }
+    }
+
+    function setBestAnswer(x) {
+        $.ajax({
+            type: 'post',
+            url: '/setBestAnswer/' + x,
+            data: {
+                type: "like"
+            },
+            success: function (response) {
+                var tickColor = "tickColor" + x;
+                $('#' + tickColor).addClass('greenTick');
+            }
+        });
+    }
+
+    function removeBestAnswer(x) {
+        $.ajax({
+            type: 'post',
+            url: '/removeBestAnswer/' + x,
+            data: {
+                type: "like"
+            },
+            success: function (response) {
+                var tickColor = "tickColor" + x;
+                $('#' + tickColor).removeClass('greenTick');
+            }
+        });
+    }
+
 </script>
 
 <!-- END REVOLUTION SLIDER -->

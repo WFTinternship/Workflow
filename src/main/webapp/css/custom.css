@@ -479,8 +479,12 @@ td.chbox {
     font-size: 23px;
     text-align: center;
 }
-i.fa.fa-check.green {
+i.fa-check.green {
     color: #19bd9b;
+}
+
+.greenTick {
+    color: #008000;
 }
 
 .post h2 {

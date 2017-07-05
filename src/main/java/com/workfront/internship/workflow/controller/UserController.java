@@ -51,19 +51,23 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        modelAndView
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
-        setAllPosts(modelAndView);
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        List<Post> posts = postService.getAll();
+
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 
@@ -71,9 +75,11 @@ public class UserController {
     public ModelAndView loginAndRedirect(HttpServletRequest request,
                                          HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
+
         if (!modelAndView.getViewName().equals("login")) {
             modelAndView.setViewName("new_post");
         }
+
         return modelAndView;
     }
 
@@ -92,7 +98,6 @@ public class UserController {
         String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
 
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 
         if (!code.equals(verificationCode)) {
             userService.deleteById(user.getId());
@@ -100,7 +105,9 @@ public class UserController {
                     "Sorry, the code is invalid.");
             return modelAndView;
         }
-        modelAndView.addObject(PageAttributes.MESSAGE,
+        modelAndView
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.MESSAGE,
                 "Congratulations! Your sign up was successful!");
         return modelAndView;
     }
@@ -121,14 +128,18 @@ public class UserController {
 
             session.setAttribute(PageAttributes.USER, user);
             session.setAttribute(PageAttributes.AVATAR, avatar);
-            request.setAttribute(PageAttributes.USER, user);
-            request.setAttribute(PageAttributes.AVATAR, avatar);
+
+            modelAndView
+                    .addObject(PageAttributes.USER, user)
+                    .addObject(PageAttributes.AVATAR, avatar);
+
             response.setStatus(200);
             modelAndView.setViewName("home");
         } catch (RuntimeException e) {
-            request.setAttribute(PageAttributes.USER, null);
-            request.setAttribute(PageAttributes.MESSAGE,
-                    "The email or password is incorrect. Please try again.");
+            modelAndView
+                    .addObject(PageAttributes.USER, null)
+                    .addObject(PageAttributes.MESSAGE,
+                            "The email or password is incorrect. Please try again.");
             response.setStatus(405);
             modelAndView.setViewName("login");
         }
@@ -141,18 +152,17 @@ public class UserController {
         HttpSession session = request.getSession();
         session.setAttribute(PageAttributes.USER, null);
         session.invalidate();
-        ModelAndView modelAndView = new ModelAndView("home");
-        setAllPosts(modelAndView);
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-        return modelAndView;
-    }
 
-    private void setAllPosts(ModelAndView modelAndView) {
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
+        ModelAndView modelAndView = new ModelAndView("home");
+
         List<Post> posts = postService.getAll();
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/users/*", method = RequestMethod.GET)
@@ -163,18 +173,18 @@ public class UserController {
         long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         List<Post> postList = postService.getByUserId(userId);
-        modelAndView.addObject(PageAttributes.ALLPOSTS, postList);
-
         List<AppArea> myAppAreas = userService.getAppAreasById(userId);
-        modelAndView.addObject(PageAttributes.MYAPPAREAS, myAppAreas);
 
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
-        modelAndView.addObject(PageAttributes.APPAREAS, allAppAreas);
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-        modelAndView.addObject(PageAttributes.PROFILEOWNERID, userId);
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, postList)
+                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.PROFILEOWNERID, userId);
         return modelAndView;
     }
 
@@ -206,14 +216,12 @@ public class UserController {
         }
         try {
             userService.updateAvatar(user);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry your avatar was not updated");
         }
-        setAllPosts(modelAndView);
+        List<Post> posts = postService.getAll();
+        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
         return modelAndView;
     }
-
-
-
 }

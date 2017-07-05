@@ -40,7 +40,7 @@ public class HomeController {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         AppArea[] appAreas = AppArea.values();
         for (AppArea appArea : appAreas) {
             if (appAreaService.getById(appArea.getId()) == null) {
@@ -53,18 +53,15 @@ public class HomeController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("home");
 
-        // getting and passing all posts to home page
         posts = postService.getAll();
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
 
-        // passing all appAreas to home page
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-
-        modelAndView.addObject(PageAttributes.NUMOFANSWERS,
-                ControllerUtils.getNumberOfAnswers(posts, postService));
-
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
         return modelAndView;
     }
@@ -82,13 +79,12 @@ public class HomeController {
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found in " + AppArea.getById(id).getName() + " Application Area.");
         }
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
-
         // pass all appAreas to appAreas page
-        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
-
-        modelAndView.addObject(PageAttributes.POSTS_OF_APPAAREA,
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
         return modelAndView;
     }
