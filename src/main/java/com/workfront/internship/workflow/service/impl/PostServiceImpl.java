@@ -362,6 +362,24 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
+     * @see PostService#removeBestAnswer(long)
+     */
+    @Override
+    public void removeBestAnswer(long answerId) {
+        if (answerId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.removeBestAnswer(answerId);
+        } catch (RuntimeException e) {
+            logger.error("Failed to remove the best answer");
+            throw new ServiceLayerException("Failed to remove the best answer", e);
+        }
+    }
+
+    /**
      * @see PostService#getNotificationRecipients(long)
      */
     @Override

@@ -77,6 +77,11 @@ public class PostRestController {
         String url = request.getRequestURL().toString();
         long answerId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
+        try {
+            postService.removeBestAnswer(answerId);
+        }catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 

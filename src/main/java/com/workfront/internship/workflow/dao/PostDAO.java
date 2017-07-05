@@ -150,6 +150,12 @@ public interface PostDAO {
     void delete(long id);
 
     /**
+     * Removes the answer which was set as best answer.
+     * @param answerId the if of an answer d
+     */
+    void removeBestAnswer(long answerId);
+
+    /**
      * Gets number of answers of the specified postId
      * @param postId of the post which number of answers should get
      */
@@ -170,4 +176,5 @@ public interface PostDAO {
      * @return List of users that need to be notified for the specified post
      */
     List<User> getNotificationRecipients(long postId);
+
 }
