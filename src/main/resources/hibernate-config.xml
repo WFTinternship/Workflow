@@ -15,30 +15,24 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
     <context:annotation-config/>
 
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="annotatedClasses">
-            <list>
-                <value>com.workfront.internship.workflow.entity.User</value>
-                <value>com.workfront.internship.workflow.entity.Post</value>
-                <value>com.workfront.internship.workflow.entity.Comment</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-            </props>
+        <property name="packagesToScan" value="com.workfront.internship.workflow"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database" value="MYSQL"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect"/>
+            </bean>
         </property>
     </bean>
 
     <tx:annotation-driven proxy-target-class="true"
                           transaction-manager="hibernateTransactionManager" />
 
-    <bean id="hibernateTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    <bean id="hibernateTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="dataSource" ref="dataSource" />
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
 </beans>

@@ -29,14 +29,14 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     public long add(Post post) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        long id = 0;
         try {
             entityManager.persist(post);
+            entityManager.flush();
         } catch (HibernateException e) {
             LOGGER.error("Hibernate Exception");
             throw new RuntimeException(e);
         }
-        return id;
+        return post.getId();
     }
 
     /**
@@ -44,6 +44,11 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getAll() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        entityManager
+//                .createQuery("select a from")
+//                .getResultList();
+
         return null;
     }
 
