@@ -1,13 +1,11 @@
 package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
-import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.util.DaoTestUtil;
@@ -19,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

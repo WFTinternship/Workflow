@@ -1,15 +1,14 @@
 package com.workfront.internship.workflow.entity;
 
-import com.workfront.internship.workflow.domain.AppArea;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Created by nane on 7/5/17
+ * Created by nane on 5/26/17
  */
+
 @Entity
 public class Post {
 
@@ -21,8 +20,6 @@ public class Post {
     private Timestamp postTime;
     private String title;
     private String content;
-
-
 
     private List<Comment> commentList;
     private boolean isCorrect;
@@ -121,7 +118,6 @@ public class Post {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
-
 
     public boolean isValid() {
         return user != null

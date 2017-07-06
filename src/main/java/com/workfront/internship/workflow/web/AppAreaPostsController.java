@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.web;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.service.PostService;
 
 import javax.servlet.ServletException;

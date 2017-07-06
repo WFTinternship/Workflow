@@ -1,13 +1,11 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.util.DBHelper;
+import com.workfront.internship.workflow.entity.AppArea;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

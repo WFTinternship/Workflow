@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.controller;
 
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;

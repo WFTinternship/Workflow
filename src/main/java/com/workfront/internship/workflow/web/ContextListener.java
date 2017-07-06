@@ -1,11 +1,7 @@
 package com.workfront.internship.workflow.web;
 
-import com.workfront.internship.workflow.dao.AppAreaDAO;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
-import com.workfront.internship.workflow.dao.springJDBC.AppAreaDAOSpringImpl;
-import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.service.AppAreaService;
-import com.workfront.internship.workflow.service.impl.AppAreaServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

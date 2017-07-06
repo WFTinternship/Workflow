@@ -1,7 +1,10 @@
-package com.workfront.internship.workflow.domain;
+package com.workfront.internship.workflow.bean;
 
-
+/**
+ * Created by nane on 7/5/17
+ */
 public class User {
+
     private long id;
     private String firstName;
     private String lastName;

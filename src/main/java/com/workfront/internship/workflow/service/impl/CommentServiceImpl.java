@@ -2,7 +2,7 @@ package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
-import com.workfront.internship.workflow.domain.Comment;
+import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.CommentService;

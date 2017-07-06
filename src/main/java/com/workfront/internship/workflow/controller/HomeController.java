@@ -1,8 +1,8 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;

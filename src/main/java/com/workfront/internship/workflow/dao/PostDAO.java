@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.Post;
+import com.workfront.internship.workflow.entity.User;
 
 import java.util.List;
 

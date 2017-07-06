@@ -1,10 +1,8 @@
 package com.workfront.internship.workflow.service;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.User;
-import org.springframework.web.multipart.MultipartFile;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 
-import java.io.IOException;
 import java.util.List;
 
 

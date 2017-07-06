@@ -1,10 +1,8 @@
 package com.workfront.internship.workflow.entity;
 
+
 import javax.persistence.*;
 
-/**
- * Created by nane on 7/5/17
- */
 @Entity(name = "user")
 public class User {
 

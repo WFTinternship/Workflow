@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.service;
 
-import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.entity.AppArea;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 

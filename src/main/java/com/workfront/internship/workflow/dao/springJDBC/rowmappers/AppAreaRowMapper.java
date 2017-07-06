@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.dao.springJDBC.rowmappers;
 
-import com.workfront.internship.workflow.domain.AppArea;
+import com.workfront.internship.workflow.entity.AppArea;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

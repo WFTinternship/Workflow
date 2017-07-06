@@ -1,12 +1,15 @@
-package com.workfront.internship.workflow.domain;
+package com.workfront.internship.workflow.bean;
+
+import com.workfront.internship.workflow.entity.AppArea;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Created by nane on 5/26/17
+ * Created by nane on 7/5/17
  */
 public class Post {
+
     private long id;
     private Post post;
     private User user;
@@ -14,8 +17,7 @@ public class Post {
     private Timestamp postTime;
     private String title;
     private String content;
-    private long likesNumber;
-    private long dislikesNumber;
+
 
 
     private List<Comment> commentList;
@@ -106,24 +108,6 @@ public class Post {
         return this;
     }
 
-    public long getLikesNumber() {
-        return likesNumber;
-    }
-
-    public Post setLikesNumber(long likesNumber) {
-        this.likesNumber = likesNumber;
-        return this;
-    }
-
-    public long getDislikesNumber() {
-        return dislikesNumber;
-    }
-
-    public Post setDislikesNumber(long dislikesNumber) {
-        this.dislikesNumber = dislikesNumber;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         return this == o || (o instanceof Post) && id == ((Post) o).id;
@@ -133,6 +117,7 @@ public class Post {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
 
     public boolean isValid() {
         return user != null

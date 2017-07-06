@@ -4,10 +4,10 @@ import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Comment;
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.entity.Post;
+import com.workfront.internship.workflow.entity.User;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -149,8 +149,6 @@ public class DAOUtil {
             answer.setPostTime(rs.getTimestamp(PostDAO.answerTime));
             answer.setTitle(rs.getString(PostDAO.answerTitle));
             answer.setContent(rs.getString(PostDAO.answerContent));
-            answer.setLikesNumber(rs.getLong(PostDAO.likesNumber));
-            answer.setDislikesNumber(rs.getLong(PostDAO.dislikesNumber));
 
         } catch (SQLException e) {
             e.printStackTrace();

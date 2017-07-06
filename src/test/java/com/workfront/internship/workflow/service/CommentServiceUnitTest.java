@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.CommentDAOSpringImpl;
-import com.workfront.internship.workflow.domain.Comment;
+import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.impl.CommentServiceImpl;
