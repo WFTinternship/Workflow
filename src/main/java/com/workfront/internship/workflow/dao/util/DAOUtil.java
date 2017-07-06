@@ -33,7 +33,7 @@ public class DAOUtil {
         try {
             comment.setId(rs.getLong(CommentDAO.id));
 
-            User user = UserDAOImpl.fromResultSet(rs);
+            User user = userFromResultSet(rs);
             user.setId(rs.getLong(UserDAO.id));
             comment.setUser(user);
 
@@ -85,7 +85,7 @@ public class DAOUtil {
             AppArea appArea = AppArea.getById(rs.getLong(PostDAO.appAreaId));
             post.setAppArea(appArea);
 
-            User user = UserDAOImpl.fromResultSet(rs);
+            User user = userFromResultSet(rs);
             user.setId(rs.getLong(PostDAO.userId));
             post.setUser(user);
 
@@ -142,7 +142,7 @@ public class DAOUtil {
             AppArea appArea = AppArea.getById(rs.getLong(PostDAO.appAreaId));
             answer.setAppArea(appArea);
 
-            User user = UserDAOImpl.fromResultSet(rs);
+            User user = userFromResultSet(rs);
             user.setId(rs.getLong(PostDAO.userId));
             answer.setUser(user);
 

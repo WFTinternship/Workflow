@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.entity;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "user")
 public class User {
@@ -21,6 +22,17 @@ public class User {
 
     @Column(name = "passcode")
     private String password;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "user_apparea", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "apparea_id"))
+    private List<AppArea> appAreas;
+
+    @OneToMany(mappedBy = "post")
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "comment")
+    private List<Comment> comments;
 
     @Column(name = "avatar_url")
     private String avatarURL;
@@ -70,6 +82,33 @@ public class User {
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public List<AppArea> getAppAreas() {
+        return appAreas;
+    }
+
+    public User setAppAreas(List<AppArea> appAreas) {
+        this.appAreas = appAreas;
+        return this;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public User setPosts(List<Post> posts) {
+        this.posts = posts;
+        return this;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public User setComments(List<Comment> comments) {
+        this.comments = comments;
         return this;
     }
 
