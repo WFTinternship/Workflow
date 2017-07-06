@@ -1,7 +1,6 @@
 package com.workfront.internship.workflow.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -13,16 +12,37 @@ import java.util.List;
 public class Post {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "post_id", length = 25)
+    @OneToMany(mappedBy = "post")
     private Post post;
+
+    @Column(name = "user_id", length = 25, nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
     private User user;
+
+    @Column(name = "apparea_id", length = 25, nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
     private AppArea appArea;
+
+    @Column(name = "post_time", nullable = false)
     private Timestamp postTime;
+
+    @Column(name = "title", length = 45, nullable = false)
     private String title;
+
+    @Column(name = "content", length = 1000, nullable = false)
     private String content;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Post> answerList;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comment> commentList;
-    private boolean isCorrect;
 
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
@@ -100,13 +120,12 @@ public class Post {
         return this;
     }
 
-    public boolean isCorrect() {
-        return isCorrect;
+    public List<Post> getAnswerList() {
+        return answerList;
     }
 
-    public Post setCorrect(boolean correct) {
-        isCorrect = correct;
-        return this;
+    public void setAnswerList(List<Post> answerList) {
+        this.answerList = answerList;
     }
 
     @Override
