@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -18,8 +19,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-    public PostDAOHibernateImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public PostDAOHibernateImpl(SessionFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     /**
@@ -27,10 +28,10 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public long add(Post post) {
-        Session session = sessionFactory.openSession();
-        long id;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        long id = 0;
         try {
-            id = (Long) session.save(post);
+            entityManager.persist(post);
         } catch (HibernateException e) {
             LOGGER.error("Hibernate Exception");
             throw new RuntimeException(e);
@@ -43,7 +44,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getAll() {
-        Session session = sessionFactory.openSession();
         return null;
     }
 
