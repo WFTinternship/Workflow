@@ -29,14 +29,14 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
      */
     @Override
     public long add(User user) {
-        long id;
-        try {
+        long id=0;
+       /* try {
             Session session = sessionFactory.getCurrentSession();
             id = (long) session.save(user);
         } catch (Exception e) {
             LOGGER.error("Failed to add user");
             throw new DAOException("Failed to add user");
-        }
+        }*/
         return id;
     }
 
