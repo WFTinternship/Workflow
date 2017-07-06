@@ -20,8 +20,8 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);
 
-    public UserDAOHibernateImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public UserDAOHibernateImpl(SessionFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     /**
