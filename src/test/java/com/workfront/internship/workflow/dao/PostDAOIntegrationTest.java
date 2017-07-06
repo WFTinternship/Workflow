@@ -46,7 +46,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
         assertEquals(post.getTitle(), actualPost.getTitle());
         assertEquals(post.getContent(), actualPost.getContent());
         assertEquals(post.getPostTime(), actualPost.getPostTime());
-        assertEquals(post.isCorrect(), actualPost.isCorrect());
     }
 
     @Before

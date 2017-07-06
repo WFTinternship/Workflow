@@ -610,7 +610,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.setLong(1, postId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                users.add(UserDAOImpl.fromResultSet(rs));
+                users.add(DAOUtil.userFromResultSet(rs));
             }
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");

@@ -9,7 +9,9 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -29,15 +31,15 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
      */
     @Override
     public long add(User user) {
-        long id;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            Session session = sessionFactory.getCurrentSession();
-            id = (long) session.save(user);
+            entityManager.persist(user);
+            entityManager.flush();
         } catch (Exception e) {
             LOGGER.error("Failed to add user");
             throw new DAOException("Failed to add user");
         }
-        return id;
+        return user.getId();
     }
 
     @Override

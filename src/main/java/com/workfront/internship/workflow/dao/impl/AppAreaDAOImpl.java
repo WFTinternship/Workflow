@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.AppAreaDAO;
+import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
@@ -103,7 +104,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.setLong(1, appAreaId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                userList.add(UserDAOImpl.fromResultSet(rs));
+                userList.add(DAOUtil.userFromResultSet(rs));
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
