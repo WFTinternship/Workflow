@@ -39,7 +39,7 @@ public interface UserDAO {
      * @param name name of the searched user
      * @return list of the user satisfying to the given name
      */
-    List getByName(String name);
+    List<User> getByName(String name);
 
     /**
      * Gets the user by the given id

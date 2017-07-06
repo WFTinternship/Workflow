@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao.impl;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
+import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.util.DBHelper;
@@ -30,27 +31,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     @Autowired
     public UserDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    /**
-     * Sets users fields values from result set
-     */
-    public static User fromResultSet(ResultSet rs) {
-        User user = new User();
-        try {
-            user.setId(rs.getLong(id));
-            user.setFirstName(rs.getString(firstName));
-            user.setLastName(rs.getString(lastName));
-            user.setEmail(rs.getString(email));
-            user.setPassword(rs.getString(password));
-            user.setAvatarURL(rs.getString(avatarURl));
-            user.setRating(rs.getInt(rating));
-
-        } catch (SQLException e) {
-            LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
-        }
-        return user;
     }
 
     /**
@@ -159,7 +139,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.setString(1, filteredName + "%");
             rs = stmt.executeQuery();
             while (rs.next()) {
-                userList.add(fromResultSet(rs));
+                userList.add(DAOUtil.userFromResultSet(rs));
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
@@ -187,7 +167,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                user = fromResultSet(rs);
+                user = DAOUtil.userFromResultSet(rs);
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
@@ -215,7 +195,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.setString(1, email);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                user = fromResultSet(rs);
+                user = DAOUtil.userFromResultSet(rs);
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
