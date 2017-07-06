@@ -26,9 +26,6 @@ import java.util.List;
  */
 @Controller
 public class PostController {
-
-    private List<Integer> sizeOfPostsBySameAppAreaID;
-
     private CommentService commentService;
 
     private PostService postService;
@@ -40,7 +37,6 @@ public class PostController {
 
     @Autowired
     public PostController(PostService postService, CommentService commentService) {
-        sizeOfPostsBySameAppAreaID = new ArrayList<>();
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
@@ -67,9 +63,6 @@ public class PostController {
             answer.setCommentList(commentService.getByPostId(answer.getId()));
         }
 
-        for (AppArea appArea : appAreas) {
-            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
-        }
 
         List<Post> posts = postService.getAll();
 
@@ -82,7 +75,7 @@ public class PostController {
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
                         ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.ALLPOSTS, posts);
 
         return modelAndView;
@@ -118,14 +111,10 @@ public class PostController {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
 
-        for (AppArea apparea : appAreas) {
-            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(apparea.getId()).size());
-        }
-
         List<Post> posts = postService.getAll();
 
         modelAndView
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.ALLPOSTS, posts);
 
         return modelAndView;
@@ -134,14 +123,11 @@ public class PostController {
     @RequestMapping(value = {"/new-post"}, method = RequestMethod.GET)
     public ModelAndView newPost() {
         ModelAndView modelAndView = new ModelAndView("new_post");
-        for (AppArea apparea : appAreas) {
-            sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(apparea.getId()).size());
-        }
 
         List<Post> posts = postService.getAll();
 
         modelAndView
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.ALLPOSTS, posts);
         return modelAndView;
     }
