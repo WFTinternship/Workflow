@@ -124,8 +124,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
         try {
             count = (long) entityManager
                     .createQuery("select COUNT(d.user_id) " +
-                            " from user_post_likes d " +
-                            " where d.post_id = :postId")
+                            "from user_post_likes d " +
+                            "where d.post_id = :postId")
                     .setParameter("postId", postId)
                     .getSingleResult();
         } catch (RuntimeException e) {
