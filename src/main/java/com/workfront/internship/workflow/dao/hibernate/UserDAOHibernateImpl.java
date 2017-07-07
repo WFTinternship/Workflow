@@ -4,46 +4,38 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
-import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 /**
  * Created by Vahag on 7/6/2017
  */
-
-public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
+@Repository
+public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);
 
-    public UserDAOHibernateImpl(SessionFactory entityManagerFactory) {
+    public UserDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-    /**
-     * @see UserDAO#add(User)
-     */
     @Override
     public long add(User user) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try {
-            entityManager.persist(user);
-            entityManager.flush();
-        } catch (Exception e) {
-            LOGGER.error("Failed to add user");
-            throw new DAOException("Failed to add user");
-        }
+        entityManager.getTransaction().begin();
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
         return user.getId();
     }
 
     @Override
-    public List<User> getByName(String name) {
+    public List getByName(String name) {
         return null;
     }
 

@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.entity.Comment;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-    public CommentDAOHibernateImpl(SessionFactory entityManagerFactory) {
+    public CommentDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 

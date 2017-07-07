@@ -1,6 +1,5 @@
 package com.workfront.internship.workflow.dao;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -21,6 +20,7 @@ public abstract class AbstractDao {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    @Autowired
     protected EntityManagerFactory entityManagerFactory;
 
     public static void closeResources(AutoCloseable... resources) {

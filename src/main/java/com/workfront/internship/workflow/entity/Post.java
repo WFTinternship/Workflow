@@ -8,25 +8,23 @@ import java.util.List;
  * Created by nane on 5/26/17
  */
 
-@Entity
+@Entity(name = "post")
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "post_id", length = 25)
-    @OneToMany(mappedBy = "post")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @Column(name = "user_id", length = 25, nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "apparea_id", length = 25, nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "apparea_id", referencedColumnName = "id")
     private AppArea appArea;
 
     @Column(name = "post_time", nullable = false)
@@ -38,10 +36,10 @@ public class Post {
     @Column(name = "content", length = 1000, nullable = false)
     private String content;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Post> answerList;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList;
 
     public static boolean isEmpty(String string) {

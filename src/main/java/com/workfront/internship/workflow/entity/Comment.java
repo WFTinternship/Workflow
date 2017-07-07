@@ -10,14 +10,12 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "user_id", length = 25, nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "post_id", length = 25, nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
     @Column(name = "content", length = 1000, nullable = false)

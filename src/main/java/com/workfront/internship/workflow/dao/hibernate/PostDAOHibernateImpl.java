@@ -4,22 +4,28 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by nane on 7/5/17
  */
+
+@Repository
 public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-    public PostDAOHibernateImpl(SessionFactory entityManagerFactory) {
+    public PostDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
@@ -30,11 +36,13 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     public long add(Post post) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
+            entityManager.getTransaction().begin();
             entityManager.persist(post);
-            entityManager.flush();
-        } catch (HibernateException e) {
+            entityManager.getTransaction().commit();
+           // entityManager.flush();
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         return post.getId();
     }
@@ -45,9 +53,9 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     public List<Post> getAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-//        entityManager
-//                .createQuery("select a from")
-//                .getResultList();
+        entityManager
+                .createQuery("select a from post", Post.class)
+                .getResultList();
 
         return null;
     }
