@@ -3,7 +3,7 @@ package com.workfront.internship.workflow.entity;
 import javax.persistence.*;
 import java.util.List;
 
-//@Entity
+@Entity
 public enum AppArea {
     REPORTING(1, "Reporting", "Some rep description", "Team1"),
     API(2, "API", "API", "Team1"),
