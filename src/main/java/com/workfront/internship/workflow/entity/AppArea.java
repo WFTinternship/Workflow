@@ -1,12 +1,9 @@
 package com.workfront.internship.workflow.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "apparea")
+//@Entity
 public enum AppArea {
     REPORTING(1, "Reporting", "Some rep description", "Team1"),
     API(2, "API", "API", "Team1"),
