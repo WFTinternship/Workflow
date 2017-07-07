@@ -28,10 +28,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "apparea_id"))
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
     @Column(name = "avatar_url")

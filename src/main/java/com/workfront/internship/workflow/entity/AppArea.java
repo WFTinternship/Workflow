@@ -1,6 +1,9 @@
 package com.workfront.internship.workflow.entity;
 
+import javax.persistence.*;
+import java.util.List;
 
+//@Entity
 public enum AppArea {
     REPORTING(1, "Reporting", "Some rep description", "Team1"),
     API(2, "API", "API", "Team1"),
@@ -166,10 +169,21 @@ public enum AppArea {
     IPAD(156, "iPad", "iPad", "Team1"),
     SETUP(157, "Setup", "Setup", "Team1");
 
+    @Id
+    @Column(name = "id")
     private long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "team_name")
     private String teamName;
+
+    @OneToMany(mappedBy = "appArea")
+    private List<Post> posts;
 
     AppArea(long id, String name, String description, String teamName) {
         this.id = id;
@@ -214,6 +228,10 @@ public enum AppArea {
 
     public String getTeamName() {
         return teamName;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
     }
 
     public boolean isValid() {

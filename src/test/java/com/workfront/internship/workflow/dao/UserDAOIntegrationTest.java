@@ -24,7 +24,7 @@ import java.util.List;
 public class UserDAOIntegrationTest extends BaseIntegrationTest{
 
     @Autowired
-    @Qualifier("userDAOSpringImpl")
+    @Qualifier("userDAOHibernateImpl")
     private UserDAO userDAO;
 
     @Autowired

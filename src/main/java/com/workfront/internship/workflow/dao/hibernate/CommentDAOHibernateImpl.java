@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-    public CommentDAOHibernateImpl(SessionFactory entityManagerFactory) {
+    public CommentDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
@@ -26,18 +27,7 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public long add(Comment comment) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        long id = 0;
-
-        try {
-            entityManager.persist(comment);
-        } catch (HibernateException e) {
-            LOGGER.error("Hibernate exception");
-            throw new RuntimeException();
-        }
-
-        return id;
+        return 0;
     }
 
     /**
@@ -45,13 +35,6 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public Comment getById(long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try {
-             entityManager.persist(id);
-        } catch (HibernateException e){
-            LOGGER.error("Hibernate exception");
-            throw new RuntimeException();
-        }
         return null;
     }
 

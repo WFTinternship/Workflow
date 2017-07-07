@@ -4,22 +4,24 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 /**
  * Created by nane on 7/5/17
  */
+
+@Repository
 public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-    public PostDAOHibernateImpl(SessionFactory entityManagerFactory) {
+    public PostDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
@@ -29,14 +31,17 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     public long add(Post post) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        long id = 0;
         try {
+            entityManager.getTransaction().begin();
             entityManager.persist(post);
-        } catch (HibernateException e) {
+            entityManager.getTransaction().commit();
+
+            entityManager.flush();
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
-        return id;
+        return post.getId();
     }
 
     /**
@@ -44,6 +49,11 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getAll() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager
+                .createQuery("select a from post", Post.class)
+                .getResultList();
+
         return null;
     }
 
@@ -76,7 +86,16 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public Post getById(long id) {
-        return null;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Post post;
+        try {
+            entityManager.getTransaction().begin();
+            post = entityManager.find(Post.class, id);
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return post;
     }
 
     /**
@@ -100,7 +119,20 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public long getLikesNumber(long postId) {
-        return 0;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        long count;
+        try {
+            count = (long) entityManager
+                    .createQuery("select COUNT(d.user_id) " +
+                            "from user_post_likes d " +
+                            "where d.post_id = :postId")
+                    .setParameter("postId", postId)
+                    .getSingleResult();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return count;
     }
 
     /**
@@ -132,7 +164,18 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public void like(long userId, long postId) {
-
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            entityManager
+                    .createNativeQuery("insert into user_post_likes (user_id, post_id) " +
+                            "VALUES (?, ?)")
+                    .setParameter(1, userId)
+                    .setParameter(2, postId)
+                    .executeUpdate();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     /**
@@ -148,7 +191,18 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public void delete(long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            Post post = entityManager.find(Post.class, id);
 
+            entityManager.getTransaction().begin();
+            entityManager.remove(post);
+            entityManager.getTransaction().commit();
+
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     /**

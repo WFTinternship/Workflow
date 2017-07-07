@@ -3,56 +3,90 @@ package com.workfront.internship.workflow.dao.hibernate;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.jws.soap.SOAPBinding;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 /**
  * Created by Vahag on 7/6/2017
  */
-
-public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
+@Repository
+public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);
 
-    public UserDAOHibernateImpl(SessionFactory entityManagerFactory) {
+    public UserDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-    /**
-     * @see UserDAO#add(User)
-     */
     @Override
     public long add(User user) {
-        long id=0;
-       /* try {
-            Session session = sessionFactory.getCurrentSession();
-            id = (long) session.save(user);
-        } catch (Exception e) {
-            LOGGER.error("Failed to add user");
-            throw new DAOException("Failed to add user");
-        }*/
-        return id;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.persist(user);
+            entityManager.getTransaction().commit();
+        }catch (RuntimeException e){
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return user.getId();
     }
 
     @Override
-    public List<User> getByName(String name) {
-        return null;
+    public List getByName(String name) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<User> users;
+        try {
+            users = entityManager.createQuery(
+                    "SELECT c FROM user c WHERE c.name LIKE :name")
+                    .setParameter("name", name)
+                    .setMaxResults(10)
+                    .getResultList();
+        }catch (RuntimeException e){
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return users;
     }
 
     @Override
     public User getById(long id) {
-        return null;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        User user;
+        try {
+            entityManager.getTransaction().begin();
+            user = entityManager.find(User.class, id);
+        }catch (RuntimeException e){
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return user;
     }
 
     @Override
     public User getByEmail(String email) {
-        return null;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        User user;
+        try {
+            user = (User) entityManager.createQuery(
+                    "SELECT c FROM user c WHERE c.email = :email")
+                    .setParameter("email", email)
+                    .getSingleResult();
+        }catch (RuntimeException e){
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return user;
     }
 
     @Override
@@ -72,7 +106,19 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
 
     @Override
     public void deleteById(long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            User user = entityManager.find(User.class, id);
 
+            if (user != null){
+                entityManager.getTransaction().begin();
+                entityManager.remove(user);
+                entityManager.getTransaction().commit();
+            }
+        }catch (RuntimeException e){
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     @Override
