@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 
@@ -19,7 +20,10 @@ public abstract class AbstractDao {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
-    public static void closeResources(AutoCloseable... resources) {
+//    @Autowired
+    protected EntityManagerFactory entityManagerFactory;
+
+    protected static void closeResources(AutoCloseable... resources) {
         for (AutoCloseable resource : resources) {
             if (resource != null) {
                 try {

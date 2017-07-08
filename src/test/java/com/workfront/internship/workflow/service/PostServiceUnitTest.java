@@ -1,11 +1,14 @@
 package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
+import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +39,12 @@ public class PostServiceUnitTest extends BaseUnitTest {
 
     @Mock
     private PostDAOSpringImpl postDAOMock;
+
+    @InjectMocks
+    private UserServiceImpl userService;
+
+    @Mock
+    private UserDAOSpringImpl userDAOMock;
 
     @Before
     public void init() {
@@ -455,10 +464,99 @@ public class PostServiceUnitTest extends BaseUnitTest {
     }
 
     /**
-    * @see PostServiceImpl#update(Post)
-    */
+     * @see PostService#getLikesNumber(long)
+     */
     @Test
-    public void update_postNotValid(){
+    public void getLikesNumber_success() {
+        Long postId = 1L;
+        long likesNumber = 10;
+        doReturn(likesNumber).when(postDAOMock).getLikesNumber(anyLong());
+
+        //Test method
+        long actualLikesNumber = postService.getLikesNumber(postId);
+        verify(postDAOMock, times(1)).getLikesNumber(postId);
+        assertEquals(likesNumber, actualLikesNumber);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getLikesNumber(argument.capture());
+        assertEquals(postId, argument.getValue());
+    }
+
+    /**
+     * @see PostService#getLikesNumber(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getLikesNumber_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).getLikesNumber(anyLong());
+
+        // Test method
+        postService.getLikesNumber(1);
+    }
+
+    /**
+     * @see PostService#getLikesNumber(long)
+     */
+    @Test
+    public void getLikesNumber_negativeId() {
+        try {
+            // Test method
+            postService.getLikesNumber(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+
+    }
+
+    /**
+     * @see PostService#dislike(long, long)
+     */
+    @Test
+    public void getDislikesNumber_success() {
+        Long postId = 1L;
+        long dislikesNumber = 10;
+        doReturn(dislikesNumber).when(postDAOMock).getDislikesNumber(anyLong());
+
+        //Test method
+        long actualDislikesNumber = postService.getDislikesNumber(postId);
+        verify(postDAOMock, times(1)).getDislikesNumber(postId);
+        assertEquals(dislikesNumber, actualDislikesNumber);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getDislikesNumber(argument.capture());
+        assertEquals(postId, argument.getValue());
+    }
+
+    /**
+     * @see PostService#dislike(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getDislikesNumber_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).dislike(anyLong(), anyLong());
+
+        // Test method
+        postService.dislike(1, 1);
+    }
+
+    /**
+     * @see PostService#getDislikesNumber(long)
+     */
+    @Test
+    public void getDislikesNumber_negativeId() {
+        try {
+            // Test method
+            postService.dislike(-1, 1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostServiceImpl#update(Post)
+     */
+    @Test
+    public void update_postNotValid() {
         Post post = DaoTestUtil.getRandomPost();
         post.setUser(null);
 
@@ -540,6 +638,104 @@ public class PostServiceUnitTest extends BaseUnitTest {
     }
 
     /**
+     * @see PostService#like(long, long)
+     */
+    @Test
+    public void like_success() {
+        Long userId = 1L, postId = 1L;
+        List<Long> expected = Arrays.asList(userId, postId);
+        //Test method
+        postService.like(userId, postId);
+        verify(postDAOMock, times(1)).like(userId, postId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).like(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
+    }
+
+    /**
+     * @see PostService#like(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void like_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).like(anyLong(), anyLong());
+
+        // Test method
+        postService.like(1, 1);
+    }
+
+    /**
+     * @see PostService#like(long, long)
+     */
+    @Test
+    public void like_negativeId() {
+        try {
+            //Test method
+            postService.like(-1, 5);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+
+        try {
+            //Test method
+            postService.like(5, -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#dislike(long, long)
+     */
+    @Test
+    public void dislike_success() {
+        Long userId = 1L, postId = 1L;
+        List<Long> expected = Arrays.asList(userId, postId);
+        //Test method
+        postService.dislike(userId, postId);
+        verify(postDAOMock, times(1)).dislike(userId, postId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).dislike(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
+    }
+
+    /**
+     * @see PostService#dislike(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void dislike_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).dislike(anyLong(), anyLong());
+
+        // Test method
+        postService.dislike(1, 1);
+    }
+
+    /**
+     * @see PostService#dislike(long, long)
+     */
+    @Test
+    public void dislike_negativeId() {
+        try {
+            //Test method
+            postService.dislike(-1, 5);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+
+        try {
+            //Test method
+            postService.dislike(5, -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+    }
+
+    /**
      * @see PostService#delete(long)
      */
     @Test
@@ -580,4 +776,97 @@ public class PostServiceUnitTest extends BaseUnitTest {
         verify(postDAOMock, only()).delete(argumentCaptor.capture());
         assertEquals(argumentCaptor.getValue(), id);
     }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test
+    public void getNotified_negativeId() {
+        User user = DaoTestUtil.getRandomUser();
+        long userId =  userService.add(user);
+        try {
+            //Test method
+            postService.getNotified(-1, userId);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+        Post post = DaoTestUtil.getRandomPost();
+        post.setUser(user);
+        postService.add(post);
+        try {
+            //Test method
+            userService.subscribeToArea(post.getId(), -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getNotified_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).getNotified(anyLong(), anyLong());
+
+        //Test method
+        postService.getNotified(10, 1);
+    }
+
+    /**
+     * @see PostService#getNotified(long, long)
+     */
+    @Test
+    public void getNotified_success() {
+        Long postId = 15L, userId = 17L;
+        List<Long> expected = Arrays.asList(postId, userId);
+
+        //Test method
+        postService.getNotified(postId, userId);
+        verify(postDAOMock, times(1)).getNotified(postId, userId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getNotified(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getNotificationRecipients_negativeId() {
+        postService.getNotificationRecipients(-1);
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test(expected = RuntimeException.class)
+    public void getNotificationRecipients_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).getNotificationRecipients(anyLong());
+
+        // Test method
+        postService.getNotificationRecipients(15);
+    }
+
+    /**
+     * @see PostService#getNotificationRecipients(long)
+     */
+    @Test
+    public void getNotificationRecipients_success() {
+        Long id = 15L;
+        List<User> users = new ArrayList<>();
+        doReturn(users).when(postDAOMock).getNotificationRecipients(id);
+
+        // Test method
+        List<User> actualUsers = postService.getNotificationRecipients(id);
+        assertEquals(users, actualUsers);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getNotificationRecipients(argument.capture());
+        assertEquals(id, argument.getValue());
+    }
+
+
 }

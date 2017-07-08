@@ -5,10 +5,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="user" value='<%=request.getAttribute(PageAttributes.USER)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<c:set var="avatar" value='<%=request.getAttribute(PageAttributes.AVATAR)%>'/>
+<c:set var="email" value='<%=request.getAttribute(PageAttributes.EMAIL)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,30 +53,89 @@
 <body class="newaccountpage">
 
 <div class="container-fluid">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
 
-    <!-- Slider -->
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <ul>
-                <!-- SLIDE  -->
-                <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
-                    <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
-                         data-bgposition="left top" data-bgrepeat="no-repeat">
-                    <!-- LAYERS -->
-                </li>
-            </ul>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span id="form-img"><img
+                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            height="60px" width="60px/"></span>
+                </div>
+                <form action="/login/new-post" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Name:</label>
+                            <input type="text" class="form-control" name="email" id="usr">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" name="password" id="pwd">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Login</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
-    <!-- //Slider -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="verify" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="/signup/verify" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="pwd">Verification Code:</label>
+                            <input type="password" class="form-control" name="verify">
+                            <input type="hidden" id="afterajaxemail" name="emailajax">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <%--<!-- Slider -->--%>
+    <%--<div class="tp-banner-container">--%>
+        <%--<div class="tp-banner">--%>
+            <%--<ul>--%>
+                <%--<!-- SLIDE  -->--%>
+                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+                    <%--<!-- MAIN IMAGE -->--%>
+                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+                         <%--data-bgposition="left top" data-bgrepeat="no-repeat">--%>
+                    <%--<!-- LAYERS -->--%>
+                <%--</li>--%>
+            <%--</ul>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<!-- //Slider -->--%>
 
 
-    <div class="headernav">
+    <div class="headernav" id="header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                        height=60px width=60px/></a></div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
                 <%--<div class="dropdown">--%>
                 <%--<a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>--%>
@@ -110,7 +174,7 @@
 
                         <c:if test="${user == null}">
                           <span>
-                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/signup"><button type="submit" class="btn btn-signup">Sign Up</button></a>
                               <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
                           </span>
                         </c:if>
@@ -165,7 +229,7 @@
 
                             <!-- POST -->
                             <div class="post">
-                                <form action="/signup" class="form newtopic" method="post">
+                                <form class="form newtopic" method="post" enctype="multipart/form-data">
                                     <div class="postinfotop">
                                         <h2>Create New Account</h2>
                                     </div>
@@ -181,12 +245,19 @@
                                             <div class="userinfo pull-left">
                                                 <div class="avatar">
                                                     <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
-                                                         alt=""/>
-                                                    <div class="status green">&nbsp;</div>
+                                                         id="image" alt="" height="45" width="45"/>
+                                                    <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
+                                                    <%--alt=""/>--%>
                                                 </div>
-                                                <div class="imgsize">60 x 60</div>
-                                                <div>
-                                                    <button class="btn">Add</button>
+                                                <%--<div class="imgsize">60 x 60</div>--%>
+                                                <%--<div>--%>
+                                                <%--<button class="btn">Add</button>--%>
+                                                <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
+
+                                                <%--</div>--%>
+                                                <div class="half-width">
+                                                    <input type="file" name="avatar" id="avatar" class="hide"/>
+                                                    <label for="avatar" class="btn">Add</label><br/>
                                                 </div>
                                             </div>
                                             <div class="posttext pull-left">
@@ -202,7 +273,7 @@
                                                 </div>
                                                 <div>
                                                     <input type="text" placeholder="Email" class="form-control"
-                                                           name="email"/>
+                                                           name="email" id="email"/>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-6">
@@ -236,7 +307,7 @@
                                             <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a>
                                             </div>
                                             <div class="pull-left">
-                                                <button type="submit" class="btn btn-primary">Sign Up</button>
+                                                <input class="btn btn-primary" id="vcodeajax" value="Sign Up">
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
@@ -311,8 +382,6 @@
 
                         </div>
                     </div>
-
-
                 </div>
                 <div class="col-lg-4 col-md-4">
 
@@ -322,10 +391,11 @@
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}">
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                            class="badge pull-right"></span></a></li>
+                                    <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                    <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                </li>
                                 </c:forEach>
                         </div>
                     </div>
@@ -422,8 +492,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                        height=60px width=60px/></a></div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">
@@ -472,6 +542,58 @@
     });	//ready
 
 </script>
+
+<script>document.getElementById("avatar").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+</script>
+
+
+<script>
+    jQuery("#vcodeajax").click(function () {
+
+        $.ajax({
+            url: '/signup',
+            type: 'POST',
+            data: {
+                'firstName': jQuery("input[name=firstName]").val(),
+                'lastName': jQuery("input[name=lastName]").val(),
+                'email': jQuery("#email").val(),
+                'password': jQuery("#sgpass").val(),
+                'confirmPass': jQuery("#sgpass2").val()
+            }, statusCode: {
+                409: function (response) {
+                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+                },
+                500: function (response) {
+                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong></div>').fadeIn("slow");
+                },
+                400: function (response) {
+                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
+                }
+            }, success: function () {
+                jQuery("#afterajaxemail").val(jQuery("#email").val());
+                $('#verify').modal('toggle');
+                $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong> Congratulations! Your Sign up was successfull!</div>').fadeIn("slow");
+
+            },
+            error: function (errorThrow) {
+                console.log('error')
+            }
+        });
+    });
+</script>
+
+<!-- Custom -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>
 
 <!-- END REVOLUTION SLIDER -->
 </body>

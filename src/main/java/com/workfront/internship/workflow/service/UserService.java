@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.service;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 
 import java.util.List;
 
@@ -88,5 +88,17 @@ public interface UserService {
      * Sends email to a new user
      * @param user is the one to sign up
      */
-    void sendEmail(User user);
+    String sendEmail(User user);
+
+    /**
+     * Updates the profile of a user with specified id
+     * @param user is the one whose profile is to be updated
+     */
+    void updateProfile(User user);
+
+    /**
+     * Updates the avatar of a user with specified id
+     * @param user is the one whose avatar is to be updated
+     */
+    void updateAvatar(User user);
 }

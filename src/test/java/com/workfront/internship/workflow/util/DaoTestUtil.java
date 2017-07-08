@@ -1,9 +1,9 @@
 package com.workfront.internship.workflow.util;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.domain.Comment;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
+import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.entity.Comment;
 
 import java.sql.Timestamp;
 import java.text.ParseException;

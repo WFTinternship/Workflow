@@ -10,6 +10,7 @@
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 
 <!DOCTYPE html>
@@ -81,29 +82,31 @@
 
         </div>
     </div>
-    <!-- Slider -->
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <ul>
-                <!-- SLIDE  -->
-                <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
-                    <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
-                         data-bgposition="left top"
-                         data-bgrepeat="no-repeat">
-                    <!-- LAYERS -->
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- //Slider -->
+
+
+    <%--<!-- Slider -->--%>
+    <%--<div class="tp-banner-container">--%>
+        <%--<div class="tp-banner">--%>
+            <%--<ul>--%>
+                <%--<!-- SLIDE  -->--%>
+                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+                    <%--<!-- MAIN IMAGE -->--%>
+                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+                         <%--data-bgposition="left top"--%>
+                         <%--data-bgrepeat="no-repeat">--%>
+                    <%--<!-- LAYERS -->--%>
+                <%--</li>--%>
+            <%--</ul>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<!-- //Slider -->--%>
 
     <div class="headernav">
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                        height=60px width=60px/></a></div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
                         <form action="#" method="post" class="form">
@@ -132,7 +135,7 @@
 
                         <c:if test="${user == null}">
                           <span>
-                              <a href="/signup/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/signup"><button type="submit" class="btn btn-signup">Sign Up</button></a>
                               <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
                           </span>
                         </c:if>
@@ -143,11 +146,11 @@
                     <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
-                                    src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                    src="${user.avatarURL}" alt="" width="37" height="37"/></a> <b
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>
@@ -184,7 +187,7 @@
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/images/avatar4.jpg" alt=""/>
+                                        <img src="${user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
@@ -311,7 +314,7 @@
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/>
+                                        <img src="${user.avatarURL}" alt="" width="37" height="37"/>
                                         <div class="status green">&nbsp;</div>
                                     </div>
 
@@ -352,10 +355,11 @@
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}">
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                                class="badge pull-right"></span></a></li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </div>
@@ -482,9 +486,9 @@
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/">
-                    <img src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                         height=60px width=60px/></a></div>
+                <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">

@@ -52,9 +52,10 @@ a:hover {
 /*--- Footer ---*/
 
 footer {
-    height: 69px;
-    line-height: 69px;
-    color: #363838;
+    height: 70px;
+    border-bottom: 1px solid #c9cccd;
+    background-color: #212121;
+    box-shadow: inset -2px -1px 20px 0px #675f5f;
 }
 
 footer .logo {
@@ -85,12 +86,17 @@ ul.socialicons li a:hover {
 .headernav {
     height: 70px;
     border-bottom: 1px solid #c9cccd;
+    background-color: #212121;
+    box-shadow: inset -2px -1px 20px 0px #675f5f;
 }
 
+.logo {
+    vertical-align: middle;
+}
 
 .content {
-    background-color: #ecf0f1;
-    border-top: solid 1px #e0e4e5;
+    background-color: #ddd;
+    border-top: solid 1px #d4dbe0;
 }
 
 .selecttopic {
@@ -348,6 +354,13 @@ ul.cats .badge {
 
 }
 
+.username {
+
+    font-size: 14px;
+    color: #363838;
+    font-family: 'Open Sans Light', sans-serif;
+
+}
 
 .sidebarblock .blocktxt .smal {
     font-size: 12px;
@@ -467,6 +480,15 @@ td.chbox {
     border-top: solid 1px #f1f1f1;
     margin-top: 12px;
     padding-top: 7px;
+    font-size: 23px;
+    text-align: center;
+}
+i.fa-check.green {
+    color: #19bd9b;
+}
+
+.greenTick {
+    color: #008000;
 }
 
 .post h2 {
@@ -613,17 +635,20 @@ td.chbox {
 }
 
 .up {
+    cursor: pointer;
     color: #f77f29;
     font-size: 12px;
 }
 
 .up i,
 .down i {
+    cursor: pointer;
     font-size: 20px;
     padding-right: 10px;
 }
 
 .down {
+    cursor: pointer;
     color: #db7a7a;
     font-size: 12px;
     margin-left: 20px;
@@ -927,6 +952,23 @@ a.down:hover {
     width: 60%;
     float: left;
     text-align: right;
+}
+
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 2px;
+    user-select: none;
 }
 
 .networks .btn {

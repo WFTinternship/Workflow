@@ -16,4 +16,16 @@ public interface PageAttributes {
     String APPAREA = "appArea";
     String POSTCOMMENTS = "postComments";
     String MESSAGE = "message";
+    String EMAIL = "email";
+    String PASSWORD = "password";
+    String AVATAR = "avatar";
+    String MYAPPAREAS = "myAppAreas";
+    String NUMOFANSWERS = "numberOfAnswers";
+    String NOTE = "note";
+    String NUMOFLIKES = "numberOfLikes";
+    String NUMOFDISLIKES = "numberOfDislikes";
+    String ANSWERCOMMENTS = "answerComments";
+    String PROFILEOWNERID = "ownerId";
+    String TOPPOSTS = "topPosts";
+
 }

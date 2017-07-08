@@ -2,19 +2,14 @@ package com.workfront.internship.workflow.dao.springJDBC;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AppAreaRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.User;
-import com.workfront.internship.workflow.util.DBHelper;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -192,5 +187,19 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void updateProfile(User user) {
+        String sql = "UPDATE user SET first_name = ?, last_name = ?, " +
+                " email = ? WHERE user.id = ? ";
+        jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
+                user.getEmail(), user.getId());
+    }
+
+    @Override
+    public void updateAvatar(User user) {
+        String sql = "UPDATE user SET avatar_url = ? WHERE user.id = ? ";
+        jdbcTemplate.update(sql, user.getAvatarURL(), user.getId());
     }
 }

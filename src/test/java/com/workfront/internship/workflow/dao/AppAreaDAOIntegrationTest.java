@@ -1,9 +1,8 @@
 package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.workfront.internship.workflow.dao.impl.AppAreaDAOImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -21,11 +20,11 @@ import static junit.framework.TestCase.assertTrue;
 public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
-    @Qualifier("appAreaDAOSpring")
+    @Qualifier("appAreaDAOSpringImpl")
     private AppAreaDAO appAreaDAO;
 
     @Autowired
-    @Qualifier("userDAOSpring")
+    @Qualifier("userDAOSpringImpl")
     private UserDAO userDAO;
 
     private AppArea appArea;
@@ -72,7 +71,7 @@ public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
     // region <TEST CASE>
 
     /**
-     * @see AppAreaDAOImpl#add(AppArea)
+     * @see AppAreaDAO#add(AppArea)
      */
     @Test
     public void add_success() {
@@ -85,7 +84,7 @@ public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see AppAreaDAOImpl#deleteById(long)
+     * @see AppAreaDAO#deleteById(long)
      */
     @Test
     public void deleteById_success() {
@@ -96,7 +95,7 @@ public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see AppAreaDAOImpl#getUsersById(long)
+     * @see AppAreaDAO#getUsersById(long)
      */
     @Test
     public void getUsersById_success() {
@@ -115,11 +114,6 @@ public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
 
         assertTrue(actualAppArea.equals(appArea));
     }
-
-    // endregion
-
-    // region <HELPERS>
-
 
     // endregion
 }

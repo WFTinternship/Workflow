@@ -1,8 +1,8 @@
 package com.workfront.internship.workflow.web;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Comment;
-import com.workfront.internship.workflow.domain.Post;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 

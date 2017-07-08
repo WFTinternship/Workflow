@@ -1,8 +1,12 @@
-package com.workfront.internship.workflow.domain;
+package com.workfront.internship.workflow.bean;
 
 import java.sql.Timestamp;
 
+/**
+ * Created by nane on 7/5/17
+ */
 public class Comment {
+
     private long id;
     private User user;
     private Post post;
@@ -75,4 +79,5 @@ public class Comment {
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
     }
+
 }

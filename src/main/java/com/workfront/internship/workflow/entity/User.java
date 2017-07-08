@@ -1,13 +1,29 @@
-package com.workfront.internship.workflow.domain;
+package com.workfront.internship.workflow.entity;
 
+
+import javax.persistence.*;
+import java.util.List;
 
 public class User {
+
     private long id;
+
     private String firstName;
+
     private String lastName;
+
     private String email;
+
     private String password;
+
+    private List<AppArea> appAreas;
+
+    private List<Post> posts;
+
+    private List<Comment> comments;
+
     private String avatarURL;
+
     private int rating;
 
     public long getId() {
@@ -52,6 +68,33 @@ public class User {
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public List<AppArea> getAppAreas() {
+        return appAreas;
+    }
+
+    public User setAppAreas(List<AppArea> appAreas) {
+        this.appAreas = appAreas;
+        return this;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public User setPosts(List<Post> posts) {
+        this.posts = posts;
+        return this;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public User setComments(List<Comment> comments) {
+        this.comments = comments;
         return this;
     }
 

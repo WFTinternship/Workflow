@@ -1,9 +1,8 @@
 package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.AppAreaDAO;
-import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.AppAreaService;

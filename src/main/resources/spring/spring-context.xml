@@ -56,7 +56,4 @@
         <!--<constructor-arg name="appAreaDAO" ref="appAreaDAOSpring"/>-->
     <!--</bean>-->
 
-
-
-
 </beans>

@@ -1,41 +1,36 @@
 package com.workfront.internship.workflow.service.impl;
 
-import com.sun.mail.smtp.SMTPTransport;
 import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
-import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.User;
+
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.*;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.sql.DataSource;
-import java.security.Security;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
-import static com.workfront.internship.workflow.dao.UserDAO.password;
+import java.util.List;
 
 /**
  * Created by Vahag on 6/4/2017
  */
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
@@ -56,7 +51,6 @@ public class UserServiceImpl implements UserService {
      * @return
      * @see UserService#add(User)
      */
-    @Transactional
     @Override
     public long add(User user) {
         if (user == null || !user.isValid()) {
@@ -68,7 +62,7 @@ public class UserServiceImpl implements UserService {
             LOGGER.error("Failed to add. User already exists");
             throw new DuplicateEntryException("User already exists");
         }
-
+        user.setPassword(ServiceUtils.hashString(user.getPassword()));
         long id = userDAO.add(user);
         for (AppArea appArea : AppArea.values()) {
             userDAO.subscribeToArea(user.getId(), appArea.getId());
@@ -82,6 +76,7 @@ public class UserServiceImpl implements UserService {
      * @return
      * @see UserService#getByName(String)
      */
+
     @Override
     public List<User> getByName(String name) {
         if (isEmpty(name)) {
@@ -260,8 +255,7 @@ public class UserServiceImpl implements UserService {
 
         User user = getByEmail(email);
 
-        //TODO: Password should be hashed
-        if (user != null && user.getPassword().equals(password)){
+        if (user != null && user.getPassword().equals(ServiceUtils.hashString(password))){
             return user;
         }else {
             LOGGER.error("Invalid email-password combination!");
@@ -274,14 +268,14 @@ public class UserServiceImpl implements UserService {
      * @see UserService#sendEmail(User)
      */
     @Override
-    public void sendEmail(User user) {
-        if (!user.isValid()) {
+    public String sendEmail(User user) {
+        if (user == null || !user.isValid()) {
             LOGGER.error("Not valid user. Failed to add.");
             throw new InvalidObjectException();
         }
 
-        String EMAIL = "nanevardanyants@gmail.com";
-        String PASSWORD = "3modern!012";
+        String EMAIL = "workfront.internship@gmail.com";
+        String PASSWORD = "project2017";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -289,11 +283,12 @@ public class UserServiceImpl implements UserService {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         Session session = Session.getInstance(props,
-                new Authenticator() {
+                new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
                 });
+        String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0,6);
         try {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);
@@ -302,15 +297,46 @@ public class UserServiceImpl implements UserService {
             //Adding receiver
             mm.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(user.getEmail()));
             //Adding subject
-            mm.setSubject("Hello");
+            mm.setSubject("Welcome");
             //Adding message
-            mm.setText("Here is the message");
+            mm.setText("Dear " + user.getFirstName() + ", \n Welcome to Workflow! " +
+                    "Here is your verification code: " + verificationCode + ". \n Please use it to finish your sign up.");
             //sending Email
             Transport.send(mm);
 
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        return verificationCode;
+    }
 
+    @Override
+    public void updateProfile(User user) {
+        if (user == null || !user.isValid()) {
+            LOGGER.error("Not valid user. Failed to add.");
+            throw new InvalidObjectException();
+        }
+
+        try {
+            userDAO.updateProfile(user);
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to update user's profile");
+            throw new ServiceLayerException("Failed to update user's profile", e);
+        }
+    }
+
+    @Override
+    public void updateAvatar(User user) {
+        if (user == null || !user.isValid()) {
+            LOGGER.error("Not valid user. Failed to add.");
+            throw new InvalidObjectException();
+        }
+
+        try {
+            userDAO.updateAvatar(user);
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to update user's profile");
+            throw new ServiceLayerException("Failed to update user's profile", e);
+        }
     }
 }

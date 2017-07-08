@@ -1,10 +1,9 @@
 package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -20,6 +19,7 @@ import java.util.List;
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by nane on 5/29/17
@@ -28,12 +28,12 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     private List<User> userList;
 
     @Autowired
-    @Qualifier("userDAOSpring")
+    @Qualifier("userDAOHibernateImpl")
     private UserDAO userDAO;
     private User user;
 
     @Autowired
-    @Qualifier("postDAOSpring")
+    @Qualifier("postDAOHibernateImpl")
     private PostDAO postDAO;
     private Post post;
     private AppArea appArea;
@@ -46,7 +46,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
         assertEquals(post.getTitle(), actualPost.getTitle());
         assertEquals(post.getContent(), actualPost.getContent());
         assertEquals(post.getPostTime(), actualPost.getPostTime());
-        assertEquals(post.isCorrect(), actualPost.isCorrect());
     }
 
     @Before
@@ -87,7 +86,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#add(Post)
+     * @see PostDAO#add(Post)
      */
     @Test(expected = RuntimeException.class)
     public void add_failure() {
@@ -102,7 +101,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#add(Post)
+     * @see PostDAO#add(Post)
      */
     @Test
     public void add_success() {
@@ -114,7 +113,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getById(long)
+     * @see PostDAO#getById(long)
      */
     @Test
     public void getById_failure() {
@@ -124,7 +123,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getById(long)
+     * @see PostDAO#getById(long)
      */
     @Test
     public void getById_success() {
@@ -136,7 +135,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByUserId(long)
+     * @see PostDAO#getByUserId(long)
      */
     @Test
     public void getByUserId_failure() {
@@ -145,7 +144,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByUserId(long)
+     * @see PostDAO#getByUserId(long)
      */
     @Test
     public void getByUserId_success() {
@@ -156,7 +155,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByAppAreaId(long)
+     * @see PostDAO#getByAppAreaId(long)
      */
     @Test
     public void getByAppAreaId_failure() {
@@ -166,7 +165,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getByAppAreaId(long)
+     * @see PostDAO#getByAppAreaId(long)
      */
     @Test
     public void getByAppAreaId_success() {
@@ -177,7 +176,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAll()
+     * @see PostDAO#getAll()
      */
     @Test
     public void getAll_success() {
@@ -199,7 +198,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAll()
+     * @see PostDAO#getAll()
      */
     @Test
     public void getByTitle_success() {
@@ -213,7 +212,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAnswersByPostId(long)
+     * @see PostDAO#getAnswersByPostId(long)
      */
     @Test(expected = RuntimeException.class)
     public void getAnswersByPostId_failure() {
@@ -235,7 +234,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getAnswersByPostId(long)
+     * @see PostDAO#getAnswersByPostId(long)
      */
     @Test
     public void getAnswersByPostId_success() {
@@ -255,7 +254,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#setBestAnswer(long, long)
+     * @see PostDAO#setBestAnswer(long, long)
      */
     @Test(expected = RuntimeException.class)
     public void setBestAnswer_failure() {
@@ -279,7 +278,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#setBestAnswer(long, long)
+     * @see PostDAO#setBestAnswer(long, long)
      */
     @Test
     public void setBestAnswer_success() {
@@ -303,7 +302,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#getBestAnswer(long)
+     * @see PostDAO#getBestAnswer(long)
      */
     @Test
     public void getBestAnswer_success() {
@@ -325,17 +324,86 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#update(Post)
+     * @see PostDAO#getNumberOfAnswers(long)
+     */
+    @Test
+    public void getNumberOfAnswers_success() {
+        postDAO.add(post);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        userDAO.add(answer.getUser());
+        postDAO.add(answer);
+
+        // Test method
+        Integer numOfAnswers = postDAO.getNumberOfAnswers(post.getId());
+        assertTrue(numOfAnswers.equals(1));
+    }
+
+    /**
+     * @see PostDAO#getLikesNumber(long)
+     */
+    @Test
+    public void getLikesNumber_failure() {
+        // test method
+        long likesNumber = postDAO.getLikesNumber(0);
+
+        assertEquals(likesNumber, 0);
+    }
+
+    /**
+     * @see PostDAO#getLikesNumber(long)
+     */
+    @Test
+    public void getLikesNumber_success() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        postDAO.like(userId, postId);
+
+        // test method
+        long likesNumber = postDAO.getLikesNumber(postId);
+
+        assertEquals(likesNumber, 1);
+    }
+
+    /**
+     * @see PostDAO#getDislikesNumber(long)
+     */
+    @Test
+    public void getDislikesNumber_failure() {
+        // test method
+        long dislikesNumber = postDAO.getDislikesNumber(0);
+
+        assertEquals(dislikesNumber, 0);
+    }
+
+    /**
+     * @see PostDAO#getDislikesNumber(long)
+     */
+    @Test
+    public void getDislikesNumber_success() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        postDAO.dislike(userId, postId);
+
+        // test method
+        long dislikesNumber = postDAO.getDislikesNumber(postId);
+
+        assertEquals(dislikesNumber, 1);
+    }
+
+    /**
+     * @see PostDAO#update(Post)
      */
     @Test(expected = RuntimeException.class)
     public void update_failure() {
         postDAO.add(post);
         Post newPost = post.setContent(null);
+
+        // Test method
         postDAO.update(newPost);
     }
 
     /**
-     * @see PostDAOImpl#update(Post)
+     * @see PostDAO#update(Post)
      */
     @Test
     public void update_success() {
@@ -347,7 +415,67 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAOImpl#delete(long)
+     * @see PostDAO#like(long, long)
+     */
+    @Test
+    public void like_success() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        long likesNumber = postDAO.getLikesNumber(postId);
+
+        //Test method
+        postDAO.like(userId, postId);
+
+        long newLikesNumber = postDAO.getLikesNumber(postId);
+        assertEquals(likesNumber, newLikesNumber - 1);
+    }
+
+    /**
+     * @see PostDAO#like(long, long)
+     */
+    @Test(expected = RuntimeException.class)
+    public void like_failure() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+
+        //Test method
+        postDAO.like(userId, postId);
+
+        postDAO.like(userId, postId);
+    }
+
+    /**
+     * @see PostDAO#dislike(long, long)
+     */
+    @Test
+    public void dislike_success() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        long dislikesNumber = postDAO.getDislikesNumber(postId);
+
+        //Test method
+        postDAO.dislike(userId, postId);
+
+        long newDislikesNumber = postDAO.getDislikesNumber(postId);
+        assertEquals(dislikesNumber, newDislikesNumber - 1);
+    }
+
+    /**
+     * @see PostDAO#like(long, long)
+     */
+    @Test(expected = RuntimeException.class)
+    public void dislike_failure() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+
+        //Test method
+        postDAO.dislike(userId, postId);
+
+        postDAO.dislike(userId, postId);
+    }
+
+    /**
+     * @see PostDAO#delete(long)
      */
     @Test
     public void delete_failure() {
@@ -356,19 +484,51 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
         assertNotSame(post, postDAO.getById(postId));
     }
 
-
-    // endregion
-
-    // region <HELPERS>
-
     /**
-     * @see PostDAOImpl#delete(long)
+     * @see PostDAO#delete(long)
      */
     @Test
     public void delete_success() {
         long postId = postDAO.add(post);
         postDAO.delete(postId);
         assertNull(postDAO.getById(postId));
+    }
+
+    /**
+     * @see PostDAO#getNotified(long, long)
+     */
+    @Test(expected = RuntimeException.class)
+    public void getNotified_failure(){
+        postDAO.add(post);
+        //Test method
+        postDAO.getNotified(post.getId(), -1);
+
+    }
+
+    /**
+     * @see PostDAO#getNotified(long, long)
+     */
+    @Test
+    public void getNotified_success() {
+        postDAO.add(post);
+        //Test method
+        postDAO.getNotified(post.getId(), post.getUser().getId());
+        List<User> users = postDAO.getNotificationRecipients(post.getId());
+
+        assertTrue(users.contains(user));
+    }
+
+    /**
+     * @see PostDAO#getNotificationRecipients(long)
+     */
+    @Test
+    public void getUsersById_success() {
+        postDAO.add(post);
+        postDAO.getNotified(post.getId(), user.getId());
+
+        //Test method
+        List<User> userList = postDAO.getNotificationRecipients(post.getId());
+        assertTrue(userList.contains(user));
     }
     // endregion
 

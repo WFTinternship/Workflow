@@ -1,11 +1,10 @@
 package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.Comment;
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.entity.Post;
+import com.workfront.internship.workflow.entity.User;
 
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
@@ -31,16 +30,16 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     private Comment comment;
 
     @Autowired
-    @Qualifier("commentDAOSpring")
+    @Qualifier("commentDAOSpringImpl")
     private CommentDAO commentDAO;
 
     @Autowired
-    @Qualifier("userDAOSpring")
+    @Qualifier("userDAOSpringImpl")
     private UserDAO userDAO;
     private User user;
 
     @Autowired
-    @Qualifier("postDAOSpring")
+    @Qualifier("postDAOSpringImpl")
     private PostDAO postDAO;
     private Post post;
 
@@ -205,7 +204,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see CommentDAOImpl#getByPostId(long)
+     * @see CommentDAO#getByPostId(long)
      */
     @Test
     public void getByPostId_success(){
@@ -219,7 +218,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     }
 
     /**
-     * @see CommentDAOImpl#getByPostId(long)
+     * @see CommentDAO#getByPostId(long)
      */
     @Test
     public void getByPostId_failure(){

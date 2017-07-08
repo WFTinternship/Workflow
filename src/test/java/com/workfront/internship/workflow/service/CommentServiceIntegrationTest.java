@@ -1,9 +1,9 @@
 package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.CommentDAOIntegrationTest;
-import com.workfront.internship.workflow.domain.Comment;
-import com.workfront.internship.workflow.domain.Post;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.entity.Post;
+import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.junit.After;

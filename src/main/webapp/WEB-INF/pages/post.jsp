@@ -12,9 +12,17 @@
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<c:set var="avatar" value='<%=request.getSession().getAttribute(PageAttributes.AVATAR)%>'/>
+
+<c:set var="numberOfLikes" value='<%=request.getAttribute(PageAttributes.NUMOFLIKES)%>'/>
+<c:set var="numberOfDislikes" value='<%=request.getAttribute(PageAttributes.NUMOFDISLIKES)%>'/>
+
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
+<c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWERCOMMENTS)%>'/>
+<c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +73,7 @@
                             src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
-                <form action="http://localhost:8080/login" method="post">
+                <form action="/login/new-post" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="usr">Name:</label>
@@ -82,33 +90,33 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
 
-        </div>
-    </div>
-    <!-- Slider -->
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <ul>
-                <!-- SLIDE  -->
-                <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
-                    <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
-                         data-bgposition="left top"
-                         data-bgrepeat="no-repeat">
-                    <!-- LAYERS -->
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- //Slider -->
+    <%--<!-- Slider -->--%>
+    <%--<div class="tp-banner-container">--%>
+    <%--<div class="tp-banner">--%>
+    <%--<ul>--%>
+    <%--<!-- SLIDE  -->--%>
+    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+    <%--<!-- MAIN IMAGE -->--%>
+    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+    <%--data-bgposition="left top"--%>
+    <%--data-bgrepeat="no-repeat">--%>
+    <%--<!-- LAYERS -->--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
+    <%--</div>--%>
+    <%--<!-- //Slider -->--%>
 
 
     <div class="headernav">
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                        height=60px width=60px/></a></div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <%--<div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">--%>
                 <%--<div class="dropdown">--%>
                 <%--<a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>--%>
@@ -135,13 +143,14 @@
                 <div class="col-lg-7 col-xs-12 col-sm-5 col-md-7 avt">
                     <div class="stnt">
                         <c:if test="${user == null}">
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
+                            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add
+                                New Post
                             </button>
                         </c:if>
 
                         <c:if test="${user != null}">
                             <a href="/new-post">
-                                <button class="btn btn-primary">Add New Post</button>
+                                <button type="submit" class="btn btn-primary">Add New Post</button>
                             </a>
                         </c:if>
 
@@ -149,21 +158,24 @@
 
                             <c:when test="${user == null}">
                           <span>
-                              <a href="/login"><button type="submit" class="btn btn-signup">Sign Up</button></a>
+                              <a href="/signup"><button type="submit" class="btn btn-signup">Sign Up</button></a>
                               <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
                           </span>
                             </c:when>
 
                             <c:when test="${user != null}">
                                 <div class="avatar pull-left dropdown">
-                                    <a data-toggle="dropdown" href="#"><img
-                                            src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
-                                        class="caret"></b>
+                                    <a data-toggle="dropdown" href="#"><img src="${user.avatarURL}" alt="" width="37"
+                                                                            height="37"/></a>
+                                        <%--src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b--%>
+                                    <b class="caret"></b>
                                     <div class="status green">&nbsp;</div>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1"
+                                                                   href="/users/${user.id}">My Profile</a>
                                         </li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log
+                                            Out</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -175,19 +187,17 @@
 
                     <div class="clearfix"></div>
                 </div>
-
-
             </div>
         </div>
     </div>
 
 
     <section class="content">
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <a href="#">Borderlands 2</a> <span class="diviver">&gt;</span> <a href="#">General Discussion</a>
-                    <span class="diviver">&gt;</span> <a href="#">Topic Details</a>
+                    <font color="">something</font>
                 </div>
             </div>
         </div>
@@ -198,15 +208,16 @@
                 <div class="col-lg-8 col-md-8">
 
                     <!-- POST -->
-
                     <div class="post beforepagination">
                         <div class="topwrap">
                             <div class="userinfo pull-left">
                                 <div class="avatar">
-                                    <img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/>
+                                    <a href="/users/${post.user.id}">
+                                        <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                    </a>
                                     <div class="status green">&nbsp;</div>
                                 </div>
-
+                                <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
                                 <div class="icons">
                                     <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
                                         src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
@@ -215,6 +226,13 @@
                                 </div>
                             </div>
                             <div class="posttext pull-left">
+                                <div class="edit-post">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+
+                                    <span>
+                                        Edit
+                                    </span>
+                                </div>
                                 <h2>${post.title}</h2>
                                 <p>${post.content}</p>
                             </div>
@@ -223,8 +241,14 @@
                         <div class="postinfobot">
 
                             <div class="likeblock pull-left">
-                                <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>25</a>
-                                <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>3</a>
+                                <span onclick="insert_like(${post.id})" class="up">
+                                    <i class="fa fa-thumbs-o-up" id="likeColor${post.id}"></i>
+                                    <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
+                                </span>
+                                <span onclick="insert_dislike(${post.id})" class="down">
+                                    <i class="fa fa-thumbs-o-down" id="dislikeColor${post.id}"></i>
+                                    <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
+                                </span>
                             </div>
 
                             <div class="prev pull-left">
@@ -246,10 +270,22 @@
                             <ul class="post-ul">
                                 <c:forEach var="comment" items="${comments}">
                                     <li>
-                                        ${comment.content}
+                                            ${comment.content}
                                     </li>
                                 </c:forEach>
                             </ul>
+
+                            <c:if test="${user != null}">
+                                <form action="/new-comment/${post.id}" method="post">
+                                    <div class="form-group newcomment">
+                                        <input type="comment" class="form-control" id="new-comment"
+                                               placeholder="Comment"
+                                               name="content">
+                                    </div>
+                                    <button type="submit" class="btn btn-default" onclick="">Add</button>
+                                </form>
+                            </c:if>
+
                         </div>
                     </div><!-- POST -->
 
@@ -264,20 +300,21 @@
                     </div>
 
                     <!-- POST -->
-                    <c:forEach var="answer" items="${answers}">
+                    <c:forEach var="answer" items="${answers}" varStatus="answerStatus">
                         <div class="post">
                             <div class="topwrap">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/images/avatar2.jpg" alt=""/>
+                                        <a href="/users/${post.user.id}">
+                                            <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
+                                        </a>
                                         <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
+                                        <c:if test="${user.id == post.user.id}">
+                                            <div class="icons">
+                                                <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
+                                                   id="tickColor${answer.id}" aria-hidden="true"></i>
+                                            </div>
+                                        </c:if>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -288,16 +325,21 @@
                             <div class="postinfobot">
 
                                 <div class="likeblock pull-left">
-                                    <a href="#" class="up"><i class="fa fa-thumbs-o-up"></i>10</a>
-                                    <a href="#" class="down"><i class="fa fa-thumbs-o-down"></i>1</a>
+                                    <span onclick="insert_like(${answer.id})" id="like" class="up">
+                                        <i class="fa fa-thumbs-o-up" id="likeColor${answer.id}"></i>
+                                        <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
+                                    </span>
+                                    <span onclick="insert_dislike(${answer.id})"  class="down">
+                                        <i class="fa fa-thumbs-o-down" id="dislikeColor${answer.id}"></i>
+                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
+                                    </span>
                                 </div>
 
                                 <div class="prev pull-left">
                                     <a href="#"><i class="fa fa-reply"></i></a>
                                 </div>
 
-                                <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}
-                                </div>
+                                <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}</div>
 
                                 <div class="next pull-right">
                                     <a href="#"><i class="fa fa-share"></i></a>
@@ -309,13 +351,26 @@
                             </div>
                             <div class="post-comment">
                                 <ul class="post-ul">
-                                    <c:forEach var="comment" items="${answer.commentList}">
+                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
+                                               varStatus="commentStatus">
                                         <li>
                                                 ${comment.content}
                                         </li>
                                     </c:forEach>
                                 </ul>
+                                <c:if test="${user != null}">
+                                    <form action="/new-comment/${answer.id}" method="post">
+                                        <div class="form-group newcomment">
+                                            <input type="comment" class="form-control" id="new-comment"
+                                                   placeholder="Comment"
+                                                   name="content">
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Add</button>
+                                    </form>
+                                </c:if>
                             </div>
+
+
                         </div>
 
                     </c:forEach>
@@ -324,58 +379,58 @@
 
                     <!-- POST -->
 
-
-                    <!-- POST -->
-                    <div class="post">
-                        <form action="/new-answer/${post.id}" class="form" method="post">
-                            <hidden></hidden>
-                            <div class="topwrap">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/images/avatar4.jpg" alt=""/>
-                                        <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <div class="textwraper">
-                                        <div class="postreply">Post a Reply</div>
-                                        <textarea name="reply" id="reply"
-                                                  placeholder="Type your message here"></textarea>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 breadcrumbf">
+                                <font color="red">${message}</font>
                             </div>
-                            <div class="postinfobot">
+                        </div>
+                    </div>
+                    <!-- POST -->
+                    <c:if test="${user != null}">
+                        <div class="post">
 
-                                <div class="notechbox pull-left">
-                                    <input type="checkbox" name="note" id="note" class="form-control"/>
-                                </div>
-
-                                <div class="pull-left">
-                                    <label for="note"> Email me when some one post a reply</label>
-                                </div>
-
-                                <div class="pull-right postreply">
-                                    <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
-                                    <div class="pull-left">
-                                        <button type="submit" class="btn btn-primary">Post Reply</button>
+                            <form action="/new-answer/${post.id}" class="form" method="post">
+                                <hidden></hidden>
+                                <div class="topwrap">
+                                    <div class="userinfo pull-left">
+                                        <div class="avatar">
+                                            <img src="${user.avatarURL}" alt="" width="37" height="37"/>
+                                            <div class="status red">&nbsp;</div>
+                                        </div>
+                                    </div>
+                                    <div class="posttext pull-left">
+                                        <div class="textwraper">
+                                            <div class="postreply">Post a Reply</div>
+                                            <textarea name="reply" id="reply"
+                                                      placeholder="Type your message here"></textarea>
+                                        </div>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
+                                <div class="postinfobot">
 
+                                    <div class="notechbox pull-left">
+                                        <input type="checkbox" name="note" id="note" class="form-control"/>
+                                    </div>
 
-                                <div class="clearfix"></div>
-                            </div>
-                        </form>
-                    </div><!-- POST -->
+                                    <div class="pull-left">
+                                        <label for="note"> Email me when some one post a reply</label>
+                                    </div>
 
+                                    <div class="pull-right postreply">
+                                        <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                        <div class="pull-left">
+                                            <button class="btn btn-primary">Post Reply</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- POST -->
+                    </c:if>
 
                 </div>
                 <div class="col-lg-4 col-md-4">
@@ -386,10 +441,11 @@
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}">
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}<span
-                                                class="badge pull-right"></span></a></li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </div>
@@ -501,8 +557,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                        height=60px width=60px/></a></div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">
@@ -529,6 +585,8 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Custom -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>
 
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
@@ -548,6 +606,83 @@
             });
 
     });	//ready
+
+</script>
+
+<script type="text/javascript">
+
+
+    function insert_like(x) {
+        $.ajax({
+            type: 'post',
+            url: '/like/' + x,
+            data: {
+                type: "like"
+            },
+            success: function (response) {
+                var likeCnt = "likeCnt" + x;
+                var likeColor = "likeColor" + x;
+                $('#' + likeCnt).html(response);
+                $('#' + likeColor).addClass('fa-thumbs-up');
+                $('#' + likeColor).removeClass('fa-thumbs-o-up');
+            }
+        });
+    }
+
+    function insert_dislike(x) {
+        $.ajax({
+            type: 'post',
+            url: '/dislike/' + x,
+            data: {
+                type: "dislike"
+            },
+            success: function (response) {
+                var dislikeCnt = "dislikeCnt" + x;
+                var dislikeColor = "dislikeColor" + x;
+                $('#' + dislikeCnt).html(response);
+                $('#' + dislikeColor).addClass('fa-thumbs-down');
+                $('#' + dislikeColor).removeClass('fa-thumbs-o-down');
+            }
+
+        });
+    }
+
+    function bestAnswer(x) {
+        var tickColor = "tickColor" + x;
+        if($('#' + tickColor).hasClass('greenTick')){
+            removeBestAnswer( x);
+        } else {
+            setBestAnswer(x);
+        }
+    }
+
+    function setBestAnswer(x) {
+        $.ajax({
+            type: 'post',
+            url: '/setBestAnswer/' + x,
+            data: {
+                type: "like"
+            },
+            success: function (response) {
+                var tickColor = "tickColor" + x;
+                $('#' + tickColor).addClass('greenTick');
+            }
+        });
+    }
+
+    function removeBestAnswer(x) {
+        $.ajax({
+            type: 'post',
+            url: '/removeBestAnswer/' + x,
+            data: {
+                type: "like"
+            },
+            success: function (response) {
+                var tickColor = "tickColor" + x;
+                $('#' + tickColor).removeClass('greenTick');
+            }
+        });
+    }
 
 </script>
 

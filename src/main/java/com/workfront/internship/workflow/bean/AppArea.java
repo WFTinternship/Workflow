@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.domain;
+package com.workfront.internship.workflow.bean;
 
 
 public enum AppArea {

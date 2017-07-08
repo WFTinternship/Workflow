@@ -7,13 +7,14 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
-<%@ page import="com.workfront.internship.workflow.web.ContextListener" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
 <!DOCTYPE html>
@@ -62,7 +63,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <span id="form-img"><img
-                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            src="/images/logo.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
                 <form action="/login/new-post" method="post">
@@ -88,16 +89,12 @@
     <!-- Slider -->
     <div class="tp-banner-container">
         <div class="tp-banner">
-            <ul>
-                <!-- SLIDE  -->
-                <li data-transition="fade" data-slotamount="7" data-masterspeed="1500">
-                    <!-- MAIN IMAGE -->
-                    <img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"
-                         data-bgposition="left top"
-                         data-bgrepeat="no-repeat">
-                    <!-- LAYERS -->
-                </li>
-            </ul>
+            <!-- MAIN IMAGE -->
+            <img class="img" src="${pageContext.request.contextPath}/images/hero_work_workfront.jpg" alt="slidebg1"
+                 data-bgfit="cover"
+                 data-bgposition="left top"
+                 data-bgrepeat="no-repeat">
+            <!-- LAYERS -->
         </div>
     </div>
     <!-- //Slider -->
@@ -106,8 +103,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
-                        height=60px width=60px/></a></div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
                         <form action="#" method="post" class="form">
@@ -135,23 +132,25 @@
 
                         <c:if test="${user == null}">
                           <span>
-                              <a href="/signup/login"><button class="btn btn-signup">Sign Up</button></a>
+                              <a href="/signup"><button class="btn btn-signup">Sign Up</button></a>
                               <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
                           </span>
                         </c:if>
 
-
                     </div>
 
                     <div class="clearfix"></div>
+
                     <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
-                                    src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/></a> <b
+                                    src="${user.avatarURL}" alt="" width="37"
+                                    height="37"/></a> <b
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My
+                                    Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>
@@ -180,12 +179,13 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8">
                     <!-- POST -->
-                    <c:forEach var="post" items="${allPosts}">
+                    <c:forEach var="post" items="${allPosts}" varStatus="status">
                         <div class="post">
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${pageContext.request.contextPath}/images/avatar.jpg" alt=""/>
+                                        <a href="/users/${post.user.id}"> <img src="${post.user.avatarURL}" alt=""
+                                                                               width="37" height="37"/> </a>
                                         <div class="status green">&nbsp;</div>
                                     </div>
 
@@ -203,7 +203,7 @@
                             <div class="postinfo pull-left">
                                 <div class="comments">
                                     <div class="commentbg">
-                                        560
+                                            ${numberOfAnswers[status.index]}
                                         <div class="mark"></div>
                                     </div>
 
@@ -295,27 +295,16 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>My Active Threads</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                        </div>
+                        <h3>Top Posts</h3>
+
+                        <c:forEach var="post" items="${topPosts}">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                            </div>
+                        </c:forEach>
+
+
                     </div>
 
 
@@ -359,8 +348,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
-                        src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""/></a>
-                </div>
+                        src="/images/logo.png" alt=""
+                        height=67px width=67px/></a></div>
                 <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">

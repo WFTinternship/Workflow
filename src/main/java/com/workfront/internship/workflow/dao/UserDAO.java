@@ -1,7 +1,7 @@
 package com.workfront.internship.workflow.dao;
 
-import com.workfront.internship.workflow.domain.AppArea;
-import com.workfront.internship.workflow.domain.User;
+import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.User;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -39,7 +39,7 @@ public interface UserDAO {
      * @param name name of the searched user
      * @return list of the user satisfying to the given name
      */
-    List getByName(String name);
+    List<User> getByName(String name);
 
     /**
      * Gets the user by the given id
@@ -91,4 +91,15 @@ public interface UserDAO {
      */
     void deleteAll();
 
+    /**
+     * Updates the fields of the specified user
+     * @param user the user whose profile is to be updated
+     */
+    void updateProfile(User user);
+
+    /**
+     * Updates the avatar of the specified user
+     * @param user the user whose avatar is to be updated
+     */
+    void updateAvatar(User user);
 }
