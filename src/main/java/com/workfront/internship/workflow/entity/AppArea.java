@@ -3,7 +3,7 @@ package com.workfront.internship.workflow.entity;
 import javax.persistence.*;
 import java.util.List;
 
-//@Entity
+//@Entity(name = "apparea")
 public enum AppArea {
     REPORTING(1, "Reporting", "Some rep description", "Team1"),
     API(2, "API", "API", "Team1"),
@@ -184,6 +184,9 @@ public enum AppArea {
 
     @OneToMany(mappedBy = "appArea")
     private List<Post> posts;
+
+    @ManyToMany(mappedBy = "appAreas", cascade = {CascadeType.ALL})
+    private List<User> users;
 
     AppArea(long id, String name, String description, String teamName) {
         this.id = id;

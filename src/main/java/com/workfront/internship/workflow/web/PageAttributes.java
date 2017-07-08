@@ -26,5 +26,6 @@ public interface PageAttributes {
     String NUMOFDISLIKES = "numberOfDislikes";
     String ANSWERCOMMENTS = "answerComments";
     String PROFILEOWNERID = "ownerId";
+    String TOPPOSTS = "topPosts";
 
 }

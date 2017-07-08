@@ -111,7 +111,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     public List<Post> getByUserId(long userId) {
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
-                " apparea.description, apparea.team_name, post_time, title, content, answer_id, likes_number, dislikes_number " +
+                " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -138,7 +138,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     public List<Post> getByAppAreaId(long id) {
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.passcode, user.avatar_url, user.rating, apparea_id, apparea.name, " +
-                " apparea.description, apparea.team_name, post_time, title, content, answer_id, likes_number, dislikes_number " +
+                " apparea.description, apparea.team_name, post_time, title, content, answer_id " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -165,7 +165,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         String sql = " SELECT post.id, user_id, user.first_name, user.last_name, " +
                 " user.email, user.avatar_url, user.rating, user.passcode," +
                 " apparea_id, apparea.name, apparea.description, " +
-                " apparea.team_name, post_time, title, content, likes_number, dislikes_number " +
+                " apparea.team_name, post_time, title, content " +
                 " FROM post " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
@@ -229,7 +229,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title," +
-                " content as answer_content, likes_number, dislikes_number " +
+                " content as answer_content " +
                 " FROM post JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
                 " WHERE post.post_id = ?" +
@@ -257,7 +257,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                 " user.email, user.avatar_url, user.rating, user.passcode, " +
                 " apparea_id, apparea.name, apparea.description, " +
                 " apparea.team_name, post_time as answer_time, title as answer_title, " +
-                " content as answer_content, likes_number, dislikes_number " +
+                " content as answer_content " +
                 " FROM best_answer JOIN post ON best_answer.answer_id = post.id " +
                 " JOIN user ON post.user_id = user.id " +
                 " LEFT JOIN apparea ON post.apparea_id = apparea.id " +

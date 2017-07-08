@@ -67,7 +67,8 @@ public class UserController {
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 
@@ -161,7 +162,8 @@ public class UserController {
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 
@@ -184,6 +186,8 @@ public class UserController {
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS,
+                ControllerUtils.getNumberOfAnswers(postList, postService))
                 .addObject(PageAttributes.PROFILEOWNERID, userId);
         return modelAndView;
     }

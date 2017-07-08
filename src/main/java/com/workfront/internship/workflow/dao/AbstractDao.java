@@ -23,7 +23,7 @@ public abstract class AbstractDao {
     @Autowired
     protected EntityManagerFactory entityManagerFactory;
 
-    public static void closeResources(AutoCloseable... resources) {
+    protected static void closeResources(AutoCloseable... resources) {
         for (AutoCloseable resource : resources) {
             if (resource != null) {
                 try {

@@ -56,18 +56,18 @@
 <div class="container-fluid">
     <%--<!-- Slider -->--%>
     <%--<div class="tp-banner-container">--%>
-        <%--<div class="tp-banner">--%>
-            <%--<ul>--%>
-                <%--<!-- SLIDE  -->--%>
-                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
-                    <%--<!-- MAIN IMAGE -->--%>
-                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
-                         <%--data-bgposition="left top"--%>
-                         <%--data-bgrepeat="no-repeat">--%>
-                    <%--<!-- LAYERS -->--%>
-                <%--</li>--%>
-            <%--</ul>--%>
-        <%--</div>--%>
+    <%--<div class="tp-banner">--%>
+    <%--<ul>--%>
+    <%--<!-- SLIDE  -->--%>
+    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+    <%--<!-- MAIN IMAGE -->--%>
+    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+    <%--data-bgposition="left top"--%>
+    <%--data-bgrepeat="no-repeat">--%>
+    <%--<!-- LAYERS -->--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
     <%--</div>--%>
     <%--<!-- //Slider -->--%>
 
@@ -130,10 +130,10 @@
 
         <div class="container">
             <div class="row">
-
+            <div class="col-lg-8 col-md-8">
                 <c:if test="${user.id == profileOwnerId}">
                     <%--Edit Avatar Place--%>
-                    <div class="col-lg-8 col-md-8">
+                    <div >
                         <!-- POST -->
                         <div class="post">
                             <form action="/updateAvatar" class="form newtopic" method="post"
@@ -181,10 +181,12 @@
 
                         </div>
                     </div>
-                    <%--Edit Avatar Place--%>
+
                 </c:if>
 
-                <div class="col-lg-8 col-md-8">
+                <h4>   My posts </h4>
+
+                <div>
                     <!-- POST -->
                     <c:forEach var="post" items="${allPosts}">
                         <div class="post">
@@ -226,122 +228,129 @@
                     <!-- POST -->
 
                 </div>
+            </div>
+
+
+
+
                 <div class="col-lg-4 col-md-4">
 
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>My Application Areas</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <ul class="cats">
-                                <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <input class="pull-right" type="checkbox" checked="checked"
+                        <!-- -->
+                        <div class="sidebarblock">
+                            <h3>My Application Areas</h3>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <ul class="cats">
+                                    <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                            <input class="pull-right" type="checkbox" checked="checked"
                                                    onclick="subscription(this, ${appArea.id})"/>
-                                    </li>
-                                </c:forEach>
-                                <div class="divline"></div>
-                                <h3>Other Application Areas</h3>
-                                <div class="divline"></div>
-                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <input class="pull-right" type="checkbox"
-                                               onclick="subscription(this, ${appArea.id})"/>
-                                    </li>
-                                </c:forEach>
-                            </ul>
+                                        </li>
+                                    </c:forEach>
+                                    <div class="divline"></div>
+                                    <h3>Other Application Areas</h3>
+                                    <div class="divline"></div>
+                                    <c:forEach var="appArea" items="${appAreas}" varStatus="status">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                            <input class="pull-right" type="checkbox"
+                                                   onclick="subscription(this, ${appArea.id})"/>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>Poll of the Week</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <p>Which game you are playing this week?</p>
-                            <form action="#" method="post" class="form">
-                                <table class="poll">
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar"
-                                                     aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                    Call of Duty Ghosts
+                        <!-- -->
+                        <div class="sidebarblock">
+                            <h3>Poll of the Week</h3>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <p>Which game you are playing this week?</p>
+                                <form action="#" method="post" class="form">
+                                    <table class="poll">
+                                        <tr>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar color1" role="progressbar"
+                                                         aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                                                        Call of Duty Ghosts
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt1" type="radio" name="opt" value="1">
-                                            <label for="opt1"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar"
-                                                     aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                    Titanfall
+                                            </td>
+                                            <td class="chbox">
+                                                <input id="opt1" type="radio" name="opt" value="1">
+                                                <label for="opt1"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar color2" role="progressbar"
+                                                         aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: 63%">
+                                                        Titanfall
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt2" type="radio" name="opt" value="2" checked>
-                                            <label for="opt2"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar"
-                                                     aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                    Battlefield 4
+                                            </td>
+                                            <td class="chbox">
+                                                <input id="opt2" type="radio" name="opt" value="2" checked>
+                                                <label for="opt2"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar color3" role="progressbar"
+                                                         aria-valuenow="40"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+                                                        Battlefield 4
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt3" type="radio" name="opt" value="3">
-                                            <label for="opt3"></label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                            <p class="smal">Voting ends on 19th of October</p>
+                                            </td>
+                                            <td class="chbox">
+                                                <input id="opt3" type="radio" name="opt" value="3">
+                                                <label for="opt3"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                                <p class="smal">Voting ends on 19th of October</p>
+                            </div>
                         </div>
+
+                        <!-- -->
+                        <div class="sidebarblock">
+                            <h3>My Active Threads</h3>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
+                            </div>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="#">Who Wins in the Battle for Power on the Internet?</a>
+                            </div>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
+                            </div>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
+                            </div>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
+                            </div>
+                        </div>
+
+
                     </div>
+                    <%--Edit Avatar Place--%>
 
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>My Active Threads</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                        </div>
-                    </div>
-
-
-                </div>
             </div>
         </div>
 
@@ -418,13 +427,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-            {
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
+                {
+                    delay: 15000,
+                    startwidth: 1200,
+                    startheight: 278,
+                    hideThumbs: 10,
+                    fullWidth: "on"
+                });
 
     });	//ready
 
@@ -434,7 +443,7 @@
 
     function subscription(element, x) {
         element.checked = !element.checked;
-        if(element.checked){
+        if (element.checked) {
             unsubscribe(element, x);
         } else {
             subscribe(element, x);
@@ -478,9 +487,9 @@
                 type: "comment"
             },
             success: function (response) {
-                document.getElementById("all_comments").innerHTML=response+document.getElementById("all_comments").innerHTML;
-                document.getElementById("comment").value="";
-                document.getElementById("username").value="";
+                document.getElementById("all_comments").innerHTML = response + document.getElementById("all_comments").innerHTML;
+                document.getElementById("comment").value = "";
+                document.getElementById("username").value = "";
             }
         });
     }

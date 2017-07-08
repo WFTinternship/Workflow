@@ -130,7 +130,7 @@
     <%--<!-- //Slider -->--%>
 
 
-    <div class="headernav">
+    <div class="headernav" id="header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
@@ -571,13 +571,13 @@
                 'confirmPass': jQuery("#sgpass2").val()
             }, statusCode: {
                 409: function (response) {
-                    $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
                 },
                 500: function (response) {
-                    $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong></div>').fadeIn("slow");
+                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong></div>').fadeIn("slow");
                 },
                 400: function (response) {
-                    $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
+                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
                 }
             }, success: function () {
                 jQuery("#afterajaxemail").val(jQuery("#email").val());
@@ -588,7 +588,7 @@
             }
         });
     });
-</script>>
+</script>
 
 <!-- Custom -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>

@@ -15,7 +15,7 @@
     <mvc:annotation-driven/>
 
     <!--Tells spring WHERE to look for annotations-->
-    <context:component-scan base-package="com.workfront.internship.workflow.entity" />
+    <context:component-scan base-package="com.workfront.internship.workflow" />
 
     <!--Tells spring where to look for jsp pages-->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

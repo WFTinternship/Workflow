@@ -51,6 +51,16 @@ public class ControllerUtils {
         return numbersOfDislikesForPosts;
     }
 
+    public static List<Post> getTopPosts(PostService postService, List<Post> posts){
+        List<Post> topPosts = new ArrayList<>();
+        for (Post post: posts) {
+            if(postService.getAnswersByPostId(post.getId()).size()  > 4){
+                topPosts.add(post);
+            }
+        }
+        return topPosts;
+    }
+
 //    public static void setAppAreas(ModelAndView modelAndView) {
 //        modelAndView.addObject(PageAttributes.APPAREAS, appAreas);
 //
