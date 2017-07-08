@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,7 +62,8 @@ public class HomeController {
                 .addObject(PageAttributes.NUMOFANSWERS,
                         ControllerUtils.getNumberOfAnswers(posts, postService))
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
 
         return modelAndView;
     }
@@ -84,7 +86,8 @@ public class HomeController {
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
 
         return modelAndView;
     }

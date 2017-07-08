@@ -241,12 +241,12 @@
                         <div class="postinfobot">
 
                             <div class="likeblock pull-left">
-                                <span onclick="insert_like(${post.id})" id="post-like" class="up">
-                                    <i class="fa fa-thumbs-o-up"></i>
+                                <span onclick="insert_like(${post.id})" class="up">
+                                    <i class="fa fa-thumbs-o-up" id="likeColor${post.id}"></i>
                                     <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
                                 </span>
-                                <span onclick="insert_dislike(${post.id})" id="post-dislike" class="down">
-                                    <i class="fa fa-thumbs-o-down"></i>
+                                <span onclick="insert_dislike(${post.id})" class="down">
+                                    <i class="fa fa-thumbs-o-down" id="dislikeColor${post.id}"></i>
                                     <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
                                 </span>
                             </div>
@@ -329,8 +329,8 @@
                                         <i class="fa fa-thumbs-o-up" id="likeColor${answer.id}"></i>
                                         <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
-                                    <span onclick="insert_dislike(${answer.id})" id="dislike" class="down">
-                                        <i class="fa fa-thumbs-o-down"></i>
+                                    <span onclick="insert_dislike(${answer.id})"  class="down">
+                                        <i class="fa fa-thumbs-o-down" id="dislikeColor${answer.id}"></i>
                                         <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
                                     </span>
                                 </div>
@@ -638,7 +638,10 @@
             },
             success: function (response) {
                 var dislikeCnt = "dislikeCnt" + x;
+                var dislikeColor = "dislikeColor" + x;
                 $('#' + dislikeCnt).html(response);
+                $('#' + dislikeColor).addClass('fa-thumbs-down');
+                $('#' + dislikeColor).removeClass('fa-thumbs-o-down');
             }
 
         });

@@ -6,7 +6,6 @@ import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,7 +15,7 @@ import java.util.List;
  * Created by nane on 7/5/17
  */
 
-@Repository
+//@Repository
 public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
@@ -148,7 +147,18 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public void setBestAnswer(long postId, long answerId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            // TODO: need to be discussed
+            Post post = getById(postId);
+            Post answer = getById(answerId);
+            post.setBestAnswer(answer);
 
+            entityManager.persist(post);
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     /**

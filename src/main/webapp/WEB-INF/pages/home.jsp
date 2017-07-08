@@ -9,6 +9,7 @@
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
@@ -89,7 +90,8 @@
     <div class="tp-banner-container">
         <div class="tp-banner">
             <!-- MAIN IMAGE -->
-            <img class="img" src="${pageContext.request.contextPath}/images/hero_work_workfront.jpg" alt="slidebg1" data-bgfit="cover"
+            <img class="img" src="${pageContext.request.contextPath}/images/hero_work_workfront.jpg" alt="slidebg1"
+                 data-bgfit="cover"
                  data-bgposition="left top"
                  data-bgrepeat="no-repeat">
             <!-- LAYERS -->
@@ -135,10 +137,10 @@
                           </span>
                         </c:if>
 
-
                     </div>
 
                     <div class="clearfix"></div>
+
                     <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
@@ -182,8 +184,8 @@
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                       <a href="/users/${post.user.id}"> <img src="${post.user.avatarURL}" alt=""
-                                             width="37" height="37"/> </a>
+                                        <a href="/users/${post.user.id}"> <img src="${post.user.avatarURL}" alt=""
+                                                                               width="37" height="37"/> </a>
                                         <div class="status green">&nbsp;</div>
                                     </div>
 
@@ -293,27 +295,16 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>My Active Threads</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                        </div>
+                        <h3>Top Posts</h3>
+
+                        <c:forEach var="post" items="${topPosts}">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                            </div>
+                        </c:forEach>
+
+
                     </div>
 
 

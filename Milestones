@@ -18,3 +18,5 @@
 (-) Change the forest picture, please.
 (-) Ignore db password.
 (-) Post answers numbers.
+(-) Fix the bug user is added to the database without verification.
+(-) Info "Please choose application area".
