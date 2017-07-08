@@ -75,6 +75,7 @@ public class PostController {
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
                         ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.ALLPOSTS, posts);
 

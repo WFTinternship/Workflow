@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Vahag on 7/6/2017
  */
-@Repository
+//@Repository
 public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);

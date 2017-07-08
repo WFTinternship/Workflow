@@ -582,6 +582,8 @@
             }, success: function () {
                 jQuery("#afterajaxemail").val(jQuery("#email").val());
                 $('#verify').modal('toggle');
+                $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong> Congratulations! Your Sign up was successfull!</div>').fadeIn("slow");
+
             },
             error: function (errorThrow) {
                 console.log('error')

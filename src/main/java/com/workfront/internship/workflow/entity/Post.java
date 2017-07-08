@@ -24,8 +24,8 @@ public class Post {
     private User user;
 
     @Enumerated(EnumType.ORDINAL)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apparea_id", referencedColumnName = "id")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "apparea_id", referencedColumnName = "id")
     private AppArea appArea;
 
     @Column(name = "post_time", nullable = false)
@@ -42,6 +42,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList;
+
+    @OneToOne
+    private Post bestAnswer;
 
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
@@ -125,6 +128,14 @@ public class Post {
 
     public void setAnswerList(List<Post> answerList) {
         this.answerList = answerList;
+    }
+
+    public Post getBestAnswer() {
+        return bestAnswer;
+    }
+
+    public void setBestAnswer(Post bestAnswer) {
+        this.bestAnswer = bestAnswer;
     }
 
     @Override

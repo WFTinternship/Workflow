@@ -70,7 +70,38 @@
     <%--</div>--%>
     <%--</div>--%>
     <%--<!-- //Slider -->--%>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <span id="form-img"><img
+                                src="/images/logo.png" alt=""
+                                height="60px" width="60px/"></span>
+                    </div>
+                    <form action="/login/new-post" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="usr">Name:</label>
+                                <input type="text" class="form-control" name="email" id="usr">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Password:</label>
+                                <input type="password" class="form-control" name="password" id="pwd">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-login">Login</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     <div class="headernav">
         <div class="container">
             <div class="row">
@@ -91,26 +122,44 @@
                 </div>
                 <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
-                        <a href="/new-post">
-                            <button class="btn btn-primary">Add New Post</button>
-                        </a>
+                        <c:if test="${user == null}">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
+                            </button>
+                        </c:if>
+
+                        <c:if test="${user != null}">
+                            <a href="/new-post">
+                                <button class="btn btn-primary">Add New Post</button>
+                            </a>
+                        </c:if>
+
+                        <c:if test="${user == null}">
+                          <span>
+                              <a href="/signup"><button class="btn btn-signup">Sign Up</button></a>
+                              <a href="/login"><button type="submit" class="btn btn-login">Login</button></a>
+                          </span>
+                        </c:if>
+
                     </div>
 
                     <div class="clearfix"></div>
-                    <div class="avatar pull-left dropdown">
-                        <a data-toggle="dropdown" href="#"><img
-                                src="${user.avatarURL}" alt="" width="37"
-                                height="37"/></a> <b
-                            class="caret"></b>
-                        <div class="status green">&nbsp;</div>
-                        <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My
-                                Profile</a>
-                            </li>
-                            <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <c:if test="${user != null}">
+                        <div class="avatar pull-left dropdown">
+                            <a data-toggle="dropdown" href="#"><img
+                                    src="${user.avatarURL}" alt="" width="37"
+                                    height="37"/></a> <b
+                                class="caret"></b>
+                            <div class="status green">&nbsp;</div>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My
+                                    Profile</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -130,226 +179,227 @@
 
         <div class="container">
             <div class="row">
-            <div class="col-lg-8 col-md-8">
-                <c:if test="${user.id == profileOwnerId}">
-                    <%--Edit Avatar Place--%>
-                    <div >
-                        <!-- POST -->
-                        <div class="post">
-                            <form action="/updateAvatar" class="form newtopic" method="post"
-                                  enctype="multipart/form-data">
-                                <div class="postinfotop">
-                                    <h2>Update Profile</h2>
-                                </div>
-                                <!-- acc section -->
-                                <div class="accsection">
-                                    <div class="topwrap">
-                                        <div class="userinfo pull-left">
-                                            <div class="avatar">
-                                                <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
-                                                     id="image" alt="" height="45" width="45"/>
-                                                    <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
-                                                    <%--alt=""/>--%>
-                                            </div>
-                                                <%--<div class="imgsize">60 x 60</div>--%>
-                                                <%--<div>--%>
-                                                <%--<button class="btn">Add</button>--%>
-                                                <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
+                <div class="col-lg-8 col-md-8">
+                    <c:if test="${user.id == profileOwnerId}">
+                        <%--Edit Avatar Place--%>
+                        <div>
+                            <!-- POST -->
+                            <div class="post">
+                                <form action="/updateAvatar" class="form newtopic" method="post"
+                                      enctype="multipart/form-data">
+                                    <div class="postinfotop">
+                                        <h2>Update Profile</h2>
+                                    </div>
+                                    <!-- acc section -->
+                                    <div class="accsection">
+                                        <div class="topwrap">
+                                            <div class="userinfo pull-left">
+                                                <div class="avatar">
+                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
+                                                         id="image" alt="" height="45" width="45"/>
+                                                        <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
+                                                        <%--alt=""/>--%>
+                                                </div>
+                                                    <%--<div class="imgsize">60 x 60</div>--%>
+                                                    <%--<div>--%>
+                                                    <%--<button class="btn">Add</button>--%>
+                                                    <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
 
-                                                <%--</div>--%>
-                                            <div class="half-width">
-                                                <input type="file" name="avatar" id="avatar" class="hide"/>
-                                                <label for="avatar" class="btn">Add</label><br/>
+                                                    <%--</div>--%>
+                                                <div class="half-width">
+                                                    <input type="file" name="avatar" id="avatar" class="hide"/>
+                                                    <label for="avatar" class="btn">Add</label><br/>
+                                                </div>
                                             </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div><!-- acc section END -->
+
+                                    <div class="postinfobot">
+
+
+                                        <div class="pull-right postreply">
+                                            <div class="pull-left">
+                                                <input class="btn btn-primary" type="submit" value="Update Avatar"/>
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
-                                </div><!-- acc section END -->
+                                </form>
 
-                                <div class="postinfobot">
+                            </div>
+                        </div>
+
+                    </c:if>
 
 
-                                    <div class="pull-right postreply">
-                                        <div class="pull-left">
-                                            <input class="btn btn-primary" type="submit" value="Update Avatar"/>
+                    <c:if test="${user != null}">
+                        <h4> My posts </h4>
+                    </c:if>
+
+                    <div>
+                        <!-- POST -->
+                        <c:forEach var="post" items="${allPosts}">
+                            <div class="post">
+                                <div class="wrap-ut pull-left">
+                                    <div class="userinfo pull-left">
+                                        <div class="avatar">
+                                            <img src="${post.user.avatarURL}" alt=""
+                                                 width="37" height="37"/>
+                                            <div class="status green">&nbsp;</div>
                                         </div>
-                                        <div class="clearfix"></div>
+
+                                        <div class="icons">
+                                            <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
+                                                src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
+                                        </div>
+                                    </div>
+                                    <div class="posttext pull-left">
+                                        <h2><a href="/post/${post.id}">${post.title}</a></h2>
+                                        <p>${post.content}</p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
-                            </form>
+                                <div class="postinfo pull-left">
+                                    <div class="comments">
+                                        <div class="commentbg">
+                                            560
+                                            <div class="mark"></div>
+                                        </div>
 
-                        </div>
-                    </div>
-
-                </c:if>
-
-                <h4>   My posts </h4>
-
-                <div>
-                    <!-- POST -->
-                    <c:forEach var="post" items="${allPosts}">
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="${post.user.avatarURL}" alt=""
-                                             width="37" height="37"/>
-                                        <div class="status green">&nbsp;</div>
                                     </div>
-
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="/post/${post.id}">${post.title}</a></h2>
-                                    <p>${post.content}</p>
+                                    <div class="views"><i class="fa fa-eye"></i> 1,568</div>
+                                    <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        560
-                                        <div class="mark"></div>
-                                    </div>
+                            <!-- POST -->
+                        </c:forEach>
 
-                                </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
                         <!-- POST -->
-                    </c:forEach>
 
-                    <!-- POST -->
-
+                    </div>
                 </div>
-            </div>
-
-
 
 
                 <div class="col-lg-4 col-md-4">
 
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <h3>My Application Areas</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <ul class="cats">
-                                    <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                            <input class="pull-right" type="checkbox" checked="checked"
-                                                   onclick="subscription(this, ${appArea.id})"/>
-                                        </li>
-                                    </c:forEach>
-                                    <div class="divline"></div>
-                                    <h3>Other Application Areas</h3>
-                                    <div class="divline"></div>
-                                    <c:forEach var="appArea" items="${appAreas}" varStatus="status">
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                            <input class="pull-right" type="checkbox"
-                                                   onclick="subscription(this, ${appArea.id})"/>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                            </div>
+                    <!-- -->
+                    <div class="sidebarblock">
+                        <h3>My Application Areas</h3>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <ul class="cats">
+                                <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <input class="pull-right" type="checkbox" checked="checked"
+                                               onclick="subscription(this, ${appArea.id})"/>
+                                    </li>
+                                </c:forEach>
+                                <div class="divline"></div>
+                                <h3>Other Application Areas</h3>
+                                <div class="divline"></div>
+                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <input class="pull-right" type="checkbox"
+                                               onclick="subscription(this, ${appArea.id})"/>
+                                    </li>
+                                </c:forEach>
+                            </ul>
                         </div>
-
-
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <h3>Poll of the Week</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <p>Which game you are playing this week?</p>
-                                <form action="#" method="post" class="form">
-                                    <table class="poll">
-                                        <tr>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar color1" role="progressbar"
-                                                         aria-valuenow="40"
-                                                         aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                        Call of Duty Ghosts
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="chbox">
-                                                <input id="opt1" type="radio" name="opt" value="1">
-                                                <label for="opt1"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar color2" role="progressbar"
-                                                         aria-valuenow="40"
-                                                         aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                        Titanfall
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="chbox">
-                                                <input id="opt2" type="radio" name="opt" value="2" checked>
-                                                <label for="opt2"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar color3" role="progressbar"
-                                                         aria-valuenow="40"
-                                                         aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                        Battlefield 4
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="chbox">
-                                                <input id="opt3" type="radio" name="opt" value="3">
-                                                <label for="opt3"></label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </form>
-                                <p class="smal">Voting ends on 19th of October</p>
-                            </div>
-                        </div>
-
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <h3>My Active Threads</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                            </div>
-                        </div>
-
-
                     </div>
-                    <%--Edit Avatar Place--%>
+
+
+                    <!-- -->
+                    <div class="sidebarblock">
+                        <h3>Poll of the Week</h3>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <p>Which game you are playing this week?</p>
+                            <form action="#" method="post" class="form">
+                                <table class="poll">
+                                    <tr>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar color1" role="progressbar"
+                                                     aria-valuenow="40"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                                                    Call of Duty Ghosts
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="chbox">
+                                            <input id="opt1" type="radio" name="opt" value="1">
+                                            <label for="opt1"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar color2" role="progressbar"
+                                                     aria-valuenow="40"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: 63%">
+                                                    Titanfall
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="chbox">
+                                            <input id="opt2" type="radio" name="opt" value="2" checked>
+                                            <label for="opt2"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar color3" role="progressbar"
+                                                     aria-valuenow="40"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+                                                    Battlefield 4
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="chbox">
+                                            <input id="opt3" type="radio" name="opt" value="3">
+                                            <label for="opt3"></label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                            <p class="smal">Voting ends on 19th of October</p>
+                        </div>
+                    </div>
+
+                    <!-- -->
+                    <div class="sidebarblock">
+                        <h3>My Active Threads</h3>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
+                        </div>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
+                        </div>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
+                        </div>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
+                        </div>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <%--Edit Avatar Place--%>
 
             </div>
         </div>
@@ -427,13 +477,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-                {
-                    delay: 15000,
-                    startwidth: 1200,
-                    startheight: 278,
-                    hideThumbs: 10,
-                    fullWidth: "on"
-                });
+            {
+                delay: 15000,
+                startwidth: 1200,
+                startheight: 278,
+                hideThumbs: 10,
+                fullWidth: "on"
+            });
 
     });	//ready
 
