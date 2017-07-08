@@ -3,25 +3,16 @@ package com.workfront.internship.workflow.entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity(name = "comment")
 public class Comment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @Column(name = "content", length = 1000, nullable = false)
     private String content;
 
-    @Column(name = "comment_time", nullable = false)
     private Timestamp commentTime;
 
     public long getId() {

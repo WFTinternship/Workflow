@@ -4,40 +4,26 @@ package com.workfront.internship.workflow.entity;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "user")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "passcode")
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_apparea", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "apparea_id"))
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
-    @Column(name = "avatar_url")
     private String avatarURL;
 
-    @Column(name = "rating")
     private int rating;
 
     public long getId() {

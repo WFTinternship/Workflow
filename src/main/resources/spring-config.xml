@@ -8,6 +8,5 @@
     <import resource="spring/spring-context.xml"/>
     <import resource="spring/spring-database.xml"/>
     <import resource="spring/application-context.xml"/>
-    <import resource="hibernate-config.xml"/>
 
 </beans>

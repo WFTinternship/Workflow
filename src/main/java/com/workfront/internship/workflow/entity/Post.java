@@ -8,42 +8,26 @@ import java.util.List;
  * Created by nane on 5/26/17
  */
 
-@Entity(name = "post")
 public class Post {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Enumerated(EnumType.ORDINAL)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "apparea_id", referencedColumnName = "id")
     private AppArea appArea;
 
-    @Column(name = "post_time", nullable = false)
     private Timestamp postTime;
 
-    @Column(name = "title", length = 45, nullable = false)
     private String title;
 
-    @Column(name = "content", length = 1000, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Post> answerList;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> commentList;
 
-    @OneToOne
     private Post bestAnswer;
 
     public static boolean isEmpty(String string) {
