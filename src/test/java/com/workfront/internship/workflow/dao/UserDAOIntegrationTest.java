@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.AppAreaEnum;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
@@ -33,9 +34,12 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
 
     private User user;
     private List<User> userList;
+    private AppArea appArea;
 
     @Before
     public void setup() {
+        appArea = new AppArea();
+        appArea.setAppAreaEnum(AppAreaEnum.API);
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
 
@@ -258,7 +262,7 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         //Test method
         List<AppArea> appAreaList = userDAO.getAppAreasById(userId);
 
-        assertTrue(!appAreaList.contains(AppArea.getById(1)));
+        assertTrue(!appAreaList.contains(AppAreaEnum.getById(1)));
     }
 
     /**
@@ -271,7 +275,7 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         //Test method
         List<AppArea> appAreaList = userDAO.getAppAreasById(userId);
 
-        assertTrue(appAreaList.contains(AppArea.getById(1)));
+        assertTrue(appAreaList.contains(AppAreaEnum.getById(1)));
     }
 
     /**

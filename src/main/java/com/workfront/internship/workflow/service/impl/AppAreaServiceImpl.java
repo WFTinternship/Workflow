@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class AppAreaServiceImpl implements AppAreaService {
     private final AppAreaDAO appAreaDAO;
 
     @Autowired
-    public AppAreaServiceImpl(@Qualifier("appAreaDAOSpringImpl") AppAreaDAO appAreaDAO) {
+    public AppAreaServiceImpl(@Qualifier("appAreaDAOHibernateImpl") AppAreaDAO appAreaDAO) {
         this.appAreaDAO = appAreaDAO;
     }
 

@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.service;
 import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
 import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.AppAreaEnum;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
@@ -46,8 +47,12 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Mock
     private UserDAOSpringImpl userDAOMock;
 
+    private AppArea appArea;
+
     @Before
     public void init() {
+        appArea = new AppArea();
+        appArea.setAppAreaEnum(AppAreaEnum.API);
         MockitoAnnotations.initMocks(this);
     }
 
@@ -77,7 +82,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidObjectException);
         }
 
-        post.setAppArea(AppArea.AGILE);
+        post.setAppArea(appArea);
         post.setPostTime(null);
         try {
             // Test method
@@ -578,7 +583,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidObjectException);
         }
 
-        post.setAppArea(AppArea.AGILE);
+        post.setAppArea(appArea);
         post.setPostTime(null);
         try {
             // Test method
