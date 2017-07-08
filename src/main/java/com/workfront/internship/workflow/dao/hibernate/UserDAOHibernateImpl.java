@@ -7,11 +7,8 @@ import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
@@ -96,6 +93,8 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
+
+
 
     }
 
