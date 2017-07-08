@@ -193,6 +193,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public void dislike(long userId, long postId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     }
 
