@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.dao.hibernate;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
@@ -38,7 +39,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
        List<User> users;
         try {
             users = entityManager.createQuery(
-                    "SELECT c FROM user c WHERE c.name LIKE :name")
+                    "SELECT c FROM user c WHERE concat(c.firstName, c.lastName) LIKE :name")
                     .setParameter("name", name)
                     .getResultList();
         }catch (RuntimeException e){
@@ -63,7 +64,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public User getByEmail(String email) {
-       User user;
+        User user;
         try {
             user = (User) entityManager.createQuery(
                     "SELECT c FROM user c WHERE c.email = :email")
@@ -78,19 +79,49 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public List<AppArea> getAppAreasById(long id) {
-        return null;
+        List<AppArea> appAreas;
+        try {
+            User user = (User) entityManager.createQuery(
+                    "SELECT c FROM user c WHERE c.id = :id")
+                    .setParameter("id", id)
+                    .getSingleResult();
+            appAreas = user.getAppAreas();
+        }catch (RuntimeException e){
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return appAreas;
     }
 
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
+        try {
+            User user = entityManager.find(User.class, userId);
+            AppArea appArea = entityManager.find(AppArea.class, appAreaId);
+            List<AppArea> appAreas = user.getAppAreas();
+            appAreas.add(appArea);
+            user.setAppAreas(appAreas);
 
-
-
+            entityManager.merge(user);
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     @Override
     public void unsubscribeToArea(long userId, long appAreaId) {
+        try {
+            User user = entityManager.find(User.class, userId);
+            AppArea appArea = entityManager.find(AppArea.class, appAreaId);
+            user.getAppAreas().remove(appArea);
 
+
+            entityManager.merge(user);
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     @Override
