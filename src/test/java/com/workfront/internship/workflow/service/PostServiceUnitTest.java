@@ -46,8 +46,11 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Mock
     private UserDAOSpringImpl userDAOMock;
 
+    private AppArea appArea;
+
     @Before
     public void init() {
+        appArea = AppArea.API;
         MockitoAnnotations.initMocks(this);
     }
 
@@ -77,7 +80,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidObjectException);
         }
 
-        post.setAppArea(AppArea.AGILE);
+        post.setAppArea(appArea);
         post.setPostTime(null);
         try {
             // Test method
@@ -578,7 +581,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
             assertTrue(ex instanceof InvalidObjectException);
         }
 
-        post.setAppArea(AppArea.AGILE);
+        post.setAppArea(appArea);
         post.setPostTime(null);
         try {
             // Test method

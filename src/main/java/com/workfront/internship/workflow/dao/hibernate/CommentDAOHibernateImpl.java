@@ -18,10 +18,6 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-    public CommentDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
-
     /**
      *@see CommentDAO#add(Comment)
      */

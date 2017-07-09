@@ -23,9 +23,10 @@ public class User {
     @Column(name = "passcode")
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_apparea", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "apparea_id"))
+    @ElementCollection(targetClass = AppArea.class)
+    @CollectionTable(name = "user_apparea",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "apparea_id")
     private List<AppArea> appAreas;
 
     @OneToMany(mappedBy = "user")

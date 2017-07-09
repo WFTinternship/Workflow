@@ -1,7 +1,5 @@
 package com.workfront.internship.workflow.bean;
 
-import com.workfront.internship.workflow.entity.AppArea;
-
 import java.sql.Timestamp;
 import java.util.List;
 

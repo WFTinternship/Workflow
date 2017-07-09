@@ -33,8 +33,11 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
     @Mock
     AppAreaDAOSpringImpl appAreaDAOMock;
 
+    private AppArea appArea;
+
     @Before
     public void init() {
+        appArea = AppArea.AGILE;
         MockitoAnnotations.initMocks(this);
     }
 
@@ -54,7 +57,7 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
         doThrow(RuntimeException.class).when(appAreaDAOMock).add(any(AppArea.class));
 
         // Test method
-        appAreaService.add(AppArea.AGILE);
+        appAreaService.add(appArea);
     }
 
     /**
@@ -62,7 +65,7 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void add_success() {
-        AppArea appArea = AppArea.AGILE;
+
         long id = 50;
         doReturn(id).when(appAreaDAOMock).add(appArea);
 
@@ -137,11 +140,11 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
     @Test
     public void getById_success() {
         Long id = 15L;
-        doReturn(AppArea.AGILE).when(appAreaDAOMock).getById(id);
+        doReturn(appArea).when(appAreaDAOMock).getById(id);
 
         // Test method
         AppArea actualAppArea = appAreaService.getById(id);
-        assertEquals(AppArea.AGILE, actualAppArea);
+        assertEquals(appArea, actualAppArea);
 
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
         verify(appAreaDAOMock, only()).getById(argument.capture());

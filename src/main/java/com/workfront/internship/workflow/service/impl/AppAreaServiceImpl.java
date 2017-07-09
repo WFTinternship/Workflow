@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Created by nane on 6/5/17
  */
+
 @Component
 public class AppAreaServiceImpl implements AppAreaService {
 
@@ -24,7 +25,7 @@ public class AppAreaServiceImpl implements AppAreaService {
     private final AppAreaDAO appAreaDAO;
 
     @Autowired
-    public AppAreaServiceImpl(@Qualifier("appAreaDAOSpringImpl") AppAreaDAO appAreaDAO) {
+    public AppAreaServiceImpl(@Qualifier("appAreaDAOHibernateImpl") AppAreaDAO appAreaDAO) {
         this.appAreaDAO = appAreaDAO;
     }
 

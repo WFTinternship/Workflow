@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 
+import javax.transaction.Transactional;
+
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -28,14 +30,16 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
     private UserDAO userDAO;
 
     @Autowired
-    @Qualifier("appAreaDAOSpringImpl")
+    @Qualifier("appAreaDAOHibernateImpl")
     private AppAreaDAO appAreaDAO;
 
     private User user;
     private List<User> userList;
+    private AppArea appArea;
 
     @Before
     public void setup() {
+        appArea = AppArea.ACCESSLEVELSSECURITY;
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
 
