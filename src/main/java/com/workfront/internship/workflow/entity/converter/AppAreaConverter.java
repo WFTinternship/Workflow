@@ -1,9 +1,6 @@
 package com.workfront.internship.workflow.entity.converter;
 
 import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.entity.AppAreaEnum;
-
-import java.awt.Color;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -13,17 +10,17 @@ import javax.persistence.Converter;
  */
 
 @Converter
-public class AppAreaConverter implements AttributeConverter<AppAreaEnum, String> {
+public class AppAreaConverter implements AttributeConverter<AppArea, String> {
 
     @Override
-    public String convertToDatabaseColumn(AppAreaEnum appArea) {
+    public String convertToDatabaseColumn(AppArea appArea) {
         return String.valueOf(appArea.getId());
     }
 
 
     @Override
-    public AppAreaEnum convertToEntityAttribute(String id) {
-        return AppAreaEnum.getById(Long.valueOf(id));
+    public AppArea convertToEntityAttribute(String id) {
+        return AppArea.getById(Long.valueOf(id));
     }
 
 }

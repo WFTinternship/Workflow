@@ -3,7 +3,6 @@ package com.workfront.internship.workflow.dao.util;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.UserDAO;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;

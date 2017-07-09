@@ -3,7 +3,6 @@ package com.workfront.internship.workflow.dao.hibernate;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
@@ -16,19 +15,14 @@ import java.util.List;
 /**
  * Created by Vahag on 7/6/2017
  */
-//@Repository
+@Repository
 public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);
 
-    public UserDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
-
     @Override
     public long add(User user) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try {
+       try {
             entityManager.getTransaction().begin();
             entityManager.persist(user);
             entityManager.getTransaction().commit();
@@ -41,13 +35,11 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public List getByName(String name) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<User> users;
+       List<User> users;
         try {
             users = entityManager.createQuery(
                     "SELECT c FROM user c WHERE c.name LIKE :name")
                     .setParameter("name", name)
-                    .setMaxResults(10)
                     .getResultList();
         }catch (RuntimeException e){
             LOGGER.error("Hibernate Exception");
@@ -58,7 +50,6 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public User getById(long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         User user;
         try {
             entityManager.getTransaction().begin();
@@ -72,8 +63,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public User getByEmail(String email) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        User user;
+       User user;
         try {
             user = (User) entityManager.createQuery(
                     "SELECT c FROM user c WHERE c.email = :email")
@@ -105,8 +95,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public void deleteById(long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try {
+       try {
             User user = entityManager.find(User.class, id);
 
             if (user != null){

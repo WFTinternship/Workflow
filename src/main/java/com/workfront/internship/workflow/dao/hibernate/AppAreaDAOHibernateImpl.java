@@ -10,32 +10,37 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by Vahag on 7/8/2017
  */
+
 @Repository
 public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-    public AppAreaDAOHibernateImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
 
+    @Transactional
     @Override
     public long add(AppArea appArea) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(appArea);
-            entityManager.getTransaction().commit();
+            int n = this.entityManager
+                    .createNativeQuery("INSERT INTO apparea (id, name," +
+                            " description, team_name) " +
+                            "VALUES (?, ?, ?, ?)")
+                    .setParameter(1, appArea.getId())
+                    .setParameter(2, appArea.getName())
+                    .setParameter(3, appArea.getDescription())
+                    .setParameter(4, appArea.getTeamName())
+                    .executeUpdate();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-        return appArea.getAppAreaEnum().getId();
+        return appArea.getId();
     }
 
     @Override
@@ -45,12 +50,18 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
 
     @Override
     public AppArea getById(long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        AppArea appArea;
+        AppArea appArea = null;
         try {
-            entityManager.getTransaction().begin();
-            appArea = entityManager.find(AppArea.class, id);
-        }catch (RuntimeException e){
+            long count = ((Number) this.entityManager
+                    .createNativeQuery("SELECT COUNT(*) FROM apparea " +
+                            "WHERE id = ?")
+                    .setParameter(1, id)
+                    .getResultList().get(0))
+                    .longValue();
+            if (count > 0) {
+                appArea = AppArea.getById(id);
+            }
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }

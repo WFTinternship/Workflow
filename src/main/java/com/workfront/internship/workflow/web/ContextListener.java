@@ -1,9 +1,6 @@
 package com.workfront.internship.workflow.web;
 
-import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.service.AppAreaService;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

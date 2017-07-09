@@ -2,7 +2,6 @@ package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.AppAreaDAOSpringImpl;
 import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.entity.AppAreaEnum;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.impl.AppAreaServiceImpl;
@@ -38,8 +37,7 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void init() {
-        appArea = new AppArea();
-        appArea.setAppAreaEnum(AppAreaEnum.API);
+        appArea = AppArea.AGILE;
         MockitoAnnotations.initMocks(this);
     }
 

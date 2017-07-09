@@ -23,9 +23,7 @@ public class Post {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apparea_id", referencedColumnName = "id")
+    @Enumerated(EnumType.STRING)
     private AppArea appArea;
 
     @ManyToMany(mappedBy = "likedPosts", cascade = {CascadeType.ALL})

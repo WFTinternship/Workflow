@@ -3,7 +3,6 @@ package com.workfront.internship.workflow.service;
 import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
 import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.entity.AppAreaEnum;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
@@ -51,8 +50,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
 
     @Before
     public void init() {
-        appArea = new AppArea();
-        appArea.setAppAreaEnum(AppAreaEnum.API);
+        appArea = AppArea.API;
         MockitoAnnotations.initMocks(this);
     }
 
