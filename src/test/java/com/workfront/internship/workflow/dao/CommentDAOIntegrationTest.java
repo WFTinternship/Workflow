@@ -30,16 +30,16 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     private Comment comment;
 
     @Autowired
-    @Qualifier("commentDAOSpringImpl")
+    @Qualifier("commentDAOHibernateImpl")
     private CommentDAO commentDAO;
 
     @Autowired
-    @Qualifier("userDAOSpringImpl")
+    @Qualifier("userDAOHibernateImpl")
     private UserDAO userDAO;
     private User user;
 
     @Autowired
-    @Qualifier("postDAOSpringImpl")
+    @Qualifier("postDAOHibernateImpl")
     private PostDAO postDAO;
     private Post post;
 

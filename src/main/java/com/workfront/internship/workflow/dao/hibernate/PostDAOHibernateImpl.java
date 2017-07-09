@@ -58,6 +58,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getByUserId(long userId) {
+
         return null;
     }
 
@@ -105,7 +106,15 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public Post getBestAnswer(long postId) {
-        return null;
+        Post answer;
+        try {
+            Post post = entityManager.find(Post.class, postId);
+            answer = post.getBestAnswer();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return answer;
     }
 
     /**
@@ -140,14 +149,14 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Override
+    @Transactional
     public void setBestAnswer(long postId, long answerId) {
         try {
-            // TODO: need to be discussed
-            Post post = getById(postId);
-            Post answer = getById(answerId);
+            Post post = entityManager.find(Post.class, postId);
+            Post answer = entityManager.find(Post.class, answerId);
             post.setBestAnswer(answer);
 
-            entityManager.persist(post);
+            entityManager.merge(post);
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -158,8 +167,14 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#update(Post)
      */
     @Override
+    @Transactional
     public void update(Post post) {
-
+        try {
+            entityManager.merge(post);
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     /**
