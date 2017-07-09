@@ -5,7 +5,8 @@ import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
-
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityManager;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by Angel on 7/6/2017
  */
+@Repository
 public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
@@ -58,8 +60,7 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public List<Comment> getByPostId(long postId) {
-
-      return null;
+        return null;
     }
 
     /**

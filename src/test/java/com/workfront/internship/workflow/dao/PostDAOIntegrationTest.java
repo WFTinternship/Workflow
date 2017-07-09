@@ -283,6 +283,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Test
+    @Transactional
     public void setBestAnswer_success() {
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
@@ -395,6 +396,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     /**
      * @see PostDAO#update(Post)
      */
+    @Transactional
     @Test(expected = RuntimeException.class)
     public void update_failure() {
         postDAO.add(post);
