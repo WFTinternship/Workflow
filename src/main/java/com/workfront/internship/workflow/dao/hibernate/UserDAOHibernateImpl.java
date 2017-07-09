@@ -41,7 +41,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public List getByName(String name) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        /*EntityManager entityManager = entityManagerFactory.createEntityManager();
         List<User> users;
         try {
             users = entityManager.createQuery(
@@ -53,7 +53,8 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-        return users;
+        return users;*/
+        return null;
     }
 
     @Override
@@ -72,7 +73,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public User getByEmail(String email) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        /*EntityManager entityManager = entityManagerFactory.createEntityManager();
         User user;
         try {
             user = (User) entityManager.createQuery(
@@ -83,7 +84,8 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-        return user;
+        return user;*/
+        return null;
     }
 
     @Override

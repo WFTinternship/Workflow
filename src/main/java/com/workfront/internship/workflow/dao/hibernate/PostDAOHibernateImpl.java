@@ -48,11 +48,12 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getAll() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+       /* EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager
                 .createQuery("select a from post", Post.class)
                 .getResultList();
 
+        return null;*/
         return null;
     }
 
@@ -118,7 +119,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public long getLikesNumber(long postId) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+       /* EntityManager entityManager = entityManagerFactory.createEntityManager();
         long count;
         try {
             count = (long) entityManager
@@ -131,7 +132,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-        return count;
+        return count;*/
+       return  0;
     }
 
     /**
