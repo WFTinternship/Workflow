@@ -206,8 +206,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     /**
      * @see PostDAO#delete(long)
      */
-    @Transactional
     @Override
+    @Transactional
     public void delete(long id) {
         try {
             Post post = entityManager.find(Post.class, id);
