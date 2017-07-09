@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +127,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getById(long)
      */
     @Test
+    @Transactional
     public void getById_success() {
         long expectedPostId = postDAO.add(post);
         // Test Method
@@ -281,6 +283,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Test
+    @Transactional
     public void setBestAnswer_success() {
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
@@ -393,6 +396,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     /**
      * @see PostDAO#update(Post)
      */
+    @Transactional
     @Test(expected = RuntimeException.class)
     public void update_failure() {
         postDAO.add(post);
