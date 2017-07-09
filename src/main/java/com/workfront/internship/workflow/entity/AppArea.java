@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.entity;
 /**
  * Created by Vahag on 7/8/2017
  */
+
 public enum AppArea {
     REPORTING(1, "Reporting", "Some rep description", "Team1"),
     API(2, "API", "API", "Team1"),

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,14 +93,18 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
         return appAreas;
     }
 
+    @Transactional
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
         try {
             User user = entityManager.find(User.class, userId);
-            AppArea appArea = entityManager.find(AppArea.class, appAreaId);
-            List<AppArea> appAreas = user.getAppAreas();
-            appAreas.add(appArea);
-            user.setAppAreas(appAreas);
+            if(user.getAppAreas() == null){
+                List<AppArea> newAppAreaList = new ArrayList<>();
+                newAppAreaList.add(AppArea.getById(appAreaId));
+                user.setAppAreas(newAppAreaList);
+            }else {
+                user.getAppAreas().add(AppArea.getById(appAreaId));
+            }
 
             entityManager.merge(user);
         } catch (RuntimeException e) {
@@ -114,7 +119,6 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
             User user = entityManager.find(User.class, userId);
             AppArea appArea = entityManager.find(AppArea.class, appAreaId);
             user.getAppAreas().remove(appArea);
-
 
             entityManager.merge(user);
         } catch (RuntimeException e) {
@@ -145,7 +149,12 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public void updateProfile(User user) {
-
+        try {
+            entityManager.merge(user);
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     @Override

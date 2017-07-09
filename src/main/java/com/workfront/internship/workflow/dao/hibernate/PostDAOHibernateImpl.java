@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao.hibernate;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -124,12 +126,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     public long getLikesNumber(long postId) {
         long count;
         try {
-            count = (long) entityManager
-                    .createQuery("select COUNT(d.user_id) " +
-                            "from user_post_likes d " +
-                            "where d.post_id = :postId")
-                    .setParameter("postId", postId)
-                    .getSingleResult();
+            Post post = entityManager.find(Post.class, postId);
+            count = post.getLikers().size();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -142,8 +140,15 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public long getDislikesNumber(long postId) {
-        return 0;
-    }
+        long count;
+        try {
+            Post post = entityManager.find(Post.class, postId);
+            count = post.getDislikers().size();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return count;    }
 
     /**
      * @see PostDAO#setBestAnswer(long, long)
@@ -183,12 +188,17 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     public void like(long userId, long postId) {
         try {
-            entityManager
-                    .createNativeQuery("insert into user_post_likes (user_id, post_id) " +
-                            "VALUES (?, ?)")
-                    .setParameter(1, userId)
-                    .setParameter(2, postId)
-                    .executeUpdate();
+            User user = entityManager.find(User.class, userId);
+            Post post = entityManager.find(Post.class, postId);
+            if(user.getLikedPosts() == null){
+                List<Post> newPostList = new ArrayList<>();
+                newPostList.add(post);
+                user.setLikedPosts(newPostList);
+            }else {
+                user.getLikedPosts().add(post);
+            }
+
+            entityManager.merge(user);
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);

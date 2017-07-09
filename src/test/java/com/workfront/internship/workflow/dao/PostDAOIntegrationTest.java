@@ -36,6 +36,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     @Autowired
     @Qualifier("postDAOHibernateImpl")
     private PostDAO postDAO;
+
     private Post post;
     private AppArea appArea;
 
@@ -104,6 +105,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     /**
      * @see PostDAO#add(Post)
      */
+    @Transactional
     @Test
     public void add_success() {
         // Test method

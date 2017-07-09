@@ -143,6 +143,7 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
     /**
      * @see UserDAO#subscribeToArea(long, long)
      */
+    @Transactional
     @Test
     public void subscribeToArea_success() {
         userDAO.add(user);

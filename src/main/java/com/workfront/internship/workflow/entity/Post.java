@@ -90,6 +90,24 @@ public class Post {
         return this;
     }
 
+    public List<User> getLikers() {
+        return likers;
+    }
+
+    public Post setLikers(List<User> likers) {
+        this.likers = likers;
+        return this;
+    }
+
+    public List<User> getDislikers() {
+        return dislikers;
+    }
+
+    public Post setDislikers(List<User> dislikers) {
+        this.dislikers = dislikers;
+        return this;
+    }
+
     public Timestamp getPostTime() {
         return postTime;
     }
