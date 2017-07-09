@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -20,12 +21,11 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);
 
+    @Transactional
     @Override
     public long add(User user) {
        try {
-            entityManager.getTransaction().begin();
             entityManager.persist(user);
-            entityManager.getTransaction().commit();
         }catch (RuntimeException e){
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -52,7 +52,6 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
     public User getById(long id) {
         User user;
         try {
-            entityManager.getTransaction().begin();
             user = entityManager.find(User.class, id);
         }catch (RuntimeException e){
             LOGGER.error("Hibernate Exception");
@@ -93,15 +92,14 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     }
 
+    @Transactional
     @Override
     public void deleteById(long id) {
        try {
             User user = entityManager.find(User.class, id);
 
             if (user != null){
-                entityManager.getTransaction().begin();
                 entityManager.remove(user);
-                entityManager.getTransaction().commit();
             }
         }catch (RuntimeException e){
             LOGGER.error("Hibernate Exception");

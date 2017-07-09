@@ -32,7 +32,7 @@ public class PostServiceImpl implements PostService {
     private PostDAO postDAO;
 
     @Autowired
-    public PostServiceImpl(@Qualifier("postDAOSpringImpl") PostDAO postDAO) {
+    public PostServiceImpl(@Qualifier("postDAOHibernateImpl") PostDAO postDAO) {
         this.postDAO = postDAO;
     }
 

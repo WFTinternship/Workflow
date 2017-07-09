@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
 
     @Autowired
-    public UserServiceImpl(@Qualifier("userDAOSpringImpl") UserDAO userDAO) {
+    public UserServiceImpl(@Qualifier("userDAOHibernateImpl") UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
