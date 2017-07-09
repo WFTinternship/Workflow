@@ -23,10 +23,16 @@ public class Post {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Enumerated(EnumType.ORDINAL)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "apparea_id", referencedColumnName = "id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apparea_id", referencedColumnName = "id")
     private AppArea appArea;
+
+    @ManyToMany(mappedBy = "likedPosts", cascade = {CascadeType.ALL})
+    private List<User> likers;
+
+    @ManyToMany(mappedBy = "dislikedPosts", cascade = {CascadeType.ALL})
+    private List<User> dislikers;
 
     @Column(name = "post_time", nullable = false)
     private Timestamp postTime;

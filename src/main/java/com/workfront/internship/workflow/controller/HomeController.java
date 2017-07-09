@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.AppAreaEnum;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.PostService;
@@ -44,7 +45,7 @@ public class HomeController {
     public void init() {
         AppArea[] appAreas = AppArea.values();
         for (AppArea appArea : appAreas) {
-            if (appAreaService.getById(appArea.getId()) == null) {
+            if (appAreaService.getById(appArea.getAppAreaEnum().getId()) == null) {
                 appAreaService.add(appArea);
             }
         }

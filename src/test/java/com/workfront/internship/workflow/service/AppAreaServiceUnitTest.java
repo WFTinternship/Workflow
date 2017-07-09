@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.service;
 
 import com.workfront.internship.workflow.dao.springJDBC.AppAreaDAOSpringImpl;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.AppAreaEnum;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.impl.AppAreaServiceImpl;
@@ -33,8 +34,12 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
     @Mock
     AppAreaDAOSpringImpl appAreaDAOMock;
 
+    private AppArea appArea;
+
     @Before
     public void init() {
+        appArea = new AppArea();
+        appArea.setAppAreaEnum(AppAreaEnum.API);
         MockitoAnnotations.initMocks(this);
     }
 
@@ -54,7 +59,7 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
         doThrow(RuntimeException.class).when(appAreaDAOMock).add(any(AppArea.class));
 
         // Test method
-        appAreaService.add(AppArea.AGILE);
+        appAreaService.add(appArea);
     }
 
     /**
@@ -62,7 +67,7 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
      */
     @Test
     public void add_success() {
-        AppArea appArea = AppArea.AGILE;
+
         long id = 50;
         doReturn(id).when(appAreaDAOMock).add(appArea);
 
@@ -137,11 +142,11 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
     @Test
     public void getById_success() {
         Long id = 15L;
-        doReturn(AppArea.AGILE).when(appAreaDAOMock).getById(id);
+        doReturn(appArea).when(appAreaDAOMock).getById(id);
 
         // Test method
         AppArea actualAppArea = appAreaService.getById(id);
-        assertEquals(AppArea.AGILE, actualAppArea);
+        assertEquals(appArea, actualAppArea);
 
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
         verify(appAreaDAOMock, only()).getById(argument.capture());

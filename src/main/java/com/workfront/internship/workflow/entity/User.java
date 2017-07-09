@@ -34,6 +34,16 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "user_post_likes", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private List<Post> likedPosts;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "user_post_dislikes", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private List<Post> dislikedPosts;
+
     @Column(name = "avatar_url")
     private String avatarURL;
 
