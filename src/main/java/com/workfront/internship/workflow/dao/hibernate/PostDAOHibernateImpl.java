@@ -185,6 +185,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     /**
      * @see PostDAO#like(long, long)
      */
+    @Transactional
     @Override
     public void like(long userId, long postId) {
         try {
