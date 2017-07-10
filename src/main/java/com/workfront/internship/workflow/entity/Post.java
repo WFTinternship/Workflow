@@ -92,6 +92,24 @@ public class Post {
         return this;
     }
 
+    public List<User> getLikers() {
+        return likers;
+    }
+
+    public Post setLikers(List<User> likers) {
+        this.likers = likers;
+        return this;
+    }
+
+    public List<User> getDislikers() {
+        return dislikers;
+    }
+
+    public Post setDislikers(List<User> dislikers) {
+        this.dislikers = dislikers;
+        return this;
+    }
+
     public Timestamp getPostTime() {
         return postTime;
     }
@@ -144,21 +162,6 @@ public class Post {
         this.bestAnswer = bestAnswer;
     }
 
-    public List<User> getLikers() {
-        return likers;
-    }
-
-    public void setLikers(List<User> likers) {
-        this.likers = likers;
-    }
-
-    public List<User> getDislikers() {
-        return dislikers;
-    }
-
-    public void setDislikers(List<User> dislikers) {
-        this.dislikers = dislikers;
-    }
 
     @Override
     public boolean equals(Object o) {

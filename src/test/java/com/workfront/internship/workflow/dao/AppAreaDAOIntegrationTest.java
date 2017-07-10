@@ -20,11 +20,11 @@ import static junit.framework.TestCase.assertTrue;
 public class AppAreaDAOIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
-    @Qualifier("appAreaDAOSpringImpl")
+    @Qualifier("appAreaDAOHibernateImpl")
     private AppAreaDAO appAreaDAO;
 
     @Autowired
-    @Qualifier("userDAOSpringImpl")
+    @Qualifier("userDAOHibernateImpl")
     private UserDAO userDAO;
 
     private AppArea appArea;

@@ -123,6 +123,24 @@ public class User {
         return this;
     }
 
+    public List<Post> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public User setLikedPosts(List<Post> likedPosts) {
+        this.likedPosts = likedPosts;
+        return this;
+    }
+
+    public List<Post> getDislikedPosts() {
+        return dislikedPosts;
+    }
+
+    public User setDislikedPosts(List<Post> dislikedPosts) {
+        this.dislikedPosts = dislikedPosts;
+        return this;
+    }
+
     public String getAvatarURL() {
         return avatarURL;
     }

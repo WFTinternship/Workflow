@@ -630,6 +630,7 @@
     }
 
     function insert_dislike(x) {
+        $('#like')
         $.ajax({
             type: 'post',
             url: '/dislike/' + x,
