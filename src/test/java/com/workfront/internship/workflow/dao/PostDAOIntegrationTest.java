@@ -242,6 +242,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getAnswersByPostId(long)
      */
     @Test
+    @Transactional
     public void getAnswersByPostId_success() {
         postDAO.add(post);
         User user = DaoTestUtil.getRandomUser();

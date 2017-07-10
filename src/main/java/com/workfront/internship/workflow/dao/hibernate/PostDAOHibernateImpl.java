@@ -29,6 +29,11 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     public long add(Post post) {
         try {
+            if (post.getPost() == null) {
+                post.getUser().getPosts().add(post);
+            } else {
+                post.getPost().getAnswerList().add(post);
+            }
             entityManager.persist(post);
             entityManager.flush();
         } catch (RuntimeException e) {
@@ -61,10 +66,12 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     @Transactional
     public List<Post> getByUserId(long userId) {
-        List<Post> userPosts;
+        List<Post> userPosts = new ArrayList<>();
         try {
             User user = entityManager.find(User.class, userId);
-            userPosts = user.getPosts();
+            if (user != null) {
+                userPosts = user.getPosts();
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -77,13 +84,16 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getByAppAreaId(long id) {
-        List<Post> posts;
+        List<Post> posts = new ArrayList<>();
         try {
-            String name = AppArea.getById(id).name();
-            posts = entityManager
-                    .createNativeQuery("SELECT * FROM post where post.appArea =:id", Post.class)
-                    .setParameter("id", name)
-                    .getResultList();
+            AppArea appArea = AppArea.getById(id);
+            if (appArea != null) {
+                String name = appArea.name();
+                posts = entityManager
+                        .createNativeQuery("SELECT * FROM post where post.appArea =:id", Post.class)
+                        .setParameter("id", name)
+                        .getResultList();
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -128,6 +138,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getAnswersByPostId(long)
      */
     @Override
+    @Transactional
     public List<Post> getAnswersByPostId(long postId) {
         List<Post> answers;
         try {

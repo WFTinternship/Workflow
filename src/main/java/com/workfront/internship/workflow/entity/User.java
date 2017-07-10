@@ -30,7 +30,7 @@ public class User {
     @Column(name = "apparea_id")
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user")
@@ -59,6 +59,11 @@ public class User {
 
     @Column(name = "rating")
     private int rating;
+
+    public User() {
+        posts = new ArrayList<>();
+        comments = new ArrayList<>();
+    }
 
     public long getId() {
         return id;

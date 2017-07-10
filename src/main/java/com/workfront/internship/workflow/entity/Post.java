@@ -21,7 +21,7 @@ public class Post {
     private Post post;
 
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Enumerated(EnumType.STRING)
@@ -56,6 +56,11 @@ public class Post {
     @ManyToMany(mappedBy = "notifyPosts",
             cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<User> notificationRecepiants;
+
+    public Post() {
+        answerList = new ArrayList<>();
+        commentList = new ArrayList<>();
+    }
 
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
