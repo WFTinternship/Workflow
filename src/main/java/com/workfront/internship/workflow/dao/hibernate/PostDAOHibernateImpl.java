@@ -157,6 +157,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getDislikesNumber(long)
      */
     @Override
+    @Transactional
     public long getDislikesNumber(long postId) {
         long count;
         try {
@@ -209,13 +210,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
         try {
             User user = entityManager.find(User.class, userId);
             Post post = entityManager.find(Post.class, postId);
-            if(post.getLikers() == null){
-                List<User> newLikersList = new ArrayList<>();
-                newLikersList.add(user);
-                post.setLikers(newLikersList);
-            }else {
-                post.getLikers().add(user);
-            }
+            post.addLiker(user);
             entityManager.merge(post);
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
@@ -227,8 +222,17 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#dislike(long, long)
      */
     @Override
+    @Transactional
     public void dislike(long userId, long postId) {
-
+        try {
+            User user = entityManager.find(User.class, userId);
+            Post post = entityManager.find(Post.class, postId);
+            post.addDisliker(user);
+            entityManager.merge(post);
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     /**

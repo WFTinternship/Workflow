@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.entity;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "user")
@@ -25,7 +26,7 @@ public class User {
 
     @ElementCollection(targetClass = AppArea.class)
     @CollectionTable(name = "user_apparea",
-            joinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Column(name = "apparea_id")
     private List<AppArea> appAreas;
 
@@ -35,14 +36,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_post_likes", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id"))
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @JoinTable(name = "user_post_likes", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
     private List<Post> likedPosts;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_post_dislikes", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id"))
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @JoinTable(name = "user_post_dislikes", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
     private List<Post> dislikedPosts;
 
     @Column(name = "avatar_url")

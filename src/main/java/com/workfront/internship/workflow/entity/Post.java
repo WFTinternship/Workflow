@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -162,6 +163,36 @@ public class Post {
         this.bestAnswer = bestAnswer;
     }
 
+    public void addLiker(User liker) {
+        if(getLikers() == null){
+            setLikers(new ArrayList<>());
+        }
+        if(liker.getLikedPosts() == null){
+            liker.setLikedPosts(new ArrayList<>());
+        }
+        if (!getLikers().contains(liker)) {
+            getLikers().add(liker);
+        }
+        if (!liker.getLikedPosts().contains(this)) {
+            liker.getLikedPosts().add(this);
+        }
+    }
+
+    public void addDisliker(User disliker) {
+        if(getDislikers() == null){
+            setDislikers(new ArrayList<>());
+        }
+        if(disliker.getDislikedPosts() == null){
+            disliker.setDislikedPosts(new ArrayList<>());
+        }
+        if (!getDislikers().contains(disliker)) {
+            getDislikers().add(disliker);
+        }
+        if (!disliker.getDislikedPosts().contains(this)) {
+            disliker.getDislikedPosts().add(this);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -181,4 +212,6 @@ public class Post {
                 && this.postTime != null
                 && this.getAppArea() != null;
     }
+
+
 }
