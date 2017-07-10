@@ -2,16 +2,13 @@ package com.workfront.internship.workflow.dao.hibernate;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
-import javafx.geometry.Pos;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -142,10 +139,12 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     @Transactional
     public long getLikesNumber(long postId) {
-        long numOfLikes;
+        long numOfLikes = 0;
         try {
             Post post = entityManager.find(Post.class, postId);
-            numOfLikes = post.getLikers().size();
+            if (post != null) {
+                numOfLikes = post.getLikers().size();
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -159,15 +158,18 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     @Override
     @Transactional
     public long getDislikesNumber(long postId) {
-        long count;
+        long count = 0;
         try {
             Post post = entityManager.find(Post.class, postId);
-            count = post.getDislikers().size();
+            if (post != null) {
+                count = post.getDislikers().size();
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-        return count;    }
+        return count;
+    }
 
     /**
      * @see PostDAO#setBestAnswer(long, long)
@@ -254,8 +256,19 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getNumberOfAnswers(long)
      */
     @Override
+    @Transactional
     public Integer getNumberOfAnswers(long postId) {
-        return null;
+        int numOfAnswers = 0;
+        try {
+            Post post = entityManager.find(Post.class, postId);
+            if (post != null) {
+                numOfAnswers = post.getAnswerList().size();
+            }
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return numOfAnswers;
     }
 
     /**

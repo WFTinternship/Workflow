@@ -37,12 +37,14 @@ public class User {
     private List<Comment> comments;
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
-    @JoinTable(name = "user_post_likes", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    @JoinTable(name = "user_post_likes",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
     private List<Post> likedPosts;
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
-    @JoinTable(name = "user_post_dislikes", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    @JoinTable(name = "user_post_dislikes",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
     private List<Post> dislikedPosts;
 
