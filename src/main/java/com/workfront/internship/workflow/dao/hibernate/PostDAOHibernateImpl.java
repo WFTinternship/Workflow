@@ -209,15 +209,14 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
         try {
             User user = entityManager.find(User.class, userId);
             Post post = entityManager.find(Post.class, postId);
-            if(user.getLikedPosts() == null){
-                List<Post> newPostList = new ArrayList<>();
-                newPostList.add(post);
-                user.setLikedPosts(newPostList);
+            if(post.getLikers() == null){
+                List<User> newLikersList = new ArrayList<>();
+                newLikersList.add(user);
+                post.setLikers(newLikersList);
             }else {
-                user.getLikedPosts().add(post);
+                post.getLikers().add(user);
             }
-
-            entityManager.merge(user);
+            entityManager.merge(post);
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);

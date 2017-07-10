@@ -162,21 +162,6 @@ public class Post {
         this.bestAnswer = bestAnswer;
     }
 
-    public List<User> getLikers() {
-        return likers;
-    }
-
-    public void setLikers(List<User> likers) {
-        this.likers = likers;
-    }
-
-    public List<User> getDislikers() {
-        return dislikers;
-    }
-
-    public void setDislikers(List<User> dislikers) {
-        this.dislikers = dislikers;
-    }
 
     @Override
     public boolean equals(Object o) {
