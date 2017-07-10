@@ -107,6 +107,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      */
     @Transactional
     @Test
+    @Transactional
     public void add_success() {
         // Test method
         long expectedPostId = postDAO.add(post);
