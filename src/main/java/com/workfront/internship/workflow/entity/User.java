@@ -29,7 +29,7 @@ public class User {
     @Column(name = "apparea_id")
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user")

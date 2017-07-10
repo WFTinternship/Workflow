@@ -105,6 +105,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#add(Post)
      */
     @Test
+    @Transactional
     public void add_success() {
         // Test method
         long expectedPostId = postDAO.add(post);
@@ -149,6 +150,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getByUserId(long)
      */
     @Test
+    @Transactional
     public void getByUserId_success() {
         postDAO.add(post);
         //Test method
@@ -356,6 +358,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getLikesNumber(long)
      */
     @Test
+    @Transactional
     public void getLikesNumber_success() {
         long postId = postDAO.add(post);
         long userId = post.getUser().getId();

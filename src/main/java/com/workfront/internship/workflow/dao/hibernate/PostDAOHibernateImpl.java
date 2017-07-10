@@ -5,6 +5,7 @@ import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
+import javafx.geometry.Pos;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
@@ -57,9 +58,17 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getByUserId(long)
      */
     @Override
+    @Transactional
     public List<Post> getByUserId(long userId) {
-
-        return null;
+        List<Post> userPosts;
+        try {
+            User user = entityManager.find(User.class, userId);
+            userPosts = user.getPosts();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return userPosts;
     }
 
     /**
@@ -98,7 +107,15 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getAnswersByPostId(long postId) {
-        return null;
+        List<Post> answers;
+        try {
+            Post post = entityManager.find(Post.class, postId);
+            answers = post.getAnswerList();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return answers;
     }
 
     /**
@@ -121,20 +138,17 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getLikesNumber(long)
      */
     @Override
+    @Transactional
     public long getLikesNumber(long postId) {
-        long count;
+        long numOfLikes;
         try {
-            count = (long) entityManager
-                    .createQuery("select COUNT(d.user_id) " +
-                            "from user_post_likes d " +
-                            "where d.post_id = :postId")
-                    .setParameter("postId", postId)
-                    .getSingleResult();
+            Post post = entityManager.find(Post.class, postId);
+            numOfLikes = post.getLikers().size();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-        return count;
+        return numOfLikes;
     }
 
     /**
@@ -206,8 +220,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     /**
      * @see PostDAO#delete(long)
      */
-    @Transactional
     @Override
+    @Transactional
     public void delete(long id) {
         try {
             Post post = entityManager.find(Post.class, id);
