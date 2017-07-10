@@ -26,10 +26,12 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private AppArea appArea;
 
-    @ManyToMany(mappedBy = "likedPosts", cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "likedPosts",
+            cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<User> likers;
 
-    @ManyToMany(mappedBy = "dislikedPosts", cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "dislikedPosts",
+            cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<User> dislikers;
 
     @Column(name = "post_time", nullable = false)
@@ -158,6 +160,22 @@ public class Post {
 
     public void setBestAnswer(Post bestAnswer) {
         this.bestAnswer = bestAnswer;
+    }
+
+    public List<User> getLikers() {
+        return likers;
+    }
+
+    public void setLikers(List<User> likers) {
+        this.likers = likers;
+    }
+
+    public List<User> getDislikers() {
+        return dislikers;
+    }
+
+    public void setDislikers(List<User> dislikers) {
+        this.dislikers = dislikers;
     }
 
     @Override
