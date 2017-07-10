@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao.hibernate;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,7 +77,18 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getByAppAreaId(long id) {
-        return null;
+        List<Post> posts;
+        try {
+            String name = AppArea.getById(id).name();
+            posts = entityManager
+                    .createNativeQuery("SELECT * FROM post where post.appArea =:id", Post.class)
+                    .setParameter("id", name)
+                    .getResultList();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return posts;
     }
 
     /**
@@ -83,7 +96,17 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public List<Post> getByTitle(String title) {
-        return null;
+        List<Post> posts;
+        try {
+            posts = entityManager
+                    .createQuery("select p from post p where p.title like :title", Post.class)
+                    .setParameter("title", '%' + title + '%')
+                    .getResultList();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return posts;
     }
 
     /**
@@ -212,8 +235,10 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
         try {
             User user = entityManager.find(User.class, userId);
             Post post = entityManager.find(Post.class, postId);
-            post.addLiker(user);
-            entityManager.merge(post);
+            if (post != null && user != null) {
+                post.addLiker(user);
+                entityManager.merge(post);
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -229,8 +254,10 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
         try {
             User user = entityManager.find(User.class, userId);
             Post post = entityManager.find(Post.class, postId);
-            post.addDisliker(user);
-            entityManager.merge(post);
+            if (post != null && user != null) {
+                post.addDisliker(user);
+                entityManager.merge(post);
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -245,7 +272,9 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     public void delete(long id) {
         try {
             Post post = entityManager.find(Post.class, id);
-            entityManager.remove(post);
+            if (post != null) {
+                entityManager.remove(post);
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -276,14 +305,34 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public void getNotified(long postId, long userId) {
+        try {
+            Post post = entityManager.find(Post.class, postId);
+            User user = entityManager.find(User.class, userId);
+            post.addNotificationRecipient(user);
+            entityManager.merge(post);
 
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 
     /**
      * @see PostDAO#getNotificationRecipients(long)
      */
     @Override
+    @Transactional
     public List<User> getNotificationRecipients(long postId) {
-        return null;
+        List<User> recipients = new ArrayList<>();
+        try {
+            Post post = entityManager.find(Post.class, postId);
+            if (post != null) {
+                recipients = post.getNotificationRecepiants();
+            }
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return recipients;
     }
 }

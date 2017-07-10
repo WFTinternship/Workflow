@@ -517,6 +517,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getNotified(long, long)
      */
     @Test
+    @Transactional
     public void getNotified_success() {
         postDAO.add(post);
         //Test method
@@ -530,7 +531,8 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getNotificationRecipients(long)
      */
     @Test
-    public void getUsersById_success() {
+    @Transactional
+    public void getNotificationRecipients_success() {
         postDAO.add(post);
         postDAO.getNotified(post.getId(), user.getId());
 

@@ -30,7 +30,7 @@ public class User {
     @Column(name = "apparea_id")
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user")
@@ -47,6 +47,12 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
     private List<Post> dislikedPosts;
+
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @JoinTable(name = "notifications",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+    private List<Post> notifyPosts;
 
     @Column(name = "avatar_url")
     private String avatarURL;
@@ -160,6 +166,14 @@ public class User {
     public User setRating(int rating) {
         this.rating = rating;
         return this;
+    }
+
+    public List<Post> getNotifyPosts() {
+        return notifyPosts;
+    }
+
+    public void setNotifyPosts(List<Post> notifyPosts) {
+        this.notifyPosts = notifyPosts;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Post {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -52,6 +52,10 @@ public class Post {
 
     @OneToOne
     private Post bestAnswer;
+
+    @ManyToMany(mappedBy = "notifyPosts",
+            cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    private List<User> notificationRecepiants;
 
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
@@ -163,6 +167,14 @@ public class Post {
         this.bestAnswer = bestAnswer;
     }
 
+    public List<User> getNotificationRecepiants() {
+        return notificationRecepiants;
+    }
+
+    public void setNotificationRecepiants(List<User> notificationRecepiants) {
+        this.notificationRecepiants = notificationRecepiants;
+    }
+
     public void addLiker(User liker) {
         if(getLikers() == null){
             setLikers(new ArrayList<>());
@@ -193,6 +205,20 @@ public class Post {
         }
     }
 
+    public void addNotificationRecipient(User notificationRecipient) {
+        if(getNotificationRecepiants() == null){
+            setNotificationRecepiants(new ArrayList<>());
+        }
+        if(notificationRecipient.getNotifyPosts() == null){
+            notificationRecipient.setNotifyPosts(new ArrayList<>());
+        }
+        if (!getNotificationRecepiants().contains(notificationRecipient)) {
+            getNotificationRecepiants().add(notificationRecipient);
+        }
+        if (!notificationRecipient.getNotifyPosts().contains(this)) {
+            notificationRecipient.getNotifyPosts().add(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
