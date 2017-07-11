@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.dao.hibernate;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
@@ -22,7 +23,7 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
     @Override
     public long add(AppArea appArea) {
         try {
-            int n = this.entityManager
+            entityManager
                     .createNativeQuery("INSERT INTO apparea (id, name," +
                             " description, team_name) " +
                             "VALUES (?, ?, ?, ?)")
@@ -40,8 +41,7 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
 
     @Override
     public List<User> getUsersById(long appAreaId) {
-
-        return null;
+      return null;
     }
 
     @Override
@@ -66,6 +66,14 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
 
     @Override
     public void deleteById(long id) {
-
+        try {
+            entityManager.createNativeQuery("DELETE FROM apparea " +
+                    "WHERE id = ?")
+                    .setParameter(1, id)
+                    .executeUpdate();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
     }
 }
