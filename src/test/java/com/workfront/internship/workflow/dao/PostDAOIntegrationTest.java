@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +105,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#add(Post)
      */
     @Test
-    @Transactional
     public void add_success() {
         // Test method
         long expectedPostId = postDAO.add(post);
@@ -129,7 +127,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getById(long)
      */
     @Test
-    @Transactional
     public void getById_success() {
         long expectedPostId = postDAO.add(post);
         // Test Method
@@ -151,7 +148,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getByUserId(long)
      */
     @Test
-    @Transactional
     public void getByUserId_success() {
         postDAO.add(post);
         //Test method
@@ -286,7 +282,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Test
-    @Transactional
     public void setBestAnswer_success() {
         postDAO.add(post);
         User anotherUser = DaoTestUtil.getRandomUser();
@@ -359,7 +354,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getLikesNumber(long)
      */
     @Test
-    @Transactional
     public void getLikesNumber_success() {
         long postId = postDAO.add(post);
         long userId = post.getUser().getId();
@@ -400,7 +394,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     /**
      * @see PostDAO#update(Post)
      */
-    @Transactional
     @Test(expected = RuntimeException.class)
     public void update_failure() {
         postDAO.add(post);
@@ -426,7 +419,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#like(long, long)
      */
     @Test
-    @Transactional
     public void like_success() {
         long postId = postDAO.add(post);
         long userId = post.getUser().getId();
@@ -489,8 +481,10 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     @Test
     public void delete_failure() {
         long postId = postDAO.add(post);
+
+        // Test Method
         postDAO.delete(postId + 100000);
-        assertNotSame(post, postDAO.getById(postId));
+        assertEquals(post, postDAO.getById(postId));
     }
 
     /**
@@ -531,7 +525,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getNotificationRecipients(long)
      */
     @Test
-    public void getUsersById_success() {
+    public void getNotificationRecipients_success() {
         postDAO.add(post);
         postDAO.getNotified(post.getId(), user.getId());
 

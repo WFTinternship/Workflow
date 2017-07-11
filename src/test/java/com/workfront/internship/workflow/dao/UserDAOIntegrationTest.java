@@ -11,9 +11,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-
-import javax.transaction.Transactional;
-
 import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -143,12 +140,12 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
     /**
      * @see UserDAO#subscribeToArea(long, long)
      */
-    @Transactional
     @Test
     public void subscribeToArea_success() {
         userDAO.add(user);
         //Test method
         userDAO.subscribeToArea(user.getId(), 1);
+//        userDAO.subscribeToArea(user.getId(), 2);
         List<User> users = appAreaDAO.getUsersById(1);
 
         assertTrue(users.contains(user));

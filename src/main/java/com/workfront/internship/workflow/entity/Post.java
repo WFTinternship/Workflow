@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,14 +20,14 @@ public class Post {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Enumerated(EnumType.STRING)
     private AppArea appArea;
 
-    @ManyToMany(mappedBy = "likedPosts",
+    @ManyToMany(mappedBy = "likedPosts", targetEntity = User.class,
             cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<User> likers;
 
@@ -51,6 +52,17 @@ public class Post {
 
     @OneToOne
     private Post bestAnswer;
+
+    @ManyToMany(mappedBy = "notifyPosts",
+            cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    private List<User> notificationRecepiants;
+
+    public Post() {
+        answerList = new ArrayList<>();
+        commentList = new ArrayList<>();
+        likers = new ArrayList<>();
+        dislikers = new ArrayList<>();
+    }
 
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
@@ -162,6 +174,58 @@ public class Post {
         this.bestAnswer = bestAnswer;
     }
 
+    public List<User> getNotificationRecepiants() {
+        return notificationRecepiants;
+    }
+
+    public void setNotificationRecepiants(List<User> notificationRecepiants) {
+        this.notificationRecepiants = notificationRecepiants;
+    }
+
+//    public void addLiker(User liker) {
+//        if (getLikers() == null) {
+//            setLikers(new ArrayList<>());
+//        }
+//        if (liker.getLikedPosts() == null) {
+//            liker.setLikedPosts(new ArrayList<>());
+//        }
+//        if (!getLikers().contains(liker)) {
+//            getLikers().add(liker);
+//        }
+//        if (!liker.getLikedPosts().contains(this)) {
+//            liker.getLikedPosts().add(this);
+//        }
+//    }
+//
+//    public void addDisliker(User disliker) {
+//        if (getDislikers() == null) {
+//            setDislikers(new ArrayList<>());
+//        }
+//        if (disliker.getDislikedPosts() == null) {
+//            disliker.setDislikedPosts(new ArrayList<>());
+//        }
+//        if (!getDislikers().contains(disliker)) {
+//            getDislikers().add(disliker);
+//        }
+//        if (!disliker.getDislikedPosts().contains(this)) {
+//            disliker.getDislikedPosts().add(this);
+//        }
+//    }
+
+    public void addNotificationRecipient(User notificationRecipient) {
+        if (getNotificationRecepiants() == null) {
+            setNotificationRecepiants(new ArrayList<>());
+        }
+        if (notificationRecipient.getNotifyPosts() == null) {
+            notificationRecipient.setNotifyPosts(new ArrayList<>());
+        }
+        if (!getNotificationRecepiants().contains(notificationRecipient)) {
+            getNotificationRecepiants().add(notificationRecipient);
+        }
+        if (!notificationRecipient.getNotifyPosts().contains(this)) {
+            notificationRecipient.getNotifyPosts().add(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -181,4 +245,6 @@ public class Post {
                 && this.postTime != null
                 && this.getAppArea() != null;
     }
+
+
 }

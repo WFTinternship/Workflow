@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.entity;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "user")
@@ -11,45 +12,68 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "passcode")
+    @Column(name = "passcode", nullable = false)
     private String password;
 
     @ElementCollection(targetClass = AppArea.class)
     @CollectionTable(name = "user_apparea",
-            joinColumns = @JoinColumn(name = "user_id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Column(name = "apparea_id")
+    @Enumerated(EnumType.STRING)
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_post_likes", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id"))
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @JoinTable(name = "user_post_likes",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> likedPosts;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_post_dislikes", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id"))
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @JoinTable(name = "user_post_dislikes",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> dislikedPosts;
 
-    @Column(name = "avatar_url")
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @JoinTable(name = "notifications",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+    private List<Post> notifyPosts;
+
+    @Column(name = "avatar_url", nullable = false)
     private String avatarURL;
 
     @Column(name = "rating")
     private int rating;
+
+    public User() {
+        appAreas = new ArrayList<>();
+        posts = new ArrayList<>();
+        comments = new ArrayList<>();
+        likedPosts = new ArrayList<>();
+        dislikedPosts = new ArrayList<>();
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 
     public long getId() {
         return id;
@@ -159,6 +183,14 @@ public class User {
         return this;
     }
 
+    public List<Post> getNotifyPosts() {
+        return notifyPosts;
+    }
+
+    public void setNotifyPosts(List<Post> notifyPosts) {
+        this.notifyPosts = notifyPosts;
+    }
+
     @Override
     public boolean equals(Object o) {
         return this == o || (o instanceof User) && id == ((User) o).id;
@@ -174,9 +206,5 @@ public class User {
                 && !isEmpty(this.getLastName())
                 && !isEmpty(this.getEmail())
                 && !isEmpty(this.getPassword());
-    }
-
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
     }
 }

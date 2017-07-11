@@ -3,30 +3,27 @@ package com.workfront.internship.workflow.dao.hibernate;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
  * Created by Vahag on 7/6/2017
  */
 @Repository
-public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
+public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);
 
-    @Transactional
     @Override
     public long add(User user) {
-       try {
+        try {
             entityManager.persist(user);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
@@ -35,13 +32,14 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public List getByName(String name) {
-       List<User> users;
+        String filteredName = name.replaceAll(" ", "");
+        List<User> users;
         try {
             users = entityManager.createQuery(
                     "SELECT c FROM user c WHERE concat(c.firstName, c.lastName) LIKE :name")
-                    .setParameter("name", name)
+                    .setParameter("name", '%' + filteredName + '%')
                     .getResultList();
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
@@ -53,7 +51,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
         User user;
         try {
             user = entityManager.find(User.class, id);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
@@ -68,7 +66,9 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
                     "SELECT c FROM user c WHERE c.email = :email")
                     .setParameter("email", email)
                     .getSingleResult();
-        }catch (RuntimeException e){
+        } catch (NoResultException e) {
+            return null;
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
@@ -84,27 +84,22 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
                     .setParameter("id", id)
                     .getSingleResult();
             appAreas = user.getAppAreas();
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
         return appAreas;
     }
 
-    @Transactional
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
         try {
             User user = entityManager.find(User.class, userId);
-            if(user.getAppAreas() == null){
-                List<AppArea> newAppAreaList = new ArrayList<>();
-                newAppAreaList.add(AppArea.getById(appAreaId));
-                user.setAppAreas(newAppAreaList);
-            }else {
-                user.getAppAreas().add(AppArea.getById(appAreaId));
-            }
+
+            user.getAppAreas().add(AppArea.getById(appAreaId));
 
             entityManager.merge(user);
+            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -125,16 +120,15 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
         }
     }
 
-    @Transactional
     @Override
     public void deleteById(long id) {
-       try {
+        try {
             User user = entityManager.find(User.class, id);
 
-            if (user != null){
+            if (user != null) {
                 entityManager.remove(user);
             }
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
@@ -149,6 +143,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
     public void updateProfile(User user) {
         try {
             entityManager.merge(user);
+            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
