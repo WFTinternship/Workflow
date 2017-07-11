@@ -12,16 +12,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "passcode")
+    @Column(name = "passcode", nullable = false)
     private String password;
 
     @ElementCollection(targetClass = AppArea.class)
@@ -54,7 +54,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
     private List<Post> notifyPosts;
 
-    @Column(name = "avatar_url")
+    @Column(name = "avatar_url", nullable = false)
     private String avatarURL;
 
     @Column(name = "rating")

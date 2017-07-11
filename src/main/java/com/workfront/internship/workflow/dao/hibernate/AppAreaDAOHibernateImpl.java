@@ -8,9 +8,6 @@ import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -22,8 +19,6 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
 
-
-    @Transactional
     @Override
     public long add(AppArea appArea) {
         try {

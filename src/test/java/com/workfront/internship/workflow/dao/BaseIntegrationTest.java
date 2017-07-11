@@ -10,11 +10,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
 /**
  * Created by nane on 6/8/17
  */
-
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-servlet.xml"})
 abstract class BaseIntegrationTest {

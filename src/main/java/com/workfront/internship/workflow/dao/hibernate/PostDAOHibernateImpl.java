@@ -9,7 +9,6 @@ import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     /**
      * @see PostDAO#add(Post)
      */
-    @Transactional
     @Override
     public long add(Post post) {
         try {
@@ -64,7 +62,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getByUserId(long)
      */
     @Override
-    @Transactional
     public List<Post> getByUserId(long userId) {
         List<Post> userPosts = new ArrayList<>();
         try {
@@ -138,7 +135,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getAnswersByPostId(long)
      */
     @Override
-    @Transactional
     public List<Post> getAnswersByPostId(long postId) {
         List<Post> answers;
         try {
@@ -171,7 +167,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getLikesNumber(long)
      */
     @Override
-    @Transactional
     public long getLikesNumber(long postId) {
         long numOfLikes = 0;
         try {
@@ -190,7 +185,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getDislikesNumber(long)
      */
     @Override
-    @Transactional
     public long getDislikesNumber(long postId) {
         long count = 0;
         try {
@@ -209,7 +203,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Override
-    @Transactional
     public void setBestAnswer(long postId, long answerId) {
         try {
             Post post = entityManager.find(Post.class, postId);
@@ -227,7 +220,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#update(Post)
      */
     @Override
-    @Transactional
     public void update(Post post) {
         try {
             entityManager.merge(post);
@@ -240,7 +232,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
     /**
      * @see PostDAO#like(long, long)
      */
-    @Transactional
     @Override
     public void like(long userId, long postId) {
         try {
@@ -260,7 +251,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#dislike(long, long)
      */
     @Override
-    @Transactional
     public void dislike(long userId, long postId) {
         try {
             User user = entityManager.find(User.class, userId);
@@ -279,7 +269,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#delete(long)
      */
     @Override
-    @Transactional
     public void delete(long id) {
         try {
             Post post = entityManager.find(Post.class, id);
@@ -296,7 +285,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getNumberOfAnswers(long)
      */
     @Override
-    @Transactional
     public Integer getNumberOfAnswers(long postId) {
         int numOfAnswers = 0;
         try {
@@ -332,7 +320,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
      * @see PostDAO#getNotificationRecipients(long)
      */
     @Override
-    @Transactional
     public List<User> getNotificationRecipients(long postId) {
         List<User> recipients = new ArrayList<>();
         try {

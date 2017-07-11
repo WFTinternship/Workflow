@@ -27,7 +27,7 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private AppArea appArea;
 
-    @ManyToMany(mappedBy = "likedPosts",
+    @ManyToMany(mappedBy = "likedPosts", targetEntity = User.class,
             cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<User> likers;
 

@@ -23,7 +23,6 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOHibernateImpl.class);
 
-    @Transactional
     @Override
     public long add(User user) {
        try {
@@ -37,11 +36,12 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public List getByName(String name) {
-       List<User> users;
+        String filteredName = name.replaceAll(" ", "");
+        List<User> users;
         try {
             users = entityManager.createQuery(
                     "SELECT c FROM user c WHERE concat(c.firstName, c.lastName) LIKE :name")
-                    .setParameter("name", name)
+                    .setParameter("name", '%' + filteredName + '%')
                     .getResultList();
         }catch (RuntimeException e){
             LOGGER.error("Hibernate Exception");
@@ -93,9 +93,9 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
         return appAreas;
     }
 
-    @Transactional
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
+        entityManager.getTransaction().begin();
         try {
             User user = entityManager.find(User.class, userId);
             if(user.getAppAreas() == null){
@@ -105,8 +105,9 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
             }else {
                 user.getAppAreas().add(AppArea.getById(appAreaId));
             }
+            entityManager.getTransaction().commit();
 
-            entityManager.merge(user);
+//            entityManager.merge(user);
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -127,7 +128,6 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
         }
     }
 
-    @Transactional
     @Override
     public void deleteById(long id) {
        try {
