@@ -10,7 +10,7 @@ import com.workfront.internship.workflow.service.PostService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -18,13 +18,15 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Properties;
 
 /**
  * Created by nane on 6/4/17
  */
-@Component
+@Service
+@Transactional
 public class PostServiceImpl implements PostService {
 
     private static final Logger logger = Logger.getLogger(PostDAO.class);

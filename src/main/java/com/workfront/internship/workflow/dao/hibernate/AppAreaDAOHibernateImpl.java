@@ -43,7 +43,7 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
     @Override
     public List<User> getUsersById(long appAreaId) {
 
-  List<User> users;
+        List<User> users;
         try {
             users = entityManager
                     .createNativeQuery("SELECT * FROM user " +

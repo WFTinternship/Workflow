@@ -4,9 +4,12 @@ import com.workfront.internship.workflow.entity.AppArea;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
+
 /**
  * Created by Vahag on 6/22/2017
  */
+@Transactional
 public abstract class BaseIntegrationTest extends BaseTest{
 
     @Autowired
