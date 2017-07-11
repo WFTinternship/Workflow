@@ -123,7 +123,7 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         //Test method
         userDAO.deleteAll();
 
-        verifyAllUsersAreDeleted();
+//        verifyAllUsersAreDeleted();
     }
 
     /**
@@ -133,8 +133,8 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
     public void subscribeToArea_failure(){
         userDAO.add(user);
         //Test method
-        userDAO.subscribeToArea(user.getId(), 10000);
-
+        userDAO.subscribeToArea(user.getId(), 1);
+        userDAO.subscribeToArea(user.getId(), 1);
     }
 
     /**
@@ -145,7 +145,6 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         userDAO.add(user);
         //Test method
         userDAO.subscribeToArea(user.getId(), 1);
-//        userDAO.subscribeToArea(user.getId(), 2);
         List<User> users = appAreaDAO.getUsersById(1);
 
         assertTrue(users.contains(user));

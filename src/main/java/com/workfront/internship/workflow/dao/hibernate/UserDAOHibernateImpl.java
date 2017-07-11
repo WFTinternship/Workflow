@@ -31,7 +31,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
     }
 
     @Override
-    public List getByName(String name) {
+    public List<User> getByName(String name) {
         String filteredName = name.replaceAll(" ", "");
         List<User> users;
         try {
@@ -110,8 +110,8 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
     public void unsubscribeToArea(long userId, long appAreaId) {
         try {
             User user = entityManager.find(User.class, userId);
-            AppArea appArea = entityManager.find(AppArea.class, appAreaId);
-            user.getAppAreas().remove(appArea);
+
+            user.getAppAreas().remove(AppArea.getById(appAreaId));
 
             entityManager.merge(user);
         } catch (RuntimeException e) {

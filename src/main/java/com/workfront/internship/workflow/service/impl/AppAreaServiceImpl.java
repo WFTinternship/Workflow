@@ -9,15 +9,17 @@ import com.workfront.internship.workflow.service.AppAreaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by nane on 6/5/17
  */
 
-@Component
+@Service
+@Transactional
 public class AppAreaServiceImpl implements AppAreaService {
 
     private static final Logger LOGGER = Logger.getLogger(AppAreaServiceImpl.class);
@@ -47,7 +49,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public List<User> getUsersById(long id) {
-        if (id < 0) {
+        if (id < 1) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -64,7 +66,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public AppArea getById(long id) {
-        if (id < 0) {
+        if (id < 1) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -81,7 +83,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public void deleteById(long id) {
-        if (id < 0) {
+        if (id < 1) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
