@@ -20,7 +20,7 @@ public class Post {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -181,10 +181,10 @@ public class Post {
     }
 
     public void addLiker(User liker) {
-        if(getLikers() == null){
+        if (getLikers() == null) {
             setLikers(new ArrayList<>());
         }
-        if(liker.getLikedPosts() == null){
+        if (liker.getLikedPosts() == null) {
             liker.setLikedPosts(new ArrayList<>());
         }
         if (!getLikers().contains(liker)) {
@@ -196,10 +196,10 @@ public class Post {
     }
 
     public void addDisliker(User disliker) {
-        if(getDislikers() == null){
+        if (getDislikers() == null) {
             setDislikers(new ArrayList<>());
         }
-        if(disliker.getDislikedPosts() == null){
+        if (disliker.getDislikedPosts() == null) {
             disliker.setDislikedPosts(new ArrayList<>());
         }
         if (!getDislikers().contains(disliker)) {
@@ -211,10 +211,10 @@ public class Post {
     }
 
     public void addNotificationRecipient(User notificationRecipient) {
-        if(getNotificationRecepiants() == null){
+        if (getNotificationRecepiants() == null) {
             setNotificationRecepiants(new ArrayList<>());
         }
-        if(notificationRecipient.getNotifyPosts() == null){
+        if (notificationRecipient.getNotifyPosts() == null) {
             notificationRecipient.setNotifyPosts(new ArrayList<>());
         }
         if (!getNotificationRecepiants().contains(notificationRecipient)) {
