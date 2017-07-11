@@ -30,7 +30,7 @@ public class User {
     @Column(name = "apparea_id")
     private List<AppArea> appAreas;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user")

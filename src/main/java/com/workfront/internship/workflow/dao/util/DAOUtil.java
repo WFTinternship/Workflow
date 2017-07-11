@@ -52,7 +52,6 @@ public class DAOUtil {
         return tableName == null ? column : tableName + "." + column;
     }
 
-
     /**
      * Sets users fields values from result set
      */
