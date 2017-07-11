@@ -95,19 +95,12 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO{
 
     @Override
     public void subscribeToArea(long userId, long appAreaId) {
-        entityManager.getTransaction().begin();
         try {
             User user = entityManager.find(User.class, userId);
-            if(user.getAppAreas() == null){
-                List<AppArea> newAppAreaList = new ArrayList<>();
-                newAppAreaList.add(AppArea.getById(appAreaId));
-                user.setAppAreas(newAppAreaList);
-            }else {
-                user.getAppAreas().add(AppArea.getById(appAreaId));
-            }
-            entityManager.getTransaction().commit();
 
-//            entityManager.merge(user);
+            user.getAppAreas().add(AppArea.getById(appAreaId));
+
+            entityManager.merge(user);
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);

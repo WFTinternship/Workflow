@@ -61,8 +61,11 @@ public class User {
     private int rating;
 
     public User() {
+        appAreas = new ArrayList<>();
         posts = new ArrayList<>();
         comments = new ArrayList<>();
+        likedPosts = new ArrayList<>();
+        dislikedPosts = new ArrayList<>();
     }
 
     public long getId() {
