@@ -77,7 +77,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
 
     @After
     public void tearDown() {
-       /* for (Comment c : commentList) {
+        for (Comment c : commentList) {
             commentDAO.delete(c.getId());
         }
         userDAO.deleteById(user.getId());
@@ -89,7 +89,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
     }
 
 
@@ -205,7 +205,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
         assertTrue(commentId > 0);
 
         // Test method
-        commentDAO.delete(commentId+1000000);
+        commentDAO.delete(commentId + 1000000);
     }
 
     /**
@@ -215,6 +215,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
     public void getByPostId_success(){
         Comment comment = DaoTestUtil.getRandomComment(user,post);
         commentDAO.add(comment);
+
         // Test method
         List<Comment> actualComments = commentDAO.getByPostId(comment.getPost().getId());
         assertNotNull(actualComments);

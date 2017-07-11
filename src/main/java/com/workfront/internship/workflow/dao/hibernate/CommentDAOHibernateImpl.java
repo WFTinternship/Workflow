@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,15 +62,30 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public List<Comment> getByPostId(long postId) {
-        List<Comment> postsComments;
+        /*
         try {
-            Post post = entityManager.find(Post.class, postId);
-            postsComments = post.getCommentList();
+            User user = entityManager.find(User.class, userId);
+            if (user != null) {
+                userPosts = user.getPosts();
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-        return postsComments;
+        return userPosts;
+         */
+        List<Comment> comments = new ArrayList<> ();
+        try {
+            Post post = entityManager.find(Post.class, postId);
+           // Post post = comment.getPost();
+            if(post != null) {
+                comments = post.getCommentList();
+            }
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return comments;
     }
 
     /**
@@ -94,8 +110,18 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public boolean update(long id, String newComment) {
+        /*
+        try {
+            entityManager.merge(post);
+            entityManager.flush();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+         */
         try {
             entityManager.merge(commentDAO.getById(id));
+            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
