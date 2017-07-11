@@ -241,8 +241,10 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
             User user = entityManager.find(User.class, userId);
             Post post = entityManager.find(Post.class, postId);
             if (post != null && user != null) {
-                post.addLiker(user);
+                post.getLikers().add(user);
+                user.getLikedPosts().add(post);
                 entityManager.merge(post);
+                entityManager.flush();
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
@@ -259,8 +261,10 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
             User user = entityManager.find(User.class, userId);
             Post post = entityManager.find(Post.class, postId);
             if (post != null && user != null) {
-                post.addDisliker(user);
+                post.getDislikers().add(user);
+                user.getDislikedPosts().add(post);
                 entityManager.merge(post);
+                entityManager.flush();
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
@@ -277,6 +281,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
             Post post = entityManager.find(Post.class, id);
             if (post != null) {
                 entityManager.remove(post);
+                entityManager.flush();
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");

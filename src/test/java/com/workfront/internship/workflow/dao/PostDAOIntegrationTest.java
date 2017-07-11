@@ -481,8 +481,10 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     @Test
     public void delete_failure() {
         long postId = postDAO.add(post);
+
+        // Test Method
         postDAO.delete(postId + 100000);
-        assertNotSame(post, postDAO.getById(postId));
+        assertEquals(post, postDAO.getById(postId));
     }
 
     /**

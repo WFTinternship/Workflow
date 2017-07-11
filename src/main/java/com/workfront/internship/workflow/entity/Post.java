@@ -20,7 +20,7 @@ public class Post {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -60,6 +60,8 @@ public class Post {
     public Post() {
         answerList = new ArrayList<>();
         commentList = new ArrayList<>();
+        likers = new ArrayList<>();
+        dislikers = new ArrayList<>();
     }
 
     public static boolean isEmpty(String string) {
@@ -180,35 +182,35 @@ public class Post {
         this.notificationRecepiants = notificationRecepiants;
     }
 
-    public void addLiker(User liker) {
-        if (getLikers() == null) {
-            setLikers(new ArrayList<>());
-        }
-        if (liker.getLikedPosts() == null) {
-            liker.setLikedPosts(new ArrayList<>());
-        }
-        if (!getLikers().contains(liker)) {
-            getLikers().add(liker);
-        }
-        if (!liker.getLikedPosts().contains(this)) {
-            liker.getLikedPosts().add(this);
-        }
-    }
-
-    public void addDisliker(User disliker) {
-        if (getDislikers() == null) {
-            setDislikers(new ArrayList<>());
-        }
-        if (disliker.getDislikedPosts() == null) {
-            disliker.setDislikedPosts(new ArrayList<>());
-        }
-        if (!getDislikers().contains(disliker)) {
-            getDislikers().add(disliker);
-        }
-        if (!disliker.getDislikedPosts().contains(this)) {
-            disliker.getDislikedPosts().add(this);
-        }
-    }
+//    public void addLiker(User liker) {
+//        if (getLikers() == null) {
+//            setLikers(new ArrayList<>());
+//        }
+//        if (liker.getLikedPosts() == null) {
+//            liker.setLikedPosts(new ArrayList<>());
+//        }
+//        if (!getLikers().contains(liker)) {
+//            getLikers().add(liker);
+//        }
+//        if (!liker.getLikedPosts().contains(this)) {
+//            liker.getLikedPosts().add(this);
+//        }
+//    }
+//
+//    public void addDisliker(User disliker) {
+//        if (getDislikers() == null) {
+//            setDislikers(new ArrayList<>());
+//        }
+//        if (disliker.getDislikedPosts() == null) {
+//            disliker.setDislikedPosts(new ArrayList<>());
+//        }
+//        if (!getDislikers().contains(disliker)) {
+//            getDislikers().add(disliker);
+//        }
+//        if (!disliker.getDislikedPosts().contains(this)) {
+//            disliker.getDislikedPosts().add(this);
+//        }
+//    }
 
     public void addNotificationRecipient(User notificationRecipient) {
         if (getNotificationRecepiants() == null) {

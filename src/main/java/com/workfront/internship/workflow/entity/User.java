@@ -40,13 +40,15 @@ public class User {
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
     @JoinTable(name = "user_post_likes",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> likedPosts;
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
     @JoinTable(name = "user_post_dislikes",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> dislikedPosts;
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
@@ -67,6 +69,10 @@ public class User {
         comments = new ArrayList<>();
         likedPosts = new ArrayList<>();
         dislikedPosts = new ArrayList<>();
+    }
+
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
     }
 
     public long getId() {
@@ -200,9 +206,5 @@ public class User {
                 && !isEmpty(this.getLastName())
                 && !isEmpty(this.getEmail())
                 && !isEmpty(this.getPassword());
-    }
-
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
     }
 }
