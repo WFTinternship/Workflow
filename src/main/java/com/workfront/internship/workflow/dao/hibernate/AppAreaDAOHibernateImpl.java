@@ -40,6 +40,7 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
 
     @Override
     public List<User> getUsersById(long appAreaId) {
+
         return null;
     }
 

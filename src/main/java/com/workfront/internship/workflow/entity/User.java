@@ -28,6 +28,7 @@ public class User {
     @CollectionTable(name = "user_apparea",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Column(name = "apparea_id")
+    @Enumerated(EnumType.STRING)
     private List<AppArea> appAreas;
 
     @OneToMany(mappedBy = "user")

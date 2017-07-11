@@ -145,6 +145,7 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         userDAO.add(user);
         //Test method
         userDAO.subscribeToArea(user.getId(), 1);
+//        userDAO.subscribeToArea(user.getId(), 2);
         List<User> users = appAreaDAO.getUsersById(1);
 
         assertTrue(users.contains(user));

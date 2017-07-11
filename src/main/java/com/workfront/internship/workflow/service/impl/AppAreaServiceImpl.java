@@ -47,7 +47,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public List<User> getUsersById(long id) {
-        if (id < 1) {
+        if (id < 0) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -64,7 +64,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public AppArea getById(long id) {
-        if (id < 1) {
+        if (id < 0) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
@@ -81,7 +81,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
     @Override
     public void deleteById(long id) {
-        if (id < 1) {
+        if (id < 0) {
             LOGGER.error("Id is not valid");
             throw new InvalidObjectException("Not valid id");
         }
