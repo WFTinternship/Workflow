@@ -26,8 +26,9 @@ public class User {
 
     @ElementCollection(targetClass = AppArea.class)
     @CollectionTable(name = "user_apparea",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    @Column(name = "apparea_id")
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "apparea_id"})})
+    @Column(name = "apparea_id", nullable = false)
     @Enumerated(EnumType.STRING)
     private List<AppArea> appAreas;
 
@@ -39,22 +40,22 @@ public class User {
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
     @JoinTable(name = "user_post_likes",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> likedPosts;
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
     @JoinTable(name = "user_post_dislikes",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> dislikedPosts;
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
     @JoinTable(name = "notifications",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false))
     private List<Post> notifyPosts;
 
     @Column(name = "avatar_url", nullable = false)
