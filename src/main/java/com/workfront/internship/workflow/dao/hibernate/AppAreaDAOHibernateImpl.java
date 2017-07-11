@@ -9,6 +9,7 @@ import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,18 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
 
     @Override
     public List<User> getUsersById(long appAreaId) {
-      return null;
+
+  List<User> users;
+        try {
+            users = entityManager
+                    .createNativeQuery("SELECT * FROM user " +
+                            "WHERE id IN (SELECT user_id FROM user_apparea WHERE apparea_id = ?)", User.class)
+                    .setParameter(1, appAreaId - 1)
+                    .getResultList();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }      return users;
     }
 
     @Override
