@@ -10,13 +10,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by Angel on 6/5/2017
  */
-@Component
+@Service
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
     private  static final Logger logger = Logger.getLogger(CommentDAOImpl.class);
