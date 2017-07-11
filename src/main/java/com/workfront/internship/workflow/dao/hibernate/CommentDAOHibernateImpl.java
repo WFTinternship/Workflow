@@ -3,13 +3,17 @@ package com.workfront.internship.workflow.dao.hibernate;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
+import javafx.geometry.Pos;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -19,18 +23,17 @@ import java.util.List;
 public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostDAOHibernateImpl.class);
+    private CommentDAO commentDAO;
 
     /**
      *@see CommentDAO#add(Comment)
      */
+    @Transactional
     @Override
     public long add(Comment comment) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
         try {
-            entityManager.getTransaction().begin();
             entityManager.persist(comment);
-            entityManager.getTransaction().commit();
+           // entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error(" Hibernate Exception ");
             throw new DAOException(e);
@@ -43,16 +46,14 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public Comment getById(long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Comment comment;
-        try {
-            entityManager.getTransaction().begin();
-            comment = entityManager.find(Comment.class, id);
-        } catch (RuntimeException e) {
-            LOGGER.error("Hibernate Exception");
-            throw new DAOException(e);
-        }
-        return comment;
+       Comment comment;
+       try {
+           comment = entityManager.find(Comment.class , id);
+       } catch(RuntimeException e) {
+           LOGGER.error("Hibernate Exception");
+           throw new DAOException(e);
+       }
+       return comment;
     }
 
     /**
@@ -60,7 +61,15 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public List<Comment> getByPostId(long postId) {
-        return null;
+        List<Comment> postsComments;
+        try {
+            Post post = entityManager.find(Post.class, postId);
+            postsComments = post.getCommentList();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return postsComments;
     }
 
     /**
@@ -68,12 +77,16 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public List<Comment> getAll() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager
-                .createQuery("select a from comment", Comment.class)
-                //.createQuery("select a from comment", Comment.class)
-                .getResultList();
-        return null;
+        List<Comment> allComments;
+        try {
+            allComments = entityManager
+                    .createQuery("select c from comment c", Comment.class)
+                    .getResultList();
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return allComments;
     }
 
     /**
@@ -81,7 +94,13 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public boolean update(long id, String newComment) {
-        return false;
+        try {
+            entityManager.merge(commentDAO.getById(id));
+        } catch (RuntimeException e) {
+            LOGGER.error("Hibernate Exception");
+            throw new DAOException(e);
+        }
+        return true;
     }
 
     /**
@@ -89,18 +108,12 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public void delete(long id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Comment comment = entityManager.find(Comment.class, id);
-
-            entityManager.getTransaction().begin();
             entityManager.remove(comment);
-            entityManager.getTransaction().commit();
-
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
         }
-
     }
 }

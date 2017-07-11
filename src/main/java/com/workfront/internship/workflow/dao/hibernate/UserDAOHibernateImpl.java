@@ -9,8 +9,6 @@ import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
