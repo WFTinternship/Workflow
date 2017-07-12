@@ -15,9 +15,6 @@ public class Post {
     private Timestamp postTime;
     private String title;
     private String content;
-
-
-
     private List<Comment> commentList;
     private boolean isCorrect;
 
