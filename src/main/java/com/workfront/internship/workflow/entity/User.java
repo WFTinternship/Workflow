@@ -32,7 +32,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user")

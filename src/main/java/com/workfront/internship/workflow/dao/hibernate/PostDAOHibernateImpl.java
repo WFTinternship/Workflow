@@ -33,7 +33,7 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
                 post.getPost().getAnswerList().add(post);
             }
             entityManager.persist(post);
-            entityManager.flush();
+//            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
@@ -279,7 +279,6 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
             Post post = entityManager.find(Post.class, id);
             if (post != null) {
                 entityManager.remove(post);
-                entityManager.flush();
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");

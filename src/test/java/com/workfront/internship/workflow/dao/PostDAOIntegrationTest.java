@@ -16,10 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.*;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.TestCase.*;
 
 /**
  * Created by nane on 5/29/17
@@ -94,11 +92,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
         post.setTitle(null);
 
         // Test method
-        long postId = postDAO.add(post);
-
-        Post post = postDAO.getById(postId);
-        assertNull(post);
-
+        postDAO.add(post);
     }
 
     /**
@@ -501,7 +495,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
      * @see PostDAO#getNotified(long, long)
      */
     @Test(expected = RuntimeException.class)
-    public void getNotified_failure(){
+    public void getNotified_failure() {
         postDAO.add(post);
         //Test method
         postDAO.getNotified(post.getId(), -1);
