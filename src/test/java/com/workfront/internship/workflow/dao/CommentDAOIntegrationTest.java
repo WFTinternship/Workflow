@@ -53,12 +53,12 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
         AppArea appArea;
         commentList = new ArrayList<>();
 
-        user=  DaoTestUtil.getRandomUser();
+        user =  DaoTestUtil.getRandomUser();
         userDAO.add(user);
 
         appArea = DaoTestUtil.getRandomAppArea();
 
-        post=  DaoTestUtil.getRandomPost(user, appArea);
+        post =  DaoTestUtil.getRandomPost(user, appArea);
         postDAO.add(post);
 
         comment = DaoTestUtil.getRandomComment(user, post);
@@ -77,7 +77,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
 
     @After
     public void tearDown() {
-        for (Comment c : commentList) {
+         for (Comment c : commentList) {
             commentDAO.delete(c.getId());
         }
         userDAO.deleteById(user.getId());
@@ -163,7 +163,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest{
      */
     @Test(expected = RuntimeException.class)
     public void update_failure() {
-        Comment otherComment = DaoTestUtil.getRandomComment( user , post ) ;
+        Comment otherComment = DaoTestUtil.getRandomComment( user, post ) ;
         commentList.add(otherComment);
 
         long id = commentDAO.add(otherComment) ;

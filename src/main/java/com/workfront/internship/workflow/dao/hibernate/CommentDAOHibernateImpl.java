@@ -29,12 +29,11 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
     /**
      *@see CommentDAO#add(Comment)
      */
-    @Transactional
     @Override
     public long add(Comment comment) {
         try {
             entityManager.persist(comment);
-           // entityManager.flush();
+            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error(" Hibernate Exception ");
             throw new DAOException(e);
@@ -62,18 +61,6 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public List<Comment> getByPostId(long postId) {
-        /*
-        try {
-            User user = entityManager.find(User.class, userId);
-            if (user != null) {
-                userPosts = user.getPosts();
-            }
-        } catch (RuntimeException e) {
-            LOGGER.error("Hibernate Exception");
-            throw new DAOException(e);
-        }
-        return userPosts;
-         */
         List<Comment> comments = new ArrayList<> ();
         try {
             Post post = entityManager.find(Post.class, postId);
@@ -110,17 +97,9 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public boolean update(long id, String newComment) {
-        /*
         try {
-            entityManager.merge(post);
-            entityManager.flush();
-        } catch (RuntimeException e) {
-            LOGGER.error("Hibernate Exception");
-            throw new DAOException(e);
-        }
-         */
-        try {
-            entityManager.merge(commentDAO.getById(id));
+            Comment comment = entityManager.find(Comment.class, id);
+            entityManager.merge(comment);
             entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
@@ -136,7 +115,10 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
     public void delete(long id) {
         try {
             Comment comment = entityManager.find(Comment.class, id);
-            entityManager.remove(comment);
+            if(comment != null) {
+                entityManager.remove(comment);
+                entityManager.flush();
+            }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
