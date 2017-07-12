@@ -285,6 +285,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest {
 
         commentList.add(anotherComment);
 
+        // Test method
         otherList = commentDAO.getAll();
         assertNotNull(otherList);
         assertTrue(otherList.size() == size + 2 && otherList.contains(otherComment) &&
