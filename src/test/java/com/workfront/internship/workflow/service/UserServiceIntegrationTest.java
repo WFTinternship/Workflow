@@ -245,17 +245,6 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest{
         assertEquals(userService.getById(userId), null);
     }
 
-    /**
-     * @see UserService#deleteAll()
-     */
-    @Test
-    public void deleteAll_success() {
-        userService.add(user);
-
-        //Test method
-        userService.deleteAll();
-        assertEquals(userService.getById(user.getId()), null);
-    }
 
     // endregion
 
