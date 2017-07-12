@@ -37,7 +37,7 @@ public class ControllerUtils {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
         // getting and passing list of sizes of each posts by same appArea id to home page
         for (Post post : postList) {
-            numbersOfLikesForPosts.add((long) post.getLikers().size());
+            numbersOfLikesForPosts.add(postService.getLikesNumber(post.getId()));
         }
         return numbersOfLikesForPosts;
     }
@@ -46,7 +46,7 @@ public class ControllerUtils {
         List<Long> numbersOfDislikesForPosts = new ArrayList<>();
         // getting and passing list of sizes of each posts by same appArea id to home page
         for (Post post : postList) {
-            numbersOfDislikesForPosts.add((long) post.getDislikers().size());
+            numbersOfDislikesForPosts.add(postService.getDislikesNumber(post.getId()));
         }
         return numbersOfDislikesForPosts;
     }

@@ -351,8 +351,7 @@
                             </div>
                             <div class="post-comment">
                                 <ul class="post-ul">
-                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
-                                               varStatus="commentStatus">
+                                    <c:forEach var="comment" items="${answer.commentList}">
                                         <li>
                                                 ${comment.content}
                                         </li>

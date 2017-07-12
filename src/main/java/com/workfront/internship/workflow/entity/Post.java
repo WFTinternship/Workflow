@@ -28,20 +28,20 @@ public class Post {
     private AppArea appArea;
 
     @ManyToMany(mappedBy = "likedPosts", targetEntity = User.class,
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     private List<User> likers;
 
     @ManyToMany(mappedBy = "dislikedPosts",
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     private List<User> dislikers;
 
     @Column(name = "post_time", nullable = false)
     private Timestamp postTime;
 
-    @Column(name = "title", length = 45, nullable = false)
+    @Column(name = "title", length = 500, nullable = false)
     private String title;
 
-    @Column(name = "content", length = 1000, nullable = false)
+    @Column(name = "content", length = 10000, nullable = false)
     private String content;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
