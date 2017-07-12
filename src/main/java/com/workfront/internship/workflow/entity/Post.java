@@ -182,36 +182,6 @@ public class Post {
         this.notificationRecepiants = notificationRecepiants;
     }
 
-//    public void addLiker(User liker) {
-//        if (getLikers() == null) {
-//            setLikers(new ArrayList<>());
-//        }
-//        if (liker.getLikedPosts() == null) {
-//            liker.setLikedPosts(new ArrayList<>());
-//        }
-//        if (!getLikers().contains(liker)) {
-//            getLikers().add(liker);
-//        }
-//        if (!liker.getLikedPosts().contains(this)) {
-//            liker.getLikedPosts().add(this);
-//        }
-//    }
-//
-//    public void addDisliker(User disliker) {
-//        if (getDislikers() == null) {
-//            setDislikers(new ArrayList<>());
-//        }
-//        if (disliker.getDislikedPosts() == null) {
-//            disliker.setDislikedPosts(new ArrayList<>());
-//        }
-//        if (!getDislikers().contains(disliker)) {
-//            getDislikers().add(disliker);
-//        }
-//        if (!disliker.getDislikedPosts().contains(this)) {
-//            disliker.getDislikedPosts().add(this);
-//        }
-//    }
-
     public void addNotificationRecipient(User notificationRecipient) {
         if (getNotificationRecepiants() == null) {
             setNotificationRecepiants(new ArrayList<>());
@@ -239,11 +209,11 @@ public class Post {
 
     public boolean isValid() {
         return user != null
-                && this.getUser().isValid()
-                && !isEmpty(this.getTitle())
-                && !isEmpty(this.getContent())
-                && this.postTime != null
-                && this.getAppArea() != null;
+                && getUser().isValid()
+                && !isEmpty(getTitle())
+                && !isEmpty(getContent())
+                && postTime != null
+                && getAppArea() != null;
     }
 
 

@@ -10,7 +10,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -81,11 +81,12 @@ public class Comment {
 
 
     public  boolean isValid(){
-        return this.getUser() != null
-                && this.getUser().isValid()
-                && this.getPost() != null
-                && this.getPost().isValid()
-                && !isEmpty(this.getContent());
+        return getUser() != null
+                && getUser().isValid()
+                && getPost() != null
+                && getPost().isValid()
+                && !isEmpty(content)
+                && commentTime != null;
     }
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();

@@ -314,7 +314,7 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
 
         assertEquals(post.getTitle(), expectedPost.getTitle());
 
-        userService.deleteById(post.getId());
+        userService.deleteById(post.getUser().getId());
     }
 
     /**

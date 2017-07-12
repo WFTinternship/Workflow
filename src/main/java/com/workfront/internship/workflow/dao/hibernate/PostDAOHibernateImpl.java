@@ -86,7 +86,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
             if (appArea != null) {
                 String name = appArea.name();
                 posts = entityManager
-                        .createNativeQuery("SELECT * FROM post where post.appArea =:id", Post.class)
+                        .createNativeQuery("SELECT * FROM post where post.appArea" +
+                                " =:id", Post.class)
                         .setParameter("id", name)
                         .getResultList();
             }
