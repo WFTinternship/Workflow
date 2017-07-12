@@ -16,11 +16,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Post.class, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -28,11 +28,11 @@ public class Post {
     private AppArea appArea;
 
     @ManyToMany(mappedBy = "likedPosts", targetEntity = User.class,
-            cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<User> likers;
 
     @ManyToMany(mappedBy = "dislikedPosts",
-            cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<User> dislikers;
 
     @Column(name = "post_time", nullable = false)
@@ -44,10 +44,10 @@ public class Post {
     @Column(name = "content", length = 1000, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private List<Post> answerList;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post")
     private List<Comment> commentList;
 
     @OneToOne

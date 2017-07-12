@@ -322,8 +322,8 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void like_failure() {
+        long userId = userService.add(post.getUser());
         long postId = postService.add(post);
-        long userId = post.getUser().getId();
 
         //Test method
         postService.like(userId, postId);
@@ -352,8 +352,8 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void dislike_failure() {
+        long userId = userService.add(post.getUser());
         long postId = postService.add(post);
-        long userId = post.getUser().getId();
 
         //Test method
         postService.dislike(userId, postId);

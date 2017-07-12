@@ -18,7 +18,7 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "passcode", nullable = false)
@@ -32,20 +32,20 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @ManyToMany(targetEntity = Post.class)
     @JoinTable(name = "user_post_likes",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> likedPosts;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @ManyToMany(targetEntity = Post.class)
     @JoinTable(name = "user_post_dislikes",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false),

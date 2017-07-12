@@ -28,7 +28,7 @@ public class ControllerUtils {
         List<Integer> numbersOfAnswersForPosts = new ArrayList<>();
         // getting and passing list of sizes of each posts by same appArea id to home page
         for (Post post : postList) {
-            numbersOfAnswersForPosts.add(postService.getNumberOfAnswers(post.getId()));
+            numbersOfAnswersForPosts.add(post.getAnswerList().size());
         }
         return numbersOfAnswersForPosts;
     }
@@ -37,7 +37,7 @@ public class ControllerUtils {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
         // getting and passing list of sizes of each posts by same appArea id to home page
         for (Post post : postList) {
-            numbersOfLikesForPosts.add(postService.getLikesNumber(post.getId()));
+            numbersOfLikesForPosts.add((long) post.getLikers().size());
         }
         return numbersOfLikesForPosts;
     }
@@ -46,7 +46,7 @@ public class ControllerUtils {
         List<Long> numbersOfDislikesForPosts = new ArrayList<>();
         // getting and passing list of sizes of each posts by same appArea id to home page
         for (Post post : postList) {
-            numbersOfDislikesForPosts.add(postService.getDislikesNumber(post.getId()));
+            numbersOfDislikesForPosts.add((long) post.getDislikers().size());
         }
         return numbersOfDislikesForPosts;
     }
@@ -54,7 +54,7 @@ public class ControllerUtils {
     public static List<Post> getTopPosts(PostService postService, List<Post> posts){
         List<Post> topPosts = new ArrayList<>();
         for (Post post: posts) {
-            if(postService.getAnswersByPostId(post.getId()).size()  > 4){
+            if(post.getAnswerList().size()  > 4){
                 topPosts.add(post);
             }
         }

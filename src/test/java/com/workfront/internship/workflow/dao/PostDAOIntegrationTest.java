@@ -74,7 +74,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
                 userDAO.deleteById(user.getId());
             }
         }
-        userDAO.deleteById(user.getId());
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());

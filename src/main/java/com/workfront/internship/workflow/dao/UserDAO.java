@@ -102,4 +102,5 @@ public interface UserDAO {
      * @param user the user whose avatar is to be updated
      */
     void updateAvatar(User user);
+
 }

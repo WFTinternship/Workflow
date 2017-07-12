@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
@@ -203,7 +204,7 @@
                             <div class="postinfo pull-left">
                                 <div class="comments">
                                     <div class="commentbg">
-                                            ${numberOfAnswers[status.index]}
+                                            ${fn:length(post.answerList)}
                                         <div class="mark"></div>
                                     </div>
 
