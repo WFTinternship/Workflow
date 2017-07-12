@@ -125,7 +125,6 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
         try {
             User user = entityManager.find(User.class, id);
 
-
             if (user != null) {
                 entityManager.remove(user);
             }

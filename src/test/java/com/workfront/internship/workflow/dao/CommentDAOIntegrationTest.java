@@ -28,7 +28,6 @@ import static junit.framework.TestCase.assertNull;
  * Created by Angel on 30.05.2017
  */
 public class CommentDAOIntegrationTest extends BaseIntegrationTest {
-    private Comment comment;
 
     @Autowired
     @Qualifier("commentDAOHibernateImpl")
@@ -37,25 +36,16 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest {
     @Autowired
     @Qualifier("userDAOHibernateImpl")
     private UserDAO userDAO;
-    private User user;
 
     @Autowired
     @Qualifier("postDAOHibernateImpl")
     private PostDAO postDAO;
+
+    private Comment comment;
+    private User user;
     private Post post;
 
     private List<Comment> commentList = new ArrayList<>();
-
-    public static void isCommentsEqual(Comment comment, Comment actualComment, boolean skipDate) {
-        PostDAOIntegrationTest.verifyPost(comment.getPost(), actualComment.getPost());
-        UserDAOIntegrationTest.verifyAddedUser(comment.getUser(), actualComment.getUser());
-
-        assertEquals(comment.getContent(), actualComment.getContent());
-
-        if (skipDate) {
-            assertEquals(comment.getCommentTime(), actualComment.getCommentTime());
-        }
-    }
 
     @Before
     public void setup() {
@@ -89,8 +79,8 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest {
 
     @After
     public void tearDown() {
-        for (Comment c : commentList) {
-            commentDAO.delete(c.getId());
+        for (Comment comment : commentList) {
+            commentDAO.delete(comment.getId());
         }
         userDAO.deleteById(user.getId());
         postDAO.delete(post.getId());
@@ -294,6 +284,17 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     // endregion
+
+    public static void isCommentsEqual(Comment comment, Comment actualComment, boolean skipDate) {
+        PostDAOIntegrationTest.verifyPost(comment.getPost(), actualComment.getPost());
+        UserDAOIntegrationTest.verifyAddedUser(comment.getUser(), actualComment.getUser());
+
+        assertEquals(comment.getContent(), actualComment.getContent());
+
+        if (skipDate) {
+            assertEquals(comment.getCommentTime(), actualComment.getCommentTime());
+        }
+    }
 
 }
 

@@ -44,6 +44,12 @@ public class CommentServiceIntegrationTest extends BaseIntegrationTest{
         if(comment.getId() > 0 && commentService.getById(comment.getId()) != null){
             commentService.delete(comment.getId());
         }
+        if (post.getId() > 0 && postService.getById(post.getId()) != null) {
+            postService.delete(post.getId());
+        }
+        if (user.getId() > 0 && userService.getById(user.getId()) != null) {
+            userService.deleteById(user.getId());
+        }
     }
 
     /**

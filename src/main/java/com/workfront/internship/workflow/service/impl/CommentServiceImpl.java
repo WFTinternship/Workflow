@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDAO commentDAO;
 
     @Autowired
-    public CommentServiceImpl(@Qualifier("commentDAOSpringImpl") CommentDAO commentDAO) {
+    public CommentServiceImpl(@Qualifier("commentDAOHibernateImpl") CommentDAO commentDAO) {
         this.commentDAO = commentDAO;
     }
 

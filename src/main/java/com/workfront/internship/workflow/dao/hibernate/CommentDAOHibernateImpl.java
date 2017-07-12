@@ -33,7 +33,7 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
         try {
             comment.getPost().getCommentList().add(comment);
             entityManager.persist(comment);
-            entityManager.flush();
+//            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error(" Hibernate Exception ");
             throw new DAOException(e);
@@ -61,7 +61,7 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
      */
     @Override
     public List<Comment> getByPostId(long postId) {
-        List<Comment> comments = new ArrayList<> ();
+        List<Comment> comments = new ArrayList<>();
         try {
             Post post = entityManager.find(Post.class, postId);
             if(post != null) {
@@ -114,7 +114,6 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
             Comment comment = entityManager.find(Comment.class, id);
             if(comment != null) {
                 entityManager.remove(comment);
-                entityManager.flush();
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
