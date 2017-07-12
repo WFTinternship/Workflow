@@ -103,7 +103,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public void update(Comment comment) {
-        if (comment == null && !comment.isValid()) {
+        if (comment == null || !comment.isValid()) {
             logger.error(" There is no such comment for update !");
             throw new InvalidObjectException();
         }
