@@ -24,7 +24,7 @@ abstract class BaseIntegrationTest {
     protected DataSource dataSource;
 
     @Autowired
-    @Qualifier("appAreaDAOSpringImpl")
+    @Qualifier("appAreaDAOHibernateImpl")
     AppAreaDAO appAreaDAO;
 
     Logger LOG;
