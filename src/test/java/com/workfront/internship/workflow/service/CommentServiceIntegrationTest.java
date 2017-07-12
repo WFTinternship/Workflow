@@ -168,45 +168,31 @@ public class CommentServiceIntegrationTest extends BaseIntegrationTest{
 
 
     /**
-     * @see CommentService#update(long, String)
+     * @see CommentService#update(Comment)
      */
     @Test
     public void update_success() {
-
-        post.setUser(user);
 
         userService.add(comment.getUser());
         postService.add(comment.getPost());
         commentService.add(comment);
 
-        comment.setContent("abc");
+        comment.setContent("Updated Content");
+        // Test Method
+        commentService.update(comment);
+        Comment expectedComment = commentService.getById(comment.getId());
 
-        //Test method
-        commentService.update(comment.getId(),"abc");
+        assertEquals(comment.getContent(), expectedComment.getContent());
 
-        Comment updatedComment = commentService.getById(comment.getId());
-        assertEquals(comment,updatedComment);
-
-        postService.delete(comment.getPost().getId());
         userService.deleteById(comment.getUser().getId());
     }
 
     /**
-     * @see CommentService#update(long, String)
+     * @see CommentService#update(Comment)
      */
     @Test
     public void update_failure() {
-       try{
-           commentService.update(-7,"abc");
-       }catch(Exception e){
-           assertTrue(e instanceof InvalidObjectException);
-       }
-       try{
-           commentService.update(7,null);
-       }catch(Exception e ){
-           assertTrue(e instanceof InvalidObjectException);
-       }
-
+        commentService.update(null);
     }
 
     /**

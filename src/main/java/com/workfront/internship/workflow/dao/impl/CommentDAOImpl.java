@@ -68,29 +68,23 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
     }
 
     /**
-     * @see CommentDAO#update(long, String)
-     * '@param' id
-     * @param newContent
-     * '@return'
+     * @see CommentDAO#update(Comment)
      */
     @Override
-    public boolean update(long id , String newContent) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        String query = "UPDATE comment SET content = ?, " +
-                       " comment_time = ?" +
-                       " WHERE comment.id = ?";
+    public void update(Comment comment) {
+        String query = " UPDATE comment SET content = ?, " +
+                       " comment_time = ? " +
+                       " WHERE comment.id = ? ";
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = dataSource.getConnection();
             stmt = connection.prepareStatement(query);
-            stmt.setString(1 , newContent);
-            stmt.setString(2, dateFormat.format(date) );
-            stmt.setLong(3, id);
+            stmt.setString(1 , comment.getContent());
+            stmt.setTimestamp(2, comment.getCommentTime());
+            stmt.setLong(3, comment.getId());
 
-            int rows = stmt.executeUpdate();
-            return rows == 1;
+            stmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("SQL exception");
             throw new RuntimeException(e);

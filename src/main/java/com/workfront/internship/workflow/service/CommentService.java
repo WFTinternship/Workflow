@@ -44,13 +44,11 @@ public interface CommentService {
     // UPDATE
 
     /**
-     * updates the comment with given id
-     * @see CommentService#update(long, String)
-     * '@param' id
-     * @param newComment
-     * '@return'
+     * updates the comment
+     * @param comment
+     * @return
      */
-    boolean update(long id , String newComment);
+    void update(Comment comment);
 
     // DELETE
 

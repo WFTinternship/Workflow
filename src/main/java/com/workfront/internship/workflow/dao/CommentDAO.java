@@ -51,13 +51,11 @@ public interface CommentDAO {
     // UPDATE
 
     /**
-     * updates the comment from database with given id
-     * @see CommentDAOImpl#update(long, String)
-     * '@param' id
-     * @param newComment
-     * '@return'
+     * updates the comment in the database
+     * @param comment
+     * @return
      */
-    boolean update(long id , String newComment);
+    void update(Comment comment);
 
     // DELETE
 

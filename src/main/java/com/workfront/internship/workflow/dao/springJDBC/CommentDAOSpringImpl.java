@@ -28,8 +28,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    public CommentDAOSpringImpl(DataSource dataSource)
-    {
+    public CommentDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -39,7 +38,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
     public long add(Comment comment) {
         long id;
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String query = "INSERT INTO comment(user_id,post_id,content,comment_time) "+
+        String query = "INSERT INTO comment(user_id,post_id,content,comment_time) " +
                 "VALUE(?,?,?,?)";
         try {
             jdbcTemplate.update(connection -> {
@@ -52,29 +51,30 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
                 return ps;
             }, keyHolder);
             id = keyHolder.getKey().longValue();
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
         comment.setId(id);
         return id;
     }
-      @Override
-    public Comment getById(long id) {
-          String query = "SELECT comment.id, comment.user_id, user.first_name, user.last_name, " +
-                  " user.email, user.passcode, user.avatar_url, user.rating, comment.post_id," +
-                  " post.post_time, post.title,post.content,post.apparea_id, comment.comment_time," +
-                  "comment.content FROM comment INNER JOIN user ON comment.user_id = user.id " +
-                  " INNER JOIN post ON comment.post_id = post.id WHERE comment.id = ?";
 
-          try {
-              return (Comment) jdbcTemplate.queryForObject(query,
-                      new Object[]{id}, new CommentRowMapper());
-          } catch (EmptyResultDataAccessException e) {
-              return null;
-          } catch (DataAccessException e) {
-              throw new RuntimeException(e);
-          }
+    @Override
+    public Comment getById(long id) {
+        String query = "SELECT comment.id, comment.user_id, user.first_name, user.last_name, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, comment.post_id," +
+                " post.post_time, post.title,post.content,post.apparea_id, comment.comment_time," +
+                "comment.content FROM comment INNER JOIN user ON comment.user_id = user.id " +
+                " INNER JOIN post ON comment.post_id = post.id WHERE comment.id = ?";
+
+        try {
+            return (Comment) jdbcTemplate.queryForObject(query,
+                    new Object[]{id}, new CommentRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
     /*
     try {
@@ -104,8 +104,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
     }
 
     @Override
-    public List<Comment> getAll()
-    {
+    public List<Comment> getAll() {
         String query = " SELECT comment.id, comment.user_id, first_name, last_name, " +
                 " email, passcode, avatar_url, rating, comment.post_id, post_time, title, " +
                 " post.content, post.apparea_id, comment_time, comment.content FROM comment " +
@@ -120,30 +119,29 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
         }
     }
 
+    /**
+     * @see CommentDAO#update(Comment)
+     */
     @Override
-    public boolean update(long id, String newContent) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
+    public void update(Comment comment) {
         String query = "UPDATE comment SET content = ?, " +
                 " comment_time = ? " +
                 " WHERE comment.id = ?";
-        try{
-            jdbcTemplate.update(query, newContent,  dateFormat.format(date), id);
-        }catch (DataAccessException e){
+        try {
+            jdbcTemplate.update(query, comment.getContent(), comment.getCommentTime(), comment.getId());
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
-        return true;
     }
 
     @Override
-    public void delete(long id)
-    {
+    public void delete(long id) {
         String query = "DELETE FROM  comment " +
                 "WHERE id = ?";
         try {
             jdbcTemplate.update(query, id);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);
         }
