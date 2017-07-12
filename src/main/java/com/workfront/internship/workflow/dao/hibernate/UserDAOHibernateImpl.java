@@ -114,7 +114,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
             user.getAppAreas().remove(AppArea.getById(appAreaId));
 
             entityManager.merge(user);
-            entityManager.flush();
+//            entityManager.flush();
 
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
@@ -145,7 +145,7 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
     public void updateProfile(User user) {
         try {
             entityManager.merge(user);
-            entityManager.flush();
+//            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
