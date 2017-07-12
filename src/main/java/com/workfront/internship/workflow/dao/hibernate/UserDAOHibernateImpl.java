@@ -100,7 +100,6 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
             user.getAppAreas().add(AppArea.getById(appAreaId));
 
             entityManager.merge(user);
-            entityManager.flush();
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
