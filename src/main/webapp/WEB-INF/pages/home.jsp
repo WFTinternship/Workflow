@@ -204,7 +204,7 @@
                             <div class="postinfo pull-left">
                                 <div class="comments">
                                     <div class="commentbg">
-                                            ${fn:length(post.answerList)}
+                                            ${numberOfAnswers[status.index]}
                                         <div class="mark"></div>
                                     </div>
 

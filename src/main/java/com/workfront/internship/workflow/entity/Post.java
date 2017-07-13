@@ -28,11 +28,11 @@ public class Post {
     private AppArea appArea;
 
     @ManyToMany(mappedBy = "likedPosts", targetEntity = User.class,
-            cascade = {CascadeType.REMOVE})
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> likers;
 
     @ManyToMany(mappedBy = "dislikedPosts",
-            cascade = {CascadeType.REMOVE})
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> dislikers;
 
     @Column(name = "post_time", nullable = false)
@@ -44,17 +44,19 @@ public class Post {
     @Column(name = "content", length = 10000, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> answerList;
 
-    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Comment> commentList;
 
     @OneToOne
     private Post bestAnswer;
 
     @ManyToMany(mappedBy = "notifyPosts",
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<User> notificationRecepiants;
 
     public Post() {
