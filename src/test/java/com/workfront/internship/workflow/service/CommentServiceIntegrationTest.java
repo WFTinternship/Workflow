@@ -196,7 +196,7 @@ public class CommentServiceIntegrationTest extends BaseIntegrationTest{
     /**
      * @see CommentService#update(Comment)
      */
-    @Test
+    @Test(expected = InvalidObjectException.class)
     public void update_failure() {
         commentService.update(null);
     }
@@ -217,7 +217,6 @@ public class CommentServiceIntegrationTest extends BaseIntegrationTest{
         commentService.delete(comment.getId());
         assertNull(commentService.getById(comment.getId()));
 
-        postService.delete(comment.getPost().getId());
         userService.deleteById(comment.getUser().getId());
 
     }

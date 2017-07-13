@@ -70,6 +70,7 @@ public class User {
         comments = new ArrayList<>();
         likedPosts = new ArrayList<>();
         dislikedPosts = new ArrayList<>();
+        notifyPosts = new ArrayList<>();
     }
 
     public static boolean isEmpty(String string) {

@@ -51,9 +51,11 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     public void setUp() {
         userList = new ArrayList<>();
         appArea = AppArea.values()[0];
+
         user = DaoTestUtil.getRandomUser();
         userList.add(user);
         userDAO.add(user);
+
         post = DaoTestUtil.getRandomPost(user, appArea);
 
         LOG = Logger.getLogger(PostDAOIntegrationTest.class);
@@ -74,6 +76,7 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
                 userDAO.deleteById(user.getId());
             }
         }
+
         if (dataSource instanceof ComboPooledDataSource) {
             try {
                 LOG.info(((ComboPooledDataSource) dataSource).getNumBusyConnections());
