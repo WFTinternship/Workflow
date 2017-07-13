@@ -23,7 +23,7 @@ public abstract class AbstractDao {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
-    @PersistenceContext(unitName = "entityManagerFactory", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext(unitName = "entityManagerFactory")
     protected EntityManager entityManager;
 
     protected static void closeResources(AutoCloseable... resources) {

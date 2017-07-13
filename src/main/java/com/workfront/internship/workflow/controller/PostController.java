@@ -51,9 +51,9 @@ public class PostController {
 
         Post post = postService.getById(id);
 
-        List<Comment> postComments = post.getCommentList();
+        List<Comment> postComments = commentService.getByPostId(post.getId());
 
-        List<Post> answers = post.getAnswerList();
+        List<Post> answers = postService.getAnswersByPostId(post.getId());
 
         List<Post> allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);

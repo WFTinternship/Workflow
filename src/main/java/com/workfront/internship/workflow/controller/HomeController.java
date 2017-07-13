@@ -58,8 +58,8 @@ public class HomeController {
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
-//                .addObject(PageAttributes.NUMOFANSWERS,
-//                        ControllerUtils.getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService))
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
