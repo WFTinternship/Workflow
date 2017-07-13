@@ -113,7 +113,8 @@ public class CommentDAOHibernateImpl extends AbstractDao implements CommentDAO {
         try {
             Comment comment = entityManager.find(Comment.class, id);
             if(comment != null) {
-                entityManager.remove(comment);
+                Comment mergedComment = entityManager.merge(comment);
+                entityManager.remove(mergedComment);
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");

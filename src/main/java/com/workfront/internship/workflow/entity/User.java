@@ -32,10 +32,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<AppArea> appAreas;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @ManyToMany(targetEntity = Post.class)
@@ -52,7 +52,7 @@ public class User {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
     private List<Post> dislikedPosts;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Post.class)
+    @ManyToMany(targetEntity = Post.class)
     @JoinTable(name = "notifications",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false))

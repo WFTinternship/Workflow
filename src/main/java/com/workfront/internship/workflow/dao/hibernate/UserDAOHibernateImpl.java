@@ -126,7 +126,8 @@ public class UserDAOHibernateImpl extends AbstractDao implements UserDAO {
             User user = entityManager.find(User.class, id);
 
             if (user != null) {
-                entityManager.remove(user);
+                User mergedUser = entityManager.merge(user);
+                entityManager.remove(mergedUser);
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");

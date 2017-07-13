@@ -16,11 +16,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(targetEntity = Post.class, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
-    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -44,17 +44,17 @@ public class Post {
     @Column(name = "content", length = 10000, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     private List<Post> answerList;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     private List<Comment> commentList;
 
     @OneToOne
     private Post bestAnswer;
 
     @ManyToMany(mappedBy = "notifyPosts",
-            cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<User> notificationRecepiants;
 
     public Post() {

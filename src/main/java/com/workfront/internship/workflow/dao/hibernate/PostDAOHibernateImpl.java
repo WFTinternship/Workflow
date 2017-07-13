@@ -278,7 +278,8 @@ public class PostDAOHibernateImpl extends AbstractDao implements PostDAO {
         try {
             Post post = entityManager.find(Post.class, id);
             if (post != null) {
-                entityManager.remove(post);
+                Post mergedPost = entityManager.merge(post);
+                entityManager.remove(mergedPost);
             }
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
