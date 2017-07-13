@@ -83,7 +83,7 @@ public class CommentDAOIntegrationTest extends BaseIntegrationTest {
             commentDAO.delete(comment.getId());
         }
         userDAO.deleteById(user.getId());
-        postDAO.delete(post.getId());
+//        postDAO.delete(post.getId());
 
         if (dataSource instanceof ComboPooledDataSource) {
             try {

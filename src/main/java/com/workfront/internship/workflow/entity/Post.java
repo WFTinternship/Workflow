@@ -28,11 +28,11 @@ public class Post {
     private AppArea appArea;
 
     @ManyToMany(mappedBy = "likedPosts", targetEntity = User.class,
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+            cascade = {CascadeType.REMOVE})
     private List<User> likers;
 
     @ManyToMany(mappedBy = "dislikedPosts",
-            cascade = {CascadeType.REMOVE, CascadeType.MERGE})
+            cascade = {CascadeType.REMOVE})
     private List<User> dislikers;
 
     @Column(name = "post_time", nullable = false)
@@ -44,7 +44,7 @@ public class Post {
     @Column(name = "content", length = 10000, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post")
     private List<Post> answerList;
 
     @OneToMany(mappedBy = "post")

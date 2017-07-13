@@ -53,7 +53,8 @@ public class AppAreaDAOHibernateImpl extends AbstractDao implements AppAreaDAO {
         } catch (RuntimeException e) {
             LOGGER.error("Hibernate Exception");
             throw new DAOException(e);
-        }      return users;
+        }
+        return users;
     }
 
     @Override
