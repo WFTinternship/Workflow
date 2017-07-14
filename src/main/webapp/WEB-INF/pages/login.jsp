@@ -588,7 +588,7 @@
                     $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please Try again.</div>').fadeIn("slow");
                 },
                 500: function (response) {
-                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong></div>').fadeIn("slow");
+                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Something went wrong. Please try again.</div>').fadeIn("slow");
                 },
                 400: function (response) {
                     $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");

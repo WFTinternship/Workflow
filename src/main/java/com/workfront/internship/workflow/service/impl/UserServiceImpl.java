@@ -4,6 +4,7 @@ import com.sun.mail.smtp.SMTPAddressFailedException;
 import com.workfront.internship.workflow.dao.UserDAO;
 
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
@@ -156,6 +157,50 @@ public class UserServiceImpl implements UserService {
         }
 
         return appAreas;
+    }
+
+    /**
+     * @see UserService#getLikedPosts(long)
+     * @param id user id
+     * @return
+     */
+    @Override
+    public List<Post> getLikedPosts(long id) {
+        if (id < 1) {
+            LOGGER.error("Id is not valid");
+            throw new InvalidObjectException("Invalid user id");
+        }
+
+        List<Post> posts;
+        try {
+            posts = userDAO.getLikedPosts(id);
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to find liked posts");
+            throw new ServiceLayerException("Failed to find liked posts", e);
+        }
+        return posts;
+    }
+
+    /**
+     * @see UserService#getDislikedPosts(long)
+     * @param id user id
+     * @return
+     */
+    @Override
+    public List<Post> getDislikedPosts(long id) {
+        if (id < 1) {
+            LOGGER.error("Id is not valid");
+            throw new InvalidObjectException("Invalid user id");
+        }
+
+        List<Post> posts;
+        try {
+            posts = userDAO.getDislikedPosts(id);
+        } catch (RuntimeException e) {
+            LOGGER.error("Failed to find disliked posts");
+            throw new ServiceLayerException("Failed to find disliked posts", e);
+        }
+        return posts;
     }
 
     /**

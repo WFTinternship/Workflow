@@ -1,6 +1,5 @@
 package com.workfront.internship.workflow.controller;
 
-import com.sun.mail.smtp.SMTPAddressFailedException;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.NotExistingEmailException;
 import com.workfront.internship.workflow.service.UserService;
@@ -54,8 +53,7 @@ public class AuthenticationRestController {
             }
         } catch (NotExistingEmailException e) {
            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

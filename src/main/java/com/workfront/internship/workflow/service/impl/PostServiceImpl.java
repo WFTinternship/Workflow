@@ -289,6 +289,34 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    @Override
+    public void removeLike(long userId, long postId) {
+        if (userId < 1 || postId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.removeLike(userId, postId);
+        } catch (RuntimeException e) {
+            throw new ServiceLayerException("Failed to remove the like to the post");
+        }
+    }
+
+    @Override
+    public void removeDislike(long userId, long postId) {
+        if (userId < 1 || postId < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+
+        try {
+            postDAO.removeDislike(userId, postId);
+        } catch (RuntimeException e) {
+            throw new ServiceLayerException("Failed to remove the dislike to the post");
+        }
+    }
+
     /**
      * @see PostService#update(Post)
      */

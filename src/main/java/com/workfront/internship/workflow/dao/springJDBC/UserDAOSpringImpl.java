@@ -3,9 +3,12 @@ package com.workfront.internship.workflow.dao.springJDBC;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AnswerRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AppAreaRowMapper;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -103,6 +106,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return jdbcTemplate.query(sql, new Object[]{filteredName + "%"}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
@@ -120,6 +124,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return (User) jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
@@ -137,6 +142,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return (User) jdbcTemplate.queryForObject(sql, new Object[]{email}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
@@ -154,6 +160,59 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return jdbcTemplate.query(sql, new Object[]{userId}, new AppAreaRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
+            return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @see UserDAO#getLikedPosts(long)
+     */
+    @Override
+    public List<Post> getLikedPosts(long id) {
+        String sql = "SELECT post.id, post.user_id, user.first_name, user.last_name, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM user_post_likes JOIN post ON user_post_likes.post_id = post.id " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE user_post_likes.user_id = ? " +
+                " ORDER BY post_time DESC";
+        try {
+            return jdbcTemplate.query(sql, new Object[]{id},
+                    new PostRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
+            return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @see UserDAO#getDislikedPosts(long)
+     */
+    @Override
+    public List<Post> getDislikedPosts(long id) {
+        String sql = "SELECT post.id, post.user_id, user.first_name, user.last_name, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM user_post_dislikes JOIN post ON user_post_dislikes.post_id = post.id " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE user_post_dislikes.user_id = ? " +
+                " ORDER BY post_time DESC";
+        try {
+            return jdbcTemplate.query(sql, new Object[]{id},
+                    new PostRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");

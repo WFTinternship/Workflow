@@ -378,6 +378,40 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
+     * @param userId
+     * @param postId
+     * @see PostDAO#removeLike(long, long)
+     */
+    @Override
+    public void removeLike(long userId, long postId) {
+        String sql = "DELETE FROM  user_post_likes " +
+                " WHERE user_id = ? AND post_id = ?";
+        try {
+            jdbcTemplate.update(sql, userId, postId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @param userId
+     * @param postId
+     * @see PostDAO#removeDislike(long, long)
+     */
+    @Override
+    public void removeDislike(long userId, long postId) {
+        String sql = "DELETE FROM  user_post_dislikes " +
+                " WHERE user_id = ? AND post_id = ?";
+        try {
+            jdbcTemplate.update(sql, userId, postId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * @param id of the post to be deleted from database
      * @see PostDAO#delete(long)
      */
