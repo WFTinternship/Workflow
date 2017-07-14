@@ -51,18 +51,12 @@ public class PostController {
 
         Post post = postService.getById(id);
 
-        List<Comment> postComments = commentService.getByPostId(id);
+        List<Comment> postComments = commentService.getByPostId(post.getId());
 
-        List<Post> answers = postService.getAnswersByPostId(id);
+        List<Post> answers = postService.getAnswersByPostId(post.getId());
 
         List<Post> allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
-
-
-        for (Post answer : answers) {
-            answer.setCommentList(commentService.getByPostId(answer.getId()));
-        }
-
 
         List<Post> posts = postService.getAll();
 
@@ -133,7 +127,9 @@ public class PostController {
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.ALLPOSTS, posts);
+                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 

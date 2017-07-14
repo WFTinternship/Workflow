@@ -31,8 +31,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forum :: Topic</title>
-
+    <title>Workflow</title>
+    <%----%>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%----%>
     <!-- Bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
@@ -224,6 +242,9 @@
                                         src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
                                         src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
                                 </div>
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views"><i></i>${post.appArea.name}</div>
+                                </a>
                             </div>
                             <div class="posttext pull-left">
                                 <div class="edit-post">
@@ -329,7 +350,7 @@
                                         <i class="fa fa-thumbs-o-up" id="likeColor${answer.id}"></i>
                                         <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
-                                    <span onclick="insert_dislike(${answer.id})"  class="down">
+                                    <span onclick="insert_dislike(${answer.id})" class="down">
                                         <i class="fa fa-thumbs-o-down" id="dislikeColor${answer.id}"></i>
                                         <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
                                     </span>
@@ -641,8 +662,8 @@
     }
     function bestAnswer(x) {
         var tickColor = "tickColor" + x;
-        if($('#' + tickColor).hasClass('greenTick')){
-            removeBestAnswer( x);
+        if ($('#' + tickColor).hasClass('greenTick')) {
+            removeBestAnswer(x);
         } else {
             setBestAnswer(x);
         }

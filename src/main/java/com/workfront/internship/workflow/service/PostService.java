@@ -149,4 +149,10 @@ public interface PostService {
      * @param post the post that has a new response
      */
     void notifyUsers(List<User> users, Post post);
+
+    /**
+     * Removes the answer specified by id form best answer
+     * @param answerId
+     */
+    void removeBestAnswer(long answerId);
 }

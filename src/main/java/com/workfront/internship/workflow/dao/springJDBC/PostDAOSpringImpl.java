@@ -275,7 +275,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @param postId   id of the post whose likes are to be gotten
+     * @param postId id of the post whose likes are to be gotten
      * @see PostDAO#getLikesNumber(long)
      */
     @Override
@@ -293,9 +293,9 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#getDislikesNumber(long)
      * @param postId
      * @return
+     * @see PostDAO#getDislikesNumber(long)
      */
     @Override
     public long getDislikesNumber(long postId) {
@@ -312,7 +312,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @param postId   id of the post whose best answer is to be set
+     * @param postId id of the post whose best answer is to be set
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Override
@@ -343,9 +343,9 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#like(long, long)
-     * @param postId  id of a post which was liked
+     * @param postId id of a post which was liked
      * @param userId id of a user which liked the post
+     * @see PostDAO#like(long, long)
      */
     @Override
     public void like(long userId, long postId) {
@@ -360,9 +360,9 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#dislike(long, long)
-     * @param postId  id of a post which was disliked
+     * @param postId id of a post which was disliked
      * @param userId id of a user which disliked the post
+     * @see PostDAO#dislike(long, long)
      */
     @Override
     public void dislike(long userId, long postId) {
@@ -377,8 +377,8 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#delete(long)
      * @param id of the post to be deleted from database
+     * @see PostDAO#delete(long)
      */
     @Override
     public void delete(long id) {
@@ -392,9 +392,9 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#getNumberOfAnswers(long)
      * @param postId of the post which number of answers should get
      * @return number of answers of the specified post
+     * @see PostDAO#getNumberOfAnswers(long)
      */
     @Override
     public Integer getNumberOfAnswers(long postId) {
@@ -410,9 +410,9 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#getNotified(long, long)
      * @param postId the id of a post that the user wants to be notified
      * @param userId the id of a user that will be notified
+     * @see PostDAO#getNotified(long, long)
      */
     @Override
     public void getNotified(long postId, long userId) {
@@ -427,9 +427,9 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#getNotificationRecipients(long)
      * @param postId the id of a post
      * @return List of users that need to be notified for the specified post
+     * @see PostDAO#getNotificationRecipients(long)
      */
     @Override
     public List<User> getNotificationRecipients(long postId) {
@@ -440,6 +440,17 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         } catch (EmptyResultDataAccessException e) {
             LOGGER.info("Empty Result Data AccessException");
             return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void removeBestAnswer(long answerId) {
+        String sql = "DELETE FROM best_answer WHERE answer_id = ?";
+        try {
+            jdbcTemplate.update(sql, answerId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);

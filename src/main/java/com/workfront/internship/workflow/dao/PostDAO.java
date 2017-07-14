@@ -170,4 +170,10 @@ public interface PostDAO {
      * @return List of users that need to be notified for the specified post
      */
     List<User> getNotificationRecipients(long postId);
+
+    /**
+     * Removes the answer from best answer
+     * @param answerId
+     */
+    void removeBestAnswer(long answerId);
 }

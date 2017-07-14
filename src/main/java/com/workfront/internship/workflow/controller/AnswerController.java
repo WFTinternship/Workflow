@@ -120,7 +120,9 @@ public class AnswerController {
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService));
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService));
 
         return modelAndView;
     }
