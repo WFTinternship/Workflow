@@ -8,7 +8,7 @@ import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Vahag on 5/27/2017
  */
-@Component
+@Repository
 public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);

@@ -1,11 +1,13 @@
 package com.workfront.internship.workflow.service.impl;
 
+import com.sun.mail.smtp.SMTPAddressFailedException;
 import com.workfront.internship.workflow.dao.UserDAO;
 
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.NotExistingEmailException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.service.UserService;
@@ -15,10 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -304,8 +303,13 @@ public class UserServiceImpl implements UserService {
             //sending Email
             Transport.send(mm);
 
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        } catch (SendFailedException e) {
+            LOGGER.error("The recipient address is not a valid");
+            throw new NotExistingEmailException("The recipient address is not a valid", e);
+        }
+        catch (MessagingException e) {
+            LOGGER.error("Failed to send an email");
+            throw new ServiceLayerException("Failed to send an email", e);
         }
         return verificationCode;
     }

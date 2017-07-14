@@ -13,6 +13,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Created by Vahag on 6/15/2017
  */
-@Component
+@Repository
 public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);

@@ -8,7 +8,7 @@ import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Repository
 public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);

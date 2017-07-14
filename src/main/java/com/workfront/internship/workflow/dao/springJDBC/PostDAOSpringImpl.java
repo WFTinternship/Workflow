@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created by nane on 6/14/17
  */
 
-@Component
+@Repository
 public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
