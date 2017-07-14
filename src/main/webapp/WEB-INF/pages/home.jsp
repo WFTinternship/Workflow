@@ -194,6 +194,7 @@
                                         <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
                                             src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
                                     </div>
+                                    <a href="/appArea/${post.appArea.id}"> <div class="views"><i></i>${post.appArea.name}</div></a>
                                 </div>
                                 <div class="posttext pull-left">
                                     <h2><a href="/post/${post.id}">${post.title}</a></h2>
@@ -209,8 +210,8 @@
                                     </div>
 
                                 </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
                                 <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
+                                    <%--<div class="views"><i></i>${post.appArea}</div>--%>
                             </div>
                             <div class="clearfix"></div>
                         </div>
