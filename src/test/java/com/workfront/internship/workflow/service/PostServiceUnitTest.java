@@ -191,6 +191,47 @@ public class PostServiceUnitTest extends BaseUnitTest {
     }
 
     /**
+     * @see PostService#removeBestAnswer(long)
+     */
+    @Test
+    public void removeBestAnswer_negativeId() {
+        try {
+            // Test method
+            postService.removeBestAnswer(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#removeBestAnswer(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void removeBestAnswer_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).removeBestAnswer(anyLong());
+
+        // Test method
+        postService.removeBestAnswer(15);
+    }
+
+    /**
+     * @see PostService#removeBestAnswer(long)
+     */
+    @Test
+    public void removeBestAnswer_success() {
+        Long answerId = 15L;
+
+        // Test method
+        postService.removeBestAnswer(answerId);
+        verify(postDAOMock, times(1)).removeBestAnswer(answerId);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).removeBestAnswer(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), answerId);
+    }
+
+    /**
      * @see PostService#getAll()
      */
     @Test(expected = ServiceLayerException.class)
