@@ -70,38 +70,38 @@
     <%--</div>--%>
     <%--</div>--%>
     <%--<!-- //Slider -->--%>
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <span id="form-img"><img
-                                src="/images/logo.png" alt=""
-                                height="60px" width="60px/"></span>
-                    </div>
-                    <form action="/login/new-post" method="post">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="usr">Name:</label>
-                                <input type="text" class="form-control" name="email" id="usr">
-                            </div>
-                            <div class="form-group">
-                                <label for="pwd">Password:</label>
-                                <input type="password" class="form-control" name="password" id="pwd">
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-login">Login</button>
-                        </div>
-                    </form>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span id="form-img"><img
+                            src="/images/logo.png" alt=""
+                            height="60px" width="60px/"></span>
                 </div>
+                <form action="/login/new-post" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Name:</label>
+                            <input type="text" class="form-control" name="email" id="usr">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" name="password" id="pwd">
+                        </div>
+                    </div>
 
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Login</button>
+                    </div>
+                </form>
             </div>
+
         </div>
+    </div>
     <div class="headernav">
         <div class="container">
             <div class="row">
@@ -471,9 +471,7 @@
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
 <script type="text/javascript">
-
     var revapi;
-
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
@@ -484,13 +482,10 @@
                 hideThumbs: 10,
                 fullWidth: "on"
             });
-
     });	//ready
-
 </script>
 
 <script>
-
     function subscription(element, x) {
         element.checked = !element.checked;
         if (element.checked) {
@@ -499,7 +494,6 @@
             subscribe(element, x);
         }
     }
-
     function subscribe(element, x) {
         $.ajax({
             type: 'post',
@@ -512,7 +506,6 @@
             }
         });
     }
-
     function unsubscribe(element, x) {
         $.ajax({
             type: 'post',
@@ -548,12 +541,10 @@
 
 <script>document.getElementById("avatar").onchange = function () {
     var reader = new FileReader();
-
     reader.onload = function (e) {
         // get loaded data and render thumbnail.
         document.getElementById("image").src = e.target.result;
     };
-
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
 };

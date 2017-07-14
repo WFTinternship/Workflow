@@ -591,9 +591,7 @@
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
 <script type="text/javascript">
-
     var revapi;
-
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
@@ -604,14 +602,10 @@
                 hideThumbs: 10,
                 fullWidth: "on"
             });
-
     });	//ready
-
 </script>
 
 <script type="text/javascript">
-
-
     function insert_like(x) {
         $.ajax({
             type: 'post',
@@ -628,8 +622,8 @@
             }
         });
     }
-
     function insert_dislike(x) {
+        $('#like')
         $.ajax({
             type: 'post',
             url: '/dislike/' + x,
@@ -643,10 +637,8 @@
                 $('#' + dislikeColor).addClass('fa-thumbs-down');
                 $('#' + dislikeColor).removeClass('fa-thumbs-o-down');
             }
-
         });
     }
-
     function bestAnswer(x) {
         var tickColor = "tickColor" + x;
         if($('#' + tickColor).hasClass('greenTick')){
@@ -655,7 +647,6 @@
             setBestAnswer(x);
         }
     }
-
     function setBestAnswer(x) {
         $.ajax({
             type: 'post',
@@ -669,7 +660,6 @@
             }
         });
     }
-
     function removeBestAnswer(x) {
         $.ajax({
             type: 'post',
@@ -683,7 +673,6 @@
             }
         });
     }
-
 </script>
 
 <!-- END REVOLUTION SLIDER -->

@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
@@ -193,6 +194,7 @@
                                         <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
                                             src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
                                     </div>
+                                    <a href="/appArea/${post.appArea.id}"> <div class="views"><i></i>${post.appArea.name}</div></a>
                                 </div>
                                 <div class="posttext pull-left">
                                     <h2><a href="/post/${post.id}">${post.title}</a></h2>
@@ -208,8 +210,8 @@
                                     </div>
 
                                 </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
                                 <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
+                                    <%--<div class="views"><i></i>${post.appArea}</div>--%>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -379,9 +381,7 @@
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
 <script type="text/javascript">
-
     var revapi;
-
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
@@ -392,9 +392,7 @@
                 hideThumbs: 10,
                 fullWidth: "on"
             });
-
     });	//ready
-
 </script>
 
 <!-- END REVOLUTION SLIDER -->

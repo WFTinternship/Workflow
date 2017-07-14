@@ -86,18 +86,18 @@
 
     <%--<!-- Slider -->--%>
     <%--<div class="tp-banner-container">--%>
-        <%--<div class="tp-banner">--%>
-            <%--<ul>--%>
-                <%--<!-- SLIDE  -->--%>
-                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
-                    <%--<!-- MAIN IMAGE -->--%>
-                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
-                         <%--data-bgposition="left top"--%>
-                         <%--data-bgrepeat="no-repeat">--%>
-                    <%--<!-- LAYERS -->--%>
-                <%--</li>--%>
-            <%--</ul>--%>
-        <%--</div>--%>
+    <%--<div class="tp-banner">--%>
+    <%--<ul>--%>
+    <%--<!-- SLIDE  -->--%>
+    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+    <%--<!-- MAIN IMAGE -->--%>
+    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+    <%--data-bgposition="left top"--%>
+    <%--data-bgrepeat="no-repeat">--%>
+    <%--<!-- LAYERS -->--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
     <%--</div>--%>
     <%--<!-- //Slider -->--%>
 
@@ -519,9 +519,7 @@
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
 <script type="text/javascript">
-
     var revapi;
-
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
@@ -532,9 +530,7 @@
                 hideThumbs: 10,
                 fullWidth: "on"
             });
-
     });	//ready
-
 </script>
 
 <!-- END REVOLUTION SLIDER -->

@@ -115,17 +115,17 @@
 
     <%--<!-- Slider -->--%>
     <%--<div class="tp-banner-container">--%>
-        <%--<div class="tp-banner">--%>
-            <%--<ul>--%>
-                <%--<!-- SLIDE  -->--%>
-                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
-                    <%--<!-- MAIN IMAGE -->--%>
-                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
-                         <%--data-bgposition="left top" data-bgrepeat="no-repeat">--%>
-                    <%--<!-- LAYERS -->--%>
-                <%--</li>--%>
-            <%--</ul>--%>
-        <%--</div>--%>
+    <%--<div class="tp-banner">--%>
+    <%--<ul>--%>
+    <%--<!-- SLIDE  -->--%>
+    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+    <%--<!-- MAIN IMAGE -->--%>
+    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+    <%--data-bgposition="left top" data-bgrepeat="no-repeat">--%>
+    <%--<!-- LAYERS -->--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
     <%--</div>--%>
     <%--<!-- //Slider -->--%>
 
@@ -525,9 +525,7 @@
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
 <script type="text/javascript">
-
     var revapi;
-
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
@@ -538,19 +536,15 @@
                 hideThumbs: 10,
                 fullWidth: "on"
             });
-
     });	//ready
-
 </script>
 
 <script>document.getElementById("avatar").onchange = function () {
     var reader = new FileReader();
-
     reader.onload = function (e) {
         // get loaded data and render thumbnail.
         document.getElementById("image").src = e.target.result;
     };
-
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
 };
@@ -559,7 +553,6 @@
 
 <script>
     jQuery("#vcodeajax").click(function () {
-
         $.ajax({
             url: '/signup',
             type: 'POST',
@@ -583,7 +576,6 @@
                 jQuery("#afterajaxemail").val(jQuery("#email").val());
                 $('#verify').modal('toggle');
                 $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong> Congratulations! Your Sign up was successfull!</div>').fadeIn("slow");
-
             },
             error: function (errorThrow) {
                 console.log('error')
