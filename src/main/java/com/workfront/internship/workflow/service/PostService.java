@@ -121,6 +121,12 @@ public interface PostService {
     void delete(long id);
 
     /**
+     * Removes the answer which was set as best answer.
+     * @param answerId the if of an answer
+     */
+    void removeBestAnswer(long answerId);
+
+    /**
      * Gets number of answers of the specified postId
      * @param postId of the post which number of answers should get
      */
@@ -149,10 +155,4 @@ public interface PostService {
      * @param post the post that has a new response
      */
     void notifyUsers(List<User> users, Post post);
-
-    /**
-     * Removes the answer specified by id form best answer
-     * @param answerId
-     */
-    void removeBestAnswer(long answerId);
 }

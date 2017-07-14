@@ -47,19 +47,6 @@ $( document ).ready(function() {
         $('.edit-content').val(Content);
 
     });
-    $(".save-post").on("click", function(){
-        $(this).addClass('edit-post');
-        $(this).removeClass('save-post');
-        $(this).html('<i class="fa fa-pencil-square-o" aria-hidden="true"></i><span>Edit</span>');
-        var confirmTitle= $("<h2 id='confirm-title'></h2>");
-        var confirmContent = $("<p id='confirm-content'></p>");
-        var confirmTitleValue = $(this).closest(".posttext").children('.edit-title').val();
-        var confirmContentValue = $(this).closest(".posttext").children('.edit-content').val();
-        $(this).closest(".edit-title").replaceWith(confirmTitle);
-        $(this).closest(".edit-content").replaceWith(confirmContent);
-        $('#confirm-title').val(confirmTitleValue);
-        $('#confirm-content').val(confirmContentValue);
 
-    });
 });
 
