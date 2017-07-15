@@ -13,6 +13,7 @@
 (+) Change the forest picture, please.
 (+) Post answers numbers.
 (+) Ignore db password.
+(+) Exception handling in updateProfile and updateAvatar in springJDBC.
 
 (-) Change color of Add New Answer.
 (-) Duxov Remove redundant code.
@@ -21,4 +22,3 @@
 (-) Fix the bug user is added to the database without verification.
 (-) Info "Please choose application area".
 (-) Fix update avatar page.
-(-) Exception handling in updateProfile and updateAvatar in springJDBC.

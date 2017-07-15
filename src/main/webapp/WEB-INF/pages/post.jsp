@@ -285,7 +285,7 @@
                                     <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
                                 </span>
                                     <span onclick="dislike(${post.id})" class="down">
-                                    <i class="${isLiked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}" id="dislikeColor${post.id}"></i>
+                                    <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}" id="dislikeColor${post.id}"></i>
                                     <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
                                 </span>
                                 </div>
@@ -665,8 +665,8 @@
         }
     }
     function dislike(x) {
-        var likeColor = "likeColor" + x;
-        if ($('#' + likeColor).hasClass('fa-thumbs-up')) {
+        var dislikeColor = "dislikeColor" + x;
+        if ($('#' + dislikeColor).hasClass('fa-thumbs-down')) {
             remove_dislike(x);
         } else {
             insert_dislike(x);

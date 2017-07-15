@@ -66,7 +66,6 @@ public class AnswerController {
         if (StringUtils.isEmpty(content)) {
             request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
 
-            posts = postService.getAll();
             modelAndView
                     .addObject(PageAttributes.APPAREAS, appAreas)
                     .addObject(PageAttributes.ALLPOSTS, posts);
