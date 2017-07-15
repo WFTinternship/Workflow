@@ -323,32 +323,6 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
-     * @see PostDAO#removeBestAnswer(long)
-     */
-    @Test
-    public void removeBestAnswer_success() {
-        postDAO.add(post);
-        User anotherUser = DaoTestUtil.getRandomUser();
-        userDAO.add(anotherUser);
-        userList.add(anotherUser);
-        Post answer = DaoTestUtil.getRandomAnswer(post);
-        answer.setUser(anotherUser);
-        long id = postDAO.add(answer);
-        answer.setId(id);
-
-        postDAO.setBestAnswer(post.getId(), answer.getId());
-
-        //Test Method
-        postDAO.removeBestAnswer(answer.getId());
-
-        Post removedBestAnswer = postDAO.getBestAnswer(post.getId());
-        assertNull(removedBestAnswer);
-
-        userDAO.deleteById(anotherUser.getId());
-    }
-
-
-    /**
      * @see PostDAO#getNumberOfAnswers(long)
      */
     @Test

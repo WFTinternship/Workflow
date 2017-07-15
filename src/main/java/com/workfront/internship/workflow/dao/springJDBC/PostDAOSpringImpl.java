@@ -461,15 +461,4 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public void removeBestAnswer(long answerId) {
-        String sql = "DELETE FROM best_answer WHERE answer_id = ?";
-        try {
-            jdbcTemplate.update(sql, answerId);
-        } catch (DataAccessException e) {
-            LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
-        }
-    }
 }
