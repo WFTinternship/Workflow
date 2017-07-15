@@ -10,6 +10,7 @@ import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -84,7 +85,8 @@ public class PostController {
                 .addObject(PageAttributes.NUMOFDISLIKES,
                         ControllerUtils.getNumberOfDislikes(allPosts, postService))
                 .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.ALLPOSTS, posts);
 
         return modelAndView;
