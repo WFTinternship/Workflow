@@ -30,14 +30,23 @@ Screen Stylesheet
 		position:relative;
 		padding:0;
 }
-.btn-signup{
-	background: #f77f29;
+.btn-signup:hover{
+	background: #FFAB00;
+	color: white;
+}
+.btn-primary:hover{
+	background: #ff670f;
+	color: black;
+}
+.btn-primary{
+	background: #ff9112;
 	color: white;
 }
 .btn-login:hover{
 	background: #FFAB00;
 	color: white;
 }
+.btn
 .modal-content {
 	position: relative;
 	background-color: rgba(44, 46, 53, 0.5) !important;
