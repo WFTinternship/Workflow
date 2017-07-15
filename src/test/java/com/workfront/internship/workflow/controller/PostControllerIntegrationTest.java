@@ -68,7 +68,7 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
 
 
     @Test
-    public void post(String s) throws Exception {
+    public void post() throws Exception {
 
         long id = postService.add(post);
 

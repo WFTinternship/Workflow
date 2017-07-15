@@ -10,6 +10,7 @@ import com.workfront.internship.workflow.exceptions.service.ServiceLayerExceptio
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -591,6 +592,106 @@ public class PostServiceUnitTest extends BaseUnitTest {
         } catch (Exception ex) {
             assertTrue(ex instanceof InvalidObjectException);
         }
+    }
+
+    /**
+     * @see PostService#removeLike(long, long)
+     */
+    @Test
+    public void removeLike_negativeId() {
+        try {
+            //Test method
+            postService.removeLike(-1, 5);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+
+        try {
+            //Test method
+            postService.removeLike(5, -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#removeLike(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void removeLike_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).removeLike(anyInt(), anyInt());
+
+        //Test method
+        postService.removeLike(10, 1);
+    }
+
+    /**
+     * @see PostService#removeLike(long, long)
+     */
+    @Test
+    public void removeLike_success() {
+        Long userId = 1L, postId = 1L;
+        List<Long> expected = Arrays.asList(userId, postId);
+
+        //Test method
+        postService.removeLike(1, 1);
+        verify(postDAOMock, times(1)).removeLike(userId, postId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).removeLike(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
+    }
+
+    /**
+     * @see PostService#removeDislike(long, long)
+     */
+    @Test
+    public void removeDislike_negativeId() {
+        try {
+            //Test method
+            postService.removeDislike(-1, 5);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+
+        try {
+            //Test method
+            postService.removeDislike(5, -1);
+            fail();
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#removeDislike(long, long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void removeDislike_DAOException() {
+        doThrow(RuntimeException.class).when(postDAOMock).removeDislike(anyInt(), anyInt());
+
+        //Test method
+        postService.removeDislike(10, 1);
+    }
+
+    /**
+     * @see PostService#removeDislike(long, long)
+     */
+    @Test
+    public void removeDislike_success() {
+        Long userId = 1L, postId = 1L;
+        List<Long> expected = Arrays.asList(userId, postId);
+
+        //Test method
+        postService.removeDislike(1, 1);
+        verify(postDAOMock, times(1)).removeDislike(userId, postId);
+
+        ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).removeDislike(argument.capture(), argument.capture());
+        assertEquals(expected, argument.getAllValues());
     }
 
     /**
