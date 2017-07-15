@@ -71,8 +71,6 @@ public class PostController {
         List<Post> allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
 
-        List<Post> posts = postService.getAll();
-
         modelAndView
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.POSTCOMMENTS, postComments)
@@ -86,8 +84,7 @@ public class PostController {
                         ControllerUtils.getNumberOfDislikes(allPosts, postService))
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.ALLPOSTS, posts);
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
         return modelAndView;
     }
