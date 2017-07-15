@@ -120,7 +120,17 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
         allPosts = postService.getAll();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
-                .requestAttr(PageAttributes.TITLE, "A title"))
+                .requestAttr(PageAttributes.TITLE, "A title")
+                .requestAttr(PageAttributes.POSTCONTENT, "Some content")
+                .requestAttr(PageAttributes.NOTE, "off")
+                .requestAttr(PageAttributes.APPAREA, AppArea.AGILE)
+                .sessionAttr(PageAttributes.USER, user))
+                .andExpect(view().name("home"))
+                .andExpect(model().attribute(PageAttributes.APPAREAS, appAreas))
+                .andExpect(model().attribute(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService)))
+                .andExpect(model().attribute(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(allPosts, postService)))
+                .andExpect(model().attribute(PageAttributes.ALLPOSTS, allPosts))
                 .andExpect(status().isOk());
     }
 
