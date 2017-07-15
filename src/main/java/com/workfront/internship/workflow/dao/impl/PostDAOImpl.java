@@ -570,7 +570,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
      */
     @Override
     public void delete(long id) {
-        int numberOfRowsAffected = 0;
+        int numberOfRowsAffected;
         String sql = "DELETE FROM post WHERE id = ?";
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -588,6 +588,24 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         }
         if (numberOfRowsAffected == 0) {
             LOG.info("No rows affected");
+        }
+    }
+
+    @Override
+    public void removeBestAnswer(long answerId) {
+        String sql = "DELETE FROM best_answer " +
+                " WHERE answer_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, answerId);
+        } catch (SQLException e) {
+            LOG.error("SQL exception has occurred");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
         }
     }
 
@@ -669,24 +687,5 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             closeResources(conn, stmt);
         }
         return users;
-    }
-
-    @Override
-    public void removeBestAnswer(long answerId) {
-        String sql = "DELETE FROM best_answer WHERE answer_id = ?";
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = dataSource.getConnection();
-            stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, answerId);
-            stmt.execute();
-
-        } catch (SQLException e) {
-            LOG.error("SQL exception");
-            throw new RuntimeException("Foreign Key constraint fails");
-        } finally {
-            closeResources(conn, stmt);
-        }
     }
 }

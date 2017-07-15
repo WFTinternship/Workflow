@@ -427,6 +427,22 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
+     * @see PostDAO#removeBestAnswer(long)
+     * @param answerId the if of an answer d
+     */
+    @Override
+    public void removeBestAnswer(long answerId) {
+        String sql = "DELETE FROM best_answer " +
+                " WHERE answer_id = ?";
+        try {
+            jdbcTemplate.update(sql, answerId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * @param postId of the post which number of answers should get
      * @return number of answers of the specified post
      * @see PostDAO#getNumberOfAnswers(long)
@@ -475,17 +491,6 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         } catch (EmptyResultDataAccessException e) {
             LOGGER.info("Empty Result Data AccessException");
             return null;
-        } catch (DataAccessException e) {
-            LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void removeBestAnswer(long answerId) {
-        String sql = "DELETE FROM best_answer WHERE answer_id = ?";
-        try {
-            jdbcTemplate.update(sql, answerId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);

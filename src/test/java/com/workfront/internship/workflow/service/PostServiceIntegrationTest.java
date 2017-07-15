@@ -97,6 +97,39 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see PostService#removeBestAnswer(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void removeBestAnswer_failure() {
+        postService.removeBestAnswer(-1);
+    }
+
+    /**
+     * @see PostService#removeBestAnswer(long)
+     */
+    @Test
+    public void removeBestAnswer_success() {
+        userService.add(post.getUser());
+        postService.add(post);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        User user = answer.getUser();
+        userService.add(user);
+        postService.add(answer);
+
+        postService.setBestAnswer(post.getId(), answer.getId());
+
+
+        // Test method
+        postService.removeBestAnswer(answer.getId());
+
+        Post removedBestAnswer = postService.getBestAnswer(post.getId());
+        assertNull(removedBestAnswer);
+
+        userService.deleteById(post.getUser().getId());
+        userService.deleteById(user.getId());
+    }
+
+    /**
      * @see PostService#getAll()
      */
     @Test

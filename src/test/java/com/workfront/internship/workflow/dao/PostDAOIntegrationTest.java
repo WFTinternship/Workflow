@@ -16,10 +16,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.*;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
+import static junit.framework.TestCase.*;
 
 /**
  * Created by nane on 5/29/17
@@ -495,10 +494,29 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see PostDAO#removeBestAnswer(long)
+     */
+    @Test
+    public void removeBestAnswer_success() {
+        postDAO.add(post);
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        userDAO.add(answer.getUser());
+        postDAO.add(answer);
+
+        postDAO.setBestAnswer(post.getId(), answer.getId());
+
+        //Test method
+        postDAO.removeBestAnswer(answer.getId());
+
+        Post expectedAnswer = postDAO.getBestAnswer(post.getId());
+        assertNull(expectedAnswer);
+    }
+
+    /**
      * @see PostDAO#getNotified(long, long)
      */
     @Test(expected = RuntimeException.class)
-    public void getNotified_failure(){
+    public void getNotified_failure() {
         postDAO.add(post);
         //Test method
         postDAO.getNotified(post.getId(), -1);
