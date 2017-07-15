@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.dao;
 
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 
 import javax.sql.DataSource;
@@ -61,6 +62,20 @@ public interface UserDAO {
      * @return list of app areas of the given user
      */
     List<AppArea> getAppAreasById(long id);
+
+    /**
+     * Gets the list of liked posts of the user with the specified id
+     * @param id user id
+     * @return list of liked posts of the given user
+     */
+    List<Post> getLikedPosts(long id);
+
+    /**
+     * Gets the list of liked posts of the user with the specified id
+     * @param id user id
+     * @return list of liked posts of the given user
+     */
+    List<Post> getDislikedPosts(long id);
 
     //UPDATE
 

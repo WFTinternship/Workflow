@@ -1,7 +1,6 @@
 package com.workfront.internship.workflow.entity;
 
 
-import javax.persistence.*;
 import java.util.List;
 
 public class User {

@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created by nane on 6/14/17
  */
 
-@Component
+@Repository
 public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
@@ -368,6 +369,40 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     public void dislike(long userId, long postId) {
         String sql = "INSERT INTO  user_post_dislikes (user_id, post_id) " +
                 "VALUES (?, ?)";
+        try {
+            jdbcTemplate.update(sql, userId, postId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @param userId
+     * @param postId
+     * @see PostDAO#removeLike(long, long)
+     */
+    @Override
+    public void removeLike(long userId, long postId) {
+        String sql = "DELETE FROM  user_post_likes " +
+                " WHERE user_id = ? AND post_id = ?";
+        try {
+            jdbcTemplate.update(sql, userId, postId);
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @param userId
+     * @param postId
+     * @see PostDAO#removeDislike(long, long)
+     */
+    @Override
+    public void removeDislike(long userId, long postId) {
+        String sql = "DELETE FROM  user_post_dislikes " +
+                " WHERE user_id = ? AND post_id = ?";
         try {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {

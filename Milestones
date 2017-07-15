@@ -10,13 +10,15 @@
 (+) Add Like/Dislike functionality (update db).
 (+) Add "Email me when some one post a reply Post Reply"
     functionality to Add Post and Add Answer.
+(+) Change the forest picture, please.
+(+) Post answers numbers.
+(+) Ignore db password.
 
 (-) Change color of Add New Answer.
 (-) Duxov Remove redundant code.
 (-) Add Best Answer to interface.
 (-) Add Edit post/answer/comment to interface.
-(-) Change the forest picture, please.
-(-) Ignore db password.
-(-) Post answers numbers.
 (-) Fix the bug user is added to the database without verification.
 (-) Info "Please choose application area".
+(-) Fix update avatar page.
+(-) Exception handling in updateProfile and updateAvatar in springJDBC.

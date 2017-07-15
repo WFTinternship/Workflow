@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.dao;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import org.apache.log4j.Logger;
@@ -31,13 +32,20 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
     @Qualifier("appAreaDAOSpringImpl")
     private AppAreaDAO appAreaDAO;
 
+    @Autowired
+    @Qualifier("postDAOSpringImpl")
+    private PostDAO postDAO;
+
     private User user;
     private List<User> userList;
+    private Post post;
+    private AppArea appArea;
 
     @Before
     public void setup() {
         user = DaoTestUtil.getRandomUser();
         userList = new ArrayList<>();
+        appArea = AppArea.values()[0];
 
         LOG = Logger.getLogger(UserDAOIntegrationTest.class);
         if (dataSource instanceof ComboPooledDataSource) {
@@ -272,6 +280,74 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         List<AppArea> appAreaList = userDAO.getAppAreasById(userId);
 
         assertTrue(appAreaList.contains(AppArea.getById(1)));
+    }
+
+    /**
+     * @see UserDAO#getLikedPosts(long)
+     */
+    @Test
+    public void getLikedPosts_failure() {
+        long userId = userDAO.add(user);
+        post = DaoTestUtil.getRandomPost(user, appArea);
+        long postId = postDAO.add(post);
+
+        postDAO.like(userId, postId);
+
+        //Test method
+        List<Post> likedPostsList = userDAO.getLikedPosts(userId + 1);
+
+        assertTrue(!likedPostsList.contains(post));
+    }
+
+    /**
+     * @see UserDAO#getLikedPosts(long)
+     */
+    @Test
+    public void getLikedPosts_success() {
+        long userId = userDAO.add(user);
+        post = DaoTestUtil.getRandomPost(user, appArea);
+        long postId = postDAO.add(post);
+
+        postDAO.like(userId, postId);
+
+        //Test method
+        List<Post> likedPostsList = userDAO.getLikedPosts(userId);
+
+        assertTrue(likedPostsList.contains(post));
+    }
+
+    /**
+     * @see UserDAO#getDislikedPosts(long)
+     */
+    @Test
+    public void getDislikedPosts_failure() {
+        long userId = userDAO.add(user);
+        post = DaoTestUtil.getRandomPost(user, appArea);
+        long postId = postDAO.add(post);
+
+        postDAO.dislike(userId, postId);
+
+        //Test method
+        List<Post> dislikedPostsList = userDAO.getDislikedPosts(userId + 1);
+
+        assertTrue(!dislikedPostsList.contains(post));
+    }
+
+    /**
+     * @see UserDAO#getDislikedPosts(long)
+     */
+    @Test
+    public void getDislikedPosts_success() {
+        long userId = userDAO.add(user);
+        post = DaoTestUtil.getRandomPost(user, appArea);
+        long postId = postDAO.add(post);
+
+        postDAO.dislike(userId, postId);
+
+        //Test method
+        List<Post> dislikedPostsList = userDAO.getDislikedPosts(userId);
+
+        assertTrue(dislikedPostsList.contains(post));
     }
 
     /**

@@ -6,7 +6,7 @@ import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Angel on 27.05.2017
  */
-@Component
+@Repository
 public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);

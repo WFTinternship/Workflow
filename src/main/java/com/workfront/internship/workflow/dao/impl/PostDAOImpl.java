@@ -516,6 +516,56 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
+     * @param userId
+     * @param postId
+     * @see PostDAO#removeLike(long, long)
+     */
+    @Override
+    public void removeLike(long userId, long postId) {
+        String sql = "DELETE FROM  user_post_likes " +
+                " WHERE user_id = ? AND post_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, userId);
+            stmt.setLong(2, postId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
+
+    /**
+     * @param userId
+     * @param postId
+     * @see PostDAO#removeDislike(long, long)
+     */
+    @Override
+    public void removeDislike(long userId, long postId) {
+        String sql = "DELETE FROM  user_post_dislikes " +
+                " WHERE user_id = ? AND post_id = ?";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, userId);
+            stmt.setLong(2, postId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException(e);
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
+
+    /**
      * @see PostDAO#delete(long) (Post) ()
      */
     @Override

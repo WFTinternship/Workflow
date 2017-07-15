@@ -512,7 +512,7 @@
                 <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
                         src="/images/logo.png" alt=""
                         height=67px width=67px/></a></div>
-                <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
+                <div class="col-lg-8 col-xs-9 col-sm-5 ">Workflow 2017</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">
                         <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
@@ -584,8 +584,11 @@
                 409: function (response) {
                     $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
                 },
+                403: function (response) {
+                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please Try again.</div>').fadeIn("slow");
+                },
                 500: function (response) {
-                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong></div>').fadeIn("slow");
+                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Something went wrong. Please try again.</div>').fadeIn("slow");
                 },
                 400: function (response) {
                     $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");

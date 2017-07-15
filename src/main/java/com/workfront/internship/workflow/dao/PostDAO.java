@@ -144,6 +144,22 @@ public interface PostDAO {
     void dislike(long userId, long postId);
 
     /**
+     *
+     * user with specified id removes the like to the post with the specified id
+     * @param userId
+     * @param postId
+     */
+    void removeLike(long userId, long postId);
+
+    /**
+     *
+     * user with specified id removes the dislike to the post with the specified id
+     * @param userId
+     * @param postId
+     */
+    void removeDislike(long userId, long postId);
+
+    /**
      * Deletes the post with the specified id
      * @param id of the post to be deleted from database
      */
