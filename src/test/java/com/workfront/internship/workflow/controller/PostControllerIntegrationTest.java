@@ -68,7 +68,7 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
 
 
     @Test
-    public void post(String s) throws Exception {
+    public void post_success() throws Exception {
 
         long id = postService.add(post);
 
@@ -97,6 +97,10 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
 
     @Test
     public void editPost() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/edit-post")
+                .requestAttr(PageAttributes.POST, post)
+        ).andExpect(view().name("post"));
     }
 
     @Test
@@ -119,18 +123,17 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
     public void newPost_post() throws Exception {
         allPosts = postService.getAll();
 
+        // TODO: add andExpect(allPosts) and #ofAnswers
         mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
-                .requestAttr(PageAttributes.TITLE, "A title")
-                .requestAttr(PageAttributes.POSTCONTENT, "Some content")
-                .requestAttr(PageAttributes.NOTE, "off")
-                .requestAttr(PageAttributes.APPAREA, AppArea.AGILE)
+                .param(PageAttributes.TITLE, "A title")
+                .param(PageAttributes.POSTCONTENT, "Some content")
+                .param(PageAttributes.NOTE, "off")
+                .param(PageAttributes.APPAREA, "1")
                 .sessionAttr(PageAttributes.USER, user))
                 .andExpect(view().name("home"))
                 .andExpect(model().attribute(PageAttributes.APPAREAS, appAreas))
                 .andExpect(model().attribute(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService)))
-                .andExpect(model().attribute(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(allPosts, postService)))
-                .andExpect(model().attribute(PageAttributes.ALLPOSTS, allPosts))
                 .andExpect(status().isOk());
     }
 
