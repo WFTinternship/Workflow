@@ -41,6 +41,22 @@ public class PostRestController {
         return ResponseEntity.ok(String.valueOf(postService.getLikesNumber(postId)));
     }
 
+    @RequestMapping(value = "/removeLike/*", method = RequestMethod.POST)
+    public ResponseEntity removeLike(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        try {
+            postService.removeLike(user.getId(), postId);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(String.valueOf(postService.getLikesNumber(postId)));
+    }
+
     @RequestMapping(value = "/dislike/*", method = RequestMethod.POST)
     public ResponseEntity<?> dislike(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
@@ -50,6 +66,22 @@ public class PostRestController {
 
         try {
             postService.dislike(user.getId(), postId);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(String.valueOf(postService.getDislikesNumber(postId)));
+    }
+
+    @RequestMapping(value = "/removeDislike/*", method = RequestMethod.POST)
+    public ResponseEntity<?> removeDislike(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        try {
+            postService.removeDislike(user.getId(), postId);
         } catch (RuntimeException e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

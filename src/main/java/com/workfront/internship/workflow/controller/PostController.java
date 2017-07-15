@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,9 +27,10 @@ import java.util.List;
  */
 @Controller
 public class PostController {
-    private CommentService commentService;
 
+    private CommentService commentService;
     private PostService postService;
+    private UserService userService;
 
     private List<AppArea> appAreas;
 
@@ -36,10 +38,11 @@ public class PostController {
     }
 
     @Autowired
-    public PostController(PostService postService, CommentService commentService) {
+    public PostController(PostService postService, CommentService commentService, UserService userService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/post/*", method = RequestMethod.GET)
@@ -48,6 +51,15 @@ public class PostController {
 
         String url = request.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        List<Post> likedPosts = new ArrayList<>();
+        List<Post> dislikedPosts = new ArrayList<>();
+        if(user != null){
+            likedPosts = userService.getLikedPosts(user.getId());
+            dislikedPosts = userService.getDislikedPosts(user.getId());
+        }
 
         Post post = postService.getById(id);
 
@@ -64,6 +76,8 @@ public class PostController {
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.POSTCOMMENTS, postComments)
                 .addObject(PageAttributes.ANSWERS, answers)
+                .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
+                .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))

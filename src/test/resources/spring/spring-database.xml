@@ -14,7 +14,7 @@
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${DB_DRIVER}"/>
-        <property name="jdbcUrl" value="${DB_URL}"/>
+        <property name="jdbcUrl" value="${DB_TEST_URL}"/>
         <property name="user" value="${USER_NAME}"/>
         <property name="password" value="${PASSWORD}"/>
         <property name="initialPoolSize" value="${INITIAL_POOL_SIZE}"/>

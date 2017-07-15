@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ public class AnswerController {
     private List<AppArea> appAreas;
     private PostService postService;
     private CommentService commentService;
+    private UserService userService;
     private Post post;
     private List<Post> answers;
     private List<Post> posts;
@@ -41,11 +43,12 @@ public class AnswerController {
     }
 
     @Autowired
-    public AnswerController(PostService postService, CommentService commentService) {
+    public AnswerController(PostService postService, CommentService commentService, UserService userService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         post = new Post();
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = {"/new-answer/*"}, method = RequestMethod.POST)
@@ -58,6 +61,7 @@ public class AnswerController {
         post = postService.getById(postId);
 
         String content = request.getParameter("reply");
+        posts = postService.getAll();
 
         if (StringUtils.isEmpty(content)) {
             request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
@@ -71,6 +75,13 @@ public class AnswerController {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
+
+        List<Post> likedPosts = new ArrayList<>();
+        List<Post> dislikedPosts = new ArrayList<>();
+        if(user != null){
+            likedPosts = userService.getLikedPosts(user.getId());
+            dislikedPosts = userService.getDislikedPosts(user.getId());
+        }
 
         request.setAttribute(PageAttributes.APPAREAS, appAreas);
 
@@ -117,6 +128,8 @@ public class AnswerController {
         modelAndView
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.ANSWERCOMMENTS, answerComments)
+                .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
+                .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
