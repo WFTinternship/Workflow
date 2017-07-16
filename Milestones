@@ -15,10 +15,13 @@
 (+) Ignore db password.
 (+) Exception handling in updateProfile and updateAvatar in springJDBC.
 (+) Add Best Answer to interface.
+(+) Change color of Add New Answer.
 
-(-) Change color of Add New Answer.
 (-) Duxov Remove redundant code.
 (-) Add Edit post/answer/comment to interface.
 (-) Fix the bug user is added to the database without verification.
 (-) Info "Please choose application area".
 (-) Fix update avatar page.
+(-) Add user ratings.
+(-) Delete checkboxes from app area list in user page.
+(-) Add number of answers before answers list in post page.

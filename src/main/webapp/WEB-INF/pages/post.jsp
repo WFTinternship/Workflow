@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
@@ -242,15 +243,10 @@
                                     <div class="status green">&nbsp;</div>
                                 </div>
                                 <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
-                                <div class="icons">
-                                    <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                </div>
-                                <a href="/appArea/${post.appArea.id}">
-                                    <div class="views"><i></i>${post.appArea.name}</div>
-                                </a>
+
+                                <%--<a href="/appArea/${post.appArea.id}">--%>
+                                    <%--<div class="views"><i></i>${post.appArea.name}</div>--%>
+                                <%--</a>--%>
                             </div>
                             <div class="posttext pull-left">
                                 <div class="edit-post">
@@ -301,9 +297,11 @@
 
                                 <a href="#"><i class="fa fa-flag"></i></a>
                             </div>
+                            <div class="divline"></div>
 
                             <div class="clearfix"></div>
                         </div>
+                        <c:if test="${fn:length(comments) != 0}">
                         <div class="post-comment">
                             <ul class="post-ul">
                                 <c:forEach var="comment" items="${comments}">
@@ -325,6 +323,7 @@
                             </c:if>
 
                         </div>
+                        </c:if>
                     </div><!-- POST -->
 
                     <div class="paginationf">
@@ -399,6 +398,7 @@
 
                                 <div class="clearfix"></div>
                             </div>
+                            <c:if test="${fn:length(comments) != 0}">
                             <div class="post-comment">
                                 <ul class="post-ul">
                                     <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
@@ -419,7 +419,7 @@
                                     </form>
                                 </c:if>
                             </div>
-
+                            </c:if>
 
                         </div>
 
@@ -456,9 +456,9 @@
                                                       placeholder="Type your message here"></textarea>
                                         </div>
                                     </div>
-                                    <div class="clearfix"></div>
+                                    <div class="clearfix replybox"></div>
                                 </div>
-                                <div class="postinfobot">
+                                <div class="postinfobot replybox">
 
                                     <div class="notechbox pull-left">
                                         <input type="checkbox" name="note" id="note" class="form-control"/>

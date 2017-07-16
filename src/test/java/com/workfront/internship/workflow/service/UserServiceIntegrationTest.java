@@ -29,17 +29,25 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest{
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PostService postService;
+
     private User user;
+    private Post post;
 
     @Before
     public void setup(){
         user  = DaoTestUtil.getRandomUser();
+        post = DaoTestUtil.getRandomPost();
     }
 
     @After
     public void tearDown(){
         if (user.getId() > 0 && userService.getById(user.getId()) != null) {
             userService.deleteById(user.getId());
+        }
+        if (post.getId() > 0 && postService.getById(post.getId()) != null) {
+            postService.delete(post.getId());
         }
     }
 
@@ -152,6 +160,74 @@ public class UserServiceIntegrationTest extends BaseIntegrationTest{
         //Test method
         List<AppArea> actualAppAreas = userService.getAppAreasById(user.getId());
         assertTrue(actualAppAreas.containsAll(Arrays.asList(AppArea.values())));
+    }
+
+    /**
+     * @see UserService#getLikedPosts(long)
+     */
+    @Test
+    public void getLikedPosts_failure() {
+        userService.add(post.getUser());
+        long postId = postService.add(post);
+        long userId = post.getUser().getId();
+
+        postService.like(userId, postId);
+
+        //Test method
+        List<Post> likedPosts = userService.getLikedPosts(userId + 1);
+
+        assertTrue(!likedPosts.contains(post));
+    }
+
+    /**
+     * @see UserService#getLikedPosts(long)
+     */
+    @Test
+    public void getLikedPosts_success() {
+        userService.add(post.getUser());
+        long postId = postService.add(post);
+        long userId = post.getUser().getId();
+
+        postService.like(userId, postId);
+
+        //Test method
+        List<Post> likedPosts = userService.getLikedPosts(userId);
+
+        assertTrue(likedPosts.contains(post));
+    }
+
+    /**
+     * @see UserService#getDislikedPosts(long)
+     */
+    @Test
+    public void getDislikedPosts_failure() {
+        userService.add(post.getUser());
+        long postId = postService.add(post);
+        long userId = post.getUser().getId();
+
+        postService.dislike(userId, postId);
+
+        //Test method
+        List<Post> dislikedPosts = userService.getDislikedPosts(userId + 1);
+
+        assertTrue(!dislikedPosts.contains(post));
+    }
+
+    /**
+     * @see UserService#getDislikedPosts(long)
+     */
+    @Test
+    public void getDislikedPosts_success() {
+        userService.add(post.getUser());
+        long postId = postService.add(post);
+        long userId = post.getUser().getId();
+
+        postService.dislike(userId, postId);
+
+        //Test method
+        List<Post> dislikedPosts = userService.getDislikedPosts(userId);
+
+        assertTrue(dislikedPosts.contains(post));
     }
 
     /**

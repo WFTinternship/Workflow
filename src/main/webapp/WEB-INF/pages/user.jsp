@@ -15,6 +15,7 @@
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 <c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILEOWNERID)%>'/>
+<c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
 <!DOCTYPE html>
@@ -259,7 +260,7 @@
 
                     <div>
                         <!-- POST -->
-                        <c:forEach var="post" items="${allPosts}">
+                        <c:forEach var="post" items="${allPosts}" varStatus="status">
                             <div class="post">
                                 <div class="wrap-ut pull-left">
                                     <div class="userinfo pull-left">
@@ -273,9 +274,7 @@
                                             <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
                                                 src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
                                         </div>
-                                        <a href="/appArea/${post.appArea.id}">
-                                            <div class="views"><i></i>${post.appArea.name}</div>
-                                        </a>
+
                                     </div>
                                     <div class="posttext pull-left">
                                         <h2><a href="/post/${post.id}">${post.title}</a></h2>
@@ -286,12 +285,18 @@
                                 <div class="postinfo pull-left">
                                     <div class="comments">
                                         <div class="commentbg">
-                                            560
+                                        ${numberOfAnswers[status.index]}
                                             <div class="mark"></div>
                                         </div>
 
                                     </div>
                                     <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
+                                </div>
+                                <div class="divline"></div>
+                                <div class="pull-right apparea">
+                                    <a href="/appArea/${post.appArea.id}">
+                                        <div class="views">${post.appArea.name}</div>
+                                    </a>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
