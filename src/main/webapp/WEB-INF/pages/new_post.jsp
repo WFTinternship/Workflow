@@ -314,7 +314,7 @@
                             </div>
                             <div class="divline"></div>
 
-                            <div class="pull-right">
+                            <div class="pull-left apparea">
                                 <a href="/appArea/${post.appArea.id}">
                                     <div class="views">${post.appArea.name}</div>
                                 </a>
