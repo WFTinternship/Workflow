@@ -258,6 +258,7 @@
                                 </div>
                                 <h2>${post.title}</h2>
                                 <p>${post.content}</p>
+                                <input type="hidden" name="postId" value="${post.id}">
                             </div>
                             <div class="clearfix"></div>
                         </div>

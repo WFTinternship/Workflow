@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.web.PageAttributes;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -110,10 +112,26 @@ public class PostRestController {
 
         try {
             postService.removeBestAnswer(answerId);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/edit-post"}, method = RequestMethod.POST)
+    public ResponseEntity<?> editPost(@RequestParam("postId") String postId,
+                                      @RequestParam("title") String title,
+                                      @RequestParam("content") String content) {
+        try {
+            Post post = postService.getById(Long.valueOf(postId));
+            post
+                    .setTitle(title)
+                    .setContent(content);
+
+            postService.update(post);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

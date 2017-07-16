@@ -166,14 +166,14 @@ ul.socialicons li a:hover {
     font-family: 'Open Sans Bold', sans-serif;
     padding-left: 30px;
     padding-right: 30px;
-    background-color: #f77f29;
+    background-color: #ff8100;
 }
 
 .avt .btn-primary:hover, 
 .avt .btn-primary:focus, 
 .avt .btn-primary:active, 
 .avt .btn-primary.active{
-    background-color: #f77f29;
+    background-color: #ff8100;
 
 
     border: none;
@@ -636,7 +636,7 @@ i.fa-check.green {
 
 .up {
     cursor: pointer;
-    color: #f77f29;
+    color: #ff8100;
     font-size: 12px;
 }
 
@@ -742,7 +742,7 @@ a.down:hover {
 
 
 .btn-primary {
-    background-color: #f77f29;
+    background-color: #ff8100;
     box-shadow: none;
     border-radius: 2px;
     padding: 10px 15px;
