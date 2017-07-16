@@ -174,6 +174,8 @@ public class UserController {
         String url = request.getRequestURL().toString();
         long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
+        User user = userService.getById(userId);
+
         List<Post> postList = postService.getByUserId(userId);
         List<AppArea> myAppAreas = userService.getAppAreasById(userId);
 
@@ -188,7 +190,7 @@ public class UserController {
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.NUMOFANSWERS,
                 ControllerUtils.getNumberOfAnswers(postList, postService))
-                .addObject(PageAttributes.PROFILEOWNERID, userId);
+                .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
 
@@ -235,9 +237,9 @@ public class UserController {
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.PROFILEOWNER, user)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.PROFILEOWNERID, user.getId());
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
     }
 }

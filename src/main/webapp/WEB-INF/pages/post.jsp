@@ -299,7 +299,11 @@
                                 <a href="#"><i class="fa fa-flag"></i></a>
                             </div>
                             <div class="divline"></div>
-
+                            <div class="pull-left apparea">
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views">${post.appArea.name}</div>
+                                </a>
+                            </div>
                             <div class="clearfix"></div>
                         </div>
                         <c:if test="${fn:length(comments) != 0}">
@@ -336,7 +340,7 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-
+                    <h4> ${fn:length(answers)} answers </h4>
                     <!-- POST -->
                     <c:forEach var="answer" items="${answers}" varStatus="answerStatus">
                         <div class="post">
@@ -347,6 +351,9 @@
                                             <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
                                         </a>
                                         <div class="status red">&nbsp;</div>
+                                        <div>
+                                            <a class="username" href="/users/${answer.user.id}">${answer.user.firstName}</a>
+                                        </div>
                                         <c:if test="${user.id == post.user.id}">
                                             <div class="icons">
                                                 <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
