@@ -1,16 +1,17 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +33,7 @@ public class PostController {
     private CommentService commentService;
     private PostService postService;
     private UserService userService;
+    private AppAreaService appAreaService;
 
     private List<AppArea> appAreas;
 
@@ -39,11 +41,12 @@ public class PostController {
     }
 
     @Autowired
-    public PostController(PostService postService, CommentService commentService, UserService userService) {
+    public PostController(PostService postService, CommentService commentService, UserService userService, AppAreaService appAreaService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
         this.userService = userService;
+        this.appAreaService = appAreaService;
     }
 
     @RequestMapping(value = "/post/*", method = RequestMethod.GET)
@@ -57,7 +60,7 @@ public class PostController {
 
         List<Post> likedPosts = new ArrayList<>();
         List<Post> dislikedPosts = new ArrayList<>();
-        if(user != null){
+        if (user != null) {
             likedPosts = userService.getLikedPosts(user.getId());
             dislikedPosts = userService.getDislikedPosts(user.getId());
         }
@@ -97,9 +100,11 @@ public class PostController {
         String content = request.getParameter(PageAttributes.POSTCONTENT);
         String notify = request.getParameter(PageAttributes.NOTE);
 
+        AppArea appArea = AppArea.getById(Integer
+                .parseInt(request.getParameter(PageAttributes.APPAREA)));
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
-        AppArea appArea = AppArea.getById(Integer.parseInt(request.getParameter(PageAttributes.APPAREA)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Post post = new Post();
@@ -118,6 +123,8 @@ public class PostController {
         if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
+        List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
+        postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
 
         List<Post> posts = postService.getAll();
 

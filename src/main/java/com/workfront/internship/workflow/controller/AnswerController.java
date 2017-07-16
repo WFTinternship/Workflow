@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
@@ -103,7 +104,7 @@ public class AnswerController {
         }
         List<User> users = postService.getNotificationRecipients(postId);
         try {
-            postService.notifyUsers(users, post);
+            postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
         } catch (RuntimeException e) {
 
         }
