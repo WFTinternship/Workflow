@@ -305,8 +305,8 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <c:if test="${fn:length(comments) != 0}">
                         <div class="post-comment">
+                            <c:if test="${fn:length(comments) != 0}">
                             <ul class="post-ul">
                                 <c:forEach var="comment" items="${comments}">
                                     <li>
@@ -314,8 +314,9 @@
                                     </li>
                                 </c:forEach>
                             </ul>
-
+                            </c:if>
                             <c:if test="${user != null}">
+
                                 <form action="/new-comment/${post.id}" method="post">
                                     <div class="form-group newcomment">
                                         <input type="comment" class="form-control" id="new-comment"
@@ -327,7 +328,7 @@
                             </c:if>
 
                         </div>
-                        </c:if>
+
                     </div><!-- POST -->
 
                     <div class="paginationf">
@@ -405,8 +406,8 @@
 
                                 <div class="clearfix"></div>
                             </div>
-                            <c:if test="${fn:length(comments) != 0}">
                             <div class="post-comment">
+                                <c:if test="${fn:length(comments) != 0}">
                                 <ul class="post-ul">
                                     <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
                                                varStatus="commentStatus">
@@ -415,6 +416,7 @@
                                         </li>
                                     </c:forEach>
                                 </ul>
+                                </c:if>
                                 <c:if test="${user != null}">
                                     <form action="/new-comment/${answer.id}" method="post">
                                         <div class="form-group newcomment">
@@ -426,7 +428,7 @@
                                     </form>
                                 </c:if>
                             </div>
-                            </c:if>
+
 
                         </div>
 
