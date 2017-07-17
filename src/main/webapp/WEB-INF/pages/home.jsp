@@ -37,10 +37,14 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="96x96" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -209,14 +213,8 @@
                                                                                width="37" height="37"/> </a>
                                         <div class="status green">&nbsp;</div>
                                     </div>
-
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
+                                    <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a>
                                     </div>
-                                    <a href="/appArea/${post.appArea.id}">
-                                        <div class="views"><i></i>${post.appArea.name}</div>
-                                    </a>
                                 </div>
                                 <div class="posttext pull-left">
                                     <h2><a href="/post/${post.id}">${post.title}</a></h2>
@@ -235,7 +233,14 @@
                                 <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
                                     <%--<div class="views"><i></i>${post.appArea}</div>--%>
                             </div>
+                            <div class="divline"></div>
+                            <div class="pull-right apparea">
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views">${post.appArea.name}</div>
+                                </a>
+                            </div>
                             <div class="clearfix"></div>
+
                         </div>
                         <!-- POST -->
                     </c:forEach>
@@ -407,13 +412,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-            {
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
+                {
+                    delay: 15000,
+                    startwidth: 1200,
+                    startheight: 278,
+                    hideThumbs: 10,
+                    fullWidth: "on"
+                });
     });	//ready
 </script>
 

@@ -108,9 +108,15 @@ input#new-comment {
 .edit-post {
 	float: right;
 	color: #1565C0;
+	cursor: pointer;
 }.save-post {
+	cursor: pointer;
 	float: right;
 	color: #24c291;
+}
+.alert {
+	padding: 15px;
+	margin: 23px 0 8px 0px !important;
 }
 .edit-post span{
 	margin-left: 8px;

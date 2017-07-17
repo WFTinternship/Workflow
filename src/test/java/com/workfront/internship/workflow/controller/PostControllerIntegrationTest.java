@@ -14,12 +14,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -65,7 +68,7 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
 
 
     @Test
-    public void post() throws Exception {
+    public void post_success() throws Exception {
 
         long id = postService.add(post);
 
@@ -94,6 +97,44 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
 
     @Test
     public void editPost() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/edit-post")
+                .requestAttr(PageAttributes.POST, post)
+        ).andExpect(view().name("post"));
+    }
+
+    @Test
+    public void newPost_get() throws Exception {
+        allPosts = postService.getAll();
+
+        mockMvc.perform(get("/new-post"))
+                .andExpect(view().name("new_post"))
+                .andExpect(model().attribute(PageAttributes.APPAREAS, appAreas))
+                .andExpect(model().attribute(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService)))
+                .andExpect(model().attribute(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(allPosts, postService)))
+                .andExpect(model().attribute(PageAttributes.ALLPOSTS, allPosts))
+                .andExpect(model().attribute(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(allPosts, postService)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void newPost_post() throws Exception {
+        allPosts = postService.getAll();
+
+        // TODO: add andExpect(allPosts) and #ofAnswers
+        mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
+                .param(PageAttributes.TITLE, "A title")
+                .param(PageAttributes.POSTCONTENT, "Some content")
+                .param(PageAttributes.NOTE, "off")
+                .param(PageAttributes.APPAREA, "1")
+                .sessionAttr(PageAttributes.USER, user))
+                .andExpect(view().name("home"))
+                .andExpect(model().attribute(PageAttributes.APPAREAS, appAreas))
+                .andExpect(model().attribute(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService)))
+                .andExpect(status().isOk());
     }
 
 }

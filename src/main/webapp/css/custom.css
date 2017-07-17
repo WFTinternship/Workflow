@@ -166,14 +166,14 @@ ul.socialicons li a:hover {
     font-family: 'Open Sans Bold', sans-serif;
     padding-left: 30px;
     padding-right: 30px;
-    background-color: #f77f29;
+    background-color: #ff8100;
 }
 
 .avt .btn-primary:hover, 
 .avt .btn-primary:focus, 
 .avt .btn-primary:active, 
 .avt .btn-primary.active{
-    background-color: #f77f29;
+    background-color: #ff8100;
 
 
     border: none;
@@ -636,7 +636,7 @@ i.fa-check.green {
 
 .up {
     cursor: pointer;
-    color: #f77f29;
+    color: #ff8100;
     font-size: 12px;
 }
 
@@ -649,7 +649,7 @@ i.fa-check.green {
 
 .down {
     cursor: pointer;
-    color: #db7a7a;
+    color: #6d6d6d;
     font-size: 12px;
     margin-left: 20px;
 }
@@ -670,11 +670,19 @@ a.down:hover {
 
 
 /*--- Quote post ---*/
+.apparea {
+    padding-right: 20px;
+}
+
 .post blockquote {
     border: solid 1px #f1f1f1;
     border-radius: 2px;
     font-size: 14px;
     padding: 18px;
+}
+
+.replybox{
+    background-color: #c7c7c7;
 }
 
 .post blockquote .original,
@@ -717,11 +725,12 @@ a.down:hover {
 }
 
 .postinfobot label {
-    color: #bdc3c7;
+    color: #757575;
     font-size: 12px;
     font-family: 'Open Sans Regular', sans-serif; 
 
 }
+
 
 
 .smile a {
@@ -733,7 +742,7 @@ a.down:hover {
 
 
 .btn-primary {
-    background-color: #f77f29;
+    background-color: #ff8100;
     box-shadow: none;
     border-radius: 2px;
     padding: 10px 15px;

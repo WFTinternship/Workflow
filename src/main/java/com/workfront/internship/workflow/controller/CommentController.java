@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.Enumerated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -69,7 +71,7 @@ public class CommentController {
         List<User> users = postService.getNotificationRecipients(postId);
 
         try {
-            postService.notifyUsers(users, post);
+            postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
         } catch (RuntimeException e) {
 
         }

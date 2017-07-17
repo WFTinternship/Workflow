@@ -281,9 +281,12 @@
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${user.avatarURL}" alt="" width="37" height="37"/>
+                                        <a href="/users/${post.user.id}">
+                                            <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                        </a>
                                         <div class="status green">&nbsp;</div>
                                     </div>
+                                    <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
 
                                     <div class="icons">
                                         <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/>
@@ -308,6 +311,13 @@
 
                                 </div>
                                 <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
+                            </div>
+                            <div class="divline"></div>
+
+                            <div class="pull-right">
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views">${post.appArea.name}</div>
+                                </a>
                             </div>
                             <div class="clearfix"></div>
                         </div>

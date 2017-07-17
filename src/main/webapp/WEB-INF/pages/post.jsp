@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
@@ -20,6 +21,8 @@
 
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
+<c:set var="likedPosts" value='<%=request.getAttribute(PageAttributes.LIKEDPOSTS)%>'/>
+<c:set var="dislikedPosts" value='<%=request.getAttribute(PageAttributes.DISLIKEDPOSTS)%>'/>
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
 <c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWERCOMMENTS)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
@@ -42,10 +45,14 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="96x96" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -236,15 +243,10 @@
                                     <div class="status green">&nbsp;</div>
                                 </div>
                                 <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
-                                <div class="icons">
-                                    <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                </div>
-                                <a href="/appArea/${post.appArea.id}">
-                                    <div class="views"><i></i>${post.appArea.name}</div>
-                                </a>
+
+                                <%--<a href="/appArea/${post.appArea.id}">--%>
+                                    <%--<div class="views"><i></i>${post.appArea.name}</div>--%>
+                                <%--</a>--%>
                             </div>
                             <div class="posttext pull-left">
                                 <div class="edit-post">
@@ -256,22 +258,34 @@
                                 </div>
                                 <h2>${post.title}</h2>
                                 <p>${post.content}</p>
+                                <input type="hidden" name="postId" value="${post.id}">
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="postinfobot">
 
-                            <div class="likeblock pull-left">
-                                <span onclick="insert_like(${post.id})" class="up">
-                                    <i class="fa fa-thumbs-o-up" id="likeColor${post.id}"></i>
+                            <c:set var="isLiked" value="false" />
+                            <c:forEach var="item" items="${likedPosts}">
+                                <c:if test="${item eq post}">
+                                    <c:set var="isLiked" value="true" />
+                                </c:if>
+                            </c:forEach>
+                            <c:set var="isDisliked" value="false" />
+                            <c:forEach var="item" items="${dislikedPosts}">
+                                <c:if test="${item eq post}">
+                                    <c:set var="isDisliked" value="true" />
+                                </c:if>
+                            </c:forEach>
+                                <div class="likeblock pull-left">
+                                <span onclick="like(${post.id})" class="up">
+                                    <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}" id="likeColor${post.id}"></i>
                                     <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
                                 </span>
-                                <span onclick="insert_dislike(${post.id})" class="down">
-                                    <i class="fa fa-thumbs-o-down" id="dislikeColor${post.id}"></i>
+                                    <span onclick="dislike(${post.id})" class="down">
+                                    <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}" id="dislikeColor${post.id}"></i>
                                     <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
                                 </span>
-                            </div>
-
+                                </div>
                             <div class="prev pull-left">
                                 <a href="#"><i class="fa fa-reply"></i></a>
                             </div>
@@ -284,9 +298,11 @@
 
                                 <a href="#"><i class="fa fa-flag"></i></a>
                             </div>
+                            <div class="divline"></div>
 
                             <div class="clearfix"></div>
                         </div>
+                        <c:if test="${fn:length(comments) != 0}">
                         <div class="post-comment">
                             <ul class="post-ul">
                                 <c:forEach var="comment" items="${comments}">
@@ -308,6 +324,7 @@
                             </c:if>
 
                         </div>
+                        </c:if>
                     </div><!-- POST -->
 
                     <div class="paginationf">
@@ -345,13 +362,25 @@
                             </div>
                             <div class="postinfobot">
 
+                                <c:set var="isLiked" value="false" />
+                                <c:forEach var="item" items="${likedPosts}">
+                                    <c:if test="${item eq answer}">
+                                        <c:set var="isLiked" value="true" />
+                                    </c:if>
+                                </c:forEach>
+                                <c:set var="isDisliked" value="false" />
+                                <c:forEach var="item" items="${dislikedPosts}">
+                                    <c:if test="${item eq answer}">
+                                        <c:set var="isDisliked" value="true" />
+                                    </c:if>
+                                </c:forEach>
                                 <div class="likeblock pull-left">
-                                    <span onclick="insert_like(${answer.id})" id="like" class="up">
-                                        <i class="fa fa-thumbs-o-up" id="likeColor${answer.id}"></i>
+                                    <span onclick="like(${answer.id})" id="like" class="up">
+                                        <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}" id="likeColor${answer.id}"></i>
                                         <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
-                                    <span onclick="insert_dislike(${answer.id})" class="down">
-                                        <i class="fa fa-thumbs-o-down" id="dislikeColor${answer.id}"></i>
+                                    <span onclick="dislike(${answer.id})" class="down">
+                                        <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}" id="dislikeColor${answer.id}"></i>
                                         <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
                                     </span>
                                 </div>
@@ -370,6 +399,7 @@
 
                                 <div class="clearfix"></div>
                             </div>
+                            <c:if test="${fn:length(comments) != 0}">
                             <div class="post-comment">
                                 <ul class="post-ul">
                                     <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
@@ -390,7 +420,7 @@
                                     </form>
                                 </c:if>
                             </div>
-
+                            </c:if>
 
                         </div>
 
@@ -427,9 +457,9 @@
                                                       placeholder="Type your message here"></textarea>
                                         </div>
                                     </div>
-                                    <div class="clearfix"></div>
+                                    <div class="clearfix replybox"></div>
                                 </div>
-                                <div class="postinfobot">
+                                <div class="postinfobot replybox">
 
                                     <div class="notechbox pull-left">
                                         <input type="checkbox" name="note" id="note" class="form-control"/>
@@ -616,17 +646,35 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-            {
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
+                {
+                    delay: 15000,
+                    startwidth: 1200,
+                    startheight: 278,
+                    hideThumbs: 10,
+                    fullWidth: "on"
+                });
     });	//ready
 </script>
 
 <script type="text/javascript">
+    function like(x) {
+        var likeColor = "likeColor" + x;
+        if ($('#' + likeColor).hasClass('fa-thumbs-up')) {
+            remove_like(x);
+        } else {
+            insert_like(x);
+        }
+    }
+    function dislike(x) {
+        var dislikeColor = "dislikeColor" + x;
+        if ($('#' + dislikeColor).hasClass('fa-thumbs-down')) {
+            remove_dislike(x);
+        } else {
+            insert_dislike(x);
+        }
+    }
+
+
     function insert_like(x) {
         $.ajax({
             type: 'post',
@@ -643,8 +691,25 @@
             }
         });
     }
+
+    function remove_like(x) {
+        $.ajax({
+            type: 'post',
+            url: '/removeLike/' + x,
+            data: {
+                type: "like"
+            },
+            success: function (response) {
+                var likeCnt = "likeCnt" + x;
+                var likeColor = "likeColor" + x;
+                $('#' + likeCnt).html(response);
+                $('#' + likeColor).addClass('fa-thumbs-o-up');
+                $('#' + likeColor).removeClass('fa-thumbs-up');
+            }
+        });
+    }
+
     function insert_dislike(x) {
-        $('#like')
         $.ajax({
             type: 'post',
             url: '/dislike/' + x,
@@ -657,6 +722,23 @@
                 $('#' + dislikeCnt).html(response);
                 $('#' + dislikeColor).addClass('fa-thumbs-down');
                 $('#' + dislikeColor).removeClass('fa-thumbs-o-down');
+            }
+        });
+    }
+
+    function remove_dislike(x) {
+        $.ajax({
+            type: 'post',
+            url: '/removeDislike/' + x,
+            data: {
+                type: "dislike"
+            },
+            success: function (response) {
+                var dislikeCnt = "dislikeCnt" + x;
+                var dislikeColor = "dislikeColor" + x;
+                $('#' + dislikeCnt).html(response);
+                $('#' + dislikeColor).addClass('fa-thumbs-o-down');
+                $('#' + dislikeColor).removeClass('fa-thumbs-down');
             }
         });
     }

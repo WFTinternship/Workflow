@@ -474,6 +474,70 @@ public class PostDAOIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see PostDAO#removeLike(long, long)
+     */
+    @Test
+    public void removeLike_success() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        postDAO.like(userId, postId);
+
+        //Test method
+        postDAO.removeLike(userId, postId);
+
+        List<Post> likedPosts = userDAO.getLikedPosts(userId);
+        assertTrue(!likedPosts.contains(post));
+    }
+
+    /**
+     * @see PostDAO#removeLike(long, long)
+     */
+    @Test
+    public void removeLike_failure() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        postDAO.like(userId, postId);
+
+        //Test method
+        postDAO.removeLike(userId, postId +1);
+
+        List<Post> likedPosts = userDAO.getLikedPosts(userId);
+        assertTrue(likedPosts.contains(post));
+    }
+
+    /**
+     * @see PostDAO#removeDislike(long, long)
+     */
+    @Test
+    public void removeDislike_success() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        postDAO.dislike(userId, postId);
+
+        //Test method
+        postDAO.removeDislike(userId, postId);
+
+        List<Post> dislikedPosts = userDAO.getDislikedPosts(userId);
+        assertTrue(!dislikedPosts.contains(post));
+    }
+
+    /**
+     * @see PostDAO#removeDislike(long, long)
+     */
+    @Test
+    public void removeDislike_failure() {
+        long postId = postDAO.add(post);
+        long userId = post.getUser().getId();
+        postDAO.dislike(userId, postId);
+
+        //Test method
+        postDAO.removeDislike(userId, postId +1);
+
+        List<Post> dislikedPosts = userDAO.getDislikedPosts(userId);
+        assertTrue(dislikedPosts.contains(post));
+    }
+
+    /**
      * @see PostDAO#delete(long)
      */
     @Test

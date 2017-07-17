@@ -5,16 +5,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
-<c:set var="myAppAreas" value='<%=request.getAttribute(PageAttributes.MYAPPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
-<c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILEOWNERID)%>'/>
 <c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
@@ -26,6 +26,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Workflow</title>
+
     <%----%>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -36,10 +37,14 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="96x96" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -74,22 +79,6 @@
 </head>
 <body>
 <div class="container-fluid">
-    <%--<!-- Slider -->--%>
-    <%--<div class="tp-banner-container">--%>
-    <%--<div class="tp-banner">--%>
-    <%--<ul>--%>
-    <%--<!-- SLIDE  -->--%>
-    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
-    <%--<!-- MAIN IMAGE -->--%>
-    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
-    <%--data-bgposition="left top"--%>
-    <%--data-bgrepeat="no-repeat">--%>
-    <%--<!-- LAYERS -->--%>
-    <%--</li>--%>
-    <%--</ul>--%>
-    <%--</div>--%>
-    <%--</div>--%>
-    <%--<!-- //Slider -->--%>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -122,6 +111,19 @@
 
         </div>
     </div>
+    <!-- Slider -->
+    <div class="tp-banner-container">
+        <div class="tp-banner">
+            <!-- MAIN IMAGE -->
+            <img class="img" src="${pageContext.request.contextPath}/images/hero_work_workfront.jpg" alt="slidebg1"
+                 data-bgfit="cover"
+                 data-bgposition="left top"
+                 data-bgrepeat="no-repeat">
+            <!-- LAYERS -->
+        </div>
+    </div>
+    <!-- //Slider -->
+
     <div class="headernav">
         <div class="container">
             <div class="row">
@@ -163,6 +165,7 @@
                     </div>
 
                     <div class="clearfix"></div>
+
                     <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
@@ -181,6 +184,7 @@
 
                     </c:if>
                 </div>
+
             </div>
         </div>
     </div>
@@ -191,153 +195,76 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <font color="red">${message}</font>
+                    <h4>${message}</h4>
                 </div>
             </div>
         </div>
 
-
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8">
-                    <c:if test="${user.id == profileOwnerId}">
-                        <%--Edit Avatar Place--%>
-                        <div>
-                            <!-- POST -->
-                            <div class="post">
-                                <form action="/updateAvatar" class="form newtopic" method="post"
-                                      enctype="multipart/form-data">
-                                    <div class="postinfotop">
-                                        <h2>Update Profile</h2>
+                    <!-- POST -->
+                    <c:forEach var="post" items="${allPosts}" varStatus="status">
+                        <div class="post">
+                            <div class="wrap-ut pull-left">
+                                <div class="userinfo pull-left">
+                                    <div class="avatar">
+                                        <a href="/users/${post.user.id}"> <img src="${post.user.avatarURL}" alt=""
+                                                                               width="37" height="37"/> </a>
+                                        <div class="status green">&nbsp;</div>
                                     </div>
-                                    <!-- acc section -->
-                                    <div class="accsection">
-                                        <div class="topwrap">
-                                            <div class="userinfo pull-left">
-                                                <div class="avatar">
-                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
-                                                         id="image" alt="" height="45" width="45"/>
-                                                        <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
-                                                        <%--alt=""/>--%>
-                                                </div>
-                                                    <%--<div class="imgsize">60 x 60</div>--%>
-                                                    <%--<div>--%>
-                                                    <%--<button class="btn">Add</button>--%>
-                                                    <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
-
-                                                    <%--</div>--%>
-                                                <div class="half-width">
-                                                    <input type="file" name="avatar" id="avatar" class="hide"/>
-                                                    <label for="avatar" class="btn">Add</label><br/>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div><!-- acc section END -->
-
-                                    <div class="postinfobot">
-
-
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left">
-                                                <input class="btn btn-primary" type="submit" value="Update Avatar"/>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="clearfix"></div>
+                                    <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a>
                                     </div>
-                                </form>
-
-                            </div>
-                        </div>
-
-                    </c:if>
-
-
-                    <c:if test="${user != null}">
-                        <h4> My posts </h4>
-                    </c:if>
-
-                    <div>
-                        <!-- POST -->
-                        <c:forEach var="post" items="${allPosts}" varStatus="status">
-                            <div class="post">
-                                <div class="wrap-ut pull-left">
-                                    <div class="userinfo pull-left">
-                                        <div class="avatar">
-                                            <img src="${post.user.avatarURL}" alt=""
-                                                 width="37" height="37"/>
-                                            <div class="status green">&nbsp;</div>
-                                        </div>
-
-                                        <div class="icons">
-                                            <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
-                                                src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
-                                        </div>
-
-                                    </div>
-                                    <div class="posttext pull-left">
-                                        <h2><a href="/post/${post.id}">${post.title}</a></h2>
-                                        <p>${post.content}</p>
-                                    </div>
-                                    <div class="clearfix"></div>
                                 </div>
-                                <div class="postinfo pull-left">
-                                    <div class="comments">
-                                        <div class="commentbg">
-                                        ${numberOfAnswers[status.index]}
-                                            <div class="mark"></div>
-                                        </div>
-
-                                    </div>
-                                    <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
-                                </div>
-                                <div class="divline"></div>
-                                <div class="pull-right apparea">
-                                    <a href="/appArea/${post.appArea.id}">
-                                        <div class="views">${post.appArea.name}</div>
-                                    </a>
+                                <div class="posttext pull-left">
+                                    <h2><a href="/post/${post.id}">${post.title}</a></h2>
+                                    <p>${post.content}</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
-                            <!-- POST -->
-                        </c:forEach>
+                            <div class="postinfo pull-left">
+                                <div class="comments">
+                                    <div class="commentbg">
+                                            ${numberOfAnswers[status.index]}
+                                        <div class="mark"></div>
+                                    </div>
 
+                                </div>
+                                <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
+                                    <%--<div class="views"><i></i>${post.appArea}</div>--%>
+                            </div>
+                            <div class="divline"></div>
+                            <div class="pull-right apparea">
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views">${post.appArea.name}</div>
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
+
+                        </div>
                         <!-- POST -->
+                    </c:forEach>
 
-                    </div>
+                    <!-- POST -->
+
                 </div>
-
-
                 <div class="col-lg-4 col-md-4">
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>My Application Areas</h3>
+                        <h3>Application Areas</h3>
                         <div class="divline"></div>
                         <div class="blocktxt">
                             <ul class="cats">
-                                <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <input class="pull-right" type="checkbox" checked="checked"
-                                               onclick="subscription(this, ${appArea.id})"/>
-                                    </li>
-                                </c:forEach>
-                                <div class="divline"></div>
-                                <h3>Other Application Areas</h3>
-                                <div class="divline"></div>
                                 <c:forEach var="appArea" items="${appAreas}" varStatus="status">
                                     <li>
                                         <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <input class="pull-right" type="checkbox"
-                                               onclick="subscription(this, ${appArea.id})"/>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
                                     </li>
                                 </c:forEach>
                             </ul>
                         </div>
                     </div>
-
 
                     <!-- -->
                     <div class="sidebarblock">
@@ -350,8 +277,7 @@
                                     <tr>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar"
-                                                     aria-valuenow="40"
+                                                <div class="progress-bar color1" role="progressbar" aria-valuenow="40"
                                                      aria-valuemin="0" aria-valuemax="100" style="width: 90%">
                                                     Call of Duty Ghosts
                                                 </div>
@@ -365,8 +291,7 @@
                                     <tr>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar"
-                                                     aria-valuenow="40"
+                                                <div class="progress-bar color2" role="progressbar" aria-valuenow="40"
                                                      aria-valuemin="0" aria-valuemax="100" style="width: 63%">
                                                     Titanfall
                                                 </div>
@@ -380,8 +305,7 @@
                                     <tr>
                                         <td>
                                             <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar"
-                                                     aria-valuenow="40"
+                                                <div class="progress-bar color3" role="progressbar" aria-valuenow="40"
                                                      aria-valuemin="0" aria-valuemax="100" style="width: 75%">
                                                     Battlefield 4
                                                 </div>
@@ -400,33 +324,20 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>My Active Threads</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                        </div>
+                        <h3>Top Posts</h3>
+
+                        <c:forEach var="post" items="${topPosts}">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                            </div>
+                        </c:forEach>
+
+
                     </div>
 
 
                 </div>
-                <%--Edit Avatar Place--%>
-
             </div>
         </div>
 
@@ -509,71 +420,6 @@
                 fullWidth: "on"
             });
     });	//ready
-</script>
-
-<script>
-    function subscription(element, x) {
-        element.checked = !element.checked;
-        if (element.checked) {
-            unsubscribe(element, x);
-        } else {
-            subscribe(element, x);
-        }
-    }
-    function subscribe(element, x) {
-        $.ajax({
-            type: 'post',
-            url: '/subscribe/' + x,
-            data: {
-                type: "subscription"
-            },
-            success: function (response) {
-                element.checked = !element.checked;
-            }
-        });
-    }
-    function unsubscribe(element, x) {
-        $.ajax({
-            type: 'post',
-            url: '/unsubscribe/' + x,
-            data: {
-                type: "subscription"
-            },
-            success: function (response) {
-                element.checked = !element.checked;
-            }
-        });
-    }
-</script>
-
-
-<script>
-    function addComment(x) {
-        $.ajax({
-            type: 'post',
-            url: '/new-comment/' + x,
-            data: {
-                type: "comment"
-            },
-            success: function (response) {
-                document.getElementById("all_comments").innerHTML = response + document.getElementById("all_comments").innerHTML;
-                document.getElementById("comment").value = "";
-                document.getElementById("username").value = "";
-            }
-        });
-    }
-</script>
-
-
-<script>document.getElementById("avatar").onchange = function () {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        // get loaded data and render thumbnail.
-        document.getElementById("image").src = e.target.result;
-    };
-    // read the image file as a data URL.
-    reader.readAsDataURL(this.files[0]);
-};
 </script>
 
 <!-- END REVOLUTION SLIDER -->

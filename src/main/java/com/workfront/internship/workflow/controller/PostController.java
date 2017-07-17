@@ -1,15 +1,17 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,9 +29,11 @@ import java.util.List;
  */
 @Controller
 public class PostController {
-    private CommentService commentService;
 
+    private CommentService commentService;
     private PostService postService;
+    private UserService userService;
+    private AppAreaService appAreaService;
 
     private List<AppArea> appAreas;
 
@@ -37,10 +41,12 @@ public class PostController {
     }
 
     @Autowired
-    public PostController(PostService postService, CommentService commentService) {
+    public PostController(PostService postService, CommentService commentService, UserService userService, AppAreaService appAreaService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
+        this.userService = userService;
+        this.appAreaService = appAreaService;
     }
 
     @RequestMapping(value = "/post/*", method = RequestMethod.GET)
@@ -49,6 +55,15 @@ public class PostController {
 
         String url = request.getRequestURL().toString();
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        List<Post> likedPosts = new ArrayList<>();
+        List<Post> dislikedPosts = new ArrayList<>();
+        if (user != null) {
+            likedPosts = userService.getLikedPosts(user.getId());
+            dislikedPosts = userService.getDislikedPosts(user.getId());
+        }
 
         Post post = postService.getById(id);
 
@@ -63,6 +78,8 @@ public class PostController {
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.POSTCOMMENTS, postComments)
                 .addObject(PageAttributes.ANSWERS, answers)
+                .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
+                .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
@@ -83,9 +100,11 @@ public class PostController {
         String content = request.getParameter(PageAttributes.POSTCONTENT);
         String notify = request.getParameter(PageAttributes.NOTE);
 
+        AppArea appArea = AppArea.getById(Integer
+                .parseInt(request.getParameter(PageAttributes.APPAREA)));
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
-        AppArea appArea = AppArea.getById(Integer.parseInt(request.getParameter(PageAttributes.APPAREA)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Post post = new Post();
@@ -104,6 +123,8 @@ public class PostController {
         if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
+        List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
+        postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
 
         List<Post> posts = postService.getAll();
 
@@ -132,18 +153,4 @@ public class PostController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/edit-post"}, method = RequestMethod.POST)
-    public ModelAndView editPost(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("post");
-        Post post = (Post) request.getAttribute(PageAttributes.POST);
-        try {
-            postService.update(post);
-        } catch (RuntimeException e) {
-            modelAndView
-                    .addObject(PageAttributes.MESSAGE,
-                            "Sorry, your post was not updated. Please try again")
-                    .setViewName("post");
-        }
-        return modelAndView;
-    }
 }
