@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
@@ -60,17 +61,15 @@ public class AnswerController {
 
         post = postService.getById(postId);
 
+        List<Post> answers = postService.getAnswersByPostId(postId);
+        List<List<Comment>> answerComments = new ArrayList<>();
+
+        for (Post postAnswer : answers) {
+            answerComments.add(commentService.getByPostId(postAnswer.getId()));
+        }
+
         String content = request.getParameter("reply");
         posts = postService.getAll();
-
-        if (StringUtils.isEmpty(content)) {
-            request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
-
-            modelAndView
-                    .addObject(PageAttributes.APPAREAS, appAreas)
-                    .addObject(PageAttributes.ALLPOSTS, posts);
-            return modelAndView;
-        }
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
@@ -82,7 +81,35 @@ public class AnswerController {
             dislikedPosts = userService.getDislikedPosts(user.getId());
         }
 
-        request.setAttribute(PageAttributes.APPAREAS, appAreas);
+        List<Post> allPosts = new ArrayList<>(answers);
+        allPosts.add(0, post);
+
+        List<Comment> comments = commentService.getByPostId(postId);
+
+        answers = postService.getAnswersByPostId(postId);
+        List<AppArea> appAreas = Arrays.asList(AppArea.values());
+
+        modelAndView
+                .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.POSTCOMMENTS, comments)
+                .addObject(PageAttributes.ANSWERS, answers)
+                .addObject(PageAttributes.ANSWERCOMMENTS, answerComments)
+                .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
+                .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
+                .addObject(PageAttributes.NUMOFLIKES,
+                        ControllerUtils.getNumberOfLikes(allPosts, postService))
+                .addObject(PageAttributes.NUMOFDISLIKES,
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService));
+
+        if (StringUtils.isEmpty(content)) {
+            request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
+            return modelAndView;
+        }
 
         AppArea appArea = post.getAppArea();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -103,46 +130,11 @@ public class AnswerController {
         }
         List<User> users = postService.getNotificationRecipients(postId);
         try {
-            postService.notifyUsers(users, post);
+            postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
         } catch (RuntimeException e) {
 
         }
 
-        answers = postService.getAnswersByPostId(postId);
-        request.setAttribute("answers", answers);
-
-        List<Post> allPosts = new ArrayList<>(answers);
-        allPosts.add(0, post);
-
-        List<Comment> comments = commentService.getByPostId(postId);
-        request.setAttribute(PageAttributes.POSTCOMMENTS, comments);
-
-        List<Post> answers = postService.getAnswersByPostId(postId);
-        List<List<Comment>> answerComments = new ArrayList<>();
-
-        for (Post postAnswer : answers) {
-            answerComments.add(commentService.getByPostId(postAnswer.getId()));
-        }
-
-        modelAndView
-                .addObject(PageAttributes.POST, post)
-                .addObject(PageAttributes.ANSWERCOMMENTS, answerComments)
-                .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
-                .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
-                .addObject(PageAttributes.NUMOFLIKES,
-                        ControllerUtils.getNumberOfLikes(allPosts, postService))
-                .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(posts, postService));
-
         return modelAndView;
     }
-
-
-   /* @RequestMapping(value = {"/appArea*//**//*", "home"}, method = RequestMethod.GET)
-    public ModelAndView editAnswer(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView("home");
-        return modelAndView;
-    }*/
 }

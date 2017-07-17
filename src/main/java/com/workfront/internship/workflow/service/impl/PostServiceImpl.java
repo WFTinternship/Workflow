@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.service.impl;
 
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
@@ -20,7 +21,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -261,9 +264,9 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostService#like(long, long)
      * @param userId
      * @param postId
+     * @see PostService#like(long, long)
      */
     @Override
     public void like(long userId, long postId) {
@@ -283,9 +286,9 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostService#like(long, long)
      * @param userId
      * @param postId
+     * @see PostService#like(long, long)
      */
     @Override
     public void dislike(long userId, long postId) {
@@ -452,11 +455,11 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostService#notifyUsers(List, Post)
+     * @see PostService#notifyUsers(List, Post, EmailType)
      */
     @Override
-    public void notifyUsers(List<User> users, Post post) {
-        if (users == null){
+    public void notifyUsers(List<User> users, Post post, EmailType type) {
+        if (users == null) {
             logger.error("Not valid userList. Failed to send emails.");
             throw new InvalidObjectException();
         }
@@ -468,20 +471,40 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        String subject = "Response on '" + post.getTitle() + "' topic.";
         try {
             for (User user : users) {
-                String text = "Dear " + user.getFirstName() + ", \nThere has been a new response " +
-                        " on '" + post.getTitle() + "' topic. " +
-                        " You can follow the link below: \n http://localhost:8080/post/" + post.getId() +
-                        " \n \n Best, \n Workflow Team";
-                sendEmail(user, subject, text);
+                Map<String, String> subjectContent = getEmailSubjectContent(post, user, type);
+                sendEmail(user, subjectContent.get("subject"), subjectContent.get("content"));
             }
         } catch (RuntimeException e) {
             logger.error("Failed to send emails to all users");
             throw new ServiceLayerException("Failed to send emails to all users", e);
         }
 
+    }
+
+    private Map<String, String> getEmailSubjectContent(Post post, User user, EmailType type) {
+        Map<String, String> subjectContent = new HashMap<>();
+        String subject = null;
+        String content = null;
+        if (type.equals(EmailType.NEW_RESPONSE)) {
+            subject = "Response on '" + post.getTitle() + "' topic.";
+            content = "Dear " + user.getFirstName() + ", \n \nThere has been a new response " +
+                    " on '" + post.getTitle() + "' topic. " +
+                    " You can follow the link below: \n http://localhost:8080/post/" + post.getId() +
+                    " \n \n Best, \n Workflow Team";
+        } else if (type.equals(EmailType.NEW_POST)) {
+            subject = "Check out the new post on '" + post.getAppArea().getName() + "' topic";
+            content = "Dear " + user.getFirstName() + ", \n \n There is a new post on " +
+                    post.getAppArea().getName() + " application area. " +
+                    " You can follow the link below to view and share your response:" +
+                    " \n http://localhost:8080/post/" + post.getId() +
+                    " \n \n Best, \n Workflow Team";
+        }
+        subjectContent.put("content", content);
+        subjectContent.put("subject", subject);
+
+        return subjectContent;
     }
 
     private void sendEmail(User user, String subject, String text) {

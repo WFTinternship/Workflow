@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.service;
 
 
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 
@@ -170,5 +171,5 @@ public interface PostService {
      * @param users the users that need to be notified
      * @param post the post that has a new response
      */
-    void notifyUsers(List<User> users, Post post);
+    void notifyUsers(List<User> users, Post post, EmailType type);
 }

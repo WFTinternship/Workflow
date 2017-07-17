@@ -170,8 +170,11 @@
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My
-                                    Profile</a>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="/edit/${user.id}">Edit Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>
@@ -222,13 +225,13 @@
                                 <div class="posttext pull-left">
 
                                     <div>
-                                        <input type="text" placeholder="Enter Post Title" class="form-control"
+                                        <input type="text" placeholder="Enter Post Title" class="form-control" required
                                                name="title"/>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
-                                            <select name="appArea" id="category" class="form-control">
+                                            <select name="appArea" id="category" class="form-control" required>
                                                 <option value="" disabled selected>Select Application Area</option>
                                                 <c:forEach var="appArea" items="${appAreas}">
                                                     <option value="${appArea.id}">${appArea.name}</option>
@@ -239,7 +242,7 @@
 
                                     <div>
                                         <textarea name="content" id="desc" placeholder="Description"
-                                                  class="form-control"></textarea>
+                                                  class="form-control" required></textarea>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>

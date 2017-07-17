@@ -33,5 +33,7 @@ public interface PageAttributes {
     String DISLIKEDPOSTS = "dislikedPosts";
     String NUMOFUSERSANSWERS = "numOfUsersAnswers";
     String NUMOFUSERSPOSTS = "numOfUsersPosts";
+    String FIRSTNAME = "firstName";
+    String LASTNAME = "lastName";
 
 }

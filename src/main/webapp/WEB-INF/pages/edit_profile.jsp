@@ -5,16 +5,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
-<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
+<c:set var="myAppAreas" value='<%=request.getAttribute(PageAttributes.MYAPPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILEOWNERID)%>'/>
+<c:set var="profileOwner" value='<%=request.getAttribute(PageAttributes.PROFILEOWNER)%>'/>
 <c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
@@ -26,7 +27,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Workflow</title>
-
     <%----%>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -79,6 +79,22 @@
 </head>
 <body>
 <div class="container-fluid">
+    <%--<!-- Slider -->--%>
+    <%--<div class="tp-banner-container">--%>
+    <%--<div class="tp-banner">--%>
+    <%--<ul>--%>
+    <%--<!-- SLIDE  -->--%>
+    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+    <%--<!-- MAIN IMAGE -->--%>
+    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+    <%--data-bgposition="left top"--%>
+    <%--data-bgrepeat="no-repeat">--%>
+    <%--<!-- LAYERS -->--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
+    <%--</div>--%>
+    <%--<!-- //Slider -->--%>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -111,19 +127,6 @@
 
         </div>
     </div>
-    <!-- Slider -->
-    <div class="tp-banner-container">
-        <div class="tp-banner">
-            <!-- MAIN IMAGE -->
-            <img class="img" src="${pageContext.request.contextPath}/images/hero_work_workfront.jpg" alt="slidebg1"
-                 data-bgfit="cover"
-                 data-bgposition="left top"
-                 data-bgrepeat="no-repeat">
-            <!-- LAYERS -->
-        </div>
-    </div>
-    <!-- //Slider -->
-
     <div class="headernav">
         <div class="container">
             <div class="row">
@@ -165,7 +168,6 @@
                     </div>
 
                     <div class="clearfix"></div>
-
                     <c:if test="${user != null}">
                         <div class="avatar pull-left dropdown">
                             <a data-toggle="dropdown" href="#"><img
@@ -174,11 +176,8 @@
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="/edit/${user.id}">Edit Profile</a>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My
+                                    Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>
@@ -187,7 +186,6 @@
 
                     </c:if>
                 </div>
-
             </div>
         </div>
     </div>
@@ -198,177 +196,103 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <h4>${message}</h4>
+                    <font color="red">${message}</font>
                 </div>
             </div>
         </div>
+
 
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8">
-                    <!-- POST -->
-                    <c:forEach var="post" items="${allPosts}" varStatus="status">
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <a href="/users/${post.user.id}"> <img src="${post.user.avatarURL}" alt=""
-                                                                               width="37" height="37"/> </a>
-                                        <div class="status green">&nbsp;</div>
-                                    </div>
-                                    <div>
-                                        <a class="username" href="/users/${post.user.id}">${post.user.firstName}</a>
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="/post/${post.id}">${post.title}</a></h2>
-                                    <p>${post.content}</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                            ${numberOfAnswers[status.index]}
-                                        <div class="mark"></div>
-                                    </div>
 
-                                </div>
-                                <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
-                                    <%--<div class="views"><i></i>${post.appArea}</div>--%>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="pull-left apparea">
-                                <a href="/appArea/${post.appArea.id}">
-                                    <div class="views">${post.appArea.name}</div>
-                                </a>
-                            </div>
-                            <div class="clearfix"></div>
 
+                    <div class="user-card">
+                        <div class="row">
+                            <div class="col-md-6 col-sidebar">
+                                <div class="avatar-card">
+                                    <c:if test="${(user != null) && (user.id == profileOwner.id)}">
+                                        <form action="/updateAvatar" class="form newtopic" method="post"
+                                              enctype="multipart/form-data">
+                                            <div class="avatar center-block">
+                                                <input type="image" name="avatar" id="image"
+                                                       src="${profileOwner.avatarURL}"
+                                                       height="140" width="140"/>
+                                                    <%--<label for="avatar" class="btn"><img src="${profileOwner.avatarURL}"--%>
+                                                    <%--id="image1" alt="" height="140" width="140"/>--%>
+                                                    <%--</label>--%>
+                                                <input type="file" name="avatar" id="my_file" style="display: none;"
+                                                       required title="Click on the photo to choose a file"/>
+                                            </div>
+                                            <input class="btn btn-primary" type="submit" value="Update Avatar" required
+                                                   title="Click on the photo to choose a file"/>
+                                        </form>
+                                    </c:if>
+                                    <c:if test="${(user == null) || (user !=null && user.id != profileOwner.id)}">
+                                        <div class="avatar center-block">
+                                            <img src="${profileOwner.avatarURL}"
+                                                 id="image2" alt="" height="140" width="140"/>
+                                        </div>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-md-12 col-content">
+                                <form action="/edit-profile" class="form newtopic" method="post">
+                                    <ul class="post-ul">
+                                        <li>
+                                            <div class="form-group">
+                                                <label for="usr">First Name:</label>
+                                                <input type="text" class="form-control" value="${profileOwner.firstName}" name="firstName" id="firstName">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <label for="usr">Last Name:</label>
+                                                <input type="text" class="form-control" value="${profileOwner.lastName}" name="lastName" id="lastName">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <label for="usr">Email:</label>
+                                                <input type="text" class="form-control" value="${profileOwner.email}" name="email" id="email">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="form-group">
+                                                <label for="usr">Password:</label>
+                                                <input type="text" class="form-control" value="000000" name="password" id="password">
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <!-- POST -->
-                    </c:forEach>
 
-                    <!-- POST -->
-
+                    </div>
                 </div>
+
+
                 <div class="col-lg-4 col-md-4">
 
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>Application Areas</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>Poll of the Week</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <p>Which game you are playing this week?</p>
-                            <form action="#" method="post" class="form">
-                                <table class="poll">
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                    Call of Duty Ghosts
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt1" type="radio" name="opt" value="1">
-                                            <label for="opt1"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                    Titanfall
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt2" type="radio" name="opt" value="2" checked>
-                                            <label for="opt2"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                    Battlefield 4
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt3" type="radio" name="opt" value="3">
-                                            <label for="opt3"></label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                            <p class="smal">Voting ends on 19th of October</p>
-                        </div>
-                    </div>
-
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>Top Posts</h3>
-
-                        <c:forEach var="post" items="${topPosts}">
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="/post/${post.id}">${post.title}</a>
-                            </div>
-                        </c:forEach>
-
-
-                    </div>
-
-
                 </div>
+                <%--Edit Avatar Place--%>
+
             </div>
         </div>
 
+        <div class="container">
+            <div class="row">
+            </div>
+        </div>
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-xs-12">
-                    <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
-                    <div class="pull-left">
-                        <ul class="paginationforum">
-                            <li class="hidden-xs"><a href="#" class="active">1</a></li>
-                            <li class="hidden-xs"><a href="#">2</a></li>
-                            <li class="hidden-xs"><a href="#">3</a></li>
-                            <li class="hidden-xs"><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li><a href="#">7</a></li>
-                            <li><a href="#">8</a></li>
-                            <li class="hidden-xs"><a href="#">9</a></li>
-                            <li class="hidden-xs"><a href="#">10</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                            <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
+                <div class="col-lg-12">
 
-                        </ul>
-                    </div>
-                    <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -416,14 +340,86 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-                {
-                    delay: 15000,
-                    startwidth: 1200,
-                    startheight: 278,
-                    hideThumbs: 10,
-                    fullWidth: "on"
-                });
+            {
+                delay: 15000,
+                startwidth: 1200,
+                startheight: 278,
+                hideThumbs: 10,
+                fullWidth: "on"
+            });
     });	//ready
+</script>
+
+<script>
+    function subscription(element, x) {
+        element.checked = !element.checked;
+        if (element.checked) {
+            unsubscribe(element, x);
+        } else {
+            subscribe(element, x);
+        }
+    }
+    function subscribe(element, x) {
+        $.ajax({
+            type: 'post',
+            url: '/subscribe/' + x,
+            data: {
+                type: "subscription"
+            },
+            success: function (response) {
+                element.checked = !element.checked;
+            }
+        });
+    }
+    function unsubscribe(element, x) {
+        $.ajax({
+            type: 'post',
+            url: '/unsubscribe/' + x,
+            data: {
+                type: "subscription"
+            },
+            success: function (response) {
+                element.checked = !element.checked;
+            }
+        });
+    }
+</script>
+
+
+<script>
+    function addComment(x) {
+        $.ajax({
+            type: 'post',
+            url: '/new-comment/' + x,
+            data: {
+                type: "comment"
+            },
+            success: function (response) {
+                document.getElementById("all_comments").innerHTML = response + document.getElementById("all_comments").innerHTML;
+                document.getElementById("comment").value = "";
+                document.getElementById("username").value = "";
+            }
+        });
+    }
+</script>
+
+
+<script>document.getElementById("my_file").onchange = function () {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("image").src = e.target.result;
+    };
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+};
+</script>
+
+<script>
+    $("input[type='image']").click(function (event) {
+        event.preventDefault();
+        $("input[id='my_file']").click();
+    });
 </script>
 
 <!-- END REVOLUTION SLIDER -->

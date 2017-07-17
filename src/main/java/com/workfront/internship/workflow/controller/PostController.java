@@ -1,21 +1,25 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+import com.workfront.internship.workflow.controller.utils.EmailType;
+import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -32,18 +36,21 @@ public class PostController {
     private CommentService commentService;
     private PostService postService;
     private UserService userService;
+    private AppAreaService appAreaService;
 
     private List<AppArea> appAreas;
+    private static final Logger LOGGER = Logger.getLogger(PostController.class);
 
     public PostController() {
     }
 
     @Autowired
-    public PostController(PostService postService, CommentService commentService, UserService userService) {
+    public PostController(PostService postService, CommentService commentService, UserService userService, AppAreaService appAreaService) {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
         this.userService = userService;
+        this.appAreaService = appAreaService;
     }
 
     @RequestMapping(value = "/post/*", method = RequestMethod.GET)
@@ -57,7 +64,7 @@ public class PostController {
 
         List<Post> likedPosts = new ArrayList<>();
         List<Post> dislikedPosts = new ArrayList<>();
-        if(user != null){
+        if (user != null) {
             likedPosts = userService.getLikedPosts(user.getId());
             dislikedPosts = userService.getDislikedPosts(user.getId());
         }
@@ -97,9 +104,11 @@ public class PostController {
         String content = request.getParameter(PageAttributes.POSTCONTENT);
         String notify = request.getParameter(PageAttributes.NOTE);
 
+        AppArea appArea = AppArea.getById(Integer
+                .parseInt(request.getParameter(PageAttributes.APPAREA)));
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
-        AppArea appArea = AppArea.getById(Integer.parseInt(request.getParameter(PageAttributes.APPAREA)));
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Post post = new Post();
@@ -115,8 +124,16 @@ public class PostController {
                     "Sorry, your post was not added. Please try again")
                     .setViewName("new_post");
         }
+
         if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
+        }
+
+        try {
+            List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
+            postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
+        }catch (RuntimeException e){
+            LOGGER.info("Failed to send emails");
         }
 
         List<Post> posts = postService.getAll();
@@ -146,18 +163,4 @@ public class PostController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/edit-post"}, method = RequestMethod.POST)
-    public ModelAndView editPost(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("post");
-        Post post = (Post) request.getAttribute(PageAttributes.POST);
-        try {
-            postService.update(post);
-        } catch (RuntimeException e) {
-            modelAndView
-                    .addObject(PageAttributes.MESSAGE,
-                            "Sorry, your post was not updated. Please try again")
-                    .setViewName("post");
-        }
-        return modelAndView;
-    }
 }
