@@ -323,7 +323,7 @@
                                 <form action="/new-comment/${post.id}" method="post">
                                     <div class="form-group newcomment">
                                         <input type="comment" class="form-control" id="new-comment"
-                                               placeholder="Comment"
+                                               placeholder="Comment" required
                                                name="content">
                                     </div>
                                     <button type="submit" class="btn btn-default" onclick="">Add</button>
@@ -437,7 +437,7 @@
                                     <form action="/new-comment/${answer.id}" method="post">
                                         <div class="form-group newcomment">
                                             <input type="comment" class="form-control" id="new-comment"
-                                                   placeholder="Comment"
+                                                   placeholder="Comment" required
                                                    name="content">
                                         </div>
                                         <button type="submit" class="btn btn-default">Add</button>
@@ -478,7 +478,7 @@
                                         <div class="textwraper">
                                             <div class="postreply">Post a Reply</div>
                                             <textarea name="reply" id="reply"
-                                                      placeholder="Type your message here"></textarea>
+                                                      placeholder="Type your answer here" required></textarea>
                                         </div>
                                     </div>
                                     <div class="clearfix replybox"></div>

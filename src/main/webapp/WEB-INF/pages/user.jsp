@@ -220,9 +220,9 @@
                                             <%--<label for="avatar" class="btn"><img src="${profileOwner.avatarURL}"--%>
                                                  <%--id="image1" alt="" height="140" width="140"/>--%>
                                             <%--</label>--%>
-                                            <input type="file" name="avatar" id="my_file" style="display: none;" />
+                                            <input type="file" name="avatar" id="my_file" style="display: none;" required title="Click on the photo to choose a file"/>
                                         </div>
-                                        <input class="btn btn-primary" type="submit" value="Update Avatar"/>
+                                        <input class="btn btn-primary" type="submit" value="Update Avatar" required title="Click on the photo to choose a file"/>
                                     </form>
                                 </c:if>
                                 <c:if test="${(user == null) || (user !=null && user.id != profileOwner.id)}">

@@ -282,25 +282,25 @@
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-6">
                                                         <input type="text" placeholder="First Name" class="form-control"
-                                                               name="firstName"/>
+                                                               name="firstName" required/>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6">
                                                         <input type="text" placeholder="Last Name" class="form-control"
-                                                               name="lastName"/>
+                                                               name="lastName" required/>
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <input type="text" placeholder="Email" class="form-control"
-                                                           name="email" id="email"/>
+                                                           name="email" id="email" required/>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-6 col-md-6">
                                                         <input type="password" placeholder="Password"
-                                                               class="form-control" id="sgpass" name="password"/>
+                                                               class="form-control" id="sgpass" name="password" required/>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6">
                                                         <input type="password" placeholder="Retype Password"
-                                                               class="form-control" id="sgpass2" name="confirmPass"/>
+                                                               class="form-control" id="sgpass2" name="confirmPass"required/>
                                                     </div>
                                                 </div>
 
@@ -356,12 +356,12 @@
                                                 <div class="row">
                                                     <div class="col-lg-12 col-md-12">
                                                         <input type="text" placeholder="Email" class="form-control"
-                                                               name="email"/>
+                                                               name="email" required/>
 
                                                     </div>
                                                     <div class="col-lg-12 col-md-12">
                                                         <input type="password" placeholder="Password"
-                                                               class="form-control" id="pass" name="password"/>
+                                                               class="form-control" id="pass" name="password" required/>
                                                     </div>
 
                                                 </div>
