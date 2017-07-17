@@ -20,14 +20,14 @@
 (+) Info "Please choose application area".
 (+) Make Fields required; Add Comment, Add new Answer, Add new Post, Login(email, password)
 (+) Fix nullPointer while sending null image for upload.
+(+) Delete checkboxes from app area list in user page.
+(+) Add number of answers before answers list in post page.
+(+) Pop-up for likes/dislikes with controller.
 
 (-) Duxov Remove redundant code.
 (-) Fix the bug user is added to the database without verification.
 (-) Fix update avatar page.
 (-) Add user ratings.
-(-) Delete checkboxes from app area list in user page.
-(-) Add number of answers before answers list in post page.
-(-) Pop-up for likes.
 (-) User page when user is not logged in.
 (-) Number of answers in app area pages.
 (-) Change top posts to most discussed posts.

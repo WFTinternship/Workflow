@@ -118,6 +118,37 @@
         </div>
     </div>
 
+    <div class="modal fade" id="postModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span id="form-img"><img
+                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            height="60px" width="60px/"></span>
+                </div>
+                <form action="/login/post/${post.id}" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Name:</label>
+                            <input type="text" class="form-control" name="email" id="user">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" name="password" id="password">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <%--<!-- Slider -->--%>
     <%--<div class="tp-banner-container">--%>
     <%--<div class="tp-banner">--%>
@@ -278,16 +309,35 @@
                                 </c:if>
                             </c:forEach>
                             <div class="likeblock pull-left">
-                                <span onclick="like(${post.id})" class="up">
+
+                                <c:if test="${user == null}">
+                                    <span class="up" data-toggle="modal"
+                                          data-target="#postModal">
                                     <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
                                        id="likeColor${post.id}"></i>
                                     <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
                                 </span>
-                                <span onclick="dislike(${post.id})" class="down">
+                                    <span class="down" data-toggle="modal"
+                                          data-target="#myModal">
                                     <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
                                        id="dislikeColor${post.id}"></i>
                                     <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
                                 </span>
+                                </c:if>
+
+                                <c:if test="${user != null}">
+                                    <span onclick="like(${post.id})" class="up">
+                                    <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                       id="likeColor${post.id}"></i>
+                                    <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
+                                </span>
+                                    <span onclick="dislike(${post.id})" class="down">
+                                    <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                       id="dislikeColor${post.id}"></i>
+                                    <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
+                                </span>
+                                </c:if>
+
                             </div>
                             <div class="prev pull-left">
                                 <a href="#"><i class="fa fa-reply"></i></a>
@@ -311,14 +361,14 @@
                         </div>
                         <div class="post-comment">
                             <c:if test="${fn:length(comments) != 0}">
-                        <ul class="post-ul">
-                                <c:forEach var="comment" items="${comments}">
-                                    <li>
-                                            ${comment.content}
-                                    </li>
-                                </c:forEach>
-                            </ul>
-</c:if>
+                                <ul class="post-ul">
+                                    <c:forEach var="comment" items="${comments}">
+                                        <li>
+                                                ${comment.content}
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </c:if>
                             <c:if test="${user != null}">
                                 <form action="/new-comment/${post.id}" method="post">
                                     <div class="form-group newcomment">
@@ -330,7 +380,7 @@
                                 </form>
                             </c:if>
 
-                            </div>
+                        </div>
                     </div><!-- POST -->
 
                     <div class="paginationf">
@@ -396,16 +446,34 @@
                                     </c:if>
                                 </c:forEach>
                                 <div class="likeblock pull-left">
-                                    <span onclick="like(${answer.id})" id="like" class="up">
+
+                                    <c:if test="${user == null}">
+                                        <span id="like" class="up" data-toggle="modal"
+                                              data-target="#postModal">
                                         <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
                                            id="likeColor${answer.id}"></i>
                                         <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
-                                    <span onclick="dislike(${answer.id})" class="down">
+                                        <span class="down" data-toggle="modal"
+                                              data-target="#postModal">
                                         <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
                                            id="dislikeColor${answer.id}"></i>
                                         <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
                                     </span>
+                                    </c:if>
+
+                                    <c:if test="${user != null}">
+                                     <span onclick="like(${answer.id})" id="like" class="up">
+                                        <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                           id="likeColor${answer.id}"></i>
+                                        <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
+                                    </span>
+                                        <span onclick="dislike(${answer.id})" class="down">
+                                        <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                           id="dislikeColor${answer.id}"></i>
+                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
+                                    </span>
+                                    </c:if>
                                 </div>
 
                                 <div class="prev pull-left">
@@ -424,14 +492,14 @@
                             </div>
                             <div class="post-comment">
                                 <c:if test="${fn:length(comments) != 0}">
-                            <ul class="post-ul">
-                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
-                                               varStatus="commentStatus">
-                                        <li>
-                                                ${comment.content}
-                                        </li>
-                                    </c:forEach>
-                                </ul>
+                                    <ul class="post-ul">
+                                        <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
+                                                   varStatus="commentStatus">
+                                            <li>
+                                                    ${comment.content}
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
                                 </c:if>
                                 <c:if test="${user != null}">
                                     <form action="/new-comment/${answer.id}" method="post">

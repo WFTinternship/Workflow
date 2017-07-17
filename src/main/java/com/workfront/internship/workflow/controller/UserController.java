@@ -2,8 +2,10 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
@@ -36,16 +38,18 @@ public class UserController {
     private static final String DEFAULT_AVATAR_URL = "/images/default/user-avatar.png";
     private UserService userService;
     private PostService postService;
+    private CommentService commentService;
     private List<AppArea> appAreas;
 
     public UserController() {
     }
 
     @Autowired
-    public UserController(UserService userService, PostService postService) {
+    public UserController(UserService userService, PostService postService, CommentService commentService) {
         this.userService = userService;
         appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -109,7 +113,7 @@ public class UserController {
         modelAndView
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.MESSAGE,
-                "Congratulations! Your sign up was successful!");
+                        "Congratulations! Your sign up was successful!");
         return modelAndView;
     }
 
@@ -189,7 +193,7 @@ public class UserController {
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.NUMOFANSWERS,
-                ControllerUtils.getNumberOfAnswers(postList, postService))
+                        ControllerUtils.getNumberOfAnswers(postList, postService))
                 .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
@@ -240,6 +244,50 @@ public class UserController {
                 .addObject(PageAttributes.PROFILEOWNER, user)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/login/post/*", method = RequestMethod.POST)
+    public ModelAndView loginAndRedirectToPost(HttpServletRequest request,
+                                               HttpServletResponse response) {
+        ModelAndView modelAndView = authenticate(request, response);
+        modelAndView.setViewName("post");
+
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        Post post = postService.getById(postId);
+        List<Comment> postComments = commentService.getByPostId(post.getId());
+
+        List<Post> answers = postService.getAnswersByPostId(post.getId());
+
+        List<Post> allPosts = new ArrayList<>(answers);
+        allPosts.add(0, post);
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        List<Post> likedPosts = new ArrayList<>();
+        List<Post> dislikedPosts = new ArrayList<>();
+        if (user != null) {
+            likedPosts = userService.getLikedPosts(user.getId());
+            dislikedPosts = userService.getDislikedPosts(user.getId());
+        }
+
+        modelAndView
+                .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.POSTCOMMENTS, postComments)
+                .addObject(PageAttributes.ANSWERS, answers)
+                .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
+                .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
+                .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.NUMOFLIKES,
+                        ControllerUtils.getNumberOfLikes(allPosts, postService))
+                .addObject(PageAttributes.NUMOFDISLIKES,
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+
         return modelAndView;
     }
 }
