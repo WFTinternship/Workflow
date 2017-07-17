@@ -114,6 +114,16 @@ input#new-comment {
     width: 80%;
     display: inline;
 }
+.delete-post-msg{
+    color: #edfffc;
+    font-weight: bold;
+    font-size: 20px;
+}
+.delete-post {
+    float: right;
+    color: #c02a2f;
+    cursor: pointer;
+}
 
 .edit-post {
     float: right;
