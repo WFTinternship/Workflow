@@ -14,9 +14,10 @@
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
-<c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILEOWNERID)%>'/>
 <c:set var="profileOwner" value='<%=request.getAttribute(PageAttributes.PROFILEOWNER)%>'/>
 <c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
+<c:set var="numOfUsersPosts" value='<%=request.getAttribute(PageAttributes.NUMOFUSERSPOSTS)%>'/>
+<c:set var="numOfUsersAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFUSERSANSWERS)%>'/>
 
 
 <!DOCTYPE html>
@@ -239,13 +240,19 @@
                                 <div class="user-stats">
                                     <div class="row">
                                         <div class="stat col-3">
-                                            <span class="number">256</span>
+                                            <span class="number">${numOfUsersAnswers}</span>
                                             <span>answers</span>
                                         </div>
                                         <div class="stat col-3">
                                             <div class="stat col-3">
-                                                <span class="number">4000</span>
+                                                <span class="number">${numOfUsersPosts}</span>
                                                 <span>questions</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat col-3">
+                                            <div class="stat col-3">
+                                                <span class="number">${profileOwner.rating}</span>
+                                                <span>rating</span>
                                             </div>
                                         </div>
                                     </div>

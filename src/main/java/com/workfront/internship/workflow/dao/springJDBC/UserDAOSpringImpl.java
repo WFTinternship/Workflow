@@ -272,4 +272,19 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * @see UserDAO#updateRating(User)
+     * @param user the user whose rating is to be updated
+     */
+    @Override
+    public void updateRating(User user) {
+        String sql = "UPDATE user SET rating = ? WHERE user.id = ? ";
+        try {
+            jdbcTemplate.update(sql, user.getRating(), user.getId());
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
 }

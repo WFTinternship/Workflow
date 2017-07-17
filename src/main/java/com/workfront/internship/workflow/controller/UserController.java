@@ -182,9 +182,14 @@ public class UserController {
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
+        long numOfUsersAnswers = postService.getByUserId(userId).size();
+        long numOfUsersPosts = postList.size();
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.NUMOFUSERSPOSTS, numOfUsersPosts)
+                .addObject(PageAttributes.NUMOFUSERSANSWERS, numOfUsersAnswers)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
@@ -233,10 +238,15 @@ public class UserController {
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
+        long numOfUsersAnswers = postService.getByUserId(user.getId()).size();
+        long numOfUsersPosts = posts.size();
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.NUMOFUSERSPOSTS, numOfUsersPosts)
+                .addObject(PageAttributes.NUMOFUSERSANSWERS, numOfUsersAnswers)
                 .addObject(PageAttributes.PROFILEOWNER, user)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
