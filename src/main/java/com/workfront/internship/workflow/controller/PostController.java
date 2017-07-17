@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.controller.utils.EmailType;
+import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
@@ -11,12 +12,14 @@ import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.web.PageAttributes;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -36,6 +39,7 @@ public class PostController {
     private AppAreaService appAreaService;
 
     private List<AppArea> appAreas;
+    private static final Logger LOGGER = Logger.getLogger(PostController.class);
 
     public PostController() {
     }
@@ -120,11 +124,17 @@ public class PostController {
                     "Sorry, your post was not added. Please try again")
                     .setViewName("new_post");
         }
+
         if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
-        List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
-        postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
+
+        try {
+            List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
+            postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
+        }catch (RuntimeException e){
+            LOGGER.info("Failed to send emails");
+        }
 
         List<Post> posts = postService.getAll();
 

@@ -139,11 +139,4 @@ public class AnswerController {
 
         return modelAndView;
     }
-
-
-   /* @RequestMapping(value = {"/appArea*//**//*", "home"}, method = RequestMethod.GET)
-    public ModelAndView editAnswer(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView("home");
-        return modelAndView;
-    }*/
 }

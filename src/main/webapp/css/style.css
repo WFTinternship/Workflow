@@ -5,125 +5,170 @@ workflow
 Screen Stylesheet
 -----------------------------------------------------------------------------*/
 
-
-
-.boxedcontainer		{	max-width: 1170px; margin:auto; padding:0px 30px;}
+.boxedcontainer {
+    max-width: 1170px;
+    margin: auto;
+    padding: 0px 30px;
+}
 
 /*********************************************
 	-	SETTINGS FOR BANNER CONTAINERS	-
 **********************************************/
 
-.tp-banner-container{
-	width:100%;
-	position:relative;
-	padding:0;
+.tp-banner-container {
+    width: 100%;
+    position: relative;
+    padding: 0;
 
 }
 
-.tp-banner{
-	width:100%;
-	position:relative;
+.tp-banner {
+    width: 100%;
+    position: relative;
 }
 
 .tp-banner-fullscreen-container {
-		width:100%;
-		position:relative;
-		padding:0;
+    width: 100%;
+    position: relative;
+    padding: 0;
 }
-.btn-signup{
-	background: #f77f29;
-	color: white;
+
+.btn-signup {
+    background: #f77f29;
+    color: white;
 }
-.btn-login:hover{
-	background: #FFAB00;
-	color: white;
+
+.btn-login:hover {
+    background: #FFAB00;
+    color: white;
 }
+
 .modal-content {
-	position: relative;
-	background-color: rgba(44, 46, 53, 0.5) !important;
+    position: relative;
+    background-color: rgba(44, 46, 53, 0.5) !important;
 }
-.form-group label{
-	color: #f77f29;
+
+.form-group label {
+    color: #f77f29;
 }
+
 .modal-title {
-	color: #f77f29;
+    color: #f77f29;
 }
+
 .form-control {
-	display: block;
-	width: 100%;
-	height: 34px;
-	padding: 6px 12px;
-	font-size: 14px;
-	line-height: 1.42857143;
-	color: white;
-	background-color: rgba(0, 0, 0, 0.37);
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.37);
 }
-#form-img{
-	display: flex;
-	justify-content: center;
-	align-items: center;
+
+#form-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .stnt {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
+
 .col-lg-7.col-xs-12.col-sm-5.col-md-7.logedin {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
-.post-comment{
-	padding: 16px 30px 16px 94px;
-	border-top: 1px solid aliceblue;
+
+.post-comment {
+    padding: 16px 30px 16px 94px;
+    border-top: 1px solid aliceblue;
 }
-.post-ul li{
-	border-bottom: 1px solid aliceblue;
-	padding: 8px 0 8px 0;
+
+.post-ul li {
+    border-bottom: 1px solid aliceblue;
+    padding: 8px 0 8px 0;
 }
-.post-ul li:last-child{
-	border-bottom: none !important;
+
+.post-ul li:last-child {
+    border-bottom: none !important;
 }
-.totop{
-	padding-top: 16px;
+
+.totop {
+    padding-top: 16px;
 }
-.newcomment{
-	background: white;
+
+.newcomment {
+    background: white;
 }
+
 input#new-comment {
-	color: black;
-	background: white;
+    color: black;
+    background: white;
 }
-.newcomment input{
-	width: 80%;
-	display: inline;
+
+.newcomment input {
+    width: 80%;
+    display: inline;
 }
+
 .edit-post {
-	float: right;
-	color: #1565C0;
-	cursor: pointer;
-}.save-post {
-	cursor: pointer;
-	float: right;
-	color: #24c291;
+    float: right;
+    color: #1565C0;
+    cursor: pointer;
 }
+
+.save-post {
+    cursor: pointer;
+    float: right;
+    color: #24c291;
+}
+
+.edit-answer {
+    float: right;
+    color: #1565C0;
+    cursor: pointer;
+}
+
+.save-answer {
+    cursor: pointer;
+    float: right;
+    color: #24c291;
+}
+
 .alert {
-	padding: 15px;
-	margin: 23px 0 8px 0px !important;
+    padding: 15px;
+    margin: 23px 0 8px 0px !important;
 }
-.edit-post span{
-	margin-left: 8px;
+
+.edit-post span {
+    margin-left: 8px;
 }
-.save-post span{
-	margin-left: 8px;
+
+.save-post span {
+    margin-left: 8px;
 }
+
+.edit-answer span {
+    margin-left: 8px;
+}
+
+.save-answer span {
+    margin-left: 8px;
+}
+
 .editable {
-	background: white;
-	color: black;
-	margin-bottom: 8px;
+    background: white;
+    color: black;
+    margin-bottom: 8px;
 }
 
 .img {
-	vertical-align: middle;
-	background-size: cover;
-	width: 100%;
-	height: 290px;
+    vertical-align: middle;
+    background-size: cover;
+    width: 100%;
+    height: 290px;
 }

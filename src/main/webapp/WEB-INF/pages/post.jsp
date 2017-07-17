@@ -245,17 +245,18 @@
                                 <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
 
                                 <%--<a href="/appArea/${post.appArea.id}">--%>
-                                    <%--<div class="views"><i></i>${post.appArea.name}</div>--%>
+                                <%--<div class="views"><i></i>${post.appArea.name}</div>--%>
                                 <%--</a>--%>
                             </div>
                             <div class="posttext pull-left">
-                                <div class="edit-post">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-
-                                    <span>
+                                <c:if test="${user.id == post.user.id}">
+                                    <div class="edit-post">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <span>
                                         Edit
                                     </span>
-                                </div>
+                                    </div>
+                                </c:if>
                                 <h2>${post.title}</h2>
                                 <p>${post.content}</p>
                                 <input type="hidden" name="postId" value="${post.id}">
@@ -264,28 +265,30 @@
                         </div>
                         <div class="postinfobot">
 
-                            <c:set var="isLiked" value="false" />
+                            <c:set var="isLiked" value="false"/>
                             <c:forEach var="item" items="${likedPosts}">
                                 <c:if test="${item eq post}">
-                                    <c:set var="isLiked" value="true" />
+                                    <c:set var="isLiked" value="true"/>
                                 </c:if>
                             </c:forEach>
-                            <c:set var="isDisliked" value="false" />
+                            <c:set var="isDisliked" value="false"/>
                             <c:forEach var="item" items="${dislikedPosts}">
                                 <c:if test="${item eq post}">
-                                    <c:set var="isDisliked" value="true" />
+                                    <c:set var="isDisliked" value="true"/>
                                 </c:if>
                             </c:forEach>
-                                <div class="likeblock pull-left">
+                            <div class="likeblock pull-left">
                                 <span onclick="like(${post.id})" class="up">
-                                    <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}" id="likeColor${post.id}"></i>
+                                    <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                       id="likeColor${post.id}"></i>
                                     <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
                                 </span>
-                                    <span onclick="dislike(${post.id})" class="down">
-                                    <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}" id="dislikeColor${post.id}"></i>
+                                <span onclick="dislike(${post.id})" class="down">
+                                    <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                       id="dislikeColor${post.id}"></i>
                                     <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
                                 </span>
-                                </div>
+                            </div>
                             <div class="prev pull-left">
                                 <a href="#"><i class="fa fa-reply"></i></a>
                             </div>
@@ -307,27 +310,27 @@
                             <div class="clearfix"></div>
                         </div>
                         <c:if test="${fn:length(comments) != 0}">
-                        <div class="post-comment">
-                            <ul class="post-ul">
-                                <c:forEach var="comment" items="${comments}">
-                                    <li>
-                                            ${comment.content}
-                                    </li>
-                                </c:forEach>
-                            </ul>
+                            <div class="post-comment">
+                                <ul class="post-ul">
+                                    <c:forEach var="comment" items="${comments}">
+                                        <li>
+                                                ${comment.content}
+                                        </li>
+                                    </c:forEach>
+                                </ul>
 
-                            <c:if test="${user != null}">
-                                <form action="/new-comment/${post.id}" method="post">
-                                    <div class="form-group newcomment">
-                                        <input type="comment" class="form-control" id="new-comment"
-                                               placeholder="Comment"
-                                               name="content">
-                                    </div>
-                                    <button type="submit" class="btn btn-default" onclick="">Add</button>
-                                </form>
-                            </c:if>
+                                <c:if test="${user != null}">
+                                    <form action="/new-comment/${post.id}" method="post">
+                                        <div class="form-group newcomment">
+                                            <input type="comment" class="form-control" id="new-comment"
+                                                   placeholder="Comment"
+                                                   name="content">
+                                        </div>
+                                        <button type="submit" class="btn btn-default" onclick="">Add</button>
+                                    </form>
+                                </c:if>
 
-                        </div>
+                            </div>
                         </c:if>
                     </div><!-- POST -->
 
@@ -352,7 +355,8 @@
                                         </a>
                                         <div class="status red">&nbsp;</div>
                                         <div>
-                                            <a class="username" href="/users/${answer.user.id}">${answer.user.firstName}</a>
+                                            <a class="username"
+                                               href="/users/${answer.user.id}">${answer.user.firstName}</a>
                                         </div>
                                         <c:if test="${user.id == post.user.id}">
                                             <div class="icons">
@@ -363,31 +367,44 @@
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
+
+                                    <c:if test="${user.id == answer.user.id}">
+                                        <div class="edit-answer">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <span>
+                                        Edit
+                                    </span>
+                                        </div>
+                                    </c:if>
+
                                     <p>${answer.content}</p>
+                                    <input type="hidden" name="answerId" value="${answer.id}">
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="postinfobot">
 
-                                <c:set var="isLiked" value="false" />
+                                <c:set var="isLiked" value="false"/>
                                 <c:forEach var="item" items="${likedPosts}">
                                     <c:if test="${item eq answer}">
-                                        <c:set var="isLiked" value="true" />
+                                        <c:set var="isLiked" value="true"/>
                                     </c:if>
                                 </c:forEach>
-                                <c:set var="isDisliked" value="false" />
+                                <c:set var="isDisliked" value="false"/>
                                 <c:forEach var="item" items="${dislikedPosts}">
                                     <c:if test="${item eq answer}">
-                                        <c:set var="isDisliked" value="true" />
+                                        <c:set var="isDisliked" value="true"/>
                                     </c:if>
                                 </c:forEach>
                                 <div class="likeblock pull-left">
                                     <span onclick="like(${answer.id})" id="like" class="up">
-                                        <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}" id="likeColor${answer.id}"></i>
+                                        <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                           id="likeColor${answer.id}"></i>
                                         <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
                                     <span onclick="dislike(${answer.id})" class="down">
-                                        <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}" id="dislikeColor${answer.id}"></i>
+                                        <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                           id="dislikeColor${answer.id}"></i>
                                         <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
                                     </span>
                                 </div>
@@ -407,26 +424,26 @@
                                 <div class="clearfix"></div>
                             </div>
                             <c:if test="${fn:length(comments) != 0}">
-                            <div class="post-comment">
-                                <ul class="post-ul">
-                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
-                                               varStatus="commentStatus">
-                                        <li>
-                                                ${comment.content}
-                                        </li>
-                                    </c:forEach>
-                                </ul>
-                                <c:if test="${user != null}">
-                                    <form action="/new-comment/${answer.id}" method="post">
-                                        <div class="form-group newcomment">
-                                            <input type="comment" class="form-control" id="new-comment"
-                                                   placeholder="Comment"
-                                                   name="content">
-                                        </div>
-                                        <button type="submit" class="btn btn-default">Add</button>
-                                    </form>
-                                </c:if>
-                            </div>
+                                <div class="post-comment">
+                                    <ul class="post-ul">
+                                        <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
+                                                   varStatus="commentStatus">
+                                            <li>
+                                                    ${comment.content}
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                    <c:if test="${user != null}">
+                                        <form action="/new-comment/${answer.id}" method="post">
+                                            <div class="form-group newcomment">
+                                                <input type="comment" class="form-control" id="new-comment"
+                                                       placeholder="Comment"
+                                                       name="content">
+                                            </div>
+                                            <button type="submit" class="btn btn-default">Add</button>
+                                        </form>
+                                    </c:if>
+                                </div>
                             </c:if>
 
                         </div>
@@ -653,13 +670,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-                {
-                    delay: 15000,
-                    startwidth: 1200,
-                    startheight: 278,
-                    hideThumbs: 10,
-                    fullWidth: "on"
-                });
+            {
+                delay: 15000,
+                startwidth: 1200,
+                startheight: 278,
+                hideThumbs: 10,
+                fullWidth: "on"
+            });
     });	//ready
 </script>
 
