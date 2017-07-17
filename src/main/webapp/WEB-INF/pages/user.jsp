@@ -15,6 +15,7 @@
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 <c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILEOWNERID)%>'/>
+<c:set var="profileOwner" value='<%=request.getAttribute(PageAttributes.PROFILEOWNER)%>'/>
 <c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
@@ -36,10 +37,14 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="96x96" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -200,61 +205,59 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8">
-                    <c:if test="${user.id == profileOwnerId}">
-                        <%--Edit Avatar Place--%>
-                        <div>
-                            <!-- POST -->
-                            <div class="post">
-                                <form action="/updateAvatar" class="form newtopic" method="post"
-                                      enctype="multipart/form-data">
-                                    <div class="postinfotop">
-                                        <h2>Update Profile</h2>
-                                    </div>
-                                    <!-- acc section -->
-                                    <div class="accsection">
-                                        <div class="topwrap">
-                                            <div class="userinfo pull-left">
-                                                <div class="avatar">
-                                                    <img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"
-                                                         id="image" alt="" height="45" width="45"/>
-                                                        <%--<img src="${pageContext.request.contextPath}/images/avatar-blank.jpg"--%>
-                                                        <%--alt=""/>--%>
-                                                </div>
-                                                    <%--<div class="imgsize">60 x 60</div>--%>
-                                                    <%--<div>--%>
-                                                    <%--<button class="btn">Add</button>--%>
-                                                    <%--&lt;%&ndash;<input class="input_file" name="avatar" id="avatar" type="file">&ndash;%&gt;--%>
 
-                                                    <%--</div>--%>
-                                                <div class="half-width">
-                                                    <input type="file" name="avatar" id="avatar" class="hide"/>
-                                                    <label for="avatar" class="btn">Add</label><br/>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
+
+                    <div class="user-card">
+                        <div class="row">
+                        <div class="col-md-6 col-sidebar">
+                            <div class="avatar-card">
+                                <c:if test="${(user != null) && (user.id == profileOwner.id)}">
+                                    <form action="/updateAvatar" class="form newtopic" method="post"
+                                          enctype="multipart/form-data">
+                                        <div class="avatar center-block">
+                                            <input type="image" name="avatar" id="image" src="${profileOwner.avatarURL}"
+                                                     height="140" width="140"/>
+                                            <%--<label for="avatar" class="btn"><img src="${profileOwner.avatarURL}"--%>
+                                                 <%--id="image1" alt="" height="140" width="140"/>--%>
+                                            <%--</label>--%>
+                                            <input type="file" name="avatar" id="my_file" style="display: none;" />
                                         </div>
-                                    </div><!-- acc section END -->
-
-                                    <div class="postinfobot">
-
-
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left">
-                                                <input class="btn btn-primary" type="submit" value="Update Avatar"/>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="clearfix"></div>
+                                        <input class="btn btn-primary" type="submit" value="Update Avatar"/>
+                                    </form>
+                                </c:if>
+                                <c:if test="${(user == null) || (user !=null && user.id != profileOwner.id)}">
+                                    <div class="avatar center-block">
+                                        <img src="${profileOwner.avatarURL}"
+                                             id="image2" alt="" height="140" width="140"/>
                                     </div>
-                                </form>
-
+                                </c:if>
                             </div>
                         </div>
+                        <div class="col-md-6 col-content">
+                            <h2 class="user-card-name">${profileOwner.firstName} ${profileOwner.lastName}</h2>
+                            <div class="user-links">
+                                <div class="user-stats">
+                                    <div class="row">
+                                        <div class="stat col-3">
+                                            <span class="number">256</span>
+                                            <span>answers</span>
+                                        </div>
+                                        <div class="stat col-3">
+                                            <div class="stat col-3">
+                                                <span class="number">4000</span>
+                                                <span>questions</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
 
-                    </c:if>
+                    </div>
 
 
-                    <c:if test="${user != null}">
+                    <c:if test="${user != null && user.id == profileOwner.id}">
                         <h4> My posts </h4>
                     </c:if>
 
@@ -285,7 +288,7 @@
                                 <div class="postinfo pull-left">
                                     <div class="comments">
                                         <div class="commentbg">
-                                        ${numberOfAnswers[status.index]}
+                                                ${numberOfAnswers[status.index]}
                                             <div class="mark"></div>
                                         </div>
 
@@ -293,7 +296,7 @@
                                     <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
                                 </div>
                                 <div class="divline"></div>
-                                <div class="pull-right apparea">
+                                <div class="pull-left apparea">
                                     <a href="/appArea/${post.appArea.id}">
                                         <div class="views">${post.appArea.name}</div>
                                     </a>
@@ -311,32 +314,51 @@
 
                 <div class="col-lg-4 col-md-4">
 
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>My Application Areas</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <ul class="cats">
-                                <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <input class="pull-right" type="checkbox" checked="checked"
-                                               onclick="subscription(this, ${appArea.id})"/>
-                                    </li>
-                                </c:forEach>
-                                <div class="divline"></div>
-                                <h3>Other Application Areas</h3>
-                                <div class="divline"></div>
-                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <input class="pull-right" type="checkbox"
-                                               onclick="subscription(this, ${appArea.id})"/>
-                                    </li>
-                                </c:forEach>
-                            </ul>
+
+                    <c:if test="${(user != null) && (user.id == profileOwner.id)}">
+                        <div class="sidebarblock">
+                            <h3>My Application Areas</h3>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <ul class="cats">
+                                    <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                            <input class="pull-right" type="checkbox" checked="checked"
+                                                   onclick="subscription(this, ${appArea.id})"/>
+                                        </li>
+                                    </c:forEach>
+                                    <div class="divline"></div>
+                                    <h3>Other Application Areas</h3>
+                                    <div class="divline"></div>
+                                    <c:forEach var="appArea" items="${appAreas}" varStatus="status">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                            <input class="pull-right" type="checkbox"
+                                                   onclick="subscription(this, ${appArea.id})"/>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
+                    <!-- -->
+                    <c:if test="${(user == null) || (user !=null && user.id != profileOwner.id)}">
+                        <div class="sidebarblock">
+                            <h3>${profileOwner.firstName}'s Application Areas</h3>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <ul class="cats">
+                                    <c:forEach var="appArea" items="${myAppAreas}" varStatus="status">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                            <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </c:if>
 
 
                     <!-- -->
@@ -501,13 +523,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-            {
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
+                {
+                    delay: 15000,
+                    startwidth: 1200,
+                    startheight: 278,
+                    hideThumbs: 10,
+                    fullWidth: "on"
+                });
     });	//ready
 </script>
 
@@ -565,7 +587,7 @@
 </script>
 
 
-<script>document.getElementById("avatar").onchange = function () {
+<script>document.getElementById("my_file").onchange = function () {
     var reader = new FileReader();
     reader.onload = function (e) {
         // get loaded data and render thumbnail.
@@ -574,6 +596,13 @@
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
 };
+</script>
+
+<script>
+    $("input[type='image']").click(function(event) {
+        event.preventDefault();
+        $("input[id='my_file']").click();
+    });
 </script>
 
 <!-- END REVOLUTION SLIDER -->

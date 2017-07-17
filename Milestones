@@ -25,3 +25,10 @@
 (-) Add user ratings.
 (-) Delete checkboxes from app area list in user page.
 (-) Add number of answers before answers list in post page.
+(-) Pop-up for likes.
+(-) User page when user is not logged in.
+(-) Number of answers in app area pages.
+(-) Change top posts to most discussed posts.
+(-) Add Top posts according to the difference of number of likes and dislikes.
+(-) Remove post/answer/post.
+(-) Fix nullPointer while sending null image for upload.

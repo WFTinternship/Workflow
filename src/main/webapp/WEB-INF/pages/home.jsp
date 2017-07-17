@@ -213,7 +213,8 @@
                                                                                width="37" height="37"/> </a>
                                         <div class="status green">&nbsp;</div>
                                     </div>
-                                    <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a>
+                                    <div>
+                                        <a class="username" href="/users/${post.user.id}">${post.user.firstName}</a>
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
@@ -234,7 +235,7 @@
                                     <%--<div class="views"><i></i>${post.appArea}</div>--%>
                             </div>
                             <div class="divline"></div>
-                            <div class="pull-right apparea">
+                            <div class="pull-left apparea">
                                 <a href="/appArea/${post.appArea.id}">
                                     <div class="views">${post.appArea.name}</div>
                                 </a>

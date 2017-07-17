@@ -299,11 +299,15 @@
                                 <a href="#"><i class="fa fa-flag"></i></a>
                             </div>
                             <div class="divline"></div>
-
+                            <div class="pull-left apparea">
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views">${post.appArea.name}</div>
+                                </a>
+                            </div>
                             <div class="clearfix"></div>
                         </div>
-                        <c:if test="${fn:length(comments) != 0}">
                         <div class="post-comment">
+                            <c:if test="${fn:length(comments) != 0}">
                             <ul class="post-ul">
                                 <c:forEach var="comment" items="${comments}">
                                     <li>
@@ -311,8 +315,9 @@
                                     </li>
                                 </c:forEach>
                             </ul>
-
+                            </c:if>
                             <c:if test="${user != null}">
+
                                 <form action="/new-comment/${post.id}" method="post">
                                     <div class="form-group newcomment">
                                         <input type="comment" class="form-control" id="new-comment"
@@ -324,7 +329,7 @@
                             </c:if>
 
                         </div>
-                        </c:if>
+
                     </div><!-- POST -->
 
                     <div class="paginationf">
@@ -336,7 +341,7 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-
+                    <h4> ${fn:length(answers)} answers </h4>
                     <!-- POST -->
                     <c:forEach var="answer" items="${answers}" varStatus="answerStatus">
                         <div class="post">
@@ -347,6 +352,9 @@
                                             <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
                                         </a>
                                         <div class="status red">&nbsp;</div>
+                                        <div>
+                                            <a class="username" href="/users/${answer.user.id}">${answer.user.firstName}</a>
+                                        </div>
                                         <c:if test="${user.id == post.user.id}">
                                             <div class="icons">
                                                 <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
@@ -399,8 +407,8 @@
 
                                 <div class="clearfix"></div>
                             </div>
-                            <c:if test="${fn:length(comments) != 0}">
                             <div class="post-comment">
+                                <c:if test="${fn:length(comments) != 0}">
                                 <ul class="post-ul">
                                     <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
                                                varStatus="commentStatus">
@@ -409,6 +417,7 @@
                                         </li>
                                     </c:forEach>
                                 </ul>
+                                </c:if>
                                 <c:if test="${user != null}">
                                     <form action="/new-comment/${answer.id}" method="post">
                                         <div class="form-group newcomment">
@@ -420,7 +429,7 @@
                                     </form>
                                 </c:if>
                             </div>
-                            </c:if>
+
 
                         </div>
 
