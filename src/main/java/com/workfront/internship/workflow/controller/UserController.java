@@ -1,5 +1,6 @@
 package com.workfront.internship.workflow.controller;
 
+import com.sun.deploy.net.HttpResponse;
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
@@ -287,6 +288,62 @@ public class UserController {
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit/*", method = RequestMethod.GET)
+    public ModelAndView editProfile(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("edit_profile");
+
+        String url = request.getRequestURL().toString();
+        long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = userService.getById(userId);
+
+        List<Post> postList = postService.getByUserId(userId);
+        List<AppArea> myAppAreas = userService.getAppAreasById(userId);
+
+        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
+        allAppAreas.removeAll(myAppAreas);
+
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, postList)
+                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(postList, postService))
+                .addObject(PageAttributes.PROFILEOWNER, user);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit-profile", method = RequestMethod.POST)
+    public ModelAndView editProfile(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView("edit_profile");
+
+
+        String firstName = request.getParameter(PageAttributes.FIRSTNAME);
+        String lastName = request.getParameter(PageAttributes.LASTNAME);
+        String email = request.getParameter(PageAttributes.EMAIL);
+        String password = request.getParameter(PageAttributes.PASSWORD);
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+        user
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setPassword(password);
+
+        modelAndView.addObject(PageAttributes.PROFILEOWNER, user);
+
+        try {
+            userService.updateProfile(user);
+        }catch (RuntimeException e){
+            modelAndView.addObject(PageAttributes.MESSAGE,
+                    "Sorry, there has been a problem.");
+        }
 
         return modelAndView;
     }
