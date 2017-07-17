@@ -16,19 +16,20 @@
 (+) Exception handling in updateProfile and updateAvatar in springJDBC.
 (+) Add Best Answer to interface.
 (+) Change color of Add New Answer.
+(+) Add Edit post/answer to interface.
+(+) Info "Please choose application area".
+(+) Make Fields required; Add Comment, Add new Answer, Add new Post, Login(email, password)
+(+) Fix nullPointer while sending null image for upload.
+(+) Delete checkboxes from app area list in user page.
+(+) Add number of answers before answers list in post page.
+(+) Pop-up for likes/dislikes with controller.
 
 (-) Duxov Remove redundant code.
-(-) Add Edit post/answer/comment to interface.
 (-) Fix the bug user is added to the database without verification.
-(-) Info "Please choose application area".
 (-) Fix update avatar page.
 (-) Add user ratings.
-(-) Delete checkboxes from app area list in user page.
-(-) Add number of answers before answers list in post page.
-(-) Pop-up for likes.
 (-) User page when user is not logged in.
 (-) Number of answers in app area pages.
 (-) Change top posts to most discussed posts.
 (-) Add Top posts according to the difference of number of likes and dislikes.
 (-) Remove post/answer/post.
-(-) Fix nullPointer while sending null image for upload.

@@ -55,10 +55,6 @@ $(document).ready(function () {
         var confirmTitle = "<h2 id='confirm-title'>" + confirmTitleValue + "</h2>";
         var confirmContent = "<p id='confirm-content'>" + confirmContentValue + "</p>";
 
-        // $(this).siblings(".edit-title").remove();
-        // $(this).siblings(".edit-content").remove();
-        // $(this).parent().append(confirmTitle + " " + confirmContent);
-
         $.ajax({
             url: '/edit-post',
             type: 'POST',
@@ -82,6 +78,49 @@ $(document).ready(function () {
             },
             error: function (data) {
                 // $('.content').after('<div id="alert" class="alert alert-info"><strong>Info!</strong> Sorry, your post was not updated. Please try again</div>').fadeIn("slow");
+            }
+        });
+    });
+});
+
+
+$(document).ready(function () {
+    $(document).on("click", ".edit-answer", function () {
+        $(this).removeClass('edit-answer');
+        $(this).addClass('save-answer');
+        $(this).after('<div class="notify"></div>');
+        $(this).html('<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Save</span>');
+        var editableText = $("<textarea class='form-control editable edit-content' rows='5' name='newContent' />");
+        var Content = $(this).closest(".posttext").children('p').text();
+        $(this).parent().children("p").replaceWith(editableText);
+        $('.edit-content').val(Content);
+    });
+
+    $(document).on("click", ".save-answer", function () {
+        var thishtml = $(this);
+        var confirmContentValue = $('.edit-content').val();
+        var confirmContent = "<p id='confirm-content'>" + confirmContentValue + "</p>";
+
+        $.ajax({
+            url: '/edit-answer',
+            type: 'POST',
+            data: {
+                'answerId': jQuery("input[name=answerId]").val(),
+                'content': confirmContentValue,
+            }, statusCode: {
+                500: function (data) {
+                    console.log(65);
+                    $('div.notify').html('<div id="alert" class="alert alert-info"><strong>Info!</strong> Sorry, your post was not updated. Please try again</div>').fadeIn("slow");
+                }
+            }, success: function (data) {
+                $('div.notify').remove();
+                $(thishtml).addClass('edit-answer');
+                $(thishtml).removeClass('save-answer');
+                $(thishtml).html('<i class="fa fa-pencil-square-o" aria-hidden="true"></i><span>Edit</span>');
+                $(thishtml).siblings(".edit-content").remove();
+                $(thishtml).parent().append(confirmContent);
+            },
+            error: function (data) {
             }
         });
     });

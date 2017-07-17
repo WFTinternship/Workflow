@@ -32,5 +32,7 @@ public interface PageAttributes {
     String TOPPOSTS = "topPosts";
     String LIKEDPOSTS = "likedPosts";
     String DISLIKEDPOSTS = "dislikedPosts";
+    String FIRSTNAME = "firstName";
+    String LASTNAME = "lastName";
 
 }
