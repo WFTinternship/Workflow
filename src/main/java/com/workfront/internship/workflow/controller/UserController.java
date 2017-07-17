@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -243,6 +244,8 @@ public class UserController {
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
                 .addObject(PageAttributes.PROFILEOWNER, user)
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService))
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         return modelAndView;
@@ -321,7 +324,7 @@ public class UserController {
 
     @RequestMapping(value = "/edit-profile", method = RequestMethod.POST)
     public ModelAndView editProfile(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView("edit_profile");
+        ModelAndView modelAndView = new ModelAndView("user");
 
 
         String firstName = request.getParameter(PageAttributes.FIRSTNAME);
@@ -330,6 +333,7 @@ public class UserController {
         String password = request.getParameter(PageAttributes.PASSWORD);
 
         User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
         user
                 .setFirstName(firstName)
                 .setLastName(lastName)
@@ -345,6 +349,21 @@ public class UserController {
                     "Sorry, there has been a problem.");
         }
 
+        List<Post> postList = postService.getByUserId(user.getId());
+        List<AppArea> myAppAreas = userService.getAppAreasById(user.getId());
+
+        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
+        allAppAreas.removeAll(myAppAreas);
+
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, postList)
+                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(postList, postService))
+                .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
 }

@@ -2,7 +2,6 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.controller.utils.EmailType;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -33,13 +31,12 @@ import java.util.List;
 @Controller
 public class PostController {
 
+    private static final Logger LOGGER = Logger.getLogger(PostController.class);
     private CommentService commentService;
     private PostService postService;
     private UserService userService;
     private AppAreaService appAreaService;
-
     private List<AppArea> appAreas;
-    private static final Logger LOGGER = Logger.getLogger(PostController.class);
 
     public PostController() {
     }
@@ -132,7 +129,7 @@ public class PostController {
         try {
             List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
             postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.info("Failed to send emails");
         }
 
@@ -160,6 +157,45 @@ public class PostController {
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.NUMOFANSWERS,
                         ControllerUtils.getNumberOfAnswers(posts, postService));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = {"/delete-post/*"}, method = RequestMethod.POST)
+    public ModelAndView deletePost(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("user");
+
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        try {
+            postService.delete(postId);
+        } catch (RuntimeException e) {
+            modelAndView.addObject(PageAttributes.MESSAGE,
+                    "Sorry, your post was not deleted. " +
+                            "If you really want to delete it please try again.")
+                    .addObject(PageAttributes.POST, postService.getById(postId))
+                    .setViewName("post");
+            return modelAndView;
+        }
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(PageAttributes.USER);
+
+        List<Post> postList = postService.getByUserId(user.getId());
+        List<AppArea> myAppAreas = userService.getAppAreasById(user.getId());
+
+        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
+        allAppAreas.removeAll(myAppAreas);
+
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, postList)
+                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(postList, postService))
+                .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
 
