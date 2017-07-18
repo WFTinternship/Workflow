@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,9 +24,10 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+    private final int NUMBER_OF_POST_PER_PAGE = 5;
     private PostService postService;
     private List<AppArea> appAreas;
-    private List<Post> posts;
+    private List<Post> allPosts;
     private AppAreaService appAreaService;
 
     public HomeController() {
@@ -38,6 +38,7 @@ public class HomeController {
         this.postService = postService;
         appAreas = Arrays.asList(AppArea.values());
         this.appAreaService = appAreaService;
+        allPosts = postService.getAll();
     }
 
     @PostConstruct
@@ -53,11 +54,33 @@ public class HomeController {
     @RequestMapping(value = {"/", "/home"})
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("home");
-
-        posts = postService.getAll();
+        List<Post> posts = getPostsByPage(1);
 
         modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.POSTS, posts)
+                .addObject(PageAttributes.ALLPOSTS, allPosts)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/home/*")
+    public ModelAndView home(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        String url = request.getRequestURL().toString();
+        int page = Integer.parseInt(url.substring(url.lastIndexOf('/') + 1));
+
+        List<Post> posts = getPostsByPage(page);
+
+        modelAndView
+                .addObject(PageAttributes.POSTS, posts)
+                .addObject(PageAttributes.ALLPOSTS, allPosts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.NUMOFANSWERS,
                         ControllerUtils.getNumberOfAnswers(posts, postService))
@@ -76,19 +99,38 @@ public class HomeController {
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         // getting and passing all posts to appAreas page
-        posts = postService.getByAppAreaId(id);
-        if (posts.size() == 0) {
+        allPosts = postService.getByAppAreaId(id);
+        if (allPosts.size() == 0) {
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found in " + AppArea.getById(id).getName() + " Application Area.");
         }
         // pass all appAreas to appAreas page
         modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.ALLPOSTS, allPosts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
+                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, allPosts));
 
         return modelAndView;
     }
+
+    private List<Post> getPostsByPage(int page) {
+        List<Post> allPosts = postService.getAll();
+        List<Post> posts;
+        int total = allPosts.size();
+
+        if (page == 1) {
+            posts = total < NUMBER_OF_POST_PER_PAGE ?
+                    allPosts.subList(0, total) : allPosts.subList(0, NUMBER_OF_POST_PER_PAGE);
+        } else {
+            int start = (page - 1) * NUMBER_OF_POST_PER_PAGE;
+            int end = start + 5;
+            posts = total < end ?
+                    allPosts.subList(start, total) : allPosts.subList(start, end);
+        }
+
+        return posts;
+    }
+
 }

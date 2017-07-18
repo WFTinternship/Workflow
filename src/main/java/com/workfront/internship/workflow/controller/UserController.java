@@ -309,7 +309,7 @@ public class UserController {
     public ModelAndView editProfile(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("edit_profile");
 
-        String url = request.getRequestURL().toString();
+               String url = request.getRequestURL().toString();
         long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         User user = userService.getById(userId);

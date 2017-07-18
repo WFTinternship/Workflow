@@ -10,6 +10,7 @@
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="posts" value='<%=request.getAttribute(PageAttributes.POSTS)%>'/>
 <c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
@@ -205,7 +206,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8">
                     <!-- POST -->
-                    <c:forEach var="post" items="${allPosts}" varStatus="status">
+                    <c:forEach var="post" items="${posts}" varStatus="status">
                         <div class="post">
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
@@ -350,20 +351,11 @@
                     <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
                     <div class="pull-left">
                         <ul class="paginationforum">
-                            <li class="hidden-xs"><a href="#" class="active">1</a></li>
-                            <li class="hidden-xs"><a href="#">2</a></li>
-                            <li class="hidden-xs"><a href="#">3</a></li>
-                            <li class="hidden-xs"><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li><a href="#">7</a></li>
-                            <li><a href="#">8</a></li>
-                            <li class="hidden-xs"><a href="#">9</a></li>
-                            <li class="hidden-xs"><a href="#">10</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                            <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-
+                            <c:set var="total" value="${fn:length(allPosts)/5}"/>
+                            <c:forEach begin="1" end="${total+(1-(total%1))%1}" varStatus="page">
+                                <li class="hidden-xs"><a href="/home/${page.index}" class="active">${page.index}</a>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
                     <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
@@ -414,13 +406,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-                {
-                    delay: 15000,
-                    startwidth: 1200,
-                    startheight: 278,
-                    hideThumbs: 10,
-                    fullWidth: "on"
-                });
+            {
+                delay: 15000,
+                startwidth: 1200,
+                startheight: 278,
+                hideThumbs: 10,
+                fullWidth: "on"
+            });
     });	//ready
 </script>
 
