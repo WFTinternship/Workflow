@@ -180,6 +180,11 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void setBestAnswer_success() {
         long id = 17, answerId = 15;
+        Post post = new Post();
+        User user = new User();
+        post.setUser(user);
+        doReturn(post).when(postDAOMock).getById(id);
+        doNothing().when(userDAOMock).updateRating(anyObject());
         List<Long> expected = Arrays.asList(id, answerId);
 
         // Test method
@@ -187,7 +192,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
         verify(postDAOMock, times(1)).setBestAnswer(id, answerId);
 
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
-        verify(postDAOMock, only()).setBestAnswer(argumentCaptor.capture(), argumentCaptor.capture());
+        verify(postDAOMock, times(1)).setBestAnswer(argumentCaptor.capture(), argumentCaptor.capture());
         assertEquals(argumentCaptor.getAllValues(), expected);
     }
 
@@ -222,13 +227,18 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void removeBestAnswer_success() {
         Long answerId = 15L;
+        Post post = new Post();
+        User user = new User();
+        post.setUser(user);
+        doReturn(post).when(postDAOMock).getById(answerId);
+        doNothing().when(userDAOMock).updateRating(anyObject());
 
         // Test method
         postService.removeBestAnswer(answerId);
         verify(postDAOMock, times(1)).removeBestAnswer(answerId);
 
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
-        verify(postDAOMock, only()).removeBestAnswer(argumentCaptor.capture());
+        verify(postDAOMock, times(1)).removeBestAnswer(argumentCaptor.capture());
         assertEquals(argumentCaptor.getValue(), answerId);
     }
 
@@ -462,6 +472,50 @@ public class PostServiceUnitTest extends BaseUnitTest {
     }
 
     /**
+     * @see PostService#getAnswersByUserId(long)
+     */
+    @Test
+    public void getAnswersByUserId_negativeId() {
+        try {
+            // Test method
+            postService.getAnswersByPostId(-1);
+            fail();
+        } catch (Exception ex) {
+            assertTrue(ex instanceof InvalidObjectException);
+        }
+    }
+
+    /**
+     * @see PostService#getAnswersByUserId(long)
+     */
+    @Test(expected = ServiceLayerException.class)
+    public void getAnswersByUserId_DAOException() {
+        long id = 15;
+        doThrow(RuntimeException.class).when(postDAOMock).getAnswersByUserId(id);
+
+        // Test method
+        postService.getAnswersByUserId(id);
+    }
+
+    /**
+     * @see PostService#getAnswersByUserId(long)
+     */
+    @Test
+    public void getAnswersByUserId_success() {
+        Long id = 15L;
+        List<Post> posts = new ArrayList<>();
+        doReturn(posts).when(postDAOMock).getAnswersByUserId(anyLong());
+
+        // Test method
+        List<Post> actualPosts = postService.getAnswersByUserId(id);
+        assertEquals(posts, actualPosts);
+
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postDAOMock, only()).getAnswersByUserId(argumentCaptor.capture());
+        assertEquals(argumentCaptor.getValue(), id);
+    }
+
+    /**
      * @see PostService#getBestAnswer(long)
      */
     @Test
@@ -633,14 +687,19 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void removeLike_success() {
         Long userId = 1L, postId = 1L;
+        Post post = new Post();
+        User user = new User();
+        post.setUser(user);
         List<Long> expected = Arrays.asList(userId, postId);
+        doReturn(post).when(postDAOMock).getById(postId);
+        doNothing().when(userDAOMock).updateRating(anyObject());
 
         //Test method
         postService.removeLike(1, 1);
         verify(postDAOMock, times(1)).removeLike(userId, postId);
 
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-        verify(postDAOMock, only()).removeLike(argument.capture(), argument.capture());
+        verify(postDAOMock, times(1)).removeLike(argument.capture(), argument.capture());
         assertEquals(expected, argument.getAllValues());
     }
 
@@ -683,14 +742,19 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void removeDislike_success() {
         Long userId = 1L, postId = 1L;
+        Post post = new Post();
+        User user = new User();
+        post.setUser(user);
         List<Long> expected = Arrays.asList(userId, postId);
+        doReturn(post).when(postDAOMock).getById(postId);
+        doNothing().when(userDAOMock).updateRating(anyObject());
 
         //Test method
         postService.removeDislike(1, 1);
         verify(postDAOMock, times(1)).removeDislike(userId, postId);
 
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-        verify(postDAOMock, only()).removeDislike(argument.capture(), argument.capture());
+        verify(postDAOMock, times(1)).removeDislike(argument.capture(), argument.capture());
         assertEquals(expected, argument.getAllValues());
     }
 
@@ -785,13 +849,20 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void like_success() {
         Long userId = 1L, postId = 1L;
+        Post post = new Post();
+        User user = new User();
+        post.setUser(user);
         List<Long> expected = Arrays.asList(userId, postId);
+        doReturn(post).when(postDAOMock).getById(postId);
+        doNothing().when(userDAOMock).updateRating(anyObject());
+
         //Test method
         postService.like(userId, postId);
         verify(postDAOMock, times(1)).like(userId, postId);
+        verify(postDAOMock, times(1)).getById(postId);
 
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-        verify(postDAOMock, only()).like(argument.capture(), argument.capture());
+        verify(postDAOMock, times(1)).like(argument.capture(), argument.capture());
         assertEquals(expected, argument.getAllValues());
     }
 
@@ -834,13 +905,19 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void dislike_success() {
         Long userId = 1L, postId = 1L;
+        Post post = new Post();
+        User user = new User();
+        post.setUser(user);
         List<Long> expected = Arrays.asList(userId, postId);
+        doReturn(post).when(postDAOMock).getById(postId);
+        doNothing().when(userDAOMock).updateRating(anyObject());
+
         //Test method
         postService.dislike(userId, postId);
         verify(postDAOMock, times(1)).dislike(userId, postId);
 
         ArgumentCaptor<Long> argument = ArgumentCaptor.forClass(Long.class);
-        verify(postDAOMock, only()).dislike(argument.capture(), argument.capture());
+        verify(postDAOMock, times(1)).dislike(argument.capture(), argument.capture());
         assertEquals(expected, argument.getAllValues());
     }
 
@@ -925,7 +1002,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test
     public void getNotified_negativeId() {
         User user = DaoTestUtil.getRandomUser();
-        long userId =  userService.add(user);
+        long userId = userService.add(user);
         try {
             //Test method
             postService.getNotified(-1, userId);

@@ -188,7 +188,7 @@ public class UserController {
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
-        long numOfUsersAnswers = postService.getByUserId(userId).size();
+        long numOfUsersAnswers = postService.getAnswersByUserId(userId).size();
         long numOfUsersPosts = postList.size();
 
         modelAndView
@@ -244,7 +244,7 @@ public class UserController {
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
-        long numOfUsersAnswers = postService.getByUserId(user.getId()).size();
+        long numOfUsersAnswers = postService.getAnswersByUserId(user.getId()).size();
         long numOfUsersPosts = posts.size();
 
         modelAndView

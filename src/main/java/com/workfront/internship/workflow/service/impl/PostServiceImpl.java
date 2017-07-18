@@ -210,6 +210,27 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
+     * @see PostService#getAnswersByUserId(long)
+     * @param id id of the user
+     * @return
+     */
+    @Override
+    public List<Post> getAnswersByUserId(long id) {
+        if (id < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+        List<Post> answers;
+        try {
+            answers = postDAO.getAnswersByUserId(id);
+            return answers;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new ServiceLayerException("Failed to get answers of the specified user");
+        }
+    }
+
+    /**
      * @see PostService#getBestAnswer(long)
      */
     @Override

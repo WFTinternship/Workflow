@@ -289,6 +289,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
     public void getAppAreasById_success() {
         Long id = 123L;
         List<AppArea> appAreas = new ArrayList<>();
+        appAreas.add(AppArea.AGILE);
         doReturn(appAreas).when(userDAOMock).getAppAreasById(id);
 
         //Test method
