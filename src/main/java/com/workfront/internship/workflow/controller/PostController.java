@@ -199,4 +199,23 @@ public class PostController {
         return modelAndView;
     }
 
+    @RequestMapping(value = {"/searchPost"}, method = RequestMethod.POST)
+    public ModelAndView searchPost(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        String postTitle = request.getParameter("postTitle");
+        List<Post> posts = postService.getByTitle(postTitle);
+
+        String searchMessage = "search results for post with title " + "'" + postTitle + "'";
+
+        modelAndView
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.SEARCHMESSAGE, searchMessage);
+
+        return modelAndView;
+    }
+
 }

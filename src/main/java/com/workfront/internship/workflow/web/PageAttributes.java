@@ -16,6 +16,7 @@ public interface PageAttributes {
     String APPAREA = "appArea";
     String POSTCOMMENTS = "postComments";
     String MESSAGE = "message";
+    String SEARCHMESSAGE = "searchMessage";
     String EMAIL = "email";
     String PASSWORD = "password";
     String AVATAR = "avatar";

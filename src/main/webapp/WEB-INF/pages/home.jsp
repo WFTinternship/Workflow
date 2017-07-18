@@ -15,6 +15,7 @@
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="searchMessage" value='<%=request.getAttribute(PageAttributes.SEARCHMESSAGE)%>'/>
 <c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
@@ -132,11 +133,11 @@
                         height=67px width=67px/></a></div>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
-                        <form action="#" method="post" class="form">
-                            <div class="pull-left txt"><input type="text" class="form-control"
-                                                              placeholder="Search Topics"></div>
+                        <form action="/searchPost" method="post" class="form">
+                            <div class="pull-left txt"><input type="text" class="form-control" name="postTitle"
+                                                              placeholder="Search posts"></div>
                             <div class="pull-right">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -207,6 +208,9 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8">
                     <!-- POST -->
+                    <c:if test="${searchMessage != null}">
+                        <h4> ${searchMessage} </h4>
+                    </c:if>
                     <c:forEach var="post" items="${allPosts}" varStatus="status">
                         <div class="post">
                             <div class="wrap-ut pull-left">
