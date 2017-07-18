@@ -30,7 +30,7 @@ import java.util.List;
 @Repository
 public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(PostDAOSpringImpl.class);
 
     public PostDAOSpringImpl() {
         dataSource = DBHelper.getPooledConnection();

@@ -54,16 +54,7 @@ public class HomeController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("home");
 
-        posts = postService.getAll();
-
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
         return modelAndView;
     }
@@ -81,13 +72,8 @@ public class HomeController {
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found in " + AppArea.getById(id).getName() + " Application Area.");
         }
-        // pass all appAreas to appAreas page
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
+
+        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
 
         return modelAndView;
     }

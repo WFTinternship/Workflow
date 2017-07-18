@@ -28,7 +28,7 @@ import java.util.List;
 @Repository
 public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDAOSpringImpl.class);
 
     public UserDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;

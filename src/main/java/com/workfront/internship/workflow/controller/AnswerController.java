@@ -89,11 +89,10 @@ public class AnswerController {
         answers = postService.getAnswersByPostId(postId);
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
 
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.POST, post)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.POSTCOMMENTS, comments)
                 .addObject(PageAttributes.ANSWERS, answers)
                 .addObject(PageAttributes.ANSWERCOMMENTS, answerComments)
@@ -102,9 +101,8 @@ public class AnswerController {
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(posts, postService));
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService));
+
 
         if (StringUtils.isEmpty(content)) {
             request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");

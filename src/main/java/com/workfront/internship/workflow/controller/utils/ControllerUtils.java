@@ -4,10 +4,10 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.web.PageAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by nane on 7/1/17
@@ -28,6 +28,7 @@ public class ControllerUtils {
         }
         return sizeOfPostsBySameAppAreaID;
     }
+
 
     public static List<Integer> getNumberOfAnswers(List<Post> postList, PostService postService) {
         List<Integer> numbersOfAnswersForPosts = new ArrayList<>();
@@ -68,17 +69,55 @@ public class ControllerUtils {
         return numbersOfDislikesForPosts;
     }
 
-    public static List<Post> getTopPosts(PostService postService, List<Post> posts) {
-        List<Post> topPosts = new ArrayList<>();
+    public static List<Post> getMostDiscussedPosts(PostService postService, List<Post> posts) {
+        List<Post> mostDiscussedPosts = new ArrayList<>(posts);
+
         try {
-            for (Post post : posts) {
-                if (postService.getAnswersByPostId(post.getId()).size() > 4) {
-                    topPosts.add(post);
-                }
-            }
+            mostDiscussedPosts.sort(Comparator.comparing(post ->
+                    -postService.getAnswersByPostId(post.getId()).size()));
+            return mostDiscussedPosts;
         } catch (ServiceLayerException e) {
-            return null;
+            return mostDiscussedPosts;
         }
-        return topPosts;
     }
+
+    public static List<Post> getTopPosts(PostService postService, List<Post> posts) {
+        List<Post> topPosts = new ArrayList<>(posts);
+
+        try {
+            topPosts.sort(Comparator.comparing(post ->
+                    postService.getDislikesNumber(post.getId()) - postService.getLikesNumber(post.getId())));
+            return topPosts;
+        } catch (ServiceLayerException e) {
+            return topPosts;
+        }
+    }
+
+    public static void setDefaultAttributes(PostService postService, ModelAndView modelAndView) {
+        List<Post> allPosts = postService.getAll();
+        modelAndView.addObject(PageAttributes.ALLPOSTS, allPosts);
+        setDefaultAttributes(postService, allPosts, modelAndView);
+    }
+
+    public static void setDefaultAttributes(PostService postService, List<Post> posts, ModelAndView modelAndView) {
+        List<Post> topPosts = getTopPosts(postService, posts);
+        List<Post> mostDiscussedPosts = getMostDiscussedPosts(postService, posts);
+
+        if (mostDiscussedPosts.size() > 5) {
+            mostDiscussedPosts = mostDiscussedPosts.subList(0, 4);
+        }
+
+        if (topPosts.size() > 5) {
+            topPosts = topPosts.subList(0, 4);
+        }
+
+        modelAndView
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOPPOSTS, topPosts)
+                .addObject(PageAttributes.MOSTDISCUSSEDPOSTS, mostDiscussedPosts);
+    }
+
 }

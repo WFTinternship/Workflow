@@ -55,26 +55,20 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(HttpServletRequest request) {
+    public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
-        List<Post> posts = postService.getAll();
 
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         return modelAndView;
     }
 
@@ -93,7 +87,9 @@ public class UserController {
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView signUp(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
-        request.setAttribute(PageAttributes.APPAREAS, appAreas);
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         modelAndView.setStatus(HttpStatus.GONE);
         return modelAndView;
     }
@@ -162,14 +158,8 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("home");
 
-        List<Post> posts = postService.getAll();
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 
@@ -191,16 +181,14 @@ public class UserController {
         long numOfUsersAnswers = postService.getAnswersByUserId(userId).size();
         long numOfUsersPosts = postList.size();
 
+        ControllerUtils.setDefaultAttributes(postService, postList, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.APPAREAS, allAppAreas)
                 .addObject(PageAttributes.NUMOFUSERSPOSTS, numOfUsersPosts)
                 .addObject(PageAttributes.NUMOFUSERSANSWERS, numOfUsersAnswers)
-                .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(postList, postService))
                 .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
@@ -247,17 +235,15 @@ public class UserController {
         long numOfUsersAnswers = postService.getAnswersByUserId(user.getId()).size();
         long numOfUsersPosts = posts.size();
 
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
                 .addObject(PageAttributes.NUMOFUSERSPOSTS, numOfUsersPosts)
                 .addObject(PageAttributes.NUMOFUSERSANSWERS, numOfUsersAnswers)
-                .addObject(PageAttributes.PROFILEOWNER, user)
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
 
@@ -287,6 +273,8 @@ public class UserController {
             dislikedPosts = userService.getDislikedPosts(user.getId());
         }
 
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.POSTCOMMENTS, postComments)
@@ -297,10 +285,7 @@ public class UserController {
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         return modelAndView;
     }
@@ -320,14 +305,12 @@ public class UserController {
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
+        ControllerUtils.setDefaultAttributes(postService, postList, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(postList, postService))
                 .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
@@ -365,14 +348,12 @@ public class UserController {
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(postList, postService))
                 .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }

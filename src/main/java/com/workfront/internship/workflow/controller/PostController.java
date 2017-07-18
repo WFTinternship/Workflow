@@ -75,6 +75,8 @@ public class PostController {
         List<Post> allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
 
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.POSTCOMMENTS, postComments)
@@ -85,10 +87,7 @@ public class PostController {
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         return modelAndView;
     }
@@ -133,13 +132,7 @@ public class PostController {
             LOGGER.info("Failed to send emails");
         }
 
-        List<Post> posts = postService.getAll();
-
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.ALLPOSTS, posts);
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
         return modelAndView;
     }
@@ -148,15 +141,8 @@ public class PostController {
     public ModelAndView newPost() {
         ModelAndView modelAndView = new ModelAndView("new_post");
 
-        List<Post> posts = postService.getAll();
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 
@@ -187,14 +173,11 @@ public class PostController {
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
+        ControllerUtils.setDefaultAttributes(postService, postList, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
                 .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
-                .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(postList, postService))
                 .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
@@ -208,10 +191,9 @@ public class PostController {
 
         String searchMessage = "search results for post with title " + "'" + postTitle + "'";
 
+        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
+
         modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
                 .addObject(PageAttributes.ALLPOSTS, posts)
                 .addObject(PageAttributes.SEARCHMESSAGE, searchMessage);
 

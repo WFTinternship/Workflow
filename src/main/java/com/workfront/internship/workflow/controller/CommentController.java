@@ -105,16 +105,16 @@ public class CommentController {
             }
             request.setAttribute(PageAttributes.ANSWERCOMMENTS, answerComments);
         }
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.ANSWERS, answers)
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         return modelAndView;
     }
