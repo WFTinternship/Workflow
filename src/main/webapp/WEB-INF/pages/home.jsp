@@ -9,7 +9,8 @@
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
-<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<%--<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>--%>
+<c:set var="totalNum" value='<%=request.getAttribute(PageAttributes.TOTAL)%>'/>
 <c:set var="posts" value='<%=request.getAttribute(PageAttributes.POSTS)%>'/>
 <c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
@@ -351,7 +352,7 @@
                     <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
                     <div class="pull-left">
                         <ul class="paginationforum">
-                            <c:set var="total" value="${fn:length(allPosts)/5}"/>
+                            <c:set var="total" value="${totalNum/5}"/>
                             <c:forEach begin="1" end="${total+(1-(total%1))%1}" varStatus="page">
                                 <li class="hidden-xs"><a href="/home/${page.index}" class="active">${page.index}</a>
                                 </li>

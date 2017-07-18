@@ -133,13 +133,15 @@ public class PostController {
             LOGGER.info("Failed to send emails");
         }
 
-        List<Post> posts = postService.getAll();
+        List<Post> allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
 
         modelAndView
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.ALLPOSTS, posts);
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.POSTS, posts);
 
         return modelAndView;
     }

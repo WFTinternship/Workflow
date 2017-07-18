@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class ControllerUtils {
 
+
+    private static final int NUMBER_OF_POST_PER_PAGE = 5;
     private static List<AppArea> appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
 
     public static List<Integer> getNumberOfPostsForAppArea(List<AppArea> appAreas, PostService postService) {
@@ -80,5 +82,25 @@ public class ControllerUtils {
             return null;
         }
         return topPosts;
+    }
+
+    public static List<Post> getPostsByPage(List<Post> allPosts, int page) {
+        List<Post> posts;
+        int total = allPosts.size();
+
+        if (page == 1) {
+            posts = total < NUMBER_OF_POST_PER_PAGE ?
+                    allPosts.subList(0, total) : allPosts.subList(0, NUMBER_OF_POST_PER_PAGE);
+        } else {
+            int start = (page - 1) * NUMBER_OF_POST_PER_PAGE;
+            int end = start + 5;
+            posts = total < end ?
+                    allPosts.subList(start, total) : allPosts.subList(start, end);
+        }
+        return posts;
+    }
+
+    public static List<Post> getFirstPagePosts(List<Post> allPosts){
+        return getPostsByPage(allPosts, 1);
     }
 }

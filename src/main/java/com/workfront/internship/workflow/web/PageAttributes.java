@@ -36,4 +36,5 @@ public interface PageAttributes {
     String FIRSTNAME = "firstName";
     String LASTNAME = "lastName";
     String POSTS = "posts";
+    String TOTAL = "total";
 }

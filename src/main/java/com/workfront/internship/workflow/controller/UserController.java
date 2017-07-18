@@ -67,10 +67,12 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
-        List<Post> posts = postService.getAll();
+        List<Post> allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
 
         modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.POSTS, posts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
@@ -162,10 +164,12 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("home");
 
-        List<Post> posts = postService.getAll();
+        List<Post> allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
 
         modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.POSTS, posts)
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
