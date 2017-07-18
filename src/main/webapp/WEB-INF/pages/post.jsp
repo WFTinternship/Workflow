@@ -129,10 +129,10 @@
                             src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
-                <form action="/delete-post/${post.id}" method="post">
+                <form action="/delete/${post.id}" method="post">
                     <div class="modal-body">
                         <div class="delete-post-msg">
-                            <span>Are you sure you want to delete this post ?</span>
+                            <span>Are you sure you want to delete this ?</span>
                         </div>
                     </div>
 
@@ -256,9 +256,6 @@
                                         <li role="presentation">
                                             <a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
                                         </li>
-                                        <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" href="/edit/${user.id}">Edit Profile</a>
-                                        </li>
                                         <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log
                                             Out</a>
                                         </li>
@@ -313,8 +310,7 @@
 
                                     <div class="delete-post" data-toggle="modal"
                                          data-target="#deleteModal">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                        <span>Delete</span>
+                                        <i class="fa fa-times" aria-hidden="true" title="Delete">></i>
                                     </div>
 
                                     <div class="edit-post">
@@ -455,6 +451,12 @@
                                 <div class="posttext pull-left">
 
                                     <c:if test="${user.id == answer.user.id}">
+
+                                        <div class="delete-post" data-toggle="modal"
+                                             data-target="#deleteModal">
+                                            <i class="fa fa-times" aria-hidden="true" title="Delete"></i>
+                                        </div>
+
                                         <div class="edit-answer">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             <span>

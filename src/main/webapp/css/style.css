@@ -125,7 +125,13 @@ input#new-comment {
     cursor: pointer;
     padding-left: 20px;
 }
-
+.edit-profile{
+    float: right;
+    color: #f77f29;
+    cursor: pointer;
+    padding: 13px;
+    font-size: 17px;
+}
 .edit-post {
     float: right;
     color: #1565C0;

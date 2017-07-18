@@ -213,55 +213,67 @@
 
                     <div class="user-card">
                         <div class="row">
-                        <div class="col-md-6 col-sidebar">
-                            <div class="avatar-card">
-                                <c:if test="${(user != null) && (user.id == profileOwner.id)}">
-                                    <form action="/updateAvatar" class="form newtopic" method="post"
-                                          enctype="multipart/form-data">
-                                        <div class="avatar center-block">
-                                            <input type="image" name="avatar" id="image" src="${profileOwner.avatarURL}"
-                                                     height="140" width="140"/>
-                                            <%--<label for="avatar" class="btn"><img src="${profileOwner.avatarURL}"--%>
-                                                 <%--id="image1" alt="" height="140" width="140"/>--%>
-                                            <%--</label>--%>
-                                            <input type="file" name="avatar" id="my_file" style="display: none;" required title="Click on the photo to choose a file"/>
-                                        </div>
-                                        <input class="btn btn-primary" type="submit" value="Update Avatar" required title="Click on the photo to choose a file"/>
-                                    </form>
-                                </c:if>
-                                <c:if test="${(user == null) || (user !=null && user.id != profileOwner.id)}">
-                                    <div class="avatar center-block">
-                                        <img src="${profileOwner.avatarURL}"
-                                             id="image2" alt="" height="140" width="140"/>
+                            <c:if test="${(user != null)}">
+                                <a href="/edit/${user.id}">
+
+                                    <div class="edit-profile">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        Edit Profile
                                     </div>
-                                </c:if>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-content">
-                            <h2 class="user-card-name">${profileOwner.firstName} ${profileOwner.lastName}</h2>
-                            <div class="user-links">
-                                <div class="user-stats">
-                                    <div class="row">
-                                        <div class="stat col-3">
-                                            <span class="number">${numOfUsersAnswers}</span>
-                                            <span>answers</span>
-                                        </div>
-                                        <div class="stat col-3">
-                                            <div class="stat col-3">
-                                                <span class="number">${numOfUsersPosts}</span>
-                                                <span>questions</span>
+                                </a>
+                            </c:if>
+                            <div class="col-md-6 col-sidebar">
+                                <div class="avatar-card">
+                                    <c:if test="${(user != null) && (user.id == profileOwner.id)}">
+                                        <form action="/updateAvatar" class="form newtopic" method="post"
+                                              enctype="multipart/form-data">
+                                            <div class="avatar center-block">
+                                                <input type="image" name="avatar" id="image"
+                                                       src="${profileOwner.avatarURL}"
+                                                       height="140" width="140"/>
+                                                    <%--<label for="avatar" class="btn"><img src="${profileOwner.avatarURL}"--%>
+                                                    <%--id="image1" alt="" height="140" width="140"/>--%>
+                                                    <%--</label>--%>
+                                                <input type="file" name="avatar" id="my_file" style="display: none;"
+                                                       required title="Click on the photo to choose a file"/>
                                             </div>
+                                            <input class="btn btn-primary" type="submit" value="Update Avatar" required
+                                                   title="Click on the photo to choose a file"/>
+                                        </form>
+                                    </c:if>
+                                    <c:if test="${(user == null) || (user !=null && user.id != profileOwner.id)}">
+                                        <div class="avatar center-block">
+                                            <img src="${profileOwner.avatarURL}"
+                                                 id="image2" alt="" height="140" width="140"/>
                                         </div>
-                                        <div class="stat col-3">
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-content">
+                                <h2 class="user-card-name">${profileOwner.firstName} ${profileOwner.lastName}</h2>
+                                <div class="user-links">
+                                    <div class="user-stats">
+                                        <div class="row">
                                             <div class="stat col-3">
-                                                <span class="number">${profileOwner.rating}</span>
-                                                <span>rating</span>
+                                                <span class="number">${numOfUsersAnswers}</span>
+                                                <span>answers</span>
+                                            </div>
+                                            <div class="stat col-3">
+                                                <div class="stat col-3">
+                                                    <span class="number">${numOfUsersPosts}</span>
+                                                    <span>questions</span>
+                                                </div>
+                                            </div>
+                                            <div class="stat col-3">
+                                                <div class="stat col-3">
+                                                    <span class="number">${profileOwner.rating}</span>
+                                                    <span>rating</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
 
                     </div>
@@ -533,13 +545,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-                {
-                    delay: 15000,
-                    startwidth: 1200,
-                    startheight: 278,
-                    hideThumbs: 10,
-                    fullWidth: "on"
-                });
+            {
+                delay: 15000,
+                startwidth: 1200,
+                startheight: 278,
+                hideThumbs: 10,
+                fullWidth: "on"
+            });
     });	//ready
 </script>
 
@@ -609,7 +621,7 @@
 </script>
 
 <script>
-    $("input[type='image']").click(function(event) {
+    $("input[type='image']").click(function (event) {
         event.preventDefault();
         $("input[id='my_file']").click();
     });

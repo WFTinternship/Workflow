@@ -59,7 +59,36 @@ public class AnswerController {
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
+        String content = request.getParameter("reply");
+        posts = postService.getAll();
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(PageAttributes.USER);
+
         post = postService.getById(postId);
+
+        if (StringUtils.isEmpty(content)) {
+            request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
+            return modelAndView;
+        }
+
+        AppArea appArea = post.getAppArea();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        Post answer = new Post();
+        answer.setUser(user)
+                .setContent(content)
+                .setAppArea(appArea)
+                .setTitle(post.getTitle())
+                .setPostTime(timestamp)
+                .setPost(post);
+
+        try {
+            postService.add(answer);
+        } catch (RuntimeException e) {
+            request.setAttribute(PageAttributes.MESSAGE,
+                    "Sorry, your answer was not added. Please try again");
+        }
 
         List<Post> answers = postService.getAnswersByPostId(postId);
         List<List<Comment>> answerComments = new ArrayList<>();
@@ -67,12 +96,6 @@ public class AnswerController {
         for (Post postAnswer : answers) {
             answerComments.add(commentService.getByPostId(postAnswer.getId()));
         }
-
-        String content = request.getParameter("reply");
-        posts = postService.getAll();
-
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(PageAttributes.USER);
 
         List<Post> likedPosts = new ArrayList<>();
         List<Post> dislikedPosts = new ArrayList<>();
@@ -106,28 +129,6 @@ public class AnswerController {
                 .addObject(PageAttributes.NUMOFANSWERS,
                         ControllerUtils.getNumberOfAnswers(posts, postService));
 
-        if (StringUtils.isEmpty(content)) {
-            request.setAttribute(PageAttributes.MESSAGE, "The body is missing.");
-            return modelAndView;
-        }
-
-        AppArea appArea = post.getAppArea();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-        Post answer = new Post();
-        answer.setUser(user)
-                .setContent(content)
-                .setAppArea(appArea)
-                .setTitle(post.getTitle())
-                .setPostTime(timestamp)
-                .setPost(post);
-
-        try {
-            postService.add(answer);
-        } catch (RuntimeException e) {
-            request.setAttribute(PageAttributes.MESSAGE,
-                    "Sorry, your answer was not added. Please try again");
-        }
         List<User> users = postService.getNotificationRecipients(postId);
         try {
             postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
