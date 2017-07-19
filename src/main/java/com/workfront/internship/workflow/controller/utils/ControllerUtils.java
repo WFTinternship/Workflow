@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by nane on 7/1/17
@@ -22,9 +23,8 @@ public class ControllerUtils {
         List<Integer> sizeOfPostsBySameAppAreaID = new ArrayList<>();
         // getting and passing list of sizes of each posts by same appArea id to home page
         try {
-            for (AppArea appArea : appAreas) {
-                sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
-            }
+            sizeOfPostsBySameAppAreaID.addAll(appAreas.stream()
+                    .map(appArea -> postService.getByAppAreaId(appArea.getId()).size()).collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return null;
         }
@@ -36,9 +36,8 @@ public class ControllerUtils {
         List<Integer> numbersOfAnswersForPosts = new ArrayList<>();
         // getting and passing list of sizes of each posts by same appArea id to home page
         try {
-            for (Post post : postList) {
-                numbersOfAnswersForPosts.add(postService.getNumberOfAnswers(post.getId()));
-            }
+            numbersOfAnswersForPosts.addAll(postList.stream()
+                    .map(post -> postService.getNumberOfAnswers(post.getId())).collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return null;
         }
@@ -48,9 +47,8 @@ public class ControllerUtils {
     public static List<Long> getNumberOfLikes(List<Post> postList, PostService postService) {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
         try {
-            for (Post post : postList) {
-                numbersOfLikesForPosts.add(postService.getLikesNumber(post.getId()));
-            }
+            numbersOfLikesForPosts.addAll(postList.stream()
+                    .map(post -> postService.getLikesNumber(post.getId())).collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return numbersOfLikesForPosts;
         }
@@ -60,9 +58,8 @@ public class ControllerUtils {
     public static List<Long> getNumberOfDislikes(List<Post> postList, PostService postService) {
         List<Long> numbersOfDislikesForPosts = new ArrayList<>();
         try {
-            for (Post post : postList) {
-                numbersOfDislikesForPosts.add(postService.getDislikesNumber(post.getId()));
-            }
+            numbersOfDislikesForPosts.addAll(postList.stream()
+                    .map(post -> postService.getDislikesNumber(post.getId())).collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return numbersOfDislikesForPosts;
         }
@@ -72,10 +69,8 @@ public class ControllerUtils {
     public static List<Long> getDifOfLikesDislikes(List<Post> postList, PostService postService) {
         List<Long> numbersOfDislikesForPosts = new ArrayList<>();
         try {
-            for (Post post : postList) {
-                numbersOfDislikesForPosts.
-                        add(postService.getLikesNumber(post.getId()) - postService.getDislikesNumber(post.getId()));
-            }
+            numbersOfDislikesForPosts.addAll(postList.stream()
+                    .map(post -> postService.getLikesNumber(post.getId()) - postService.getDislikesNumber(post.getId())).collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return numbersOfDislikesForPosts;
         }
