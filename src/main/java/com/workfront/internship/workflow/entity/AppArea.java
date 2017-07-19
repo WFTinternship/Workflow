@@ -1,6 +1,6 @@
 package com.workfront.internship.workflow.entity;
 
-import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 
 public enum AppArea {
@@ -177,10 +177,6 @@ public enum AppArea {
 
     private String teamName;
 
-    private List<Post> posts;
-
-    private List<User> users;
-
     AppArea(long id, String name, String description, String teamName) {
         this.id = id;
         this.name = name;
@@ -206,6 +202,10 @@ public enum AppArea {
         return null;
     }
 
+    public static List<AppArea> getAsList() {
+        return Arrays.asList(AppArea.values());
+    }
+
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
     }
@@ -224,10 +224,6 @@ public enum AppArea {
 
     public String getTeamName() {
         return teamName;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
     }
 
     public boolean isValid() {

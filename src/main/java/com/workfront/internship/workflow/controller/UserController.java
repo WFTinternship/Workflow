@@ -37,8 +37,6 @@ public class UserController {
     private static final String DEFAULT_AVATAR_URL = "/images/default/user-avatar.png";
     private UserService userService;
     private PostService postService;
-    private CommentService commentService;
-    private List<AppArea> appAreas;
 
     public UserController() {
     }
@@ -46,9 +44,7 @@ public class UserController {
     @Autowired
     public UserController(UserService userService, PostService postService, CommentService commentService) {
         this.userService = userService;
-        appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         this.postService = postService;
-        this.commentService = commentService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

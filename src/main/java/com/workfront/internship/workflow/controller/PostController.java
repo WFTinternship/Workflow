@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by nane on 6/25/17
@@ -31,7 +31,6 @@ import java.util.List;
 @Controller
 public class PostController {
 
-    private static final Logger LOGGER = Logger.getLogger(PostController.class);
     private CommentService commentService;
     private PostService postService;
     private UserService userService;
@@ -53,7 +52,7 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView("post");
 
         String url = request.getRequestURL().toString();
-        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         User user = (User) request.getSession().getAttribute(PageAttributes.USER);
 
@@ -64,14 +63,24 @@ public class PostController {
             dislikedPosts = userService.getDislikedPosts(user.getId());
         }
 
-        Post post = postService.getById(id);
+        Post post = postService.getById(postId);
 
-        List<Comment> postComments = commentService.getByPostId(post.getId());
+        List<Post> allPosts;
+        List<Post> answers;
+        List<Comment> postComments;
 
-        List<Post> answers = postService.getAnswersByPostId(post.getId());
+        answers = postService.getAnswersByPostId(postId);
 
-        List<Post> allPosts = new ArrayList<>(answers);
+        allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
+
+        postComments = commentService.getByPostId(postId);
+
+        List<List<Comment>> answerComments = answers.stream()
+                .map(postAnswer -> commentService.getByPostId(postAnswer.getId()))
+                .collect(Collectors.toList());
+
+        modelAndView.addObject(PageAttributes.ANSWERCOMMENTS, answerComments);
 
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
@@ -117,7 +126,8 @@ public class PostController {
                     "Sorry, your post was not added. Please try again")
                     .setViewName("new_post");
         }
-        //TODO move to service layer
+
+        // Turns on notifications for the post, if the person wanted
         if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
@@ -126,7 +136,6 @@ public class PostController {
             List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
             postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
         } catch (RuntimeException e) {
-            LOGGER.info("Failed to send emails");
         }
 
         return modelAndView;
