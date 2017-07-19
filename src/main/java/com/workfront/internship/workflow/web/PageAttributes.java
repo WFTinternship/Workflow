@@ -22,9 +22,11 @@ public interface PageAttributes {
     String AVATAR = "avatar";
     String MYAPPAREAS = "myAppAreas";
     String NUMOFANSWERS = "numberOfAnswers";
+    String NUMOFANSWERSFORMDP = "numberOfAnswersForMDP";
     String NOTE = "note";
     String NUMOFLIKES = "numberOfLikes";
     String NUMOFDISLIKES = "numberOfDislikes";
+    String DIFOFLIKESDISLIKES = "difOfLikesDislikes";
     String ANSWERCOMMENTS = "answerComments";
     String PROFILEOWNERID = "ownerId";
     String PROFILEOWNER = "owner";

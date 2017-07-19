@@ -60,7 +60,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/appArea/*", method = RequestMethod.GET)
-    public ModelAndView appArea(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView appArea(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("home");
 
         String url = request.getRequestURL().toString();
@@ -75,6 +75,46 @@ public class HomeController {
 
         ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
 
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "topPosts", method = RequestMethod.GET)
+    public ModelAndView topPosts(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        // getting and passing all posts
+        posts = postService.getAll();
+        if (posts.size() == 0) {
+            request.setAttribute(PageAttributes.MESSAGE,
+                    "No posts were found");
+        }
+
+        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
+
+        List<Post> mostDiscussedPosts = ControllerUtils.getTopPosts(postService, posts);
+
+        modelAndView.addObject(PageAttributes.ALLPOSTS, mostDiscussedPosts)
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "mostDiscussedPosts", method = RequestMethod.GET)
+    public ModelAndView mostDiscussedPosts(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        // getting and passing all posts
+        posts = postService.getAll();
+        if (posts.size() == 0) {
+            request.setAttribute(PageAttributes.MESSAGE,
+                    "No posts were found");
+        }
+
+        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
+
+        List<Post> mostDiscussedPosts = ControllerUtils.getMostDiscussedPosts(postService, posts);
+
+        modelAndView.addObject(PageAttributes.ALLPOSTS, mostDiscussedPosts)
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
 }

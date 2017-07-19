@@ -423,7 +423,7 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>Most discussed posts</h3>
+                        <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
                         <c:forEach var="post" items="${mostDiscussedPosts}">
                             <div class="divline"></div>
                             <div class="blocktxt">
@@ -434,7 +434,7 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>Top Posts</h3>
+                        <a href="/topPosts"><h3>Top Posts</h3></a>
 
                         <c:forEach var="post" items="${topPosts}">
                             <div class="divline"></div>

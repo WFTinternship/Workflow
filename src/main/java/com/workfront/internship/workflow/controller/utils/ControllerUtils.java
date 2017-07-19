@@ -45,26 +45,37 @@ public class ControllerUtils {
 
     public static List<Long> getNumberOfLikes(List<Post> postList, PostService postService) {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
-        // getting and passing list of sizes of each posts by same appArea id to home page
         try {
             for (Post post : postList) {
                 numbersOfLikesForPosts.add(postService.getLikesNumber(post.getId()));
             }
         } catch (ServiceLayerException e) {
-            return null;
+            return numbersOfLikesForPosts;
         }
         return numbersOfLikesForPosts;
     }
 
     public static List<Long> getNumberOfDislikes(List<Post> postList, PostService postService) {
         List<Long> numbersOfDislikesForPosts = new ArrayList<>();
-        // getting and passing list of sizes of each posts by same appArea id to home page
         try {
             for (Post post : postList) {
                 numbersOfDislikesForPosts.add(postService.getDislikesNumber(post.getId()));
             }
         } catch (ServiceLayerException e) {
-            return null;
+            return numbersOfDislikesForPosts;
+        }
+        return numbersOfDislikesForPosts;
+    }
+
+    public static List<Long> getDifOfLikesDislikes(List<Post> postList, PostService postService) {
+        List<Long> numbersOfDislikesForPosts = new ArrayList<>();
+        try {
+            for (Post post : postList) {
+                numbersOfDislikesForPosts.
+                        add(postService.getLikesNumber(post.getId()) - postService.getDislikesNumber(post.getId()));
+            }
+        } catch (ServiceLayerException e) {
+            return numbersOfDislikesForPosts;
         }
         return numbersOfDislikesForPosts;
     }
@@ -114,6 +125,10 @@ public class ControllerUtils {
         modelAndView
                 .addObject(PageAttributes.NUMOFANSWERS,
                         getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.NUMOFANSWERSFORMDP,
+                        getNumberOfAnswers(mostDiscussedPosts, postService))
+                .addObject(PageAttributes.DIFOFLIKESDISLIKES,
+                        getDifOfLikesDislikes(topPosts, postService))
                 .addObject(PageAttributes.APPAREAS, appAreas)
                 .addObject(PageAttributes.POSTS_OF_APPAAREA, getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.TOPPOSTS, topPosts)
