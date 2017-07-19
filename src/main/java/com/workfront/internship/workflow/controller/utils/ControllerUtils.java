@@ -117,11 +117,11 @@ public class ControllerUtils {
         List<Post> mostDiscussedPosts = getMostDiscussedPosts(postService, posts);
 
         if (mostDiscussedPosts.size() > 5) {
-            mostDiscussedPosts = mostDiscussedPosts.subList(0, 4);
+            mostDiscussedPosts = mostDiscussedPosts.subList(0, 5);
         }
 
         if (topPosts.size() > 5) {
-            topPosts = topPosts.subList(0, 4);
+            topPosts = topPosts.subList(0, 5);
         }
 
         modelAndView

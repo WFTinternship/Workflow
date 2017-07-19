@@ -81,18 +81,11 @@ public class HomeController {
         allPosts = postService.getAll();
         List<Post> posts = ControllerUtils.getPostsByPage(allPosts, page);
 
-        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        ControllerUtils.setDefaultAttributes(postService, allPosts, modelAndView);
 
         modelAndView
                 .addObject(PageAttributes.POSTS, posts)
-                .addObject(PageAttributes.TOTAL, allPosts.size())
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
-
+                .addObject(PageAttributes.TOTAL, allPosts.size());
         return modelAndView;
     }
 
@@ -114,14 +107,7 @@ public class HomeController {
 
         // pass all appAreas to appAreas page
         modelAndView
-                .addObject(PageAttributes.POSTS, postsByAppArea)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, allPosts));
-
-        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
-
+                .addObject(PageAttributes.POSTS, postsByAppArea);
         return modelAndView;
     }
 
@@ -130,15 +116,15 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("home");
 
         // getting and passing all posts
-        posts = postService.getAll();
-        if (posts.size() == 0) {
+        allPosts = postService.getAll();
+        if (allPosts.size() == 0) {
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found");
         }
 
-        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
+        ControllerUtils.setDefaultAttributes(postService, allPosts, modelAndView);
 
-        List<Post> mostDiscussedPosts = ControllerUtils.getTopPosts(postService, posts);
+        List<Post> mostDiscussedPosts = ControllerUtils.getTopPosts(postService, allPosts);
 
         modelAndView.addObject(PageAttributes.ALLPOSTS, mostDiscussedPosts)
                 .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
@@ -150,15 +136,15 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("home");
 
         // getting and passing all posts
-        posts = postService.getAll();
-        if (posts.size() == 0) {
+        allPosts = postService.getAll();
+        if (allPosts.size() == 0) {
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found");
         }
 
-        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
+        ControllerUtils.setDefaultAttributes(postService, allPosts, modelAndView);
 
-        List<Post> mostDiscussedPosts = ControllerUtils.getMostDiscussedPosts(postService, posts);
+        List<Post> mostDiscussedPosts = ControllerUtils.getMostDiscussedPosts(postService, allPosts);
 
         modelAndView.addObject(PageAttributes.ALLPOSTS, mostDiscussedPosts)
                 .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));

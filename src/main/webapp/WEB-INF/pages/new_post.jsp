@@ -11,6 +11,10 @@
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOSTDISCUSSEDPOSTS)%>'/>
 <c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
+
+<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERSFORMDP)%>'/>
+<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIFOFLIKESDISLIKES)%>'/>
+
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
@@ -346,10 +350,11 @@
                     <!-- -->
                     <div class="sidebarblock">
                         <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
-                        <c:forEach var="post" items="${mostDiscussedPosts}">
+                        <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
                             <div class="divline"></div>
                             <div class="blocktxt">
                                 <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
                             </div>
                         </c:forEach>
                     </div>
@@ -357,10 +362,11 @@
                     <!-- -->
                     <div class="sidebarblock">
                         <a href="/topPosts"><h3>Top Posts</h3></a>
-                        <c:forEach var="post" items="${topPosts}">
+                        <c:forEach var="post" items="${topPosts}" varStatus="status">
                             <div class="divline"></div>
                             <div class="blocktxt">
                                 <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
                             </div>
                         </c:forEach>
 
