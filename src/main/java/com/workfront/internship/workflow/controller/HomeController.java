@@ -124,7 +124,7 @@ public class HomeController {
 
         List<Post> mostDiscussedPosts = ControllerUtils.getTopPosts(postService, allPosts);
 
-        modelAndView.addObject(PageAttributes.ALLPOSTS, mostDiscussedPosts)
+        modelAndView.addObject(PageAttributes.POSTS, mostDiscussedPosts)
                 .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
@@ -144,7 +144,7 @@ public class HomeController {
 
         List<Post> mostDiscussedPosts = ControllerUtils.getMostDiscussedPosts(postService, allPosts);
 
-        modelAndView.addObject(PageAttributes.ALLPOSTS, mostDiscussedPosts)
+        modelAndView.addObject(PageAttributes.POSTS, mostDiscussedPosts)
                 .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
