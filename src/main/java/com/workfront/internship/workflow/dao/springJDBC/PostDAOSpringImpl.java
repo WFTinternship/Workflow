@@ -30,7 +30,7 @@ import java.util.List;
 @Repository
 public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(PostDAOSpringImpl.class);
 
     public PostDAOSpringImpl() {
         dataSource = DBHelper.getPooledConnection();
@@ -239,7 +239,30 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return jdbcTemplate.query(sql, new Object[]{postId},
                     new AnswerRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            LOGGER.info("Empty Result Data AccessException");
+            LOGGER.info("Empty Result DataAccessException");
+            return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Post> getAnswersByUserId(long userId) {
+        String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time as answer_time, title as answer_title," +
+                " content as answer_content " +
+                " FROM post JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE post.post_id IS NOT NULL AND post.user_id = ?" +
+                " ORDER BY answer_time DESC";
+        try {
+            return jdbcTemplate.query(sql, new Object[]{userId},
+                    new AnswerRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data Access Exception");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");

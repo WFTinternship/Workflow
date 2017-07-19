@@ -1,5 +1,7 @@
 package com.workfront.internship.workflow.service.util;
 
+import com.workfront.internship.workflow.entity.User;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,5 +27,17 @@ public class ServiceUtils {
             e.printStackTrace();
             return text;
         }
+    }
+
+    public static void increaseRating(User user, int amount){
+        int userRating = user.getRating();
+        userRating += amount;
+        user.setRating(userRating);
+    }
+
+    public static void decreaseRating(User user, int amount){
+        int userRating = user.getRating();
+        userRating -= amount;
+        user.setRating(userRating);
     }
 }

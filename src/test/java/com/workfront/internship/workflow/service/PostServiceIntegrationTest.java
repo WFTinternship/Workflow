@@ -276,6 +276,36 @@ public class PostServiceIntegrationTest extends BaseIntegrationTest {
     }
 
     /**
+     * @see PostService#getAnswersByUserId(long)
+     */
+    @Test(expected = InvalidObjectException.class)
+    public void getAnswersByUserId_failure() {
+        postService.getAnswersByPostId(-1);
+    }
+
+    /**
+     * @see PostService#getAnswersByUserId(long)
+     */
+    @Test
+    public void getAnswersByUserId_success() {
+        userService.add(post.getUser());
+        postService.add(post);
+
+        Post answer = DaoTestUtil.getRandomAnswer(post);
+        userService.add(answer.getUser());
+        answer.setUser(post.getUser());
+        postService.add(answer);
+
+
+        // Test Method
+        List<Post> answers = postService.getAnswersByUserId(post.getUser().getId());
+        assertTrue(answers.contains(answer));
+
+        userService.deleteById(post.getId());
+        userService.deleteById(answer.getUser().getId());
+    }
+
+    /**
      * @see PostService#getLikesNumber(long)
      */
     @Test(expected = InvalidObjectException.class)

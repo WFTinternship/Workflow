@@ -33,3 +33,4 @@
 (-) Change top posts to most discussed posts.
 (-) Add Top posts according to the difference of number of likes and dislikes.
 (-) Remove post/answer/post.
+(-) Fix get number of answers in controller utils.

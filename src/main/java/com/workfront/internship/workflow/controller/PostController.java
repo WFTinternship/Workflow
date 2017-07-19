@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by nane on 6/25/17
@@ -31,12 +31,10 @@ import java.util.List;
 @Controller
 public class PostController {
 
-    private static final Logger LOGGER = Logger.getLogger(PostController.class);
     private CommentService commentService;
     private PostService postService;
     private UserService userService;
     private AppAreaService appAreaService;
-    private List<AppArea> appAreas;
 
     public PostController() {
     }
@@ -44,7 +42,6 @@ public class PostController {
     @Autowired
     public PostController(PostService postService, CommentService commentService, UserService userService, AppAreaService appAreaService) {
         this.postService = postService;
-        appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
         this.userService = userService;
         this.appAreaService = appAreaService;
@@ -55,7 +52,7 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView("post");
 
         String url = request.getRequestURL().toString();
-        long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         User user = (User) request.getSession().getAttribute(PageAttributes.USER);
 
@@ -66,14 +63,26 @@ public class PostController {
             dislikedPosts = userService.getDislikedPosts(user.getId());
         }
 
-        Post post = postService.getById(id);
+        Post post = postService.getById(postId);
 
-        List<Comment> postComments = commentService.getByPostId(post.getId());
+        List<Post> allPosts;
+        List<Post> answers;
+        List<Comment> postComments;
 
-        List<Post> answers = postService.getAnswersByPostId(post.getId());
+        answers = postService.getAnswersByPostId(postId);
 
-        List<Post> allPosts = new ArrayList<>(answers);
+        allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
+
+        postComments = commentService.getByPostId(postId);
+
+        List<List<Comment>> answerComments = answers.stream()
+                .map(postAnswer -> commentService.getByPostId(postAnswer.getId()))
+                .collect(Collectors.toList());
+
+        modelAndView.addObject(PageAttributes.ANSWERCOMMENTS, answerComments);
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
         modelAndView
                 .addObject(PageAttributes.POST, post)
@@ -81,21 +90,17 @@ public class PostController {
                 .addObject(PageAttributes.ANSWERS, answers)
                 .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
                 .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
-                .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+                        ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         return modelAndView;
     }
 
     @RequestMapping(value = "/new-post", method = RequestMethod.POST)
     public ModelAndView newPost(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("home");
+        ModelAndView modelAndView = new ModelAndView("redirect:/home");
 
         String title = request.getParameter(PageAttributes.TITLE);
         String content = request.getParameter(PageAttributes.POSTCONTENT);
@@ -122,6 +127,7 @@ public class PostController {
                     .setViewName("new_post");
         }
 
+        // Turns on notifications for the post, if the person wanted
         if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
@@ -130,16 +136,7 @@ public class PostController {
             List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
             postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
         } catch (RuntimeException e) {
-            LOGGER.info("Failed to send emails");
         }
-
-        List<Post> posts = postService.getAll();
-
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.ALLPOSTS, posts);
 
         return modelAndView;
     }
@@ -148,24 +145,28 @@ public class PostController {
     public ModelAndView newPost() {
         ModelAndView modelAndView = new ModelAndView("new_post");
 
-        List<Post> posts = postService.getAll();
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/delete-post/*"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/delete/*"}, method = RequestMethod.POST)
     public ModelAndView deletePost(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("user");
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(PageAttributes.USER);
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
 
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        Post post = postService.getById(postId);
+
+        // If it is an answer
+        if (post.getPost() != null) {
+            modelAndView.setViewName("redirect:/post/" + post.getPost().getId());
+        }
 
         try {
             postService.delete(postId);
@@ -173,30 +174,34 @@ public class PostController {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry, your post was not deleted. " +
                             "If you really want to delete it please try again.")
-                    .addObject(PageAttributes.POST, postService.getById(postId))
-                    .setViewName("post");
+                    .addObject(PageAttributes.POST, post)
+                    .setViewName("redirect:/post/" + postId);
             return modelAndView;
         }
-
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(PageAttributes.USER);
-
-        List<Post> postList = postService.getByUserId(user.getId());
-        List<AppArea> myAppAreas = userService.getAppAreasById(user.getId());
-
-        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
-        allAppAreas.removeAll(myAppAreas);
-
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, postList)
-                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
-                .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                        ControllerUtils.getNumberOfAnswers(postList, postService))
-                .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
 
+    @RequestMapping(value = {"/searchPost"}, method = RequestMethod.POST)
+    public ModelAndView searchPost(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        String postTitle = request.getParameter("postTitle");
+
+        String searchMessage = "Search results for post with title " + "'" + postTitle + "'";
+
+        List<Post> posts = new ArrayList<>();
+        try {
+            posts = postService.getByTitle(postTitle);
+        }catch (RuntimeException e){
+            searchMessage = "Sorry, there was a problem while loading the posts.";
+        }
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
+        modelAndView
+                .addObject(PageAttributes.POSTS, posts)
+                .addObject(PageAttributes.SEARCHMESSAGE, searchMessage);
+
+        return modelAndView;
+    }
 }

@@ -27,7 +27,7 @@ import java.util.List;
 @Repository
 public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(CommentDAOSpringImpl.class);
 
     public CommentDAOSpringImpl(DataSource dataSource)
     {

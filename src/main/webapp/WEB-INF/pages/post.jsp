@@ -11,6 +11,10 @@
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOSTDISCUSSEDPOSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
+<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERSFORMDP)%>'/>
+<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIFOFLIKESDISLIKES)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
@@ -129,10 +133,10 @@
                             src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
                             height="60px" width="60px/"></span>
                 </div>
-                <form action="/delete-post/${post.id}" method="post">
+                <form action="/delete/${post.id}" method="post">
                     <div class="modal-body">
                         <div class="delete-post-msg">
-                            <span>Are you sure you want to delete this post ?</span>
+                            <span>Are you sure you want to delete this ?</span>
                         </div>
                     </div>
 
@@ -212,11 +216,11 @@
                 <%--</div>--%>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
-                        <form action="#" method="post" class="form">
-                            <div class="pull-left txt"><input type="text" class="form-control"
-                                                              placeholder="Search Topics"></div>
+                        <form action="/searchPost" method="post" class="form">
+                            <div class="pull-left txt"><input type="text" class="form-control" name="postTitle"
+                                                              placeholder="Search posts"></div>
                             <div class="pull-right">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -255,9 +259,6 @@
                                     <ul class="dropdown-menu" role="menu">
                                         <li role="presentation">
                                             <a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
-                                        </li>
-                                        <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" href="/edit/${user.id}">Edit Profile</a>
                                         </li>
                                         <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log
                                             Out</a>
@@ -313,8 +314,7 @@
 
                                     <div class="delete-post" data-toggle="modal"
                                          data-target="#deleteModal">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                        <span>Delete</span>
+                                        <i class="fa fa-times" aria-hidden="true" title="Delete"></i>
                                     </div>
 
                                     <div class="edit-post">
@@ -382,19 +382,13 @@
 
                             <div class="posted pull-left"><i class="fa fa-clock-o"></i>${post.postTime}
                             </div>
-
-                            <div class="next pull-right">
-                                <a href="#"><i class="fa fa-share"></i></a>
-
-                                <a href="#"><i class="fa fa-flag"></i></a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="pull-left apparea">
+                            <div class="pull-right apparea">
                                 <a href="/appArea/${post.appArea.id}">
                                     <div class="views">${post.appArea.name}</div>
                                 </a>
                             </div>
                             <div class="clearfix"></div>
+
                         </div>
                         <div class="post-comment">
                             <c:if test="${fn:length(comments) != 0}">
@@ -455,6 +449,12 @@
                                 <div class="posttext pull-left">
 
                                     <c:if test="${user.id == answer.user.id}">
+
+                                        <div class="delete-post" data-toggle="modal"
+                                             data-target="#deleteModal">
+                                            <i class="fa fa-times" aria-hidden="true" title="Delete"></i>
+                                        </div>
+
                                         <div class="edit-answer">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             <span>
@@ -518,12 +518,6 @@
                                 </div>
 
                                 <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}</div>
-
-                                <div class="next pull-right">
-                                    <a href="#"><i class="fa fa-share"></i></a>
-
-                                    <a href="#"><i class="fa fa-flag"></i></a>
-                                </div>
 
                                 <div class="clearfix"></div>
                             </div>
@@ -633,83 +627,26 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>Poll of the Week</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <p>Which game you are playing this week?</p>
-                            <form action="#" method="post" class="form">
-                                <table class="poll">
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                    Call of Duty Ghosts
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt1" type="radio" name="opt" value="1">
-                                            <label for="opt1"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                    Titanfall
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt2" type="radio" name="opt" value="2" checked>
-                                            <label for="opt2"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                    Battlefield 4
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt3" type="radio" name="opt" value="3">
-                                            <label for="opt3"></label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                            <p class="smal">Voting ends on 19th of October</p>
-                        </div>
+                        <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
+                        <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
+                            </div>
+                        </c:forEach>
                     </div>
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>My Active Threads</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                        </div>
+                        <a href="/topPosts"><h3>Top Posts</h3></a>
+                        <c:forEach var="post" items="${topPosts}" varStatus="status">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
+                            </div>
+                        </c:forEach>
                     </div>
 
 

@@ -2,12 +2,14 @@ package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.dao.PostDAO;
+import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.util.ServiceUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,10 +35,13 @@ public class PostServiceImpl implements PostService {
     private static final Logger logger = Logger.getLogger(PostDAO.class);
 
     private PostDAO postDAO;
+    private UserDAO userDAO;
 
     @Autowired
-    public PostServiceImpl(@Qualifier("postDAOSpringImpl") PostDAO postDAO) {
+    public PostServiceImpl(@Qualifier("postDAOSpringImpl") PostDAO postDAO,
+                           @Qualifier("userDAOSpringImpl") UserDAO userDAO) {
         this.postDAO = postDAO;
+        this.userDAO = userDAO;
     }
 
     public PostServiceImpl() {
@@ -81,6 +86,10 @@ public class PostServiceImpl implements PostService {
         }
         try {
             postDAO.setBestAnswer(postId, answerId);
+            User postOwner = postDAO.getById(postId).getUser();
+            ServiceUtils.increaseRating(postOwner, 10);
+            userDAO.updateRating(postOwner);
+
         } catch (RuntimeException e) {
             logger.error("Failed during setting the best answer");
             throw new ServiceLayerException("Failed during setting the best answer", e);
@@ -201,6 +210,27 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
+     * @see PostService#getAnswersByUserId(long)
+     * @param id id of the user
+     * @return
+     */
+    @Override
+    public List<Post> getAnswersByUserId(long id) {
+        if (id < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Not valid id");
+        }
+        List<Post> answers;
+        try {
+            answers = postDAO.getAnswersByUserId(id);
+            return answers;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new ServiceLayerException("Failed to get answers of the specified user");
+        }
+    }
+
+    /**
      * @see PostService#getBestAnswer(long)
      */
     @Override
@@ -268,6 +298,9 @@ public class PostServiceImpl implements PostService {
 
         try {
             postDAO.like(userId, postId);
+            User postOwner = postDAO.getById(postId).getUser();
+            ServiceUtils.increaseRating(postOwner, 1);
+            userDAO.updateRating(postOwner);
         } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to like the post");
         }
@@ -287,6 +320,9 @@ public class PostServiceImpl implements PostService {
 
         try {
             postDAO.dislike(userId, postId);
+            User postOwner = postDAO.getById(postId).getUser();
+            ServiceUtils.decreaseRating(postOwner, 1);
+            userDAO.updateRating(postOwner);
         } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to dislike the post");
         }
@@ -301,6 +337,9 @@ public class PostServiceImpl implements PostService {
 
         try {
             postDAO.removeLike(userId, postId);
+            User postOwner = postDAO.getById(postId).getUser();
+            ServiceUtils.decreaseRating(postOwner, 1);
+            userDAO.updateRating(postOwner);
         } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to remove the like to the post");
         }
@@ -315,6 +354,9 @@ public class PostServiceImpl implements PostService {
 
         try {
             postDAO.removeDislike(userId, postId);
+            User postOwner = postDAO.getById(postId).getUser();
+            ServiceUtils.increaseRating(postOwner, 1);
+            userDAO.updateRating(postOwner);
         } catch (RuntimeException e) {
             throw new ServiceLayerException("Failed to remove the dislike to the post");
         }
@@ -404,6 +446,9 @@ public class PostServiceImpl implements PostService {
 
         try {
             postDAO.removeBestAnswer(answerId);
+            User postOwner = postDAO.getById(answerId).getUser();
+            ServiceUtils.decreaseRating(postOwner, 10);
+            userDAO.updateRating(postOwner);
         } catch (RuntimeException e) {
             logger.error("Failed to remove the best answer");
             throw new ServiceLayerException("Failed to remove the best answer", e);

@@ -17,22 +17,30 @@ public interface PageAttributes {
     String APPAREA = "appArea";
     String POSTCOMMENTS = "postComments";
     String MESSAGE = "message";
+    String SEARCHMESSAGE = "searchMessage";
     String EMAIL = "email";
     String PASSWORD = "password";
     String AVATAR = "avatar";
     String MYAPPAREAS = "myAppAreas";
     String NUMOFANSWERS = "numberOfAnswers";
+    String NUMOFANSWERSFORMDP = "numberOfAnswersForMDP";
     String NOTE = "note";
     String NUMOFLIKES = "numberOfLikes";
     String NUMOFDISLIKES = "numberOfDislikes";
+    String DIFOFLIKESDISLIKES = "difOfLikesDislikes";
     String ANSWERCOMMENTS = "answerComments";
     String PROFILEOWNERID = "ownerId";
     String PROFILEOWNER = "owner";
     String OWNERAPPAREAS = "ownerAppAreas";
+    String MOSTDISCUSSEDPOSTS = "mostDiscussedPosts";
     String TOPPOSTS = "topPosts";
     String LIKEDPOSTS = "likedPosts";
     String DISLIKEDPOSTS = "dislikedPosts";
+    String NUMOFUSERSANSWERS = "numOfUsersAnswers";
+    String NUMOFUSERSPOSTS = "numOfUsersPosts";
     String FIRSTNAME = "firstName";
     String LASTNAME = "lastName";
-
+    String POSTS = "posts";
+    String TOTAL = "total";
+    String REPLY = "reply";
 }

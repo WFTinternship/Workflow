@@ -69,6 +69,13 @@ public interface PostService {
     List<Post> getAnswersByPostId(long id);
 
     /**
+     * Gets list of answers of the user by the specified id
+     * @param userId id of the user
+     * @return List of answers of the specified user
+     */
+    List<Post> getAnswersByUserId(long userId);
+
+    /**
      * Gets the answer of the post specified by postId, that was marked as best answer
      * @param id the id of the post
      * @return the best answer of the specified post

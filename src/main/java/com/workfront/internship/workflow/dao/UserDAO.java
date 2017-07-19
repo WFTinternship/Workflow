@@ -106,6 +106,8 @@ public interface UserDAO {
      */
     void deleteAll();
 
+
+
     /**
      * Updates the fields of the specified user
      * @param user the user whose profile is to be updated
@@ -117,4 +119,11 @@ public interface UserDAO {
      * @param user the user whose avatar is to be updated
      */
     void updateAvatar(User user);
+
+    /**
+     * Updates the rating of the specified user
+     * @param user the user whose avatar is to be updated
+     */
+    void updateRating(User user);
+
 }

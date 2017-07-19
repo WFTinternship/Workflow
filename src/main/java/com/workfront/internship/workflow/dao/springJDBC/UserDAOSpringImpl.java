@@ -28,7 +28,7 @@ import java.util.List;
 @Repository
 public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDAOSpringImpl.class);
 
     public UserDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -267,6 +267,21 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         String sql = "UPDATE user SET avatar_url = ? WHERE user.id = ? ";
         try {
             jdbcTemplate.update(sql, user.getAvatarURL(), user.getId());
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @see UserDAO#updateRating(User)
+     * @param user the user whose rating is to be updated
+     */
+    @Override
+    public void updateRating(User user) {
+        String sql = "UPDATE user SET rating = ? WHERE user.id = ? ";
+        try {
+            jdbcTemplate.update(sql, user.getRating(), user.getId());
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new RuntimeException(e);

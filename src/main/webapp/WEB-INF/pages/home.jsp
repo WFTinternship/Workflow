@@ -10,11 +10,19 @@
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOSTDISCUSSEDPOSTS)%>'/>
 <c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
+
+<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERSFORMDP)%>'/>
+<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIFOFLIKESDISLIKES)%>'/>
+
+<c:set var="totalNum" value='<%=request.getAttribute(PageAttributes.TOTAL)%>'/>
+<c:set var="posts" value='<%=request.getAttribute(PageAttributes.POSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="searchMessage" value='<%=request.getAttribute(PageAttributes.SEARCHMESSAGE)%>'/>
 <c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
 
 
@@ -132,11 +140,11 @@
                         height=67px width=67px/></a></div>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
-                        <form action="#" method="post" class="form">
-                            <div class="pull-left txt"><input type="text" class="form-control"
-                                                              placeholder="Search Topics"></div>
+                        <form action="/searchPost" method="post" class="form">
+                            <div class="pull-left txt"><input type="text" class="form-control" name="postTitle"
+                                                              placeholder="Search posts"></div>
                             <div class="pull-right">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -177,8 +185,6 @@
                                 <li role="presentation">
                                     <a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
                                 </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="/edit/${user.id}">Edit Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>
@@ -207,7 +213,10 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8">
                     <!-- POST -->
-                    <c:forEach var="post" items="${allPosts}" varStatus="status">
+                    <c:if test="${searchMessage != null}">
+                        <h4> ${searchMessage} </h4>
+                    </c:if>
+                    <c:forEach var="post" items="${posts}" varStatus="status">
                         <div class="post">
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
@@ -272,68 +281,25 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>Poll of the Week</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <p>Which game you are playing this week?</p>
-                            <form action="#" method="post" class="form">
-                                <table class="poll">
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                    Call of Duty Ghosts
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt1" type="radio" name="opt" value="1">
-                                            <label for="opt1"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                    Titanfall
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt2" type="radio" name="opt" value="2" checked>
-                                            <label for="opt2"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                    Battlefield 4
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt3" type="radio" name="opt" value="3">
-                                            <label for="opt3"></label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                            <p class="smal">Voting ends on 19th of October</p>
-                        </div>
+                        <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
+                        <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
+                            </div>
+                        </c:forEach>
                     </div>
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>Top Posts</h3>
+                        <a href="/topPosts"><h3>Top Posts</h3></a>
 
-                        <c:forEach var="post" items="${topPosts}">
+                        <c:forEach var="post" items="${topPosts}" varStatus="status">
                             <div class="divline"></div>
                             <div class="blocktxt">
                                 <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
                             </div>
                         </c:forEach>
 
@@ -352,20 +318,11 @@
                     <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
                     <div class="pull-left">
                         <ul class="paginationforum">
-                            <li class="hidden-xs"><a href="#" class="active">1</a></li>
-                            <li class="hidden-xs"><a href="#">2</a></li>
-                            <li class="hidden-xs"><a href="#">3</a></li>
-                            <li class="hidden-xs"><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li><a href="#">7</a></li>
-                            <li><a href="#">8</a></li>
-                            <li class="hidden-xs"><a href="#">9</a></li>
-                            <li class="hidden-xs"><a href="#">10</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                            <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-
+                            <c:set var="total" value="${totalNum/5}"/>
+                            <c:forEach begin="1" end="${total+(1-(total%1))%1}" varStatus="page">
+                                <li class="hidden-xs"><a href="/home/${page.index}" class="active">${page.index}</a>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
                     <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
@@ -416,13 +373,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-                {
-                    delay: 15000,
-                    startwidth: 1200,
-                    startheight: 278,
-                    hideThumbs: 10,
-                    fullWidth: "on"
-                });
+            {
+                delay: 15000,
+                startwidth: 1200,
+                startheight: 278,
+                hideThumbs: 10,
+                fullWidth: "on"
+            });
     });	//ready
 </script>
 

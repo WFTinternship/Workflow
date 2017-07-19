@@ -372,6 +372,17 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
         verifyAddedUser(user, updatedUser);
     }
 
+    /**
+     * @see UserDAO#updateRating(User)
+     */
+    @Test
+    public void updateRating_success() {
+        userDAO.add(user);
+        user.setRating(10);
+        userDAO.updateRating(user);
+        User updatedUser = userDAO.getById(user.getId());
+        verifyAddedUser(user, updatedUser);
+    }
     // endregion
 
     // region <HELPERS>

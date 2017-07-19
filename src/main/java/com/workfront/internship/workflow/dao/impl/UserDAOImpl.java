@@ -408,4 +408,29 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             closeResources(conn, stmt);
         }
     }
+
+    /**
+     * @see UserDAO#updateRating(User)
+     * @param user the user whose rating is to be updated
+     */
+    @Override
+    public void updateRating(User user) {
+        String sql = "UPDATE user SET rating = ? WHERE user.id = ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, user.getRating());
+            stmt.setLong(2, user.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
 }

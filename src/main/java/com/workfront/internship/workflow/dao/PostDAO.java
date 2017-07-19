@@ -94,6 +94,13 @@ public interface PostDAO {
     List<Post> getAnswersByPostId(long postId);
 
     /**
+     * Gets list of answers of the user by the specified id
+     * @param userId id of the user
+     * @return List of answers of the specified user
+     */
+    List<Post> getAnswersByUserId(long userId);
+
+    /**
      * Gets the answer of the post specified by postId, that was marked as best answer
      * @param postId id of the post
      * @return the best answer of the specified post
