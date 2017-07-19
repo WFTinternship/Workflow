@@ -186,14 +186,20 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView("home");
 
         String postTitle = request.getParameter("postTitle");
-        List<Post> posts = postService.getByTitle(postTitle);
 
         String searchMessage = "Search results for post with title " + "'" + postTitle + "'";
 
-        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
+        List<Post> posts = new ArrayList<>();
+        try {
+            posts = postService.getByTitle(postTitle);
+        }catch (RuntimeException e){
+            searchMessage = "Sorry, there was a problem while loading the posts.";
+        }
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
         modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
+                .addObject(PageAttributes.POSTS, posts)
                 .addObject(PageAttributes.SEARCHMESSAGE, searchMessage);
 
         return modelAndView;

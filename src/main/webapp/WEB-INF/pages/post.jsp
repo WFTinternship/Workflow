@@ -382,13 +382,7 @@
 
                             <div class="posted pull-left"><i class="fa fa-clock-o"></i>${post.postTime}
                             </div>
-
-                            <%--<div class="next pull-right">--%>
-                                <%--<a href="#"><i class="fa fa-share"></i></a>--%>
-
-                                <%--<a href="#"><i class="fa fa-flag"></i></a>--%>
-                            <%--</div>--%>
-                            <div class="pull-left apparea">
+                            <div class="pull-right apparea">
                                 <a href="/appArea/${post.appArea.id}">
                                     <div class="views">${post.appArea.name}</div>
                                 </a>
@@ -524,12 +518,6 @@
                                 </div>
 
                                 <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}</div>
-
-                                <div class="next pull-right">
-                                    <a href="#"><i class="fa fa-share"></i></a>
-
-                                    <a href="#"><i class="fa fa-flag"></i></a>
-                                </div>
 
                                 <div class="clearfix"></div>
                             </div>
