@@ -314,7 +314,7 @@
 
                                     <div class="delete-post" data-toggle="modal"
                                          data-target="#deleteModal">
-                                        <i class="fa fa-times" aria-hidden="true" title="Delete">></i>
+                                        <i class="fa fa-times" aria-hidden="true" title="Delete"></i>
                                     </div>
 
                                     <div class="edit-post">
@@ -382,19 +382,13 @@
 
                             <div class="posted pull-left"><i class="fa fa-clock-o"></i>${post.postTime}
                             </div>
-
-                            <div class="next pull-right">
-                                <a href="#"><i class="fa fa-share"></i></a>
-
-                                <a href="#"><i class="fa fa-flag"></i></a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="clearfix"></div>
-                            <div class="pull-left apparea">
+                            <div class="pull-right apparea">
                                 <a href="/appArea/${post.appArea.id}">
                                     <div class="views">${post.appArea.name}</div>
                                 </a>
                             </div>
+                            <div class="clearfix"></div>
+
                         </div>
                         <div class="post-comment">
                             <c:if test="${fn:length(comments) != 0}">
@@ -524,12 +518,6 @@
                                 </div>
 
                                 <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}</div>
-
-                                <div class="next pull-right">
-                                    <a href="#"><i class="fa fa-share"></i></a>
-
-                                    <a href="#"><i class="fa fa-flag"></i></a>
-                                </div>
 
                                 <div class="clearfix"></div>
                             </div>

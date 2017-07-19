@@ -531,12 +531,10 @@ i.fa-check.green {
 }
 
 .post .views {
-    border-bottom: solid 1px #f1f1f1;
     color:#5d5d5d;
     font-size: 14px;
     font-family: 'Open Sans Regular', sans-serif; 
     text-align: left;
-    line-height: 29px;
 }
 
 .post .views i {
