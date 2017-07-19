@@ -314,7 +314,7 @@
 
                                     <div class="delete-post" data-toggle="modal"
                                          data-target="#deleteModal">
-                                        <i class="fa fa-times" aria-hidden="true" title="Delete">></i>
+                                        <i class="fa fa-times" aria-hidden="true" title="Delete"></i>
                                     </div>
 
                                     <div class="edit-post">

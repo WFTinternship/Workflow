@@ -31,14 +31,10 @@ import java.util.List;
 @Controller
 public class AnswerController {
 
-    private List<AppArea> appAreas;
     private PostService postService;
     private CommentService commentService;
     private UserService userService;
     private Post post;
-    private List<Post> answers;
-    private List<Post> posts;
-
 
     public AnswerController() {
     }
@@ -46,7 +42,6 @@ public class AnswerController {
     @Autowired
     public AnswerController(PostService postService, CommentService commentService, UserService userService) {
         this.postService = postService;
-        appAreas = Arrays.asList(AppArea.values());
         post = new Post();
         this.commentService = commentService;
         this.userService = userService;
@@ -60,7 +55,7 @@ public class AnswerController {
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         String content = request.getParameter("reply");
-        posts = postService.getAll();
+        List<Post> posts = postService.getAll();
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);

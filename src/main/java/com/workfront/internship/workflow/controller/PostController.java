@@ -36,7 +36,6 @@ public class PostController {
     private PostService postService;
     private UserService userService;
     private AppAreaService appAreaService;
-    private List<AppArea> appAreas;
 
     public PostController() {
     }
@@ -44,7 +43,6 @@ public class PostController {
     @Autowired
     public PostController(PostService postService, CommentService commentService, UserService userService, AppAreaService appAreaService) {
         this.postService = postService;
-        appAreas = Arrays.asList(AppArea.values());
         this.commentService = commentService;
         this.userService = userService;
         this.appAreaService = appAreaService;
@@ -83,7 +81,6 @@ public class PostController {
                 .addObject(PageAttributes.ANSWERS, answers)
                 .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
                 .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
-                .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.NUMOFLIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
                 .addObject(PageAttributes.NUMOFDISLIKES,
@@ -94,7 +91,7 @@ public class PostController {
 
     @RequestMapping(value = "/new-post", method = RequestMethod.POST)
     public ModelAndView newPost(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("home");
+        ModelAndView modelAndView = new ModelAndView("redirect:/home");
 
         String title = request.getParameter(PageAttributes.TITLE);
         String content = request.getParameter(PageAttributes.POSTCONTENT);
@@ -120,7 +117,7 @@ public class PostController {
                     "Sorry, your post was not added. Please try again")
                     .setViewName("new_post");
         }
-
+        //TODO move to service layer
         if (notify != null && notify.equals("on")) {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
@@ -131,18 +128,6 @@ public class PostController {
         } catch (RuntimeException e) {
             LOGGER.info("Failed to send emails");
         }
-
-        List<Post> allPosts = postService.getAll();
-        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
-
-        ControllerUtils.setDefaultAttributes(postService, modelAndView);
-
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.TOTAL, allPosts.size())
-                .addObject(PageAttributes.POSTS, posts);
 
         return modelAndView;
     }
@@ -158,47 +143,20 @@ public class PostController {
 
     @RequestMapping(value = {"/delete/*"}, method = RequestMethod.POST)
     public ModelAndView deletePost(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("user");
-
-        String url = request.getRequestURL().toString();
-        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
 
+        ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
+
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
         Post post = postService.getById(postId);
 
         // If it is an answer
-        if (post.getPost() != null){
-            List<Comment> postComments = commentService.getByPostId(post.getId());
-
-            List<Post> answers = postService.getAnswersByPostId(post.getId());
-
-            List<Post> allPosts = new ArrayList<>(answers);
-            allPosts.add(0, post);
-
-            List<Post> likedPosts = new ArrayList<>();
-            List<Post> dislikedPosts = new ArrayList<>();
-            if (user != null) {
-                likedPosts = userService.getLikedPosts(user.getId());
-                dislikedPosts = userService.getDislikedPosts(user.getId());
-            }
-
-            modelAndView
-                    .addObject(PageAttributes.POST, post)
-                    .addObject(PageAttributes.POSTCOMMENTS, postComments)
-                    .addObject(PageAttributes.ANSWERS, answers)
-                    .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
-                    .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
-                    .addObject(PageAttributes.POST, post)
-                    .addObject(PageAttributes.NUMOFLIKES,
-                            ControllerUtils.getNumberOfLikes(allPosts, postService))
-                    .addObject(PageAttributes.NUMOFDISLIKES,
-                            ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                    .addObject(PageAttributes.APPAREAS, appAreas)
-                    .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                            ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                    .setViewName("post");
+        if (post.getPost() != null) {
+            modelAndView.setViewName("redirect:/post/" + post.getPost().getId());
         }
 
         try {
@@ -208,22 +166,9 @@ public class PostController {
                     "Sorry, your post was not deleted. " +
                             "If you really want to delete it please try again.")
                     .addObject(PageAttributes.POST, post)
-                    .setViewName("post");
+                    .setViewName("redirect:/post/" + postId);
             return modelAndView;
         }
-
-        List<Post> postList = postService.getByUserId(user.getId());
-        List<AppArea> myAppAreas = userService.getAppAreasById(user.getId());
-
-        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
-        allAppAreas.removeAll(myAppAreas);
-
-        ControllerUtils.setDefaultAttributes(postService, postList, modelAndView);
-
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, postList)
-                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
-                .addObject(PageAttributes.PROFILEOWNER, user);
         return modelAndView;
     }
 
@@ -234,7 +179,7 @@ public class PostController {
         String postTitle = request.getParameter("postTitle");
         List<Post> posts = postService.getByTitle(postTitle);
 
-        String searchMessage = "search results for post with title " + "'" + postTitle + "'";
+        String searchMessage = "Search results for post with title " + "'" + postTitle + "'";
 
         ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
 
@@ -244,5 +189,4 @@ public class PostController {
 
         return modelAndView;
     }
-
 }

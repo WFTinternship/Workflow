@@ -68,6 +68,7 @@ public class HomeController {
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
                 .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
 
+
         return modelAndView;
     }
 
