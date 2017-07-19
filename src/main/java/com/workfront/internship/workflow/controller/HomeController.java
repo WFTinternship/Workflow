@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +26,7 @@ import java.util.List;
 public class HomeController {
     private PostService postService;
     private List<AppArea> appAreas;
-    private List<Post> posts;
+    private List<Post> allPosts;
     private AppAreaService appAreaService;
 
     public HomeController() {
@@ -54,7 +53,45 @@ public class HomeController {
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView("home");
 
+        allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
+
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
+        modelAndView
+                .addObject(PageAttributes.POSTS, posts)
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/home/*")
+    public ModelAndView home(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        String url = request.getRequestURL().toString();
+        int page = Integer.parseInt(url.substring(url.lastIndexOf('/') + 1));
+
+        allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getPostsByPage(allPosts, page);
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
+        modelAndView
+                .addObject(PageAttributes.POSTS, posts)
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.NUMOFANSWERS,
+                        ControllerUtils.getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
 
         return modelAndView;
     }
@@ -67,11 +104,21 @@ public class HomeController {
         long id = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         // getting and passing all posts to appAreas page
-        posts = postService.getByAppAreaId(id);
-        if (posts.size() == 0) {
+        List<Post> postsByAppArea = postService.getByAppAreaId(id);
+        if (postsByAppArea.size() == 0) {
             request.setAttribute(PageAttributes.MESSAGE,
                     "No posts were found in " + AppArea.getById(id).getName() + " Application Area.");
         }
+
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
+        // pass all appAreas to appAreas page
+        modelAndView
+                .addObject(PageAttributes.POSTS, postsByAppArea)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, allPosts));
 
         ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
 
@@ -117,4 +164,5 @@ public class HomeController {
                 .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
+
 }

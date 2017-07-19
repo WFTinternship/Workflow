@@ -66,9 +66,18 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = authenticate(request, response);
+        List<Post> allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
 
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
+        modelAndView
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.POSTS, posts)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 
@@ -158,8 +167,18 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("home");
 
+        List<Post> allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
+
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
+        modelAndView
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.POSTS, posts)
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
         return modelAndView;
     }
 
@@ -294,7 +313,7 @@ public class UserController {
     public ModelAndView editProfile(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("edit_profile");
 
-        String url = request.getRequestURL().toString();
+               String url = request.getRequestURL().toString();
         long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         User user = userService.getById(userId);

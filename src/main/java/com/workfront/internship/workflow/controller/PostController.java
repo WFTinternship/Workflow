@@ -132,7 +132,17 @@ public class PostController {
             LOGGER.info("Failed to send emails");
         }
 
+        List<Post> allPosts = postService.getAll();
+        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
+
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
+
+        modelAndView
+                .addObject(PageAttributes.APPAREAS, appAreas)
+                .addObject(PageAttributes.POSTS_OF_APPAAREA, ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService))
+                .addObject(PageAttributes.TOTAL, allPosts.size())
+                .addObject(PageAttributes.POSTS, posts);
 
         return modelAndView;
     }
@@ -146,12 +156,50 @@ public class PostController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/delete-post/*"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/delete/*"}, method = RequestMethod.POST)
     public ModelAndView deletePost(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("user");
 
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute(PageAttributes.USER);
+
+        Post post = postService.getById(postId);
+
+        // If it is an answer
+        if (post.getPost() != null){
+            List<Comment> postComments = commentService.getByPostId(post.getId());
+
+            List<Post> answers = postService.getAnswersByPostId(post.getId());
+
+            List<Post> allPosts = new ArrayList<>(answers);
+            allPosts.add(0, post);
+
+            List<Post> likedPosts = new ArrayList<>();
+            List<Post> dislikedPosts = new ArrayList<>();
+            if (user != null) {
+                likedPosts = userService.getLikedPosts(user.getId());
+                dislikedPosts = userService.getDislikedPosts(user.getId());
+            }
+
+            modelAndView
+                    .addObject(PageAttributes.POST, post)
+                    .addObject(PageAttributes.POSTCOMMENTS, postComments)
+                    .addObject(PageAttributes.ANSWERS, answers)
+                    .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
+                    .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
+                    .addObject(PageAttributes.POST, post)
+                    .addObject(PageAttributes.NUMOFLIKES,
+                            ControllerUtils.getNumberOfLikes(allPosts, postService))
+                    .addObject(PageAttributes.NUMOFDISLIKES,
+                            ControllerUtils.getNumberOfDislikes(allPosts, postService))
+                    .addObject(PageAttributes.APPAREAS, appAreas)
+                    .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                            ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
+                    .setViewName("post");
+        }
 
         try {
             postService.delete(postId);
@@ -159,13 +207,10 @@ public class PostController {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry, your post was not deleted. " +
                             "If you really want to delete it please try again.")
-                    .addObject(PageAttributes.POST, postService.getById(postId))
+                    .addObject(PageAttributes.POST, post)
                     .setViewName("post");
             return modelAndView;
         }
-
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(PageAttributes.USER);
 
         List<Post> postList = postService.getByUserId(user.getId());
         List<AppArea> myAppAreas = userService.getAppAreasById(user.getId());

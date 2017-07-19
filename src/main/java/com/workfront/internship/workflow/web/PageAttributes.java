@@ -39,5 +39,6 @@ public interface PageAttributes {
     String NUMOFUSERSPOSTS = "numOfUsersPosts";
     String FIRSTNAME = "firstName";
     String LASTNAME = "lastName";
-
+    String POSTS = "posts";
+    String TOTAL = "total";
 }
