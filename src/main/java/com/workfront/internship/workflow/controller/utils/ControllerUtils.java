@@ -14,7 +14,6 @@ import java.util.*;
  */
 public class ControllerUtils {
 
-
     private static final int NUMBER_OF_POST_PER_PAGE = 5;
     private static List<AppArea> appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
 
@@ -26,7 +25,8 @@ public class ControllerUtils {
                 sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
             }
         } catch (ServiceLayerException e) {
-            return null;
+            throw new RuntimeException(e);
+            //return null;
         }
         return sizeOfPostsBySameAppAreaID;
     }

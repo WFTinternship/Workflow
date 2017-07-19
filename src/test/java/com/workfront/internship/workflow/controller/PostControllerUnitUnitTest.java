@@ -1,41 +1,36 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
+
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import com.workfront.internship.workflow.service.CommentService;
+import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.UserService;
+import org.springframework.web.context.WebApplicationContext;
+import com.workfront.internship.workflow.web.PageAttributes;
+import com.workfront.internship.workflow.util.DaoTestUtil;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
-import com.workfront.internship.workflow.service.CommentService;
-import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.util.DaoTestUtil;
-import com.workfront.internship.workflow.web.PageAttributes;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.test.web.servlet.MockMvc;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.mockito.InjectMocks;
+import org.junit.Before;
+import org.mockito.Mock;
+import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.mockito.Mockito.doReturn;
 
 /**
  * Created by Angel on 7/17/2017
@@ -94,7 +89,6 @@ public class PostControllerUnitUnitTest extends BaseUnitTest {
         answers = new ArrayList<>();
         numOfLikes = ControllerUtils.getNumberOfLikes(allPosts, postService);
         numOfDisLikes = ControllerUtils.getNumberOfDislikes(allPosts, postService);
-
 
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(this.webApplicationContext)
