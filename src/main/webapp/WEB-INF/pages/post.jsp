@@ -11,24 +11,24 @@
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
-<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOSTDISCUSSEDPOSTS)%>'/>
-<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
-<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERSFORMDP)%>'/>
-<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIFOFLIKESDISLIKES)%>'/>
+<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOST_DISCUSSED_POSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOP_POSTS)%>'/>
+<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUM_OF_ANSWERS_FOR_MDP)%>'/>
+<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIF_OF_LIKES_DISLIKES)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
-<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAREA)%>'/>
 <c:set var="avatar" value='<%=request.getSession().getAttribute(PageAttributes.AVATAR)%>'/>
 
-<c:set var="numberOfLikes" value='<%=request.getAttribute(PageAttributes.NUMOFLIKES)%>'/>
-<c:set var="numberOfDislikes" value='<%=request.getAttribute(PageAttributes.NUMOFDISLIKES)%>'/>
+<c:set var="numberOfLikes" value='<%=request.getAttribute(PageAttributes.NUMBER_OF_LIKES)%>'/>
+<c:set var="numberOfDislikes" value='<%=request.getAttribute(PageAttributes.NUMBER_OF_DISLIKES)%>'/>
 
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
-<c:set var="likedPosts" value='<%=request.getAttribute(PageAttributes.LIKEDPOSTS)%>'/>
-<c:set var="dislikedPosts" value='<%=request.getAttribute(PageAttributes.DISLIKEDPOSTS)%>'/>
-<c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
-<c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWERCOMMENTS)%>'/>
+<c:set var="likedPosts" value='<%=request.getAttribute(PageAttributes.LIKED_POSTS)%>'/>
+<c:set var="dislikedPosts" value='<%=request.getAttribute(PageAttributes.DISLIKED_POSTS)%>'/>
+<c:set var="comments" value='<%=request.getAttribute(PageAttributes.POST_COMMENTS)%>'/>
+<c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWER_COMMENTS)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 
 <!DOCTYPE html>

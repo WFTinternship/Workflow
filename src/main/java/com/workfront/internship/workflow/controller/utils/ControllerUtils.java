@@ -39,7 +39,7 @@ public class ControllerUtils {
             numbersOfAnswersForPosts.addAll(postList.stream()
                     .map(post -> postService.getNumberOfAnswers(post.getId())).collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
-            return null;
+            return numbersOfAnswersForPosts;
         }
         return numbersOfAnswersForPosts;
     }
@@ -120,16 +120,16 @@ public class ControllerUtils {
         }
 
         modelAndView
-                .addObject(PageAttributes.NUMOFANSWERS,
+                .addObject(PageAttributes.NUM_OF_ANSWERS,
                         getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.NUMOFANSWERSFORMDP,
+                .addObject(PageAttributes.NUM_OF_ANSWERS_FOR_MDP,
                         getNumberOfAnswers(mostDiscussedPosts, postService))
-                .addObject(PageAttributes.DIFOFLIKESDISLIKES,
+                .addObject(PageAttributes.DIF_OF_LIKES_DISLIKES,
                         getDifOfLikesDislikes(topPosts, postService))
                 .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA, getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, topPosts)
-                .addObject(PageAttributes.MOSTDISCUSSEDPOSTS, mostDiscussedPosts);
+                .addObject(PageAttributes.POSTS_OF_APPAREA, getNumberOfPostsForAppArea(appAreas, postService))
+                .addObject(PageAttributes.TOP_POSTS, topPosts)
+                .addObject(PageAttributes.MOST_DISCUSSED_POSTS, mostDiscussedPosts);
     }
 
     public static List<Post> getPostsByPage(List<Post> allPosts, int page) {

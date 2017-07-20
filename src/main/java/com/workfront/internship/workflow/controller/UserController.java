@@ -2,7 +2,6 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.CommentService;
@@ -159,11 +158,11 @@ public class UserController {
 
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
-                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.MY_APPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.NUMOFUSERSPOSTS, numOfUsersPosts)
-                .addObject(PageAttributes.NUMOFUSERSANSWERS, numOfUsersAnswers)
-                .addObject(PageAttributes.PROFILEOWNER, user);
+                .addObject(PageAttributes.NUM_OF_USERS_POSTS, numOfUsersPosts)
+                .addObject(PageAttributes.NUM_OF_USERS_ANSWERS, numOfUsersAnswers)
+                .addObject(PageAttributes.PROFILE_OWNER, user);
         return modelAndView;
     }
 
@@ -236,9 +235,9 @@ public class UserController {
 
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
-                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.MY_APPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.PROFILEOWNER, user);
+                .addObject(PageAttributes.PROFILE_OWNER, user);
         return modelAndView;
     }
 
@@ -248,8 +247,8 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
 
-        String firstName = request.getParameter(PageAttributes.FIRSTNAME);
-        String lastName = request.getParameter(PageAttributes.LASTNAME);
+        String firstName = request.getParameter(PageAttributes.FIRST_NAME);
+        String lastName = request.getParameter(PageAttributes.LAST_NAME);
         String email = request.getParameter(PageAttributes.EMAIL);
         String password = request.getParameter(PageAttributes.PASSWORD);
 
@@ -259,7 +258,7 @@ public class UserController {
                 .setEmail(email)
                 .setPassword(password);
 
-        modelAndView.addObject(PageAttributes.PROFILEOWNER, user);
+        modelAndView.addObject(PageAttributes.PROFILE_OWNER, user);
 
         try {
             userService.updateProfile(user);

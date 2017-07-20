@@ -49,7 +49,7 @@ public class CommentController {
             modelAndView.setViewName("redirect:/post/" + post.getPost().getId());
         }
 
-        String content = request.getParameter(PageAttributes.COMMENTCONTENT);
+        String content = request.getParameter(PageAttributes.COMMENT_CONTENT);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         Comment newComment = new Comment();

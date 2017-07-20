@@ -35,7 +35,7 @@ public class NewCommentController extends HttpServlet {
 
         Post post = postService.getById(postId);
 
-        String content = req.getParameter(PageAttributes.COMMENTCONTENT);
+        String content = req.getParameter(PageAttributes.COMMENT_CONTENT);
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -55,7 +55,7 @@ public class NewCommentController extends HttpServlet {
         }
 
         List<Comment> comments = commentService.getAll();
-        req.setAttribute(PageAttributes.POSTCOMMENTS, comments);
+        req.setAttribute(PageAttributes.POST_COMMENTS, comments);
 
         getServletConfig().
                 getServletContext().
