@@ -249,6 +249,9 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         }
     }
 
+    /**
+     * @see UserDAO#updateProfile(User)
+     */
     @Override
     public void updateProfile(User user) {
         String sql = "UPDATE user SET first_name = ?, last_name = ?, " +
@@ -262,6 +265,9 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         }
     }
 
+    /**
+     * @see UserDAO#updateAvatar(User)
+     */
     @Override
     public void updateAvatar(User user) {
         String sql = "UPDATE user SET avatar_url = ? WHERE user.id = ? ";
@@ -275,7 +281,6 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
     /**
      * @see UserDAO#updateRating(User)
-     * @param user the user whose rating is to be updated
      */
     @Override
     public void updateRating(User user) {

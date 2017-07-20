@@ -47,8 +47,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param user
-     * @return
      * @see UserService#add(User)
      */
     @Override
@@ -72,8 +70,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param name
-     * @return
      * @see UserService#getByName(String)
      */
 
@@ -96,8 +92,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param id
-     * @return
      * @see UserService#getById(long)
      */
     @Override
@@ -118,6 +112,9 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @see UserService#getByEmail(String)
+     */
     @Override
     public User getByEmail(String email) {
         if (isEmpty(email)){
@@ -137,8 +134,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param id
-     * @return
      * @see UserService#getAppAreasById(long)
      */
     @Override
@@ -161,8 +156,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @see UserService#getLikedPosts(long)
-     * @param id user id
-     * @return
      */
     @Override
     public List<Post> getLikedPosts(long id) {
@@ -183,8 +176,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @see UserService#getDislikedPosts(long)
-     * @param id user id
-     * @return
      */
     @Override
     public List<Post> getDislikedPosts(long id) {
@@ -204,8 +195,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param userId
-     * @param appAreaId
      * @see UserService#subscribeToArea(long, long)
      */
     @Override
@@ -229,8 +218,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param userId
-     * @param appAreaId
      * @see UserService#unsubscribeToArea(long, long)
      */
     @Override
@@ -254,7 +241,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param id
      * @see UserService#deleteById(long)
      */
     @Override
@@ -287,8 +273,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @see UserService#authenticate(String, String)
-     * @param email is input from client
-     * @param password is input from client
      */
     @Override
     public User authenticate(String email, String password) {
@@ -308,7 +292,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param user is input from client
      * @see UserService#sendEmail(User)
      */
     @Override

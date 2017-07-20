@@ -28,6 +28,9 @@ public class AppAreaServiceImpl implements AppAreaService {
         this.appAreaDAO = appAreaDAO;
     }
 
+    /**
+     * @see AppAreaService#add(AppArea)
+     */
     @Override
     public long add(AppArea appArea) {
         if (appArea == null || !appArea.isValid()) {
@@ -44,6 +47,9 @@ public class AppAreaServiceImpl implements AppAreaService {
         return id;
     }
 
+    /**
+     * @see AppAreaService#getUsersById(long)
+     */
     @Override
     public List<User> getUsersById(long id) {
         if (id < 1) {
@@ -61,6 +67,9 @@ public class AppAreaServiceImpl implements AppAreaService {
         return users;
     }
 
+    /**
+     * @see AppAreaService#getById(long)
+     */
     @Override
     public AppArea getById(long id) {
         if (id < 1) {
@@ -78,6 +87,9 @@ public class AppAreaServiceImpl implements AppAreaService {
         return appArea;
     }
 
+    /**
+     * @see AppAreaService#deleteById(long)
+     */
     @Override
     public void deleteById(long id) {
         if (id < 1) {

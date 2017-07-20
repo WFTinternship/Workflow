@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#add(Post)
+     * @see PostService#add(Post)
      */
     @Override
     public long add(Post post) {
@@ -72,7 +72,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#setBestAnswer(long, long)
+     * @see PostService#setBestAnswer(long, long)
      */
     @Override
     public void setBestAnswer(long postId, long answerId) {
@@ -97,7 +97,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#getAll()
+     * @see PostService#getAll()
      */
     @Override
     public List<Post> getAll() {
@@ -112,7 +112,29 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#getById(long)
+     * @see PostService#getPostsByPage(long)
+     */
+    @Override
+    public List<Post> getPostsByPage(long pageNumber) {
+        if (pageNumber < 1) {
+            logger.error("Id is not valid");
+            throw new InvalidObjectException("Invalid post id");
+        }
+
+        List<Post> posts;
+        long rowNumber = ServiceUtils.getRowNumberByPage(pageNumber);
+
+        try {
+            posts = postDAO.getPostsByPage(rowNumber);
+            return posts;
+        } catch (RuntimeException e) {
+            logger.error(e.getStackTrace());
+            throw new ServiceLayerException("Failed to get all posts");
+        }
+    }
+
+    /**
+     * @see PostService#getById(long)
      */
     @Override
     public Post getById(long id) {
@@ -131,7 +153,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#getByTitle(String)
+     * @see PostService#getByTitle(String)
      */
     @Override
     public List<Post> getByTitle(String title) {
@@ -150,7 +172,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#getByUserId(long)
+     * @see PostService#getByUserId(long)
      */
     @Override
     public List<Post> getByUserId(long id) {
@@ -169,8 +191,6 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @param id
-     * @return
      * @see PostService#getByAppAreaId(long)
      */
     @Override
@@ -190,7 +210,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @see PostDAOImpl#getAnswersByPostId(long)
+     * @see PostService#getAnswersByPostId(long)
      */
     @Override
     public List<Post> getAnswersByPostId(long id) {
@@ -211,8 +231,6 @@ public class PostServiceImpl implements PostService {
 
     /**
      * @see PostService#getAnswersByUserId(long)
-     * @param id id of the user
-     * @return
      */
     @Override
     public List<Post> getAnswersByUserId(long id) {
@@ -285,8 +303,6 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @param userId
-     * @param postId
      * @see PostService#like(long, long)
      */
     @Override
@@ -307,8 +323,6 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * @param userId
-     * @param postId
      * @see PostService#like(long, long)
      */
     @Override
@@ -328,6 +342,9 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    /**
+     * @see PostService#removeLike(long, long)
+     */
     @Override
     public void removeLike(long userId, long postId) {
         if (userId < 1 || postId < 1) {
@@ -345,6 +362,9 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    /**
+     * @see PostService#removeDislike(long, long)
+     */
     @Override
     public void removeDislike(long userId, long postId) {
         if (userId < 1 || postId < 1) {

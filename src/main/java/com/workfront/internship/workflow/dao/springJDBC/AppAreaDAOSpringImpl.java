@@ -33,6 +33,9 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * @see AppAreaDAO#add(AppArea)
+     */
     @Override
     public long add(AppArea appArea) {
         String sql = "INSERT INTO apparea (id, name, description, team_name) " +
@@ -46,6 +49,9 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         return appArea.getId();
     }
 
+    /**
+     * @see AppAreaDAO#getUsersById(long)
+     */
     @Override
     public List<User> getUsersById(long appAreaId) {
         String sql = "SELECT * FROM user " +
@@ -59,6 +65,9 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         }
     }
 
+    /**
+     * @see AppAreaDAO#getById(long)
+     */
     @Override
     public AppArea getById(long id) {
         AppArea appArea = AppArea.getById(id);
@@ -107,6 +116,9 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
                 appArea.getTeamName().equals(actualAppArea.get("TeamName"));
     }
 
+    /**
+     * @see AppAreaDAO#deleteById(long)
+     */
     @Override
     public void deleteById(long id) {
         String sql = "DELETE FROM apparea " +

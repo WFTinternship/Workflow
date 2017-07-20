@@ -49,7 +49,7 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("home");
 
         List<Post> allPosts = postService.getAll();
-        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
+        List<Post> posts = postService.getPostsByPage(1);
 
         List<AppArea> appAreas = AppArea.getAsList();
 
@@ -77,7 +77,7 @@ public class HomeController {
         int page = Integer.parseInt(url.substring(url.lastIndexOf('/') + 1));
 
         List<Post> allPosts = postService.getAll();
-        List<Post> posts = ControllerUtils.getPostsByPage(allPosts, page);
+        List<Post> posts = postService.getPostsByPage(page);
 
         ControllerUtils.setDefaultAttributes(postService, allPosts, modelAndView);
 

@@ -34,8 +34,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#add
-     * @param comment
-     * '@return'
      */
     @Override
     public long add(Comment comment) {
@@ -69,9 +67,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#update(long, String)
-     * '@param' id
-     * @param newContent
-     * '@return'
      */
     @Override
     public boolean update(long id , String newContent) {
@@ -101,8 +96,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#getByPostId(long)
-     * @param postId id of the post
-     * @return
      */
     @Override
     public List<Comment> getByPostId(long postId) {
@@ -135,8 +128,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#delete(long)
-     * @param id
-     * '@return'
      */
     @Override
     public void delete(long id) {
@@ -166,8 +157,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#getById(long)
-     * @param id
-     * '@return'
      */
     @Override
     public Comment getById(long id) {
@@ -201,7 +190,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      *@see CommentDAO#getAll()
-     * '@return'
      */
     @Override
     public List<Comment> getAll() {

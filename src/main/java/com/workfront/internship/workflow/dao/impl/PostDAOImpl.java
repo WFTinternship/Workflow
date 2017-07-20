@@ -47,8 +47,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#add(Post)
-     * @param post is to be added to the database
-     * @return the generated id of added post
      */
     public long add(Post post) {
         long id = 0;
@@ -92,7 +90,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#getById(long) (Post) ()
+     * @see PostDAO#getById(long)
      */
     @Override
     public Post getById(long id) {
@@ -173,6 +171,45 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
+     * @see PostDAO#getPostsByPage(long)
+     */
+    @Override
+    public List<Post> getPostsByPage(long rowNumber) {
+        List<Post> allPosts = new ArrayList<>();
+        String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM post " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE post_id IS NULL " +
+                " ORDER BY post_time DESC " +
+                " LIMIT  ?,5 ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, rowNumber);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Post post;
+                post = DAOUtil.postFromResultSet(rs);
+                allPosts.add(post);
+            }
+
+        } catch (SQLException e) {
+            LOG.error("SQL exception");
+            throw new RuntimeException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt, rs);
+        }
+        return allPosts;
+    }
+
+    /**
      * @see PostDAO#getByUserId(long) (long) ()
      */
     @Override
@@ -209,7 +246,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @param id id of the app area
      * @see PostDAO#getByAppAreaId(long)
      */
     @Override
@@ -246,7 +282,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#getByTitle(String) ()
+     * @see PostDAO#getByTitle(String)
      */
     @Override
     public List<Post> getByTitle(String title) {
@@ -393,8 +429,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getLikesNumber(long)
-     * @param postId
-     * @return
      */
     @Override
     public long getLikesNumber(long postId) {
@@ -426,8 +460,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getDislikesNumber(long)
-     * @param postId
-     * @return
      */
     @Override
     public long getDislikesNumber(long postId) {
@@ -455,6 +487,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         return dislikesNumber;
     }
 
+
     /**
      * @see PostDAO#setBestAnswer(long, long)
      */
@@ -479,7 +512,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#update(Post) ()
+     * @see PostDAO#update(Post)
      */
     @Override
     public void update(Post post) {
@@ -551,8 +584,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @param userId
-     * @param postId
      * @see PostDAO#removeLike(long, long)
      */
     @Override
@@ -576,8 +607,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @param userId
-     * @param postId
      * @see PostDAO#removeDislike(long, long)
      */
     @Override
@@ -601,7 +630,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @see PostDAO#delete(long) (Post) ()
+     * @see PostDAO#delete(long)
      */
     @Override
     public void delete(long id) {
@@ -626,6 +655,9 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
         }
     }
 
+    /**
+     * @see PostDAO#removeBestAnswer(long)
+     */
     @Override
     public void removeBestAnswer(long answerId) {
         String sql = "DELETE FROM best_answer " +
@@ -647,7 +679,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getNumberOfAnswers(long)
-     * @param postId of the post which number of answers should get
      */
     @Override
     public Integer getNumberOfAnswers(long postId) {
@@ -675,8 +706,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getNotified(long, long)
-     * @param postId
-     * @param userId
      */
     @Override
     public void getNotified(long postId, long userId) {
@@ -700,8 +729,6 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
     /**
      * @see PostDAO#getNotificationRecipients(long)
-     * @param postId
-     * @return
      */
     @Override
     public List<User> getNotificationRecipients(long postId) {

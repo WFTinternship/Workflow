@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.entity.User;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 
 /**
  * Created by nane on 6/29/17
@@ -29,15 +28,27 @@ public class ServiceUtils {
         }
     }
 
-    public static void increaseRating(User user, int amount){
+    public static void increaseRating(User user, int amount) {
         int userRating = user.getRating();
         userRating += amount;
         user.setRating(userRating);
     }
 
-    public static void decreaseRating(User user, int amount){
+    public static void decreaseRating(User user, int amount) {
         int userRating = user.getRating();
         userRating -= amount;
         user.setRating(userRating);
+    }
+
+    public static long getRowNumberByPage(long pageNumber) {
+        long rowNumber ;
+
+        if (pageNumber == 1) {
+            rowNumber = 0;
+        } else {
+            rowNumber = (pageNumber - 1) * 5;
+        }
+
+        return rowNumber;
     }
 }

@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     *@see CommentDAOImpl#add(Comment)
+     *@see CommentService#add(Comment)
      */
     @Override
     public long add(Comment comment) {
@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     *@see CommentDAOImpl#getById(long)
+     *@see CommentService#getById(long)
      */
     @Override
     public Comment getById(long id) {
@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * @see CommentDAOImpl#getAll()
+     * @see CommentService#getAll()
      */
     @Override
     public List<Comment> getAll() {
@@ -81,7 +81,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     *@see CommentDAOImpl#getByPostId(long)
+     *@see CommentService#getByPostId(long)
      */
     @Override
     public List<Comment> getByPostId(long id) {
@@ -98,7 +98,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     *@see CommentDAOImpl#update(long, String)
+     *@see CommentService#update(long, String)
      */
     @Override
     public boolean update(long id, String newContent) {
@@ -115,7 +115,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     *@see CommentDAOImpl#delete(long)
+     *@see CommentService#delete(long)
      */
     @Override
     public void delete(long id) {
