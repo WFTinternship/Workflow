@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.NotExistingEmailException;
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         try {
             users = userDAO.getByName(name);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find such users");
             throw new ServiceLayerException("Failed to find such users", e);
         }
@@ -104,7 +105,7 @@ public class UserServiceImpl implements UserService {
         User user;
         try {
             user = userDAO.getById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find such a user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
@@ -125,7 +126,7 @@ public class UserServiceImpl implements UserService {
         User user;
         try {
             user = userDAO.getByEmail(email);
-        } catch (RuntimeException e){
+        } catch (DAOException e){
             LOGGER.error("Couldn't get the user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
@@ -146,7 +147,7 @@ public class UserServiceImpl implements UserService {
         List<AppArea> appAreas;
         try {
             appAreas = userDAO.getAppAreasById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find app areas");
             throw new ServiceLayerException("Failed to find app areas", e);
         }
@@ -167,7 +168,7 @@ public class UserServiceImpl implements UserService {
         List<Post> posts;
         try {
             posts = userDAO.getLikedPosts(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find liked posts");
             throw new ServiceLayerException("Failed to find liked posts", e);
         }
@@ -187,7 +188,7 @@ public class UserServiceImpl implements UserService {
         List<Post> posts;
         try {
             posts = userDAO.getDislikedPosts(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find disliked posts");
             throw new ServiceLayerException("Failed to find disliked posts", e);
         }
@@ -211,7 +212,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.subscribeToArea(userId, appAreaId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to subscribe to the app area");
             throw new ServiceLayerException("Failed to subscribe to the app area", e);
         }
@@ -234,7 +235,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.unsubscribeToArea(userId, appAreaId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to unsubscribe from the app area");
             throw new ServiceLayerException("Failed to unsubscribe from the app area", e);
         }
@@ -252,7 +253,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.deleteById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to delete the user");
             throw new ServiceLayerException("Failed to delete the user", e);
         }
@@ -265,7 +266,7 @@ public class UserServiceImpl implements UserService {
     public void deleteAll() {
         try {
             userDAO.deleteAll();
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to delete all the user");
             throw new ServiceLayerException("Failed to delete all the user", e);
         }
@@ -351,7 +352,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.updateProfile(user);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to update user's profile");
             throw new ServiceLayerException("Failed to update user's profile", e);
         }
@@ -366,7 +367,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.updateAvatar(user);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to update user's profile");
             throw new ServiceLayerException("Failed to update user's profile", e);
         }

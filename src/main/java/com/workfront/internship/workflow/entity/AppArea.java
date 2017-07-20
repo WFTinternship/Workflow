@@ -1,5 +1,7 @@
 package com.workfront.internship.workflow.entity;
 
+import com.workfront.internship.workflow.util.StringUtils;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -206,10 +208,6 @@ public enum AppArea {
         return Arrays.asList(AppArea.values());
     }
 
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
-    }
-
     public long getId() {
         return id;
     }
@@ -227,8 +225,8 @@ public enum AppArea {
     }
 
     public boolean isValid() {
-        return !isEmpty(this.getName())
-                && !isEmpty(this.getDescription())
-                && !isEmpty(this.getTeamName());
+        return !StringUtils.isEmpty(this.getName())
+                && !StringUtils.isEmpty(this.getDescription())
+                && !StringUtils.isEmpty(this.getTeamName());
     }
 }

@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -58,7 +59,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             comment.setId(id) ;
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
-            throw new RuntimeException();
+            throw new DAOException();
         } finally {
             closeResources(connection, stmt);
         }
@@ -88,7 +89,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             return rows == 1;
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(connection, stmt);
         }
@@ -119,7 +120,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -145,7 +146,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
         }catch (SQLException e){
             LOG.error("SQL exception occurred");
-            throw new RuntimeException();
+            throw new DAOException();
 
         } finally {
             closeResources(connection, stmt);
@@ -181,6 +182,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
+            throw new DAOException(e);
         } finally {
             closeResources(connection, stmt, rs);
         }

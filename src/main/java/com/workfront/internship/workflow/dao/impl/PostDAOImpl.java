@@ -5,6 +5,7 @@ import com.workfront.internship.workflow.dao.PostDAO;
 import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -82,7 +83,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException();
+            throw new DAOException();
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -127,7 +128,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -163,7 +164,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -202,7 +203,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -238,7 +239,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -274,7 +275,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -311,7 +312,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -349,7 +350,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -384,7 +385,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -420,7 +421,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -451,7 +452,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -480,7 +481,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -505,7 +506,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("Foreign Key constraint fails");
+            throw new DAOException("Foreign Key constraint fails");
         } finally {
             closeResources(conn, stmt);
         }
@@ -531,7 +532,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -554,7 +555,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.execute();
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -577,7 +578,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.execute();
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred.");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -600,7 +601,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -623,7 +624,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -646,7 +647,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
 
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -671,7 +672,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -697,7 +698,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception has occurred");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -721,13 +722,15 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             stmt.execute();
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(con, stmt);
         }
     }
 
     /**
+     * @param postId
+     * @return
      * @see PostDAO#getNotificationRecipients(long)
      */
     @Override
@@ -747,7 +750,7 @@ public class PostDAOImpl extends AbstractDao implements PostDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }

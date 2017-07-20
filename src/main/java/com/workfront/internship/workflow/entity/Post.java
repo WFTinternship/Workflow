@@ -1,5 +1,7 @@
 package com.workfront.internship.workflow.entity;
 
+import com.workfront.internship.workflow.util.StringUtils;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -29,10 +31,6 @@ public class Post {
     private List<Comment> commentList;
 
     private Post bestAnswer;
-
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
-    }
 
     public long getId() {
         return id;
@@ -135,8 +133,8 @@ public class Post {
     public boolean isValid() {
         return user != null
                 && this.getUser().isValid()
-                && !isEmpty(this.getTitle())
-                && !isEmpty(this.getContent())
+                && !StringUtils.isEmpty(this.getTitle())
+                && !StringUtils.isEmpty(this.getContent())
                 && this.postTime != null
                 && this.getAppArea() != null;
     }

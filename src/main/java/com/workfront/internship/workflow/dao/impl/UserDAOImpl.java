@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             user.setId(id);
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }finally {
             closeResources(connection, addStmt, resultSet);
         }
@@ -92,7 +93,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.execute();
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -115,7 +116,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -144,7 +145,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -172,7 +173,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -200,7 +201,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -229,7 +230,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -266,7 +267,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -303,7 +304,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -326,7 +327,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -346,7 +347,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.execute(sql);
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -374,7 +375,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -398,7 +399,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -422,7 +423,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }

@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
@@ -64,7 +65,7 @@ public class PostServiceImpl implements PostService {
         long id;
         try {
             id = postDAO.add(post);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to add the post to database");
             throw new ServiceLayerException("Failed to add the post to database", e);
         }
@@ -90,7 +91,7 @@ public class PostServiceImpl implements PostService {
             ServiceUtils.increaseRating(postOwner, 10);
             userDAO.updateRating(postOwner);
 
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed during setting the best answer");
             throw new ServiceLayerException("Failed during setting the best answer", e);
         }
@@ -105,7 +106,7 @@ public class PostServiceImpl implements PostService {
         try {
             posts = postDAO.getAll();
             return posts;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get all posts");
         }
@@ -127,7 +128,7 @@ public class PostServiceImpl implements PostService {
         try {
             posts = postDAO.getPostsByPage(rowNumber);
             return posts;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get all posts");
         }
@@ -145,7 +146,7 @@ public class PostServiceImpl implements PostService {
         Post post;
         try {
             post = postDAO.getById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get post with specified id");
         }
@@ -165,7 +166,7 @@ public class PostServiceImpl implements PostService {
         try {
             posts = postDAO.getByTitle(title);
             return posts;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to get posts by specified answerTitle");
         }
 
@@ -184,7 +185,7 @@ public class PostServiceImpl implements PostService {
         try {
             posts = postDAO.getByUserId(id);
             return posts;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to get posts by specified user id");
         }
 
@@ -203,7 +204,7 @@ public class PostServiceImpl implements PostService {
         try {
             posts = postDAO.getByAppAreaId(id);
             return posts;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to get posts by specified app area id");
         }
 
@@ -222,7 +223,7 @@ public class PostServiceImpl implements PostService {
         try {
             posts = postDAO.getAnswersByPostId(id);
             return posts;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceLayerException("Failed to get answers of the specified post");
         }
@@ -242,7 +243,7 @@ public class PostServiceImpl implements PostService {
         try {
             answers = postDAO.getAnswersByUserId(id);
             return answers;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceLayerException("Failed to get answers of the specified user");
         }
@@ -262,7 +263,7 @@ public class PostServiceImpl implements PostService {
         try {
             post = postDAO.getBestAnswer(id);
             return post;
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to get the best answer of the specified post");
         }
 
@@ -280,7 +281,7 @@ public class PostServiceImpl implements PostService {
 
         try {
             return postDAO.getLikesNumber(postId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to like the post");
         }
     }
@@ -297,7 +298,7 @@ public class PostServiceImpl implements PostService {
 
         try {
             return postDAO.getDislikesNumber(postId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to like the post");
         }
     }
@@ -317,7 +318,7 @@ public class PostServiceImpl implements PostService {
             User postOwner = postDAO.getById(postId).getUser();
             ServiceUtils.increaseRating(postOwner, 1);
             userDAO.updateRating(postOwner);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to like the post");
         }
     }
@@ -337,7 +338,7 @@ public class PostServiceImpl implements PostService {
             User postOwner = postDAO.getById(postId).getUser();
             ServiceUtils.decreaseRating(postOwner, 1);
             userDAO.updateRating(postOwner);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to dislike the post");
         }
     }
@@ -357,7 +358,7 @@ public class PostServiceImpl implements PostService {
             User postOwner = postDAO.getById(postId).getUser();
             ServiceUtils.decreaseRating(postOwner, 1);
             userDAO.updateRating(postOwner);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to remove the like to the post");
         }
     }
@@ -377,7 +378,7 @@ public class PostServiceImpl implements PostService {
             User postOwner = postDAO.getById(postId).getUser();
             ServiceUtils.increaseRating(postOwner, 1);
             userDAO.updateRating(postOwner);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             throw new ServiceLayerException("Failed to remove the dislike to the post");
         }
     }
@@ -393,7 +394,7 @@ public class PostServiceImpl implements PostService {
         }
         try {
             postDAO.update(post);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to update the post");
             throw new ServiceLayerException("Failed to update the post", e);
         }
@@ -411,7 +412,7 @@ public class PostServiceImpl implements PostService {
         }
         try {
             postDAO.delete(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to delete specified posts");
             throw new ServiceLayerException("Failed to delete specified posts", e);
         }
@@ -429,7 +430,7 @@ public class PostServiceImpl implements PostService {
         Integer numbOfAnswers;
         try {
             numbOfAnswers = postDAO.getNumberOfAnswers(postId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to delete specified posts");
             throw new ServiceLayerException("Failed to delete specified posts", e);
         }
@@ -448,7 +449,7 @@ public class PostServiceImpl implements PostService {
 
         try {
             postDAO.getNotified(postId, userId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to turn notification on for specified post and user");
             throw new ServiceLayerException("Failed to delete specified posts", e);
         }
@@ -469,7 +470,7 @@ public class PostServiceImpl implements PostService {
             User postOwner = postDAO.getById(answerId).getUser();
             ServiceUtils.decreaseRating(postOwner, 10);
             userDAO.updateRating(postOwner);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to remove the best answer");
             throw new ServiceLayerException("Failed to remove the best answer", e);
         }
@@ -488,7 +489,7 @@ public class PostServiceImpl implements PostService {
         List<User> users;
         try {
             users = postDAO.getNotificationRecipients(postId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to get users with specified id");
             throw new ServiceLayerException("Failed to get users with specified id", e);
         }
@@ -517,7 +518,7 @@ public class PostServiceImpl implements PostService {
                 Map<String, String> subjectContent = getEmailSubjectContent(post, user, type);
                 sendEmail(user, subjectContent.get("subject"), subjectContent.get("content"));
             }
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error("Failed to send emails to all users");
             throw new ServiceLayerException("Failed to send emails to all users", e);
         }

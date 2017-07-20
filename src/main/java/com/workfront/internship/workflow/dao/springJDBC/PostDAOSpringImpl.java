@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -68,7 +69,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             id = keyHolder.getKey().longValue();
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         post.setId(id);
         return id;
@@ -94,7 +95,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -120,7 +121,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -145,7 +146,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -169,7 +170,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -194,7 +195,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -228,7 +229,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -254,7 +255,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -277,7 +278,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -303,7 +304,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -320,7 +321,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         } catch (EmptyResultDataAccessException e) {
             return 0;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -337,7 +338,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         } catch (EmptyResultDataAccessException e) {
             return 0;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -351,7 +352,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, postId, answerId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -366,7 +367,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -381,7 +382,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -396,7 +397,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -411,7 +412,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -426,7 +427,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -440,7 +441,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -455,7 +456,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, answerId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -470,7 +471,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                     Integer.class);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
 
     }
@@ -486,7 +487,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, postId, userId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -504,7 +505,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 }

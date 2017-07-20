@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -44,7 +45,7 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
             jdbcTemplate.update(sql, appArea.getId(), appArea.getName(),
                     appArea.getDescription(), appArea.getTeamName());
         }catch (DataAccessException e){
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         return appArea.getId();
     }
@@ -61,7 +62,7 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -103,7 +104,7 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -126,7 +127,7 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         try {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e){
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 }

@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.CommentRowMapper;
 import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -54,7 +55,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
             id = keyHolder.getKey().longValue();
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         comment.setId(id);
         return id;
@@ -77,7 +78,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -96,7 +97,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -115,7 +116,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -133,7 +134,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
             jdbcTemplate.update(query, newContent, dateFormat.format(date), id);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         return true;
     }
@@ -149,7 +150,7 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
             jdbcTemplate.update(query, id);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 }

@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.service.impl;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.CommentService;
@@ -41,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
         long id;
         try {
             id = commentDAO.add(comment);
-        }catch (RuntimeException e) {
+        }catch (DAOException e) {
             logger.error("Failed to add the comment to database");
             throw new ServiceLayerException("Failed to add the comment to database", e);
         }
@@ -60,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment ;
         try {
            comment = commentDAO.getById(id);
-        }catch(RuntimeException e) {
+        }catch(DAOException e) {
             logger.error("Failed to get the comment by id from database!");
             throw new ServiceLayerException("Failed to get comment with specified id");
         }
@@ -74,7 +75,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getAll() {
         try {
             return commentDAO.getAll();
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             logger.error(e.getStackTrace());
             throw new ServiceLayerException("Failed to get all comments");
         }
@@ -91,7 +92,7 @@ public class CommentServiceImpl implements CommentService {
         }
         try {
             return commentDAO.getByPostId(id);
-        }catch(RuntimeException e) {
+        }catch(DAOException e) {
             logger.error("Failed to get comments by the specified post id!");
             throw new ServiceLayerException("Failed to get comments with specified id");
         }
@@ -108,7 +109,7 @@ public class CommentServiceImpl implements CommentService {
         }
         try{
             return commentDAO.update(id,newContent);
-        }catch(RuntimeException e) {
+        }catch(DAOException e) {
             logger.error("Failed to update the comment !");
             throw new ServiceLayerException("Failed to update comment");
         }
@@ -125,7 +126,7 @@ public class CommentServiceImpl implements CommentService {
         }
         try {
              commentDAO.delete(id);
-        } catch(RuntimeException e){
+        } catch(DAOException e){
             logger.error("Failed to delete the comment");
             throw new ServiceLayerException("Failed to delete comment");
         }

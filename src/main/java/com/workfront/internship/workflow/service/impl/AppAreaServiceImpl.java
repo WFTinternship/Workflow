@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.service.impl;
 import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.AppAreaService;
@@ -40,7 +41,7 @@ public class AppAreaServiceImpl implements AppAreaService {
         long id;
         try{
             id = appAreaDAO.add(appArea);
-        }catch (RuntimeException e){
+        }catch (DAOException e){
             LOGGER.error("Failed to add the application area to database");
             throw new RuntimeException(e);
         }
@@ -60,7 +61,7 @@ public class AppAreaServiceImpl implements AppAreaService {
         List<User> users;
         try {
             users = appAreaDAO.getUsersById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to get users with specified id");
             throw new ServiceLayerException("Failed to get users with specified id", e);
         }
@@ -80,7 +81,7 @@ public class AppAreaServiceImpl implements AppAreaService {
         AppArea appArea;
         try {
             appArea = appAreaDAO.getById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to get the Application Area");
             throw new ServiceLayerException("Failed to get the Application Area", e);
         }
@@ -99,7 +100,7 @@ public class AppAreaServiceImpl implements AppAreaService {
 
         try {
             appAreaDAO.deleteById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to delete the application area");
             throw new ServiceLayerException("Failed to delete the application area", e);
         }

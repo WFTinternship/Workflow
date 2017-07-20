@@ -5,6 +5,7 @@ import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
@@ -52,7 +53,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
 
@@ -77,7 +78,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -103,7 +104,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -150,7 +151,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }

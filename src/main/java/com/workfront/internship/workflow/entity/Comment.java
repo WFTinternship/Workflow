@@ -1,5 +1,7 @@
 package com.workfront.internship.workflow.entity;
 
+import com.workfront.internship.workflow.util.StringUtils;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -76,9 +78,6 @@ public class Comment {
                 && this.getUser().isValid()
                 && this.getPost() != null
                 && this.getPost().isValid()
-                && !isEmpty(this.getContent());
-    }
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
+                && !StringUtils.isEmpty(this.getContent());
     }
 }

@@ -10,6 +10,7 @@ import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -58,7 +59,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             id = keyHolder.getKey().longValue();
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         user.setId(id);
         return id;
@@ -75,7 +76,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, userId, appAreaId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -90,7 +91,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, userId, appAreaId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -110,7 +111,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -128,7 +129,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -146,7 +147,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -164,7 +165,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -190,7 +191,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -216,7 +217,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -231,7 +232,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -245,7 +246,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -261,7 +262,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
                     user.getEmail(), user.getId());
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -275,7 +276,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, user.getAvatarURL(), user.getId());
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -289,7 +290,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, user.getRating(), user.getId());
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 }
