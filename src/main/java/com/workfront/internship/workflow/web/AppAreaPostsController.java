@@ -34,7 +34,7 @@ public class AppAreaPostsController extends HttpServlet {
         for(AppArea appArea : appAreas){
             sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
         }
-        req.setAttribute(PageAttributes.POSTS_OF_APPAAREA, sizeOfPostsBySameAppAreaID);
+        req.setAttribute(PageAttributes.POSTS_OF_APPAREA, sizeOfPostsBySameAppAreaID);
 
         if (posts.size() == 0){
             req.setAttribute(PageAttributes.MESSAGE, "No posts were found in this Application Area.");

@@ -10,13 +10,13 @@
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
-<c:set var="myAppAreas" value='<%=request.getAttribute(PageAttributes.MYAPPAREAS)%>'/>
-<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<c:set var="myAppAreas" value='<%=request.getAttribute(PageAttributes.MY_APPAREAS)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
-<c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILEOWNERID)%>'/>
-<c:set var="profileOwner" value='<%=request.getAttribute(PageAttributes.PROFILEOWNER)%>'/>
-<c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERS)%>'/>
+<c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILE_OWNER_ID)%>'/>
+<c:set var="profileOwner" value='<%=request.getAttribute(PageAttributes.PROFILE_OWNER)%>'/>
+<c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUM_OF_ANSWERS)%>'/>
 
 
 <!DOCTYPE html>

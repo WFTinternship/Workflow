@@ -59,11 +59,11 @@ public class HomeController {
                 .addObject(PageAttributes.POSTS, posts)
                 .addObject(PageAttributes.TOTAL, allPosts.size())
                 .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.NUMOFANSWERS,
+                .addObject(PageAttributes.NUM_OF_ANSWERS,
                         ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                .addObject(PageAttributes.POSTS_OF_APPAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
+                .addObject(PageAttributes.TOP_POSTS, ControllerUtils.getTopPosts(postService, posts));
 
 
         return modelAndView;
@@ -125,7 +125,7 @@ public class HomeController {
         List<Post> mostDiscussedPosts = ControllerUtils.getTopPosts(postService, allPosts);
 
         modelAndView.addObject(PageAttributes.POSTS, mostDiscussedPosts)
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
+                .addObject(PageAttributes.NUM_OF_ANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
 
@@ -145,7 +145,7 @@ public class HomeController {
         List<Post> mostDiscussedPosts = ControllerUtils.getMostDiscussedPosts(postService, allPosts);
 
         modelAndView.addObject(PageAttributes.POSTS, mostDiscussedPosts)
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
+                .addObject(PageAttributes.NUM_OF_ANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
 

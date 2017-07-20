@@ -9,15 +9,15 @@
 
 
 <%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
-<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOSTDISCUSSEDPOSTS)%>'/>
-<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOPPOSTS)%>'/>
+<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOST_DISCUSSED_POSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOP_POSTS)%>'/>
 
-<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUMOFANSWERSFORMDP)%>'/>
-<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIFOFLIKESDISLIKES)%>'/>
+<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUM_OF_ANSWERS_FOR_MDP)%>'/>
+<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIF_OF_LIKES_DISLIKES)%>'/>
 
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
 <c:set var="user" value='<%=request.getAttribute(PageAttributes.USER)%>'/>
-<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAREA)%>'/>
 <c:set var="avatar" value='<%=request.getAttribute(PageAttributes.AVATAR)%>'/>
 <c:set var="email" value='<%=request.getAttribute(PageAttributes.EMAIL)%>'/>
 <c:set var="loginRequest" value='<%=request.getAttribute(PageAttributes.LOGIN_REQUEST)%>'/>
@@ -446,7 +446,6 @@
                     </div>
                 </div>
             </div>
-
     </section>
 
     <footer>
@@ -469,7 +468,6 @@
             </div>
         </div>
     </footer>
-</div>
 
 
 <!-- get jQuery from the google apis -->

@@ -32,7 +32,7 @@ public class HomeController extends HttpServlet {
         for(AppArea appArea : appAreas){
             sizeOfPostsBySameAppAreaID.add(postDAO.getByAppAreaId(appArea.getId()).size());
         }
-        req.setAttribute(PageAttributes.POSTS_OF_APPAAREA,sizeOfPostsBySameAppAreaID);
+        req.setAttribute(PageAttributes.POSTS_OF_APPAREA,sizeOfPostsBySameAppAreaID);
 
         getServletConfig()
                 .getServletContext()

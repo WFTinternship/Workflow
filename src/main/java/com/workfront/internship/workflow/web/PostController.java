@@ -31,7 +31,7 @@ public class PostController extends HttpServlet {
         req.setAttribute(PageAttributes.POST, post);
 
         List<Comment> postComments = commentService.getByPostId(id);
-        req.setAttribute(PageAttributes.POSTCOMMENTS, postComments);
+        req.setAttribute(PageAttributes.POST_COMMENTS, postComments);
 
         List<AppArea> appAreas = Arrays.asList(AppArea.values());
         req.setAttribute(PageAttributes.APPAREAS, appAreas);
