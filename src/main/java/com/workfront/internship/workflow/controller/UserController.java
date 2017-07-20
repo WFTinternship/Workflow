@@ -51,6 +51,7 @@ public class UserController {
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView("login");
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        modelAndView.addObject(PageAttributes.LOGIN_REQUEST, true);
         return modelAndView;
     }
 
@@ -76,6 +77,7 @@ public class UserController {
     public ModelAndView signUp() {
         ModelAndView modelAndView = new ModelAndView("login");
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        modelAndView.addObject(PageAttributes.LOGIN_REQUEST, false);
         return modelAndView;
     }
 

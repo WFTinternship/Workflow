@@ -20,6 +20,7 @@
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
 <c:set var="avatar" value='<%=request.getAttribute(PageAttributes.AVATAR)%>'/>
 <c:set var="email" value='<%=request.getAttribute(PageAttributes.EMAIL)%>'/>
+<c:set var="loginRequest" value='<%=request.getAttribute(PageAttributes.LOGIN_REQUEST)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,10 +40,14 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="96x96" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -241,203 +246,206 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#signup">Sign up</a></li>
-                        <li><a data-toggle="tab" href="#login">Login</a></li>
-                    </ul>
+                    <c:if test="${loginRequest}">
+                        <ul class="nav nav-tabs">
+                            <li><a data-toggle="tab" href="#signup">Sign up</a></li>
+                            <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+                        </ul>
+                    </c:if>
+                    <c:if test="${!loginRequest}">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#signup">Sign up</a></li>
+                            <li><a data-toggle="tab" href="#login">Login</a></li>
+                        </ul>
+                    </c:if>
 
                     <div class="tab-content">
-                        <div id="signup" class="tab-pane fade in active">
+                            <c:if test="${!loginRequest}">
+                            <div id="signup" class="tab-pane fade in active">
+                            </c:if>
+                                <c:if test="${loginRequest}">
+                                <div id="signup" class="tab-pane fade">
+                                    </c:if>
 
-                            <!-- POST -->
-                            <div class="post">
-                                <form class="form newtopic" method="post" enctype="multipart/form-data">
-                                    <div class="postinfotop">
-                                        <h2>Create New Account</h2>
-                                    </div>
-
-                                    <!-- acc section -->
-                                    <div class="accsection">
-                                        <div class="acccap">
-                                            <div class="userinfo pull-left">&nbsp;</div>
-                                            <div class="posttext pull-left"><h3>Required Fields</h3></div>
-                                            <div class="clearfix"></div>
+                                <!-- POST -->
+                                <div class="post">
+                                    <form class="form newtopic" method="post" enctype="multipart/form-data">
+                                        <div class="postinfotop">
+                                            <h2>Create New Account</h2>
                                         </div>
-                                        <div class="topwrap">
-                                            <div class="userinfo pull-left">
 
+                                        <!-- acc section -->
+                                        <div class="accsection">
+                                            <div class="acccap">
+                                                <div class="userinfo pull-left">&nbsp;</div>
+                                                <div class="posttext pull-left"><h3>Required Fields</h3></div>
+                                                <div class="clearfix"></div>
                                             </div>
-                                            <div class="posttext pull-left">
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="text" placeholder="First Name" class="form-control"
-                                                               name="firstName" required/>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="text" placeholder="Last Name" class="form-control"
-                                                               name="lastName" required/>
-                                                    </div>
+                                            <div class="topwrap">
+                                                <div class="userinfo pull-left">
+
                                                 </div>
-                                                <div>
-                                                    <input type="text" placeholder="Email" class="form-control"
-                                                           name="email" id="email" required/>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="password" placeholder="Password"
-                                                               class="form-control" id="sgpass" name="password" required/>
+                                                <div class="posttext pull-left">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <input type="text" placeholder="First Name"
+                                                                   class="form-control"
+                                                                   name="firstName" required/>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <input type="text" placeholder="Last Name"
+                                                                   class="form-control"
+                                                                   name="lastName" required/>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <input type="password" placeholder="Retype Password"
-                                                               class="form-control" id="sgpass2" name="confirmPass"required/>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div><!-- acc section END -->
-
-
-                                    <div class="postinfobot">
-
-                                        <div class="notechbox pull-left">
-                                            <input type="checkbox" name="note" id="sgnote" class="form-control"/>
-                                        </div>
-
-                                        <div class="pull-left lblfch">
-                                            <label for="note"> I agree with the Terms and Conditions of this
-                                                site</label>
-                                        </div>
-
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a>
-                                            </div>
-                                            <div class="pull-left">
-                                                <input class="btn btn-primary" id="vcodeajax" value="Sign Up">
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-
-
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </form>
-                            </div><!-- POST -->
-
-
-                        </div>
-                        <div id="login" class="tab-pane fade">
-
-                            <!-- POST -->
-                            <div class="post">
-                                <form action="/login" class="form newtopic" method="post">
-                                    <div class="postinfotop">
-                                        <h2>Log in to account</h2>
-                                    </div>
-
-                                    <!-- acc section -->
-                                    <div class="accsection">
-
-                                        <div class="topwrap">
-                                            <div class="posttext container">
-
-                                                <div class="row">
-                                                    <div class="col-lg-12 col-md-12">
+                                                    <div>
                                                         <input type="text" placeholder="Email" class="form-control"
-                                                               name="email" required/>
-
+                                                               name="email" id="email" required/>
                                                     </div>
-                                                    <div class="col-lg-12 col-md-12">
-                                                        <input type="password" placeholder="Password"
-                                                               class="form-control" id="pass" name="password" required/>
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <input type="password" placeholder="Password"
+                                                                   class="form-control" id="sgpass" name="password"
+                                                                   required/>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <input type="password" placeholder="Retype Password"
+                                                                   class="form-control" id="sgpass2" name="confirmPass"
+                                                                   required/>
+                                                        </div>
                                                     </div>
 
                                                 </div>
-
+                                                <div class="clearfix"></div>
                                             </div>
+                                        </div><!-- acc section END -->
+
+
+                                        <div class="postinfobot">
+
+
+                                            <div class="pull-right postreply">
+                                                <div class="pull-left">
+                                                    <input class="btn btn-primary" id="vcodeajax" value="Sign Up">
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+
+
                                             <div class="clearfix"></div>
                                         </div>
-                                    </div><!-- acc section END -->
+                                    </form>
+                                </div><!-- POST -->
+                            </div>
 
+                                <c:if test="${loginRequest}">
+                                <div id="login" class="tab-pane fade in active">
+                                    </c:if>
 
-                                    <div class="postinfobot">
+                                    <c:if test="${!loginRequest}">
+                                        <div id="login" class="tab-pane fade">
+                                            </c:if>
 
-                                        <div class="notechbox pull-left">
-                                            <input type="checkbox" name="note" id="note" class="form-control"/>
+                                <!-- POST -->
+                                <div class="post">
+                                    <form action="/login" class="form newtopic" method="post">
+                                        <div class="postinfotop">
+                                            <h2>Log in to account</h2>
                                         </div>
 
-                                        <div class="pull-left lblfch">
-                                            <label for="note"> I agree with the Terms and Conditions of this
-                                                site</label>
-                                        </div>
+                                        <!-- acc section -->
+                                        <div class="accsection">
 
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a>
+                                            <div class="topwrap">
+                                                <div class="posttext container">
+
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <input type="text" placeholder="Email" class="form-control"
+                                                                   name="email" required/>
+
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <input type="password" placeholder="Password"
+                                                                   class="form-control" id="pass" name="password"
+                                                                   required/>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="clearfix"></div>
                                             </div>
-                                            <div class="pull-left">
-                                                <button type="submit" class="btn btn-primary">Login</button>
+                                        </div><!-- acc section END -->
+
+
+                                        <div class="postinfobot">
+
+                                            <div class="pull-right postreply">
+                                                <div class="pull-left">
+                                                    <button type="submit" class="btn btn-primary">Login</button>
+                                                </div>
+                                                <div class="clearfix"></div>
                                             </div>
+
+
                                             <div class="clearfix"></div>
                                         </div>
+                                    </form>
+                                </div><!-- POST -->
 
-
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </form>
-                            </div><!-- POST -->
+                            </div>
 
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-4">
+                    <div class="col-lg-4 col-md-4">
 
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <h3>Application Area</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <ul class="cats">
-                                <c:forEach var="appArea" items="${appAreas}" varStatus="status">
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                    <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
-                                </li>
-                                </c:forEach>
+                        <!-- -->
+                        <div class="sidebarblock">
+                            <h3>Application Area</h3>
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <ul class="cats">
+                                    <c:forEach var="appArea" items="${appAreas}" varStatus="status">
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                    </li>
+                                    </c:forEach>
+                            </div>
                         </div>
+
+                        <!-- -->
+                        <div class="sidebarblock">
+                            <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
+                            <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
+                                <div class="divline"></div>
+                                <div class="blocktxt">
+                                    <a href="/post/${post.id}">${post.title}</a>
+                                    <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
+                                </div>
+                            </c:forEach>
+                        </div>
+
+                        <!-- -->
+                        <div class="sidebarblock">
+                            <a href="/topPosts"><h3>Top Posts</h3></a>
+
+                            <c:forEach var="post" items="${topPosts}" varStatus="status">
+                                <div class="divline"></div>
+                                <div class="blocktxt">
+                                    <a href="/post/${post.id}">${post.title}</a>
+                                    <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
+                                </div>
+                            </c:forEach>
+
+
+                        </div>
+
+
                     </div>
-
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
-                        <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="/post/${post.id}">${post.title}</a>
-                                <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
-                            </div>
-                        </c:forEach>
-                    </div>
-
-                    <!-- -->
-                    <div class="sidebarblock">
-                        <a href="/topPosts"><h3>Top Posts</h3></a>
-
-                        <c:forEach var="post" items="${topPosts}" varStatus="status">
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="/post/${post.id}">${post.title}</a>
-                                <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
-                            </div>
-                        </c:forEach>
-
-
-                    </div>
-
-
                 </div>
             </div>
-        </div>
 
     </section>
 
@@ -482,13 +490,13 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-            {
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
+                {
+                    delay: 15000,
+                    startwidth: 1200,
+                    startheight: 278,
+                    hideThumbs: 10,
+                    fullWidth: "on"
+                });
     });	//ready
 </script>
 

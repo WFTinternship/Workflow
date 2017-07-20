@@ -42,4 +42,5 @@ public interface PageAttributes {
     String POSTS = "posts";
     String TOTAL = "total";
     String REPLY = "reply";
+    String LOGIN_REQUEST = "loginRequest";
 }

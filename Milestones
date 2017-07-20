@@ -23,16 +23,17 @@
 (+) Delete checkboxes from app area list in user page.
 (+) Add number of answers before answers list in post page.
 (+) Pop-up for likes/dislikes with controller.
+(+) Add user ratings.
+(+) Fix update avatar page.
+(+) Change top posts to most discussed posts.
+(+) Add Top posts according to the difference of number of likes and dislikes.
+(+) Delete object fields in controllers.
+
 
 (-) Duxov Remove redundant code.
 (-) Fix the bug user is added to the database without verification.
-(-) Fix update avatar page.
-(-) Add user ratings.
 (-) User page when user is not logged in.
 (-) Number of answers in app area pages.
-(-) Change top posts to most discussed posts.
-(-) Add Top posts according to the difference of number of likes and dislikes.
 (-) Remove post/answer/post.
 (-) Fix get number of answers in controller utils.
 (-) Congrats sign up was successful change color.
-(-) Delete object fields in controllers.
