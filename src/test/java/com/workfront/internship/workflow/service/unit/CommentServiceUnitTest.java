@@ -1,17 +1,16 @@
-package com.workfront.internship.workflow.service;
+package com.workfront.internship.workflow.service.unit;
 
 import com.workfront.internship.workflow.dao.springJDBC.CommentDAOSpringImpl;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.impl.CommentServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 
 import java.util.ArrayList;
@@ -34,11 +33,6 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
 
     @Mock
     CommentDAOSpringImpl commentDAOMock;
-
-    @Before
-    public void init(){
-        MockitoAnnotations.initMocks(this);
-    }
 
 
     /**

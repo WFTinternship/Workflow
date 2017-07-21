@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.service;
+package com.workfront.internship.workflow.service.unit;
 
 import com.workfront.internship.workflow.dao.springJDBC.PostDAOSpringImpl;
 import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
@@ -7,16 +7,14 @@ import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
 import com.workfront.internship.workflow.util.DaoTestUtil;
-import junit.framework.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -46,11 +44,6 @@ public class PostServiceUnitTest extends BaseUnitTest {
 
     @Mock
     private UserDAOSpringImpl userDAOMock;
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     /**
      * @see PostService#add(Post)

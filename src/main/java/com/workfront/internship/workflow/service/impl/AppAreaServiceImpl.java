@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by nane on 6/5/17
  */
 @Service
+@Transactional
 public class AppAreaServiceImpl implements AppAreaService {
 
     private static final Logger LOGGER = Logger.getLogger(AppAreaServiceImpl.class);

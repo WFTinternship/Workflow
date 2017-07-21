@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,21 +82,20 @@ public class UserController {
 
     @RequestMapping(value = "/signup/verify", method = RequestMethod.POST)
     public ModelAndView verify(@RequestParam("emailajax") String email,
-                               @RequestParam("verify") String code) {
+                               @RequestParam("verify") String code,
+                               RedirectAttributes redirectAttributes) {
         User user = userService.getByEmail(email);
         String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/login");
-
         if (!code.equals(verificationCode)) {
             userService.deleteById(user.getId());
-            modelAndView.addObject(PageAttributes.MESSAGE,
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
                     "Sorry, the code is invalid.");
-            return modelAndView;
+            return new ModelAndView("redirect:/signup");
         }
-        modelAndView.addObject(PageAttributes.MESSAGE,
+        redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
                 "Congratulations! Your sign up was successful!");
-        return modelAndView;
+        return new ModelAndView("redirect:/login");
     }
 
     private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response) {
