@@ -25,8 +25,7 @@ public class ControllerUtils {
                 sizeOfPostsBySameAppAreaID.add(postService.getByAppAreaId(appArea.getId()).size());
             }
         } catch (ServiceLayerException e) {
-            throw new RuntimeException(e);
-            //return null;
+            return sizeOfPostsBySameAppAreaID;
         }
         return sizeOfPostsBySameAppAreaID;
     }
@@ -40,7 +39,7 @@ public class ControllerUtils {
                 numbersOfAnswersForPosts.add(postService.getNumberOfAnswers(post.getId()));
             }
         } catch (ServiceLayerException e) {
-            return null;
+            return numbersOfAnswersForPosts;
         }
         return numbersOfAnswersForPosts;
     }
