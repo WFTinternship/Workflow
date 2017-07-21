@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by Angel on 6/5/2017
  */
 @Service
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
     private  static final Logger logger = Logger.getLogger(CommentDAOImpl.class);

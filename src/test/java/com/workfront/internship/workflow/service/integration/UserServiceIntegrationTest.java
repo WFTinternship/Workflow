@@ -1,10 +1,12 @@
-package com.workfront.internship.workflow.service;
+package com.workfront.internship.workflow.service.integration;
 
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.service.PostService;
+import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DaoTestUtil;
 import junit.framework.TestCase;
 import org.junit.After;

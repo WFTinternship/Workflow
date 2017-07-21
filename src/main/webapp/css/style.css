@@ -114,24 +114,28 @@ input#new-comment {
     width: 80%;
     display: inline;
 }
-.delete-post-msg{
+
+.delete-post-msg {
     color: #edfffc;
     font-weight: bold;
     font-size: 20px;
 }
+
 .delete-post {
     float: right;
     color: #c02a2f;
     cursor: pointer;
     padding-left: 20px;
 }
-.edit-profile{
+
+.edit-profile {
     float: right;
     color: #f77f29;
     cursor: pointer;
     padding: 13px;
     font-size: 17px;
 }
+
 .edit-post {
     float: right;
     color: #1565C0;
@@ -158,7 +162,17 @@ input#new-comment {
 
 .alert {
     padding: 15px;
-    margin: 23px 0 8px 0px !important;
+}
+
+.alert-success {
+    padding-left: 15px
+}
+
+.alert-info-success {
+    font-size: medium;
+    background-color: rgba(67, 210, 140, 0.76);
+    border-color: #bce8f1;
+    color: rgba(251, 251, 251, 0.96);
 }
 
 .edit-post span {

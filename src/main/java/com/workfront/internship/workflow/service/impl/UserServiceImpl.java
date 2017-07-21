@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByEmail(String email) {
-        if (isEmpty(email)){
+        if (isEmpty(email)) {
             LOGGER.error("Email is not valid");
             throw new InvalidObjectException("Not valid email");
         }
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         User user;
         try {
             user = userDAO.getByEmail(email);
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("Couldn't get the user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
@@ -160,9 +160,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#getLikedPosts(long)
      * @param id user id
      * @return
+     * @see UserService#getLikedPosts(long)
      */
     @Override
     public List<Post> getLikedPosts(long id) {
@@ -182,9 +182,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#getDislikedPosts(long)
      * @param id user id
      * @return
+     * @see UserService#getDislikedPosts(long)
      */
     @Override
     public List<Post> getDislikedPosts(long id) {
@@ -286,22 +286,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @see UserService#authenticate(String, String)
-     * @param email is input from client
+     * @param email    is input from client
      * @param password is input from client
+     * @see UserService#authenticate(String, String)
      */
     @Override
     public User authenticate(String email, String password) {
-        if (isEmpty(password)){
+        if (isEmpty(password)) {
             LOGGER.error("Password is not valid");
             throw new InvalidObjectException("Not valid password");
         }
 
         User user = getByEmail(email);
 
-        if (user != null && user.getPassword().equals(ServiceUtils.hashString(password))){
+        if (user != null && user.getPassword().equals(ServiceUtils.hashString(password))) {
             return user;
-        }else {
+        } else {
             LOGGER.error("Invalid email-password combination!");
             throw new ServiceLayerException("Invalid email-password combination!");
         }
@@ -332,7 +332,7 @@ public class UserServiceImpl implements UserService {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
                 });
-        String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0,6);
+        String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
         try {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);
@@ -351,8 +351,7 @@ public class UserServiceImpl implements UserService {
         } catch (SendFailedException e) {
             LOGGER.error("The recipient address is not a valid");
             throw new NotExistingEmailException("The recipient address is not a valid", e);
-        }
-        catch (MessagingException e) {
+        } catch (MessagingException e) {
             LOGGER.error("Failed to send an email");
             throw new ServiceLayerException("Failed to send an email", e);
         }

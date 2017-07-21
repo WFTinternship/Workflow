@@ -21,6 +21,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import java.util.Properties;
  * Created by nane on 6/4/17
  */
 @Service
+@Transactional
 public class PostServiceImpl implements PostService {
 
     private static final Logger logger = Logger.getLogger(PostDAO.class);
@@ -558,7 +560,6 @@ public class PostServiceImpl implements PostService {
             Transport.send(mm);
 
         } catch (MessagingException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

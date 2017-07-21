@@ -30,11 +30,11 @@
 (+) Delete object fields in controllers.
 (+) Number of answers in app area pages.
 (+) User page when user is not logged in.
+(+) Remove post/answer/comment.
 
 
 (-) Duxov Remove redundant code.
 (-) Fix the bug user is added to the database without verification.
-(-) Remove post/answer/post.
 (-) Fix get number of answers in controller utils.
 (-) Congrats sign up was successful change color.
 (-) User page when there are no posts.
