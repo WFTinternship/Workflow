@@ -4,7 +4,7 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.web.PageAttributes;
+import com.workfront.internship.workflow.controller.PageAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;

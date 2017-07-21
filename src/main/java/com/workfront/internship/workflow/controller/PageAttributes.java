@@ -1,20 +1,32 @@
-package com.workfront.internship.workflow.web;
+package com.workfront.internship.workflow.controller;
 
 /**
  * Created by nane on 6/15/17
  */
 public interface PageAttributes {
+
+    //posts related attributes
     String ALLPOSTS = "allPosts";
-    String APPAREAS = "appAreas";
     String POSTS_OF_APPAREA = "postsOfAppArea";
-    String USER = "user";
     String POST = "post";
     String ANSWERS = "answers";
     String TITLE = "title";
     String POST_CONTENT = "content";
-    String COMMENT_CONTENT = "content";
-    String APPAREA = "appArea";
+
     String POST_COMMENTS = "postComments";
+
+    //user related attributes
+    String USER = "user";
+
+
+    //application area related attributes
+    String APPAREAS = "appAreas";
+    String APPAREA = "appArea";
+
+    //comment related attributes
+    String COMMENT_CONTENT = "content";
+
+
     String MESSAGE = "message";
     String SEARCH_MESSAGE = "searchMessage";
     String EMAIL = "email";

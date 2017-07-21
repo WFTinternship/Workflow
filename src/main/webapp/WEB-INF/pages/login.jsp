@@ -8,7 +8,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
-<%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
+<%@page import="com.workfront.internship.workflow.controller.PageAttributes" %>
 <c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOST_DISCUSSED_POSTS)%>'/>
 <c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOP_POSTS)%>'/>
 
@@ -260,12 +260,12 @@
                     </c:if>
 
                     <div class="tab-content">
-                            <c:if test="${!loginRequest}">
-                            <div id="signup" class="tab-pane fade in active">
+                        <c:if test="${!loginRequest}">
+                        <div id="signup" class="tab-pane fade in active">
                             </c:if>
-                                <c:if test="${loginRequest}">
-                                <div id="signup" class="tab-pane fade">
-                                    </c:if>
+                            <c:if test="${loginRequest}">
+                            <div id="signup" class="tab-pane fade">
+                                </c:if>
 
                                 <!-- POST -->
                                 <div class="post">
@@ -338,114 +338,117 @@
                                 </div><!-- POST -->
                             </div>
 
-                                <c:if test="${loginRequest}">
-                                <div id="login" class="tab-pane fade in active">
+                            <c:if test="${loginRequest}">
+                            <div id="login" class="tab-pane fade in active">
+                                </c:if>
+
+                                <c:if test="${!loginRequest}">
+                                <div id="login" class="tab-pane fade">
                                     </c:if>
 
-                                    <c:if test="${!loginRequest}">
-                                        <div id="login" class="tab-pane fade">
-                                            </c:if>
+                                    <!-- POST -->
+                                    <div class="post">
+                                        <form action="/login" class="form newtopic" method="post">
+                                            <div class="postinfotop">
+                                                <h2>Log in to account</h2>
+                                            </div>
 
-                                <!-- POST -->
-                                <div class="post">
-                                    <form action="/login" class="form newtopic" method="post">
-                                        <div class="postinfotop">
-                                            <h2>Log in to account</h2>
-                                        </div>
+                                            <!-- acc section -->
+                                            <div class="accsection">
 
-                                        <!-- acc section -->
-                                        <div class="accsection">
+                                                <div class="topwrap">
+                                                    <div class="posttext container">
 
-                                            <div class="topwrap">
-                                                <div class="posttext container">
+                                                        <div class="row">
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <input type="text" placeholder="Email"
+                                                                       class="form-control"
+                                                                       name="email" required/>
 
-                                                    <div class="row">
-                                                        <div class="col-lg-12 col-md-12">
-                                                            <input type="text" placeholder="Email" class="form-control"
-                                                                   name="email" required/>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <input type="password" placeholder="Password"
+                                                                       class="form-control" id="pass" name="password"
+                                                                       required/>
+                                                            </div>
 
-                                                        </div>
-                                                        <div class="col-lg-12 col-md-12">
-                                                            <input type="password" placeholder="Password"
-                                                                   class="form-control" id="pass" name="password"
-                                                                   required/>
                                                         </div>
 
                                                     </div>
-
+                                                    <div class="clearfix"></div>
                                                 </div>
+                                            </div><!-- acc section END -->
+
+
+                                            <div class="postinfobot">
+
+                                                <div class="pull-right postreply">
+                                                    <div class="pull-left">
+                                                        <button type="submit" class="btn btn-primary">Login</button>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+
                                                 <div class="clearfix"></div>
                                             </div>
-                                        </div><!-- acc section END -->
+                                        </form>
+                                    </div><!-- POST -->
 
+                                </div>
 
-                                        <div class="postinfobot">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
 
-                                            <div class="pull-right postreply">
-                                                <div class="pull-left">
-                                                    <button type="submit" class="btn btn-primary">Login</button>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>
+                            <!-- -->
+                            <div class="sidebarblock">
+                                <h3>Application Area</h3>
+                                <div class="divline"></div>
+                                <div class="blocktxt">
+                                    <ul class="cats">
+                                        <c:forEach var="appArea" items="${appAreas}" varStatus="status">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
+                                            <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
+                                        </li>
+                                        </c:forEach>
+                                </div>
+                            </div>
 
+                            <!-- -->
+                            <div class="sidebarblock">
+                                <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
+                                <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
+                                    <div class="divline"></div>
+                                    <div class="blocktxt">
+                                        <a href="/post/${post.id}">${post.title}</a>
+                                        <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
+                                    </div>
+                                </c:forEach>
+                            </div>
 
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </form>
-                                </div><!-- POST -->
+                            <!-- -->
+                            <div class="sidebarblock">
+                                <a href="/topPosts"><h3>Top Posts</h3></a>
+
+                                <c:forEach var="post" items="${topPosts}" varStatus="status">
+                                    <div class="divline"></div>
+                                    <div class="blocktxt">
+                                        <a href="/post/${post.id}">${post.title}</a>
+                                        <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
+                                    </div>
+                                </c:forEach>
+
 
                             </div>
 
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4">
-
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <h3>Application Area</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <ul class="cats">
-                                    <c:forEach var="appArea" items="${appAreas}" varStatus="status">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/appArea/${appArea.id}">${appArea.name}</a>
-                                        <span class="badge pull-right">${postsBySameAppAreaID[status.index]}</span>
-                                    </li>
-                                    </c:forEach>
-                            </div>
-                        </div>
-
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
-                            <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
-                                <div class="divline"></div>
-                                <div class="blocktxt">
-                                    <a href="/post/${post.id}">${post.title}</a>
-                                    <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
-                                </div>
-                            </c:forEach>
-                        </div>
-
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <a href="/topPosts"><h3>Top Posts</h3></a>
-
-                            <c:forEach var="post" items="${topPosts}" varStatus="status">
-                                <div class="divline"></div>
-                                <div class="blocktxt">
-                                    <a href="/post/${post.id}">${post.title}</a>
-                                    <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
-                                </div>
-                            </c:forEach>
-
 
                         </div>
-
-
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <footer>
@@ -470,24 +473,24 @@
     </footer>
 
 
-<!-- get jQuery from the google apis -->
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- get jQuery from the google apis -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
-<script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+    <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
+    <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
+    <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-<!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
-<script type="text/javascript">
-    var revapi;
-    jQuery(document).ready(function () {
-        "use strict";
-        revapi = jQuery('.tp-banner').revolution(
+    <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
+    <script type="text/javascript">
+        var revapi;
+        jQuery(document).ready(function () {
+            "use strict";
+            revapi = jQuery('.tp-banner').revolution(
                 {
                     delay: 15000,
                     startwidth: 1200,
@@ -495,61 +498,61 @@
                     hideThumbs: 10,
                     fullWidth: "on"
                 });
-    });	//ready
-</script>
+        });	//ready
+    </script>
 
-<script>document.getElementById("avatar").onchange = function () {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        // get loaded data and render thumbnail.
-        document.getElementById("image").src = e.target.result;
+    <script>document.getElementById("avatar").onchange = function () {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            document.getElementById("image").src = e.target.result;
+        };
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
     };
-    // read the image file as a data URL.
-    reader.readAsDataURL(this.files[0]);
-};
-</script>
+    </script>
 
 
-<script>
-    jQuery("#vcodeajax").click(function () {
-        $.ajax({
-            url: '/signup',
-            type: 'POST',
-            data: {
-                'firstName': jQuery("input[name=firstName]").val(),
-                'lastName': jQuery("input[name=lastName]").val(),
-                'email': jQuery("#email").val(),
-                'password': jQuery("#sgpass").val(),
-                'confirmPass': jQuery("#sgpass2").val()
-            }, statusCode: {
-                409: function (response) {
-                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+    <script>
+        jQuery("#vcodeajax").click(function () {
+            $.ajax({
+                url: '/signup',
+                type: 'POST',
+                data: {
+                    'firstName': jQuery("input[name=firstName]").val(),
+                    'lastName': jQuery("input[name=lastName]").val(),
+                    'email': jQuery("#email").val(),
+                    'password': jQuery("#sgpass").val(),
+                    'confirmPass': jQuery("#sgpass2").val()
+                }, statusCode: {
+                    409: function (response) {
+                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+                    },
+                    403: function (response) {
+                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please Try again.</div>').fadeIn("slow");
+                    },
+                    500: function (response) {
+                        $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Something went wrong. Please try again.</div>').fadeIn("slow");
+                    },
+                    400: function (response) {
+                        $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
+                    }
+                }, success: function () {
+                    jQuery("#afterajaxemail").val(jQuery("#email").val());
+                    $('#verify').modal('toggle');
+                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong> Congratulations! Your Sign up was successfull!</div>').fadeIn("slow");
                 },
-                403: function (response) {
-                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please Try again.</div>').fadeIn("slow");
-                },
-                500: function (response) {
-                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Something went wrong. Please try again.</div>').fadeIn("slow");
-                },
-                400: function (response) {
-                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
+                error: function (errorThrow) {
+                    console.log('error')
                 }
-            }, success: function () {
-                jQuery("#afterajaxemail").val(jQuery("#email").val());
-                $('#verify').modal('toggle');
-                $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong> Congratulations! Your Sign up was successfull!</div>').fadeIn("slow");
-            },
-            error: function (errorThrow) {
-                console.log('error')
-            }
+            });
         });
-    });
-</script>
+    </script>
 
-<!-- Custom -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>
+    <!-- Custom -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>
 
-<!-- END REVOLUTION SLIDER -->
+    <!-- END REVOLUTION SLIDER -->
 </body>
 
 <!-- Mirrored from forum.azyrusthemes.com/04_new_account.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 07 Jun 2017 20:05:13 GMT -->

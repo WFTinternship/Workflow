@@ -2,7 +2,6 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
