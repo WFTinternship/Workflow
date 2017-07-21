@@ -86,6 +86,11 @@
 
 </head>
 <body>
+<div id="loader" style="display: none;">
+<div class="leftEye"></div>
+<div class="rightEye"></div>
+<div class="mouth"></div>
+</div>
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -231,7 +236,7 @@
                                 </div>
                                 <div class="posttext pull-left">
                                     <h2><a href="/post/${post.id}">${post.title}</a></h2>
-                                    <p>${post.content}</p>
+                                    <p class="post-content">${post.content}</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

@@ -80,10 +80,14 @@
 
 </head>
 <body class="newaccountpage">
-
+<div id="loader" style="display: none;">
+    <div class="leftEye"></div>
+    <div class="rightEye"></div>
+    <div class="mouth"></div>
+</div>
 <div class="container-fluid">
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="myModal" role="dialog" >
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -116,19 +120,19 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="verify" role="dialog">
+    <div class="modal fade" id="verify" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" id="close" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <form action="/signup/verify" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="pwd">Verification Code:</label>
-                            <input type="password" class="form-control" name="verify">
+                            <input type="password" class="form-control" name="verify" value="">
                             <input type="hidden" id="afterajaxemail" name="emailajax">
                         </div>
                     </div>
@@ -328,7 +332,7 @@
 
                                             <div class="pull-right postreply">
                                                 <div class="pull-left">
-                                                    <input class="btn btn-primary" id="vcodeajax" value="Sign Up">
+                                                    <input type="button" class="btn btn-primary" id="vcodeajax" value="Sign Up">
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
@@ -470,7 +474,7 @@
                         <li><a href="#"><i class="fa fa-rss"></i></a></li>
                     </ul>
                 </div>
-            </div>
+            </div>id
         </div>
     </footer>
 

@@ -85,6 +85,11 @@
 
 </head>
 <body>
+<div id="loader" style="display: none;">
+    <div class="leftEye"></div>
+    <div class="rightEye"></div>
+    <div class="mouth"></div>
+</div>
 <div class="container-fluid">
     <%--<!-- Slider -->--%>
     <%--<div class="tp-banner-container">--%>

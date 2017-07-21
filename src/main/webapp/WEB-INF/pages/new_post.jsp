@@ -75,6 +75,11 @@
 
 </head>
 <body>
+<div id="loader" style="display: none;">
+    <div class="leftEye"></div>
+    <div class="rightEye"></div>
+    <div class="mouth"></div>
+</div>
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
