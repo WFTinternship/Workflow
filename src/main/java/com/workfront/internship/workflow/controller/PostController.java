@@ -10,8 +10,6 @@ import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
-import com.workfront.internship.workflow.web.PageAttributes;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,19 +78,19 @@ public class PostController {
                 .map(postAnswer -> commentService.getByPostId(postAnswer.getId()))
                 .collect(Collectors.toList());
 
-        modelAndView.addObject(PageAttributes.ANSWERCOMMENTS, answerComments);
+        modelAndView.addObject(PageAttributes.ANSWER_COMMENTS, answerComments);
 
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
         modelAndView
                 .addObject(PageAttributes.POST, post)
-                .addObject(PageAttributes.POSTCOMMENTS, postComments)
+                .addObject(PageAttributes.POST_COMMENTS, postComments)
                 .addObject(PageAttributes.ANSWERS, answers)
-                .addObject(PageAttributes.LIKEDPOSTS, likedPosts)
-                .addObject(PageAttributes.DISLIKEDPOSTS, dislikedPosts)
-                .addObject(PageAttributes.NUMOFLIKES,
+                .addObject(PageAttributes.LIKED_POSTS, likedPosts)
+                .addObject(PageAttributes.DISLIKED_POSTS, dislikedPosts)
+                .addObject(PageAttributes.NUMBER_OF_LIKES,
                         ControllerUtils.getNumberOfLikes(allPosts, postService))
-                .addObject(PageAttributes.NUMOFDISLIKES,
+                .addObject(PageAttributes.NUMBER_OF_DISLIKES,
                         ControllerUtils.getNumberOfDislikes(allPosts, postService));
 
         return modelAndView;
@@ -103,7 +101,7 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView("redirect:/home");
 
         String title = request.getParameter(PageAttributes.TITLE);
-        String content = request.getParameter(PageAttributes.POSTCONTENT);
+        String content = request.getParameter(PageAttributes.POST_CONTENT);
         String notify = request.getParameter(PageAttributes.NOTE);
 
         AppArea appArea = AppArea.getById(Integer
@@ -200,7 +198,7 @@ public class PostController {
 
         modelAndView
                 .addObject(PageAttributes.POSTS, posts)
-                .addObject(PageAttributes.SEARCHMESSAGE, searchMessage);
+                .addObject(PageAttributes.SEARCH_MESSAGE, searchMessage);
 
         return modelAndView;
     }

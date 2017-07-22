@@ -34,6 +34,13 @@ public interface PostService {
     List<Post> getAll();
 
     /**
+     * Retrieves all posts for specified page
+     * @return list of all posts for specified page
+     *  starting with the most recent one
+     */
+    List<Post> getPostsByPage(long pageNum);
+
+    /**
      * Gets post with specified id
      * @param id of the the post to be retrieved from database
      * @return post with the specified id

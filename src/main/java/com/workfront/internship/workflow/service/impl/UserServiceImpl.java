@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.NotExistingEmailException;
@@ -47,8 +48,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param user
-     * @return
      * @see UserService#add(User)
      */
     @Override
@@ -72,8 +71,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param name
-     * @return
      * @see UserService#getByName(String)
      */
 
@@ -87,7 +84,7 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         try {
             users = userDAO.getByName(name);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find such users");
             throw new ServiceLayerException("Failed to find such users", e);
         }
@@ -96,8 +93,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param id
-     * @return
      * @see UserService#getById(long)
      */
     @Override
@@ -110,7 +105,7 @@ public class UserServiceImpl implements UserService {
         User user;
         try {
             user = userDAO.getById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find such a user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
@@ -118,9 +113,12 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @see UserService#getByEmail(String)
+     */
     @Override
     public User getByEmail(String email) {
-        if (isEmpty(email)){
+        if (isEmpty(email)) {
             LOGGER.error("Email is not valid");
             throw new InvalidObjectException("Not valid email");
         }
@@ -128,7 +126,7 @@ public class UserServiceImpl implements UserService {
         User user;
         try {
             user = userDAO.getByEmail(email);
-        } catch (RuntimeException e){
+        } catch (DAOException e) {
             LOGGER.error("Couldn't get the user");
             throw new ServiceLayerException("Failed to find such a user", e);
         }
@@ -137,8 +135,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param id
-     * @return
      * @see UserService#getAppAreasById(long)
      */
     @Override
@@ -151,7 +147,7 @@ public class UserServiceImpl implements UserService {
         List<AppArea> appAreas;
         try {
             appAreas = userDAO.getAppAreasById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find app areas");
             throw new ServiceLayerException("Failed to find app areas", e);
         }
@@ -161,8 +157,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @see UserService#getLikedPosts(long)
-     * @param id user id
-     * @return
      */
     @Override
     public List<Post> getLikedPosts(long id) {
@@ -174,7 +168,7 @@ public class UserServiceImpl implements UserService {
         List<Post> posts;
         try {
             posts = userDAO.getLikedPosts(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find liked posts");
             throw new ServiceLayerException("Failed to find liked posts", e);
         }
@@ -183,8 +177,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @see UserService#getDislikedPosts(long)
-     * @param id user id
-     * @return
      */
     @Override
     public List<Post> getDislikedPosts(long id) {
@@ -196,7 +188,7 @@ public class UserServiceImpl implements UserService {
         List<Post> posts;
         try {
             posts = userDAO.getDislikedPosts(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to find disliked posts");
             throw new ServiceLayerException("Failed to find disliked posts", e);
         }
@@ -204,8 +196,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param userId
-     * @param appAreaId
      * @see UserService#subscribeToArea(long, long)
      */
     @Override
@@ -222,15 +212,13 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.subscribeToArea(userId, appAreaId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to subscribe to the app area");
             throw new ServiceLayerException("Failed to subscribe to the app area", e);
         }
     }
 
     /**
-     * @param userId
-     * @param appAreaId
      * @see UserService#unsubscribeToArea(long, long)
      */
     @Override
@@ -247,14 +235,13 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.unsubscribeToArea(userId, appAreaId);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to unsubscribe from the app area");
             throw new ServiceLayerException("Failed to unsubscribe from the app area", e);
         }
     }
 
     /**
-     * @param id
      * @see UserService#deleteById(long)
      */
     @Override
@@ -266,7 +253,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.deleteById(id);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to delete the user");
             throw new ServiceLayerException("Failed to delete the user", e);
         }
@@ -279,7 +266,7 @@ public class UserServiceImpl implements UserService {
     public void deleteAll() {
         try {
             userDAO.deleteAll();
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to delete all the user");
             throw new ServiceLayerException("Failed to delete all the user", e);
         }
@@ -287,28 +274,25 @@ public class UserServiceImpl implements UserService {
 
     /**
      * @see UserService#authenticate(String, String)
-     * @param email is input from client
-     * @param password is input from client
      */
     @Override
     public User authenticate(String email, String password) {
-        if (isEmpty(password)){
+        if (isEmpty(password)) {
             LOGGER.error("Password is not valid");
             throw new InvalidObjectException("Not valid password");
         }
 
         User user = getByEmail(email);
 
-        if (user != null && user.getPassword().equals(ServiceUtils.hashString(password))){
+        if (user != null && user.getPassword().equals(ServiceUtils.hashString(password))) {
             return user;
-        }else {
+        } else {
             LOGGER.error("Invalid email-password combination!");
             throw new ServiceLayerException("Invalid email-password combination!");
         }
     }
 
     /**
-     * @param user is input from client
      * @see UserService#sendEmail(User)
      */
     @Override
@@ -332,7 +316,7 @@ public class UserServiceImpl implements UserService {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
                 });
-        String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0,6);
+        String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
         try {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);
@@ -351,8 +335,7 @@ public class UserServiceImpl implements UserService {
         } catch (SendFailedException e) {
             LOGGER.error("The recipient address is not a valid");
             throw new NotExistingEmailException("The recipient address is not a valid", e);
-        }
-        catch (MessagingException e) {
+        } catch (MessagingException e) {
             LOGGER.error("Failed to send an email");
             throw new ServiceLayerException("Failed to send an email", e);
         }
@@ -368,7 +351,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.updateProfile(user);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to update user's profile");
             throw new ServiceLayerException("Failed to update user's profile", e);
         }
@@ -383,7 +366,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             userDAO.updateAvatar(user);
-        } catch (RuntimeException e) {
+        } catch (DAOException e) {
             LOGGER.error("Failed to update user's profile");
             throw new ServiceLayerException("Failed to update user's profile", e);
         }

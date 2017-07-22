@@ -2,12 +2,12 @@ package com.workfront.internship.workflow.dao.springJDBC;
 
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.PostDAO;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AnswerRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -15,7 +15,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -43,8 +42,6 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
     }
 
     /**
-     * @param post is to be added to the database
-     * @return the generated id of the post
      * @see PostDAO#add(Post)
      */
     @Override
@@ -72,14 +69,13 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             id = keyHolder.getKey().longValue();
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         post.setId(id);
         return id;
     }
 
     /**
-     * @return List of all posts
      * @see PostDAO#getAll()
      */
     @Override
@@ -99,13 +95,37 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
+        }
+    }
+
+
+    /**
+     * @return retrieves all posts for specified page
+     */
+    public List<Post> getPostsByPage(long rowNumber) {
+        String sql = "SELECT post.id, user_id, user.first_name, user.last_name, " +
+                " user.email, user.passcode, user.avatar_url, user.rating, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM post " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE post_id IS NULL " +
+                " ORDER BY post_time DESC " +
+                " LIMIT  ?,5 ";
+        try {
+            return jdbcTemplate.query(sql, new Object[]{rowNumber}, new PostRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
+            return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param userId id of the user
-     * @return List of posts posted by the user with specified userId
      * @see PostDAO#getByUserId(long)
      */
     @Override
@@ -126,13 +146,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param id id of the app area
-     * @return List of posts on the specified application area
      * @see PostDAO#getByAppAreaId(long)
      */
     @Override
@@ -152,13 +170,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param title the phrase to search for posts
-     * @return List of Post that contain specified title
      * @see PostDAO#getByTitle(String)
      */
     @Override
@@ -179,13 +195,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param id of the the post to be retrieved from database
-     * @return post with the specified id
      * @see PostDAO#getById(long)
      */
     @Override
@@ -215,13 +229,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId id of the post
-     * @return List of answers of the post specified with postId
      * @see PostDAO#getAnswersByPostId(long)
      */
     @Override
@@ -243,7 +255,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -266,13 +278,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId id of the post
-     * @return the answer that was mark as the Best Answer of the specified post
      * @see PostDAO#getBestAnswer(long)
      */
     @Override
@@ -294,12 +304,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId id of the post whose likes are to be gotten
      * @see PostDAO#getLikesNumber(long)
      */
     @Override
@@ -312,13 +321,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         } catch (EmptyResultDataAccessException e) {
             return 0;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId
-     * @return
      * @see PostDAO#getDislikesNumber(long)
      */
     @Override
@@ -331,12 +338,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
         } catch (EmptyResultDataAccessException e) {
             return 0;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId id of the post whose best answer is to be set
      * @see PostDAO#setBestAnswer(long, long)
      */
     @Override
@@ -346,12 +352,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, postId, answerId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param post the post whose answerTitle and postContent can be updated
      * @see PostDAO#update(Post)
      */
     @Override
@@ -362,13 +367,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, post.getTitle(), post.getContent(), post.getId());
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId id of a post which was liked
-     * @param userId id of a user which liked the post
      * @see PostDAO#like(long, long)
      */
     @Override
@@ -379,13 +382,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId id of a post which was disliked
-     * @param userId id of a user which disliked the post
      * @see PostDAO#dislike(long, long)
      */
     @Override
@@ -396,13 +397,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param userId
-     * @param postId
      * @see PostDAO#removeLike(long, long)
      */
     @Override
@@ -413,13 +412,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param userId
-     * @param postId
      * @see PostDAO#removeDislike(long, long)
      */
     @Override
@@ -430,12 +427,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, userId, postId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param id of the post to be deleted from database
      * @see PostDAO#delete(long)
      */
     @Override
@@ -445,13 +441,12 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
      * @see PostDAO#removeBestAnswer(long)
-     * @param answerId the if of an answer d
      */
     @Override
     public void removeBestAnswer(long answerId) {
@@ -461,13 +456,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, answerId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId of the post which number of answers should get
-     * @return number of answers of the specified post
      * @see PostDAO#getNumberOfAnswers(long)
      */
     @Override
@@ -478,14 +471,12 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
                     Integer.class);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
 
     }
 
     /**
-     * @param postId the id of a post that the user wants to be notified
-     * @param userId the id of a user that will be notified
      * @see PostDAO#getNotified(long, long)
      */
     @Override
@@ -496,13 +487,11 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             jdbcTemplate.update(sql, postId, userId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
     /**
-     * @param postId the id of a post
-     * @return List of users that need to be notified for the specified post
      * @see PostDAO#getNotificationRecipients(long)
      */
     @Override
@@ -516,7 +505,7 @@ public class PostDAOSpringImpl extends AbstractDao implements PostDAO {
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.workfront.internship.workflow.entity;
 
 
+import com.workfront.internship.workflow.util.StringUtils;
+
 import java.util.List;
 
 public class User {
@@ -126,13 +128,10 @@ public class User {
     }
 
     public boolean isValid() {
-        return !isEmpty(this.getFirstName())
-                && !isEmpty(this.getLastName())
-                && !isEmpty(this.getEmail())
-                && !isEmpty(this.getPassword());
+        return !StringUtils.isEmpty(this.getFirstName())
+                && !StringUtils.isEmpty(this.getLastName())
+                && !StringUtils.isEmpty(this.getEmail())
+                && !StringUtils.isEmpty(this.getPassword());
     }
 
-    public static boolean isEmpty(String string) {
-        return string == null || string.isEmpty();
-    }
 }

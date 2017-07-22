@@ -5,6 +5,7 @@ import com.workfront.internship.workflow.dao.AppAreaDAO;
 import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
@@ -33,8 +34,6 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     /**
      * @see AppAreaDAO#add(AppArea)
-     * @param appArea
-     * @return
      */
     @Override
     public long add(AppArea appArea) {
@@ -54,7 +53,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
 
@@ -65,7 +64,6 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     /**
      * @see AppAreaDAO#deleteById(long)
-     * @param id
      */
     @Override
     public void deleteById(long id) {
@@ -80,7 +78,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -88,8 +86,6 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     /**
      * @see AppAreaDAO#getUsersById(long)
-     * @param appAreaId
-     * @return
      */
     @Override
     public List<User> getUsersById(long appAreaId) {
@@ -108,7 +104,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -117,8 +113,6 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     /**
      * @see AppAreaDAO#getById(long)
-     * @param id
-     * @return
      */
     @Override
     public AppArea getById(long id) {
@@ -157,7 +151,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -166,10 +160,6 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     /**
      * Checks if the appArea got from the database is the same as the one in AppArea enum
-     *
-     * @param appArea
-     * @param actualAppArea
-     * @return
      */
 
     private static boolean isTheActualAppArea(AppArea appArea, Map<String, Object> actualAppArea){

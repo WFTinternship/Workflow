@@ -670,6 +670,7 @@ a.down:hover {
 /*--- Quote post ---*/
 .apparea {
     padding-left: 20px;
+    padding-bottom: 5px;
 }
 
 .avatar-card {

@@ -1,8 +1,9 @@
 /**
  * Created by nane on 7/1/17
  */
+$(document).ready(function () {
 jQuery("#vcodeajax").click(function () {
-
+    jQuery("#loader").show();
     $.ajax({
         url: '/signup',
         type: 'POST',
@@ -25,14 +26,16 @@ jQuery("#vcodeajax").click(function () {
         }, success: function () {
             jQuery("#afterajaxemail").val(jQuery("#email").val());
             $('#verify').modal('toggle');
+            jQuery("#loader").hide();
         },
         error: function (errorThrow) {
+            jQuery("#loader").hide();
             console.log('error')
         }
     });
 });
 
-$(document).ready(function () {
+
     $(document).on("click", ".edit-post", function () {
         $(this).removeClass('edit-post');
         $(this).addClass('save-post');

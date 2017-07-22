@@ -2,14 +2,12 @@ package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
-import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
-import com.workfront.internship.workflow.web.PageAttributes;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,6 +50,7 @@ public class UserController {
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView("login");
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        modelAndView.addObject(PageAttributes.LOGIN_REQUEST, true);
         return modelAndView;
     }
 
@@ -76,26 +76,26 @@ public class UserController {
     public ModelAndView signUp() {
         ModelAndView modelAndView = new ModelAndView("login");
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        modelAndView.addObject(PageAttributes.LOGIN_REQUEST, false);
         return modelAndView;
     }
 
     @RequestMapping(value = "/signup/verify", method = RequestMethod.POST)
     public ModelAndView verify(@RequestParam("emailajax") String email,
-                               @RequestParam("verify") String code) {
+                               @RequestParam("verify") String code,
+                               RedirectAttributes redirectAttributes) {
         User user = userService.getByEmail(email);
         String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/login");
-
         if (!code.equals(verificationCode)) {
             userService.deleteById(user.getId());
-            modelAndView.addObject(PageAttributes.MESSAGE,
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
                     "Sorry, the code is invalid.");
-            return modelAndView;
+            return new ModelAndView("redirect:/signup");
         }
-        modelAndView.addObject(PageAttributes.MESSAGE,
+        redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
                 "Congratulations! Your sign up was successful!");
-        return modelAndView;
+        return new ModelAndView("redirect:/login");
     }
 
     private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response) {
@@ -157,11 +157,11 @@ public class UserController {
 
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
-                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.MY_APPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.NUMOFUSERSPOSTS, numOfUsersPosts)
-                .addObject(PageAttributes.NUMOFUSERSANSWERS, numOfUsersAnswers)
-                .addObject(PageAttributes.PROFILEOWNER, user);
+                .addObject(PageAttributes.NUM_OF_USERS_POSTS, numOfUsersPosts)
+                .addObject(PageAttributes.NUM_OF_USERS_ANSWERS, numOfUsersAnswers)
+                .addObject(PageAttributes.PROFILE_OWNER, user);
         return modelAndView;
     }
 
@@ -234,9 +234,9 @@ public class UserController {
 
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
-                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.MY_APPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.PROFILEOWNER, user);
+                .addObject(PageAttributes.PROFILE_OWNER, user);
         return modelAndView;
     }
 
@@ -246,8 +246,8 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
 
-        String firstName = request.getParameter(PageAttributes.FIRSTNAME);
-        String lastName = request.getParameter(PageAttributes.LASTNAME);
+        String firstName = request.getParameter(PageAttributes.FIRST_NAME);
+        String lastName = request.getParameter(PageAttributes.LAST_NAME);
         String email = request.getParameter(PageAttributes.EMAIL);
         String password = request.getParameter(PageAttributes.PASSWORD);
 
@@ -257,7 +257,7 @@ public class UserController {
                 .setEmail(email)
                 .setPassword(password);
 
-        modelAndView.addObject(PageAttributes.PROFILEOWNER, user);
+        modelAndView.addObject(PageAttributes.PROFILE_OWNER, user);
 
         try {
             userService.updateProfile(user);

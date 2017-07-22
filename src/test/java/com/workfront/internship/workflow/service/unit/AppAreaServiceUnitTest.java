@@ -1,16 +1,15 @@
-package com.workfront.internship.workflow.service;
+package com.workfront.internship.workflow.service.unit;
 
 import com.workfront.internship.workflow.dao.springJDBC.AppAreaDAOSpringImpl;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.impl.AppAreaServiceImpl;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +31,6 @@ public class AppAreaServiceUnitTest extends BaseUnitTest {
 
     @Mock
     AppAreaDAOSpringImpl appAreaDAOMock;
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     /**
      * @see AppAreaService#add(AppArea)

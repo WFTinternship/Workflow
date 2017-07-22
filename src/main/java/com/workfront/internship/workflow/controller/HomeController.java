@@ -5,7 +5,6 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +48,7 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView("home");
 
         List<Post> allPosts = postService.getAll();
-        List<Post> posts = ControllerUtils.getFirstPagePosts(allPosts);
+        List<Post> posts = postService.getPostsByPage(1);
 
         List<AppArea> appAreas = AppArea.getAsList();
 
@@ -59,11 +58,11 @@ public class HomeController {
                 .addObject(PageAttributes.POSTS, posts)
                 .addObject(PageAttributes.TOTAL, allPosts.size())
                 .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.NUMOFANSWERS,
+                .addObject(PageAttributes.NUM_OF_ANSWERS,
                         ControllerUtils.getNumberOfAnswers(posts, postService))
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
+                .addObject(PageAttributes.POSTS_OF_APPAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOPPOSTS, ControllerUtils.getTopPosts(postService, posts));
+                .addObject(PageAttributes.TOP_POSTS, ControllerUtils.getTopPosts(postService, posts));
 
 
         return modelAndView;
@@ -77,7 +76,7 @@ public class HomeController {
         int page = Integer.parseInt(url.substring(url.lastIndexOf('/') + 1));
 
         List<Post> allPosts = postService.getAll();
-        List<Post> posts = ControllerUtils.getPostsByPage(allPosts, page);
+        List<Post> posts = postService.getPostsByPage(page);
 
         ControllerUtils.setDefaultAttributes(postService, allPosts, modelAndView);
 
@@ -125,7 +124,7 @@ public class HomeController {
         List<Post> mostDiscussedPosts = ControllerUtils.getTopPosts(postService, allPosts);
 
         modelAndView.addObject(PageAttributes.POSTS, mostDiscussedPosts)
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
+                .addObject(PageAttributes.NUM_OF_ANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
 
@@ -145,7 +144,7 @@ public class HomeController {
         List<Post> mostDiscussedPosts = ControllerUtils.getMostDiscussedPosts(postService, allPosts);
 
         modelAndView.addObject(PageAttributes.POSTS, mostDiscussedPosts)
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
+                .addObject(PageAttributes.NUM_OF_ANSWERS, ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
         return modelAndView;
     }
 
