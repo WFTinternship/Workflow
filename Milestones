@@ -31,14 +31,17 @@
 (+) Number of answers in app area pages.
 (+) User page when user is not logged in.
 (+) Remove post/answer/comment.
+(+) Fix the bug user is added to the database without verification.
+(+) Fix get number of answers in controller utils.
+(+) Congrats sign up was successful change color.
+(+) Alerts in sign up page.
 
 
 (-) Duxov Remove redundant code.
-(-) Fix the bug user is added to the database without verification.
-(-) Fix get number of answers in controller utils.
-(-) Congrats sign up was successful change color.
-(-) User page when there are no posts.
+(-) User page when there are no posts; footer.
 (-) Verification when editing email.
-(-) Type old password for editing password.
 (-) Paging in all pages containing posts.
-(-) Alerts in sign up page.
+(-) Sign up sends two emails fix that.
+(-) Show best answer in post.
+(-) Type old password for editing password.
+(-)

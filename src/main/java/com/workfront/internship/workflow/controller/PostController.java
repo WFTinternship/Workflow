@@ -10,6 +10,7 @@ import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +73,8 @@ public class PostController {
         allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
 
+        Post bestAnswer = postService.getBestAnswer(postId);
+
         postComments = commentService.getByPostId(postId);
 
         List<List<Comment>> answerComments = answers.stream()
@@ -84,6 +87,7 @@ public class PostController {
 
         modelAndView
                 .addObject(PageAttributes.POST, post)
+                .addObject(PageAttributes.BEST_ANSWER, bestAnswer)
                 .addObject(PageAttributes.POST_COMMENTS, postComments)
                 .addObject(PageAttributes.ANSWERS, answers)
                 .addObject(PageAttributes.LIKED_POSTS, likedPosts)
