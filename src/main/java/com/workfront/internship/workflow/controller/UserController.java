@@ -85,6 +85,7 @@ public class UserController {
                                @RequestParam("verify") String code,
                                RedirectAttributes redirectAttributes) {
         User user = userService.getByEmail(email);
+
         String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
 
         if (!code.equals(verificationCode)) {

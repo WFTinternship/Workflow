@@ -316,7 +316,7 @@ public class UserServiceImpl implements UserService {
                         return new PasswordAuthentication(EMAIL, PASSWORD);
                     }
                 });
-        String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
+        String verificationCode = ServiceUtils.hashString(ServiceUtils.hashString(user.getPassword())).substring(0, 6);
         try {
             //Creating MimeMessage object
             MimeMessage mm = new MimeMessage(session);
