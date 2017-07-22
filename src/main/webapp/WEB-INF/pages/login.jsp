@@ -296,7 +296,8 @@
                                                         <div class="col-lg-6 col-md-6">
                                                             <input type="text" placeholder="First Name"
                                                                    class="form-control"
-                                                                   name="firstName" required/>
+                                                                   name="firstName" requir
+                                                                   ed/>
                                                         </div>
                                                         <div class="col-lg-6 col-md-6">
                                                             <input type="text" placeholder="Last Name"
@@ -521,6 +522,7 @@
 
 <script>
     jQuery("#vcodeajax").click(function () {
+        var firstName = jQuery("input[name=firstName]").val();
         $.ajax({
             url: '/signup',
             type: 'POST',

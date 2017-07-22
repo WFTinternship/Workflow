@@ -36,6 +36,7 @@
 (+) Congrats sign up was successful change color.
 (+) Alerts in sign up page.
 (+) Show best answer in post.
+(+) Type old password for editing password.
 
 
 (-) Duxov Remove redundant code.
@@ -43,4 +44,4 @@
 (-) Verification when editing email.
 (-) Paging in all pages containing posts.
 (-) Sign up sends two emails fix that.
-(-) Type old password for editing password.
+(-) Make Sign up fields required.
