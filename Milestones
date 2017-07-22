@@ -35,6 +35,7 @@
 (+) Fix get number of answers in controller utils.
 (+) Congrats sign up was successful change color.
 (+) Alerts in sign up page.
+(+) Show best answer in post.
 
 
 (-) Duxov Remove redundant code.
@@ -42,6 +43,4 @@
 (-) Verification when editing email.
 (-) Paging in all pages containing posts.
 (-) Sign up sends two emails fix that.
-(-) Show best answer in post.
 (-) Type old password for editing password.
-(-)

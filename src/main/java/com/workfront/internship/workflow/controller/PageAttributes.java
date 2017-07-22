@@ -18,6 +18,8 @@ public interface PageAttributes {
 
     //user related attributes
     String USER = "user";
+    String NEW_PASSWORD = "newPassword";
+    String CONFIRM_PASSWORD = "confirmPassword";
 
 
     //application area related attributes

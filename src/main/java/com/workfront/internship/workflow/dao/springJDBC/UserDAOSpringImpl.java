@@ -256,10 +256,10 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
     @Override
     public void updateProfile(User user) {
         String sql = "UPDATE user SET first_name = ?, last_name = ?, " +
-                " email = ? WHERE user.id = ? ";
+                " email = ?, passcode = ? WHERE user.id = ? ";
         try {
             jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
-                    user.getEmail(), user.getId());
+                    user.getEmail(), user.getPassword(), user.getId());
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
             throw new DAOException(e);
