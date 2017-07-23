@@ -139,6 +139,7 @@
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-login">Sign Up</button>
+                        <button type="submit" class="btn btn-login">Cancel</button>
                     </div>
                 </form>
             </div>
@@ -523,6 +524,7 @@
 <script>
     jQuery("#vcodeajax").click(function () {
         var firstName = jQuery("input[name=firstName]").val();
+        jQuery("#loader").show();
         $.ajax({
             url: '/signup',
             type: 'POST',
@@ -548,6 +550,7 @@
             }, success: function () {
                 jQuery("#afterajaxemail").val(jQuery("#email").val());
                 $('#verify').modal('toggle');
+                jQuery("#loader").hide();
 
             },
             error: function (errorThrow) {
