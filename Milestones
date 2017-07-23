@@ -37,11 +37,11 @@
 (+) Alerts in sign up page.
 (+) Show best answer in post.
 (+) Type old password for editing password.
+(+) Sign up sends two emails fix that.
 
 
 (-) Duxov Remove redundant code.
 (-) User page when there are no posts; footer.
 (-) Verification when editing email.
 (-) Paging in all pages containing posts.
-(-) Sign up sends two emails fix that.
 (-) Make Sign up fields required.

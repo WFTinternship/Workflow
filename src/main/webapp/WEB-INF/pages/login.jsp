@@ -16,6 +16,7 @@
 <c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIF_OF_LIKES_DISLIKES)%>'/>
 
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="error" value='<%=request.getAttribute(PageAttributes.ERROR)%>'/>
 <c:set var="user" value='<%=request.getAttribute(PageAttributes.USER)%>'/>
 <c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAREA)%>'/>
 <c:set var="avatar" value='<%=request.getAttribute(PageAttributes.AVATAR)%>'/>
@@ -242,10 +243,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <c:if test="${message != null}">
+                    <c:if test="${message != null && !error}">
                         <div id="alert" class="alert-success alert-info-success"><strong>Info!</strong> ${message}</div>
                     </c:if>
-                    <c:if test="${message == 'Sorry, the code is invalid.'}">
+                    <c:if test="${message != null && error}">
                         <div id="alert" class="alert-success alert-info-failure"><strong>Info!</strong> ${message}</div>
                     </c:if>
                 </div>

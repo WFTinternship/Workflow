@@ -31,6 +31,7 @@ public interface PageAttributes {
 
 
     String MESSAGE = "message";
+    String ERROR = "error";
     String SEARCH_MESSAGE = "searchMessage";
     String EMAIL = "email";
     String PASSWORD = "password";
