@@ -3,6 +3,7 @@ package com.workfront.internship.workflow.service.unit;
 import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
@@ -145,7 +146,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getByName_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).getByName(anyString());
+        doThrow(DAOException.class).when(userDAOMock).getByName(anyString());
 
         //Test method
         userService.getByName("123");
@@ -182,7 +183,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getById_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).getById(anyInt());
+        doThrow(DAOException.class).when(userDAOMock).getById(anyInt());
 
         //Test method
         userService.getById(123);
@@ -233,7 +234,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getByEmail_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).getByEmail(anyString());
+        doThrow(DAOException.class).when(userDAOMock).getByEmail(anyString());
 
         //Test method
         userService.getByEmail("123");
@@ -270,7 +271,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getAppAreasById_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).getAppAreasById(anyInt());
+        doThrow(DAOException.class).when(userDAOMock).getAppAreasById(anyInt());
 
         //Test method
         userService.getAppAreasById(123);
@@ -322,7 +323,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void subscribeToArea_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).subscribeToArea(anyInt(), anyInt());
+        doThrow(DAOException.class).when(userDAOMock).subscribeToArea(anyInt(), anyInt());
 
         //Test method
         userService.subscribeToArea(10, 1);
@@ -371,7 +372,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void unsubscribeToArea_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).unsubscribeToArea(anyInt(), anyInt());
+        doThrow(DAOException.class).when(userDAOMock).unsubscribeToArea(anyInt(), anyInt());
 
         //Test method
         userService.unsubscribeToArea(10, 1);
@@ -408,7 +409,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void deleteById_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).deleteById(anyInt());
+        doThrow(DAOException.class).when(userDAOMock).deleteById(anyInt());
 
         //Test method
         userService.deleteById(1);
@@ -434,7 +435,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void deleteAll_DAOException() {
-        doThrow(RuntimeException.class).when(userDAOMock).deleteAll();
+        doThrow(DAOException.class).when(userDAOMock).deleteAll();
 
         //Test method
         userService.deleteAll();
@@ -550,7 +551,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void update_DAOException() {
         User user= DaoTestUtil.getRandomUser();
-        doThrow(RuntimeException.class).when(userDAOMock).updateProfile(any(User.class));
+        doThrow(DAOException.class).when(userDAOMock).updateProfile(any(User.class));
 
         // Test method
         userService.updateProfile(user);

@@ -2,6 +2,7 @@ package com.workfront.internship.workflow.service.unit;
 
 import com.workfront.internship.workflow.dao.springJDBC.CommentDAOSpringImpl;
 import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.CommentService;
@@ -129,7 +130,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
     public void getById_DAOException() {
         Long id = 7L;
 
-        doThrow(RuntimeException.class).when(commentDAOMock).getById(id);
+        doThrow(DAOException.class).when(commentDAOMock).getById(id);
 
         //Test method
         commentService.getById(id);
@@ -161,7 +162,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getAll_DAOException() {
-        doThrow(RuntimeException.class).when(commentDAOMock).getAll();
+        doThrow(DAOException.class).when(commentDAOMock).getAll();
 
         //Test method
         commentService.getAll();
@@ -223,7 +224,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
     public void getByPostId_DAOException() {
         Long id = 7L;
 
-        doThrow(RuntimeException.class).when(commentDAOMock).getByPostId(id);
+        doThrow(DAOException.class).when(commentDAOMock).getByPostId(id);
 
         //Test method
         commentService.getByPostId(id);
@@ -258,7 +259,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
         Long id = 7L;
         String newContent = "new content";
 
-        doThrow(RuntimeException.class).when(commentDAOMock).update(id,newContent);
+        doThrow(DAOException.class).when(commentDAOMock).update(id,newContent);
 
         //Test method
         commentService.update(id,newContent);

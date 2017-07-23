@@ -6,6 +6,8 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
@@ -13,6 +15,7 @@ import com.workfront.internship.workflow.service.UserService;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +31,7 @@ import java.util.stream.Collectors;
  * Created by nane on 6/25/17
  */
 @Controller
-public class PostController {
+public class PostController extends BaseController {
 
     private CommentService commentService;
     private PostService postService;
@@ -206,4 +209,5 @@ public class PostController {
 
         return modelAndView;
     }
+
 }

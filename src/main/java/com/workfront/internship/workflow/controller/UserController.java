@@ -12,6 +12,7 @@ import com.workfront.internship.workflow.service.util.ServiceUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by nane on 6/27/17
  */
 @Controller
-public class UserController {
+public class UserController extends BaseController {
 
     private static final String DEFAULT_AVATAR_URL = "/images/default/user-avatar.png";
     private UserService userService;
@@ -194,6 +195,8 @@ public class UserController {
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
+            } else {
+                FileUtils.cleanDirectory(uploadDir);
             }
             String fileName = new File(user.getFirstName() + "Avatar").getName();
             String filePath = realPath + "/" + fileName + ext;

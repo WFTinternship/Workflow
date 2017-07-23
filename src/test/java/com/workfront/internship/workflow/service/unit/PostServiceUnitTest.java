@@ -5,6 +5,7 @@ import com.workfront.internship.workflow.dao.springJDBC.UserDAOSpringImpl;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
@@ -108,7 +109,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void add_DAOException() {
         Post post = DaoTestUtil.getRandomPost();
-        doThrow(RuntimeException.class).when(postDAOMock).add(any(Post.class));
+        doThrow(DAOException.class).when(postDAOMock).add(any(Post.class));
 
         // Test method
         postService.add(post);
@@ -161,7 +162,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void setBestAnswer_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).setBestAnswer(anyLong(), anyLong());
+        doThrow(DAOException.class).when(postDAOMock).setBestAnswer(anyLong(), anyLong());
 
         // Test method
         postService.setBestAnswer(15, 17);
@@ -208,7 +209,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void removeBestAnswer_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).removeBestAnswer(anyLong());
+        doThrow(DAOException.class).when(postDAOMock).removeBestAnswer(anyLong());
 
         // Test method
         postService.removeBestAnswer(15);
@@ -240,7 +241,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getAll_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).getAll();
+        doThrow(DAOException.class).when(postDAOMock).getAll();
         // Test method
         postService.getAll();
     }
@@ -270,7 +271,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getById_DAOException() {
         long id = 15;
-        doThrow(RuntimeException.class).when(postDAOMock).getById(id);
+        doThrow(DAOException.class).when(postDAOMock).getById(id);
         // Test method
         postService.getById(id);
     }
@@ -308,7 +309,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getByTitle_DAOException() {
         String title = "Title";
-        doThrow(RuntimeException.class).when(postDAOMock).getByTitle(title);
+        doThrow(DAOException.class).when(postDAOMock).getByTitle(title);
 
         // Test method
         postService.getByTitle(title);
@@ -352,7 +353,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getByUserId_DAOException() {
         long id = 15;
-        doThrow(RuntimeException.class).when(postDAOMock).getByUserId(id);
+        doThrow(DAOException.class).when(postDAOMock).getByUserId(id);
 
         // Test method
         postService.getByUserId(id);
@@ -396,7 +397,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getByAppAreaId_DAOException() {
         long id = 15;
-        doThrow(RuntimeException.class).when(postDAOMock).getByAppAreaId(id);
+        doThrow(DAOException.class).when(postDAOMock).getByAppAreaId(id);
 
         // Test method
         postService.getByAppAreaId(id);
@@ -440,7 +441,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getAnswersByPostId_DAOException() {
         long id = 15;
-        doThrow(RuntimeException.class).when(postDAOMock).getAnswersByPostId(id);
+        doThrow(DAOException.class).when(postDAOMock).getAnswersByPostId(id);
 
         // Test method
         postService.getAnswersByPostId(id);
@@ -484,7 +485,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getAnswersByUserId_DAOException() {
         long id = 15;
-        doThrow(RuntimeException.class).when(postDAOMock).getAnswersByUserId(id);
+        doThrow(DAOException.class).when(postDAOMock).getAnswersByUserId(id);
 
         // Test method
         postService.getAnswersByUserId(id);
@@ -528,7 +529,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void getBestAnswer_DAOException() {
         long id = 15;
-        doThrow(RuntimeException.class).when(postDAOMock).getBestAnswer(id);
+        doThrow(DAOException.class).when(postDAOMock).getBestAnswer(id);
 
         // Test method
         postService.getBestAnswer(id);
@@ -576,7 +577,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getLikesNumber_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).getLikesNumber(anyLong());
+        doThrow(DAOException.class).when(postDAOMock).getLikesNumber(anyLong());
 
         // Test method
         postService.getLikesNumber(1);
@@ -621,7 +622,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getDislikesNumber_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).dislike(anyLong(), anyLong());
+        doThrow(DAOException.class).when(postDAOMock).dislike(anyLong(), anyLong());
 
         // Test method
         postService.dislike(1, 1);
@@ -668,7 +669,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void removeLike_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).removeLike(anyInt(), anyInt());
+        doThrow(DAOException.class).when(postDAOMock).removeLike(anyInt(), anyInt());
 
         //Test method
         postService.removeLike(10, 1);
@@ -723,7 +724,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void removeDislike_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).removeDislike(anyInt(), anyInt());
+        doThrow(DAOException.class).when(postDAOMock).removeDislike(anyInt(), anyInt());
 
         //Test method
         postService.removeDislike(10, 1);
@@ -814,7 +815,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void update_DAOException() {
         Post post = DaoTestUtil.getRandomPost();
-        doThrow(RuntimeException.class).when(postDAOMock).update(any(Post.class));
+        doThrow(DAOException.class).when(postDAOMock).update(any(Post.class));
 
         // Test method
         postService.update(post);
@@ -864,7 +865,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void like_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).like(anyLong(), anyLong());
+        doThrow(DAOException.class).when(postDAOMock).like(anyLong(), anyLong());
 
         // Test method
         postService.like(1, 1);
@@ -919,7 +920,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void dislike_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).dislike(anyLong(), anyLong());
+        doThrow(DAOException.class).when(postDAOMock).dislike(anyLong(), anyLong());
 
         // Test method
         postService.dislike(1, 1);
@@ -967,7 +968,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
     @Test(expected = ServiceLayerException.class)
     public void delete_DAOException() {
         long id = 15;
-        doThrow(RuntimeException.class).when(postDAOMock).delete(anyLong());
+        doThrow(DAOException.class).when(postDAOMock).delete(anyLong());
 
         // Test method
         postService.delete(id);
@@ -1020,7 +1021,7 @@ public class PostServiceUnitTest extends BaseUnitTest {
      */
     @Test(expected = ServiceLayerException.class)
     public void getNotified_DAOException() {
-        doThrow(RuntimeException.class).when(postDAOMock).getNotified(anyLong(), anyLong());
+        doThrow(DAOException.class).when(postDAOMock).getNotified(anyLong(), anyLong());
 
         //Test method
         postService.getNotified(10, 1);
