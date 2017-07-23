@@ -4,9 +4,8 @@ import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
-import com.workfront.internship.workflow.exceptions.dao.NoSuchUserException;
+import com.workfront.internship.workflow.exceptions.service.NoSuchUserException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
-import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
@@ -14,7 +13,6 @@ import com.workfront.internship.workflow.service.util.ServiceUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,9 +67,8 @@ public class UserController extends BaseController {
                                          HttpServletResponse response,
                                          RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = authenticate(request, response, redirectAttributes);
-        ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
-        if (!modelAndView.getViewName().equals("login")) {
+        if (!modelAndView.getViewName().equals("redirect:/login")) {
             modelAndView.setViewName("redirect:/new-post");
         }
 

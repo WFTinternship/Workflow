@@ -55,7 +55,7 @@ public class HomeController extends BaseController {
 
         List<AppArea> appAreas = AppArea.getAsList();
 
-        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        ControllerUtils.setDefaultAttributes(postService, allPosts, modelAndView);
 
         modelAndView
                 .addObject(PageAttributes.POSTS, posts)
@@ -64,8 +64,7 @@ public class HomeController extends BaseController {
                 .addObject(PageAttributes.NUM_OF_ANSWERS,
                         ControllerUtils.getNumberOfAnswers(posts, postService))
                 .addObject(PageAttributes.POSTS_OF_APPAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.TOP_POSTS, ControllerUtils.getTopPosts(postService, posts));
+                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
 
 
         return modelAndView;

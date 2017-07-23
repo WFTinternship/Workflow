@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.exceptions.dao;
+package com.workfront.internship.workflow.exceptions.service;
 
 /**
  * Created by Vahag on 6/2/2017

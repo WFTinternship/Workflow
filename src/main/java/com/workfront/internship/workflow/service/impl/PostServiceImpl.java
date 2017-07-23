@@ -121,7 +121,7 @@ public class PostServiceImpl implements PostService {
     public List<Post> getPostsByPage(long pageNumber) {
         if (pageNumber < 1) {
             logger.error("Id is not valid");
-            throw new InvalidObjectException("Invalid post id");
+            throw new InvalidObjectException("Invalid page number");
         }
 
         List<Post> posts;
@@ -132,7 +132,7 @@ public class PostServiceImpl implements PostService {
             return posts;
         } catch (DAOException e) {
             logger.error(e.getStackTrace());
-            throw new ServiceLayerException("Failed to get all posts");
+            throw new ServiceLayerException("Failed to get posts");
         }
     }
 
