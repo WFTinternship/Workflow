@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Angel on 6/27/2017
  */
 @Controller
-public class AnswerController {
+public class AnswerController extends BaseController {
 
     private PostService postService;
 

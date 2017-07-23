@@ -244,6 +244,9 @@
                     <c:if test="${message != null}">
                         <div id="alert" class="alert-success alert-info-success"><strong>Info!</strong> ${message}</div>
                     </c:if>
+                    <c:if test="${message == 'Sorry, the code is invalid.'}">
+                        <div id="alert" class="alert-success alert-info-failure"><strong>Info!</strong> ${message}</div>
+                    </c:if>
                 </div>
             </div>
         </div>

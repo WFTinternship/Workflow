@@ -1,6 +1,5 @@
 package com.workfront.internship.workflow.service.impl;
 
-import com.sun.mail.smtp.SMTPAddressFailedException;
 import com.workfront.internship.workflow.dao.UserDAO;
 
 import com.workfront.internship.workflow.entity.AppArea;

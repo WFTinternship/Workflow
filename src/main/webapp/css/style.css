@@ -182,6 +182,13 @@ input#new-comment {
     color: rgba(251, 251, 251, 0.96);
 }
 
+.alert-info-failure {
+    font-size: medium;
+    background-color: rgba(249, 44, 44, 0.74);
+    border-color: #de0909;
+    color: rgba(251, 251, 251, 0.96);
+}
+
 .edit-post span {
     margin-left: 0px;
 }
@@ -459,4 +466,16 @@ div#loader {
     position: fixed;
     width: 100%;
     height: 100%;
+}
+
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    margin-bottom: -100px;
+    padding-bottom: 100px;
+}
+footer {
+    height: 100px;
 }

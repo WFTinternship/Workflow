@@ -4,10 +4,13 @@ import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +24,7 @@ import java.util.List;
  * Created by Angel on 6/27/2017
  */
 @Controller
-public class CommentController {
+public class CommentController extends BaseController {
     private final PostService postService;
     private final CommentService commentService;
 
@@ -78,6 +81,13 @@ public class CommentController {
     @RequestMapping(value = {"/edit-comment/*"}, method = RequestMethod.POST)
     public ModelAndView editComment(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("post");
+        return modelAndView;
+    }
+
+    @ExceptionHandler({InvalidObjectException.class, ServiceLayerException.class})
+    public ModelAndView handleError() {
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject(PageAttributes.MESSAGE, "INTERNAL SERVER ERROR");
         return modelAndView;
     }
 }

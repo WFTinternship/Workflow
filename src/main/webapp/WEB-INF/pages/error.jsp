@@ -8,15 +8,11 @@
 
 <%@page import="com.workfront.internship.workflow.controller.PageAttributes" %>
 
-<c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
-<c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
-<c:set var="myAppAreas" value='<%=request.getAttribute(PageAttributes.MY_APPAREAS)%>'/>
-<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAREA)%>'/>
+
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
-<c:set var="profileOwnerId" value='<%=request.getAttribute(PageAttributes.PROFILE_OWNER_ID)%>'/>
 <c:set var="profileOwner" value='<%=request.getAttribute(PageAttributes.PROFILE_OWNER)%>'/>
-<c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUM_OF_ANSWERS)%>'/>
+
 
 
 <!DOCTYPE html>
@@ -202,11 +198,9 @@
     <section class="content totop">
 
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8 breadcrumbf">
-                    <font color="red">${message}</font>
-                </div>
-            </div>
+            <div style="font-size: 300px; margin: 0 auto; padding-left: 200px">500</div>
+            <div style="font-size: 70px; margin: 0 auto">${message}</div>
+
         </div>
 
 
@@ -214,73 +208,6 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8">
 
-
-                    <div class="user-card">
-                        <div class="row">
-                            <div class="col-md-6 col-sidebar">
-                                <div class="avatar-card">
-                                    <c:if test="${(user != null) && (user.id == profileOwner.id)}">
-                                        <form action="/updateAvatar" class="form newtopic" method="post"
-                                              enctype="multipart/form-data">
-                                            <div class="avatar center-block">
-                                                <input type="image" name="avatar" id="image"
-                                                       src="${profileOwner.avatarURL}"
-                                                       height="140" width="140"/>
-                                                    <%--<label for="avatar" class="btn"><img src="${profileOwner.avatarURL}"--%>
-                                                    <%--id="image1" alt="" height="140" width="140"/>--%>
-                                                    <%--</label>--%>
-                                                <input type="file" name="avatar" id="my_file" style="display: none;"
-                                                       required title="Click on the photo to choose a file"/>
-                                            </div>
-                                            <input class="btn btn-primary" type="submit" value="Update Avatar" required
-                                                   title="Click on the photo to choose a file"/>
-                                        </form>
-                                    </c:if>
-                                    <c:if test="${(user == null) || (user !=null && user.id != profileOwner.id)}">
-                                        <div class="avatar center-block">
-                                            <img src="${profileOwner.avatarURL}"
-                                                 id="image2" alt="" height="140" width="140"/>
-                                        </div>
-                                    </c:if>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-md-12 col-content">
-                                <form action="/edit-profile" class="form newtopic" method="post">
-                                    <ul class="post-ul">
-                                        <li>
-                                            <div class="form-group">
-                                                <label for="usr">First Name:</label>
-                                                <input type="text" class="form-control" value="${profileOwner.firstName}" name="firstName" id="firstName">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label for="usr">Last Name:</label>
-                                                <input type="text" class="form-control" value="${profileOwner.lastName}" name="lastName" id="lastName">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label for="usr">Email:</label>
-                                                <input type="text" class="form-control" value="${profileOwner.email}" name="email" id="email">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label for="usr">Password:</label>
-                                                <input type="text" class="form-control" value="000000" name="password" id="password">
-                                            </div>
-                                        </li>
-                                    </ul>
-
-                                    <div class="pull-right">
-                                        <button type="submit" class="btn btn-primary">Update</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
 
 
@@ -348,15 +275,16 @@
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
-            {
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
+                {
+                    delay: 15000,
+                    startwidth: 1200,
+                    startheight: 278,
+                    hideThumbs: 10,
+                    fullWidth: "on"
+                });
     });	//ready
 </script>
+
 
 
 <!-- END REVOLUTION SLIDER -->
