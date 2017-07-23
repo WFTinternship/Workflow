@@ -124,6 +124,7 @@ public class PostControllerUnitTest extends BaseUnitTest {
                 .andExpect(model().attribute(PageAttributes.DISLIKEDPOSTS, dislikedPosts))
                 .andExpect(status().isOk());
     }
+
     /**
      * @see PostController#post(HttpServletRequest)
      */

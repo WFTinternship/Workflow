@@ -106,7 +106,7 @@ public class CommentServiceUnitTest extends  BaseUnitTest {
     public void add_DAOException() {
         Comment comment = DaoTestUtil.getRandomComment();
 
-        doThrow(RuntimeException.class).when(commentDAOMock).add(any(Comment.class));
+        doThrow(ServiceLayerException.class).when(commentDAOMock).add(any(Comment.class));
 
         // Test method
         commentService.add(comment);

@@ -67,7 +67,7 @@ public class UserController extends BaseController {
         ModelAndView modelAndView = authenticate(request, response);
         ControllerUtils.setDefaultAttributes(postService, modelAndView);
 
-        if (!modelAndView.getViewName().equals("login")) {
+        if (!modelAndView.getViewName().equals("redirect:/login")) {
             modelAndView.setViewName("redirect:/new-post");
         }
 

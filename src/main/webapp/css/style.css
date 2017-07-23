@@ -477,5 +477,13 @@ html, body {
     padding-bottom: 100px;
 }
 footer {
-    height: 100px;
+    height: 134px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+footer .row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

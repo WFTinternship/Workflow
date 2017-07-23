@@ -214,12 +214,12 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-8">
+                <div class="col-lg-12 col-md-12">
 
 
                     <div class="user-card">
                         <div class="row">
-                            <div class="col-md-6 col-sidebar">
+                            <div class="col-md-4 col-sidebar">
                                 <div class="avatar-card">
                                     <c:if test="${(user != null) && (user.id == profileOwner.id)}">
                                         <form action="/updateAvatar" class="form newtopic" method="post"
@@ -246,7 +246,7 @@
                                     </c:if>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-md-12 col-content">
+                            <div class="col-md-4 col-content">
                                 <form action="/edit-profile" class="form newtopic" method="post">
                                     <ul class="post-ul">
                                         <li>
@@ -279,21 +279,21 @@
                                 </form>
                             </div>
 
-                            <div class="col-md-6 col-md-12 col-content">
+                            <div class="col-md-4 col-content">
                                 <form action="/update-password" class="form newtopic" method="post">
                                     <ul class="post-ul">
                                         <li>
                                             <div class="form-group">
                                                 <label for="usr">Password:</label>
 
-                                                <input type="text" class="form-control" value="Old Password"
-                                                       name="password" id="password">
+                                                <input type="password" class="form-control" name="password"
+                                                       id="password" placeholder="Old Password">
 
-                                                <input type="text" class="form-control" value="New Password"
-                                                       name="newPassword" id="newPassword">
+                                                <input type="password" class="form-control" name="newPassword"
+                                                       id="newPassword" placeholder="New Password">
 
-                                                <input type="text" class="form-control" value="Confirm Password"
-                                                       name="confirmPassword" id="confirmPassword">
+                                                <input type="password" class="form-control" name="confirmPassword"
+                                                       id="confirmPassword" placeholder="Confirm New Password">
                                             </div>
                                         </li>
                                     </ul>
@@ -309,9 +309,7 @@
                 </div>
 
 
-                <div class="col-lg-4 col-md-4">
 
-                </div>
                 <%--Edit Avatar Place--%>
 
             </div>

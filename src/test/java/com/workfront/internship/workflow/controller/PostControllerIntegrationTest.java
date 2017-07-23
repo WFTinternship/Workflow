@@ -92,15 +92,6 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
                 .andExpect(status().isOk());
     }
 
-
-    @Test
-    public void editPost() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/edit-post")
-                .requestAttr(PageAttributes.POST, post)
-        ).andExpect(view().name("post"));
-    }
-
     @Test
     public void newPost_get() throws Exception {
         allPosts = postService.getAll();
@@ -121,19 +112,13 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
     public void newPost_post() throws Exception {
         allPosts = postService.getAll();
 
-        // TODO: add andExpect(allPosts) and #ofAnswers
         mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
                 .param(PageAttributes.TITLE, "A title")
                 .param(PageAttributes.POST_CONTENT, "Some content")
                 .param(PageAttributes.NOTE, "off")
                 .param(PageAttributes.APPAREA, "1")
                 .sessionAttr(PageAttributes.USER, user))
-                .andExpect(view().name("home"))
-                .andExpect(model().attribute(PageAttributes.APPAREAS, appAreas))
-                .andExpect(model().attribute(PageAttributes.POSTS_OF_APPAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService)))
-                .andExpect(status().isOk());
+                .andExpect(view().name("redirect:/home"));
     }
-
 }
 
