@@ -87,7 +87,7 @@
 </div>
 <div class="container-fluid">
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog" >
+    <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -334,7 +334,8 @@
 
                                             <div class="pull-right postreply">
                                                 <div class="pull-left">
-                                                    <input type="button" class="btn btn-primary" id="vcodeajax" value="Sign Up">
+                                                    <input type="button" class="btn btn-primary" id="vcodeajax"
+                                                           value="Sign Up">
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
@@ -476,7 +477,8 @@
                         <li><a href="#"><i class="fa fa-rss"></i></a></li>
                     </ul>
                 </div>
-            </div>id
+            </div>
+            id
         </div>
     </footer>
 
@@ -499,13 +501,13 @@
         jQuery(document).ready(function () {
             "use strict";
             revapi = jQuery('.tp-banner').revolution(
-                    {
-                        delay: 15000,
-                        startwidth: 1200,
-                        startheight: 278,
-                        hideThumbs: 10,
-                        fullWidth: "on"
-                    });
+                {
+                    delay: 15000,
+                    startwidth: 1200,
+                    startheight: 278,
+                    hideThumbs: 10,
+                    fullWidth: "on"
+                });
         });	//ready
     </script>
 
@@ -521,44 +523,48 @@
     </script>
 
 
-<script>
-    jQuery("#vcodeajax").click(function () {
-        var firstName = jQuery("input[name=firstName]").val();
-        jQuery("#loader").show();
-        $.ajax({
-            url: '/signup',
-            type: 'POST',
-            data: {
-                'firstName': jQuery("input[name=firstName]").val(),
-                'lastName': jQuery("input[name=lastName]").val(),
-                'email': jQuery("#email").val(),
-                'password': jQuery("#sgpass").val(),
-                'confirmPass': jQuery("#sgpass2").val()
-            }, statusCode: {
-                409: function (response) {
-                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
-                },
-                403: function (response) {
-                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please try again.</div>').fadeIn("slow");
-                },
-                500: function (response) {
-                    $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>We were not able to send the email. Please try again.</div>').fadeIn("slow");
-                },
-                400: function (response) {
-                    $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
-                }
-            }, success: function () {
-                jQuery("#afterajaxemail").val(jQuery("#email").val());
-                $('#verify').modal('toggle');
-                jQuery("#loader").hide();
+    <script>
+        jQuery("#vcodeajax").click(function () {
+            var firstName = jQuery("input[name=firstName]").val();
+            jQuery("#loader").show();
+            $.ajax({
+                url: '/signup',
+                type: 'POST',
+                data: {
+                    'firstName': jQuery("input[name=firstName]").val(),
+                    'lastName': jQuery("input[name=lastName]").val(),
+                    'email': jQuery("#email").val(),
+                    'password': jQuery("#sgpass").val(),
+                    'confirmPass': jQuery("#sgpass2").val()
+                }, statusCode: {
+                    409: function (response) {
+                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+                        jQuery("#loader").hide();
+                    },
+                    403: function (response) {
+                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please try again.</div>').fadeIn("slow");
+                        jQuery("#loader").hide();
+                    },
+                    500: function (response) {
+                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>We were not able to send the email. Please try again.</div>').fadeIn("slow");
+                        jQuery("#loader").hide();
+                    },
+                    400: function (response) {
+                        $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
+                        jQuery("#loader").hide();
+                    }
+                }, success: function () {
+                    jQuery("#afterajaxemail").val(jQuery("#email").val());
+                    $('#verify').modal('toggle');
+                    jQuery("#loader").hide();
 
-            },
-            error: function (errorThrow) {
-                console.log('error')
-            }
+                },
+                error: function (errorThrow) {
+                    console.log('error')
+                }
+            });
         });
-    });
-</script>
+    </script>
 
     <!-- Custom -->
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom.js"></script>
