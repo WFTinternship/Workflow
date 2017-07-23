@@ -12,11 +12,14 @@ public interface PageAttributes {
     String ANSWERS = "answers";
     String TITLE = "title";
     String POST_CONTENT = "content";
+    String BEST_ANSWER = "bestAnswer";
 
     String POST_COMMENTS = "postComments";
 
     //user related attributes
     String USER = "user";
+    String NEW_PASSWORD = "newPassword";
+    String CONFIRM_PASSWORD = "confirmPassword";
 
 
     //application area related attributes
@@ -55,4 +58,5 @@ public interface PageAttributes {
     String TOTAL = "total";
     String REPLY = "reply";
     String LOGIN_REQUEST = "loginRequest";
+
 }

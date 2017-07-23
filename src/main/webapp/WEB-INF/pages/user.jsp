@@ -224,7 +224,7 @@
 
                     <div class="user-card">
                         <div class="row">
-                            <c:if test="${(user != null)}">
+                            <c:if test="${user == profileOwner}">
                                 <a href="/edit/${user.id}">
 
                                     <div class="edit-profile">

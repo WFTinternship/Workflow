@@ -24,6 +24,7 @@
 <c:set var="numberOfDislikes" value='<%=request.getAttribute(PageAttributes.NUMBER_OF_DISLIKES)%>'/>
 
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
+<c:set var="bestAnswer" value='<%=request.getAttribute(PageAttributes.BEST_ANSWER)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
 <c:set var="likedPosts" value='<%=request.getAttribute(PageAttributes.LIKED_POSTS)%>'/>
 <c:set var="dislikedPosts" value='<%=request.getAttribute(PageAttributes.DISLIKED_POSTS)%>'/>
@@ -444,11 +445,32 @@
                                                href="/users/${answer.user.id}">${answer.user.firstName}</a>
                                         </div>
                                         <c:if test="${user.id == post.user.id}">
-                                            <div class="icons">
-                                                <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
-                                                   id="tickColor${answer.id}" aria-hidden="true"></i>
-                                            </div>
+                                            <c:if test="${answer != bestAnswer}">
+                                                <div class="icons">
+                                                    <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
+                                                       id="tickColor${answer.id}" aria-hidden="true"></i>
+                                                </div>
+                                            </c:if>
+
+                                            <c:if test="${answer == bestAnswer}">
+                                                <div class="icons">
+                                                    <i onclick="bestAnswer(${answer.id})" class="fa fa-check greenTick"
+                                                       id="tickColor${answer.id}" aria-hidden="true"></i>
+                                                </div>
+                                            </c:if>
                                         </c:if>
+
+                                        <c:if test="${user.id != post.user.id || user == null}">
+
+                                            <c:if test="${answer == bestAnswer}">
+                                                <div class="icons">
+                                                    <i onclick="bestAnswer(${answer.id})" class="fa fa-check greenTick"
+                                                       id="tickColor${answer.id}" aria-hidden="true"></i>
+                                                </div>
+                                            </c:if>
+
+                                        </c:if>
+
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">

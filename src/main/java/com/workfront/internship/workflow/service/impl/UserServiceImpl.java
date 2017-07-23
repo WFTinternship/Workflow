@@ -1,7 +1,6 @@
 package com.workfront.internship.workflow.service.impl;
 
 import com.workfront.internship.workflow.dao.UserDAO;
-
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
@@ -10,8 +9,8 @@ import com.workfront.internship.workflow.exceptions.service.DuplicateEntryExcept
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.NotExistingEmailException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
-import com.workfront.internship.workflow.service.util.ServiceUtils;
 import com.workfront.internship.workflow.service.UserService;
+import com.workfront.internship.workflow.service.util.ServiceUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,9 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Properties;
-
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Vahag on 6/4/2017
@@ -368,6 +366,19 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             LOGGER.error("Failed to update user's profile");
             throw new ServiceLayerException("Failed to update user's profile", e);
+        }
+    }
+
+    @Override
+    public String verifyNewPassword(User user, String oldPassword,
+                                  String newPassword, String confirmPassword) {
+
+        if (ServiceUtils.hashString(oldPassword).equals(user.getPassword())
+                && newPassword.equals(confirmPassword)) {
+            user.setPassword(newPassword);
+            return ServiceUtils.hashString(newPassword);
+        }else {
+            throw new ServiceLayerException("The password is incorrect");
         }
     }
 }

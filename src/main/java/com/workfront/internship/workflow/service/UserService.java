@@ -116,4 +116,6 @@ public interface UserService {
      * @param user is the one whose avatar is to be updated
      */
     void updateAvatar(User user);
+
+    String verifyNewPassword(User user, String oldPassword, String newPassword, String confirmPassword);
 }

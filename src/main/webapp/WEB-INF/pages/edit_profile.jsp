@@ -120,7 +120,9 @@
                         </div>
                         <div class="form-group">
                             <label for="pwd">Password:</label>
+
                             <input type="password" class="form-control" name="password" id="pwd">
+
                         </div>
                     </div>
 
@@ -250,31 +252,54 @@
                                         <li>
                                             <div class="form-group">
                                                 <label for="usr">First Name:</label>
-                                                <input type="text" class="form-control" value="${profileOwner.firstName}" name="firstName" id="firstName">
+                                                <input type="text" class="form-control"
+                                                       value="${profileOwner.firstName}" name="firstName"
+                                                       id="firstName">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
                                                 <label for="usr">Last Name:</label>
-                                                <input type="text" class="form-control" value="${profileOwner.lastName}" name="lastName" id="lastName">
+                                                <input type="text" class="form-control" value="${profileOwner.lastName}"
+                                                       name="lastName" id="lastName">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="form-group">
                                                 <label for="usr">Email:</label>
-                                                <input type="text" class="form-control" value="${profileOwner.email}" name="email" id="email">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="form-group">
-                                                <label for="usr">Password:</label>
-                                                <input type="text" class="form-control" value="000000" name="password" id="password">
+                                                <input type="text" class="form-control" value="${profileOwner.email}"
+                                                       name="email" id="email">
                                             </div>
                                         </li>
                                     </ul>
 
                                     <div class="pull-right">
                                         <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="col-md-6 col-md-12 col-content">
+                                <form action="/update-password" class="form newtopic" method="post">
+                                    <ul class="post-ul">
+                                        <li>
+                                            <div class="form-group">
+                                                <label for="usr">Password:</label>
+
+                                                <input type="text" class="form-control" value="Old Password"
+                                                       name="password" id="password">
+
+                                                <input type="text" class="form-control" value="New Password"
+                                                       name="newPassword" id="newPassword">
+
+                                                <input type="text" class="form-control" value="Confirm Password"
+                                                       name="confirmPassword" id="confirmPassword">
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">Update Password</button>
                                     </div>
                                 </form>
                             </div>

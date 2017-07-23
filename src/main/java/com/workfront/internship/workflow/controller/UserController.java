@@ -4,8 +4,8 @@ import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
-import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
@@ -90,6 +90,12 @@ public class UserController extends BaseController {
         User user = userService.getByEmail(email);
 
         String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
+
+        if (code.isEmpty()){
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "Your sign up was canceled.");
+            return new ModelAndView("redirect:/signup");
+        }
 
         if (!code.equals(verificationCode)) {
             userService.deleteById(user.getId());
@@ -255,15 +261,11 @@ public class UserController extends BaseController {
         String firstName = request.getParameter(PageAttributes.FIRST_NAME);
         String lastName = request.getParameter(PageAttributes.LAST_NAME);
         String email = request.getParameter(PageAttributes.EMAIL);
-        String password = request.getParameter(PageAttributes.PASSWORD);
 
         user
                 .setFirstName(firstName)
                 .setLastName(lastName)
-                .setEmail(email)
-                .setPassword(password);
-
-        modelAndView.addObject(PageAttributes.PROFILE_OWNER, user);
+                .setEmail(email);
 
         try {
             userService.updateProfile(user);
@@ -274,4 +276,34 @@ public class UserController extends BaseController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/update-password", method = RequestMethod.POST)
+    public ModelAndView updatePassword(HttpServletRequest request,
+                                       RedirectAttributes redirectAttributes) {
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
+
+        String oldPassword = request.getParameter(PageAttributes.PASSWORD);
+        String newPassword = request.getParameter(PageAttributes.NEW_PASSWORD);
+        String confirmPassword = request.getParameter(PageAttributes.CONFIRM_PASSWORD);
+        String password;
+        try {
+            password = userService.verifyNewPassword(user, oldPassword,
+                    newPassword, confirmPassword);
+        } catch (ServiceLayerException e) {
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "Your password is not correct.");
+            return modelAndView;
+        }
+
+        user.setPassword(password);
+
+        try {
+            userService.updateProfile(user);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "Sorry, there has been a problem.");
+        }
+        return modelAndView;
+    }
 }
