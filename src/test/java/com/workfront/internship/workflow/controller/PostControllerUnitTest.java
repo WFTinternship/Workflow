@@ -1,11 +1,6 @@
 package com.workfront.internship.workflow.controller;
 
-import com.workfront.internship.workflow.controller.utils.ControllerUtils;
-
-import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
-import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
-import javafx.geometry.Pos;
-import org.omg.SendingContext.RunTime;
+import com.workfront.internship.workflow.service.impl.PostServiceImpl;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
@@ -29,11 +24,12 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -49,16 +45,19 @@ public class PostControllerUnitTest extends BaseUnitTest {
     private PostService postService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Mock
-    private CommentService commentServiceMock;
-
-    @Mock
-    private PostService postServiceMock;
+    private PostServiceImpl postServiceMock;
 
     @Mock
     private UserService userServiceMock;
+
+    @Mock
+    private CommentService commentServiceMock;
 
     @Mock
     private HttpSession session ;
@@ -67,54 +66,41 @@ public class PostControllerUnitTest extends BaseUnitTest {
     private HttpServletRequest request;
 
     @InjectMocks
-    @Autowired
     private PostController postController;
 
-    @InjectMocks
     private MockMvc mockMvc;
 
     private Post post;
     private User user;
-    private AppArea appArea;
     private List<Post> likedPosts ;
     private List<Post> dislikedPosts ;
     private List<Comment> postComments ;
     private List<Post> answers;
-    private List<Post> allPosts;
-//  private List<AppArea> appAreas;
-//  private List<Long> numOfLikes;
-//  private List<Long> numOfDisLikes;
 
     @Before
     public void init() {
         post = DaoTestUtil.getRandomPost();
         user = DaoTestUtil.getRandomUser();
-        appArea = DaoTestUtil.getRandomAppArea();
         post.setUser(user);
-        post.setAppArea(appArea);
 
         likedPosts = new ArrayList<>();
-//      appAreas = new ArrayList<>();
-        allPosts = new ArrayList<>();
         dislikedPosts = new ArrayList<>();
         postComments = new ArrayList<>();
         answers = new ArrayList<>();
-//      numOfLikes = ControllerUtils.getNumberOfLikes(allPosts, postService);
-//      numOfDisLikes = ControllerUtils.getNumberOfDislikes(allPosts, postService);
 
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(this.webApplicationContext)
-                .build();
+                .dispatchOptions(true).build();
+
         MockitoAnnotations.initMocks(this);
     }
 
     /**
      * @see PostController#post(HttpServletRequest)
-     * @throws Exception
      */
     @Test
     public void post() throws Exception {
-        Long postId = post.getId();
+        Long postId = 1L;
 
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("/post/" + postId);
@@ -123,11 +109,10 @@ public class PostControllerUnitTest extends BaseUnitTest {
         doReturn(user).when(session).getAttribute(PageAttributes.USER);
         doReturn(likedPosts).when(userServiceMock).getLikedPosts(user.getId());
         doReturn(dislikedPosts).when(userServiceMock).getDislikedPosts(user.getId());
-        doReturn(post).when(postServiceMock).getById(post.getId());
+        doReturn(post).when(postServiceMock).getById(postId);
         doReturn(postComments).when(commentServiceMock).getByPostId(post.getId());
         doReturn(answers).when(postServiceMock).getAnswersByPostId(post.getId());
 
-        // Test method
         postController.post(request);
 
         this.mockMvc.perform(get("/post/" + postId))
@@ -139,12 +124,44 @@ public class PostControllerUnitTest extends BaseUnitTest {
                 .andExpect(model().attribute(PageAttributes.DISLIKEDPOSTS, dislikedPosts))
                 .andExpect(status().isOk());
     }
+    /**
+     * @see PostController#post(HttpServletRequest)
+     */
+    @Test
+    public void postNullUser() throws Exception {
+        Long postId = 1L;
+        long likesNumber = 9L;
+
+        List<Post> postList = new ArrayList<>();
+        postList.add(post);
+
+        List<Post> likedPosts = new ArrayList<>();
+        List<Post> dislikedPosts = new ArrayList<>();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("/post/" + postId);
+        doReturn(stringBuilder).when(request).getRequestURL();
+        doReturn(session).when(request).getSession();
+        doReturn(null).when(session).getAttribute(PageAttributes.USER);
+        doReturn(post).when(postServiceMock).getById(postId);
+        doReturn(8L).when(post).getId();
+        doReturn(likesNumber).when(postServiceMock).getLikesNumber(anyLong());
+
+//        postController.post(request);
+
+        this.mockMvc.perform(get("/post/" + postId))
+                .andExpect(view().name("post"))
+                .andExpect(model().attribute(PageAttributes.LIKEDPOSTS, likedPosts))
+                .andExpect(model().attribute(PageAttributes.DISLIKEDPOSTS, dislikedPosts));
+        assertTrue(userService.getLikedPosts(any(Long.class)).isEmpty());
+        assertTrue(userService.getDislikedPosts(any(Long.class)).isEmpty());
+    }
 
     /**
      * @see PostController#newPost()
      */
     @Test
-    public void new_post() throws Exception {
+    public void newPost() throws Exception {
         Long postId = 7L;
         String appAreaIdAsString = "7";
         String title = "title";
@@ -159,8 +176,7 @@ public class PostControllerUnitTest extends BaseUnitTest {
         doReturn(user).when(session).getAttribute(PageAttributes.USER);
         doReturn(postId).when(postServiceMock).add(post);
 
-        // Test method
-        postController.newPost(request);
+//      postController.newPost(request);
 
         List<Post> allPosts = postService.getAll();
 
@@ -169,6 +185,7 @@ public class PostControllerUnitTest extends BaseUnitTest {
                 .andExpect(model().attribute(PageAttributes.ALLPOSTS, allPosts))
                 .andExpect(status().isOk());
     }
+
     /**
      * @see PostController#newPost()
      */

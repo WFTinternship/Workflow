@@ -5,34 +5,21 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.web.PageAttributes;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.PowerMockUtils;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-@PrepareForTest(ControllerUtils.class)
-@RunWith(PowerMockRunner.class)
 public class ControllerUtilsUnitTest extends BaseUnitTest {
     @Autowired
     private PostService postService;
@@ -59,9 +46,7 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
         List<Integer> sizeOfPostsBySameAppAreaID = new ArrayList<>();
         List<AppArea> appAreas = new ArrayList<>();
         Long appAreaId = 7L;
-        appAreas = AppArea.getAsList();
 
-        mockStatic(ControllerUtils.class);
         doReturn(posts).when(postServiceMock).getByAppAreaId(appAreaId);
 
         // Test Method
@@ -219,26 +204,25 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
         assertTrue(expectedList.isEmpty());
     }
 
-
     /**
      * @see ControllerUtils#setDefaultAttributes(PostService, ModelAndView)
      */
     @Test
     public void setDefaultAttributes_success() {
-        List<Post> allPosts = postService.getAll();
-        ModelAndView modelAndView = new ModelAndView();
+
     }
 
     @Test
     public void setDefaultAttributes_gettingPostsList_success() {
-        /*ModelAndView modelAndView = new ModelAndView();
+/*
+        ModelAndView modelAndView = new ModelAndView();
         List<Post> posts = new ArrayList<>();
         List<AppArea> appAreas = new ArrayList<>();
         mockStatic(ControllerUtils.class);
         List<Post> topPosts = new ArrayList<>();
         List<Post> mostDiscussedPosts = new ArrayList<>();
-       // doReturn(topPosts).when(ControllerUtils.getTopPosts(postService, posts));
-       // doReturn(mostDiscussedPosts).when(ControllerUtils.getMostDiscussedPosts(postService, posts));
+        doReturn(topPosts).when(ControllerUtils.getTopPosts(postService, posts));
+        doReturn(mostDiscussedPosts).when(ControllerUtils.getMostDiscussedPosts(postService, posts));
 
         doReturn(PageAttributes.NUMOFANSWERS).when(ControllerUtils.getNumberOfAnswers(posts, postService));
         doReturn(PageAttributes.NUMOFANSWERSFORMDP).when(ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
@@ -248,15 +232,18 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
         // Test method
         ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
 
-        assertEquals(modelAndView.getModel().get(PageAttributes.NUMOFANSWERS),ControllerUtils.getNumberOfAnswers(posts, postService));
-        assertEquals(modelAndView.getModel().get(PageAttributes.NUMOFANSWERSFORMDP),ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
-        assertEquals(modelAndView.getModel().get(PageAttributes.DIFOFLIKESDISLIKES),ControllerUtils.getDifOfLikesDislikes(topPosts, postService));
+        assertEquals(modelAndView.getModel()
+        .get(PageAttributes.NUMOFANSWERS),ControllerUtils.getNumberOfAnswers(posts, postService));
+        assertEquals(modelAndView.getModel().get(PageAttributes.NUMOFANSWERSFORMDP),
+                ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
+        assertEquals(modelAndView.getModel().get(PageAttributes.DIFOFLIKESDISLIKES),
+                ControllerUtils.getDifOfLikesDislikes(topPosts, postService));
         assertEquals(modelAndView.getModel().get(PageAttributes.APPAREAS),appAreas);
-        assertEquals(modelAndView.getModel().get(PageAttributes.POSTS_OF_APPAAREA),ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        assertEquals(modelAndView.getModel().get(PageAttributes.POSTS_OF_APPAAREA),
+                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
         assertEquals(modelAndView.getModel().get(PageAttributes.TOPPOSTS),topPosts);
         assertEquals(modelAndView.getModel().get(PageAttributes.MOSTDISCUSSEDPOSTS),mostDiscussedPosts);
 */
-
 
     }
 
