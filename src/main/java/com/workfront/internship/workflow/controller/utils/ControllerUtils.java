@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  */
 public class ControllerUtils {
 
-
     private static final int NUMBER_OF_POST_PER_PAGE = 5;
     private static List<AppArea> appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
 
@@ -26,7 +25,7 @@ public class ControllerUtils {
             sizeOfPostsBySameAppAreaID.addAll(appAreas.stream()
                     .map(appArea -> postService.getByAppAreaId(appArea.getId()).size()).collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
-            return null;
+            return sizeOfPostsBySameAppAreaID;
         }
         return sizeOfPostsBySameAppAreaID;
     }
@@ -47,8 +46,12 @@ public class ControllerUtils {
     public static List<Long> getNumberOfLikes(List<Post> postList, PostService postService) {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
         try {
-            numbersOfLikesForPosts.addAll(postList.stream()
-                    .map(post -> postService.getLikesNumber(post.getId())).collect(Collectors.toList()));
+            List<Long> list = new ArrayList<>();
+            for (Post post : postList) {
+                Long likesNumber = postService.getLikesNumber(post.getId());
+                list.add(likesNumber);
+            }
+            numbersOfLikesForPosts.addAll(list);
         } catch (ServiceLayerException e) {
             return numbersOfLikesForPosts;
         }
