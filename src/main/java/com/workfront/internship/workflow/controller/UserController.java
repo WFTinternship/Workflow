@@ -90,6 +90,7 @@ public class UserController {
         String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
 
         if (code.isEmpty()){
+            userService.deleteById(user.getId());
             redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
                     "Your sign up was canceled.");
             return new ModelAndView("redirect:/signup");
