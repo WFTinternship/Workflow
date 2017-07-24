@@ -108,17 +108,17 @@ public class PostControllerIntegrationTest extends BaseIntegrationTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void newPost_post() throws Exception {
-        allPosts = postService.getAll();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
-                .param(PageAttributes.TITLE, "A title")
-                .param(PageAttributes.POST_CONTENT, "Some content")
-                .param(PageAttributes.NOTE, "off")
-                .param(PageAttributes.APPAREA, "1")
-                .sessionAttr(PageAttributes.USER, user))
-                .andExpect(view().name("redirect:/home"));
-    }
+//    @Test
+//    public void newPost_post() throws Exception {
+//        allPosts = postService.getAll();
+//
+//        mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
+//                .param(PageAttributes.TITLE, "A title")
+//                .param(PageAttributes.POST_CONTENT, "Some content")
+//                .param(PageAttributes.NOTE, "off")
+//                .param(PageAttributes.APPAREA, "1")
+//                .sessionAttr(PageAttributes.USER, user))
+//                .andExpect(view().name("redirect:/home"));
+//    }
 }
 

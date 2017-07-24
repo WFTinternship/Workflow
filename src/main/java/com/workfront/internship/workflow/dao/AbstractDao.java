@@ -20,9 +20,6 @@ public abstract class AbstractDao {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
-//    @Autowired
-    protected EntityManagerFactory entityManagerFactory;
-
     protected static void closeResources(AutoCloseable... resources) {
         for (AutoCloseable resource : resources) {
             if (resource != null) {

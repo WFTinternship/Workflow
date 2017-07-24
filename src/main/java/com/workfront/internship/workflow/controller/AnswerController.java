@@ -4,9 +4,7 @@ import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
-import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +28,7 @@ public class AnswerController extends BaseController {
     }
 
     @Autowired
-    public AnswerController(PostService postService, CommentService commentService, UserService userService) {
+    public AnswerController(PostService postService) {
         this.postService = postService;
     }
 
@@ -67,11 +65,8 @@ public class AnswerController extends BaseController {
         }
 
         List<User> users = postService.getNotificationRecipients(postId);
-        try {
-            postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
-        } catch (RuntimeException e) {
+        postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
 
-        }
         return modelAndView;
     }
 }
