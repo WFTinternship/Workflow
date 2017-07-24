@@ -31,6 +31,7 @@
 <c:set var="comments" value='<%=request.getAttribute(PageAttributes.POST_COMMENTS)%>'/>
 <c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWER_COMMENTS)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="error" value='<%=request.getAttribute(PageAttributes.ERROR)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -289,7 +290,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <font color="">something</font>
+                    <c:if test="${message != null && !error}">
+                        <div id="alert" class="alert-success alert-info-success"><strong>Info!</strong> ${message}</div>
+                    </c:if>
+                    <c:if test="${message != null && error}">
+                        <div id="alert" class="alert-success alert-info-failure"><strong>Info!</strong> ${message}</div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -402,6 +408,10 @@
                                     <c:forEach var="comment" items="${comments}">
                                         <li>
                                                 ${comment.content}
+                                            <div class="pull-right">
+                                                <a class="username"
+                                                   href="/users/${comment.user.id}">${comment.user.firstName}</a>
+                                            </div>
                                         </li>
                                     </c:forEach>
                                 </ul>
@@ -555,6 +565,10 @@
                                                    varStatus="commentStatus">
                                             <li>
                                                     ${comment.content}
+                                                <div class="pull-right">
+                                                    <a class="username"
+                                                       href="/users/${comment.user.id}">${comment.user.firstName}</a>
+                                                </div>
                                             </li>
                                         </c:forEach>
                                     </ul>
@@ -583,7 +597,6 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-8 breadcrumbf">
-                                <font color="red">${message}</font>
                             </div>
                         </div>
                     </div>

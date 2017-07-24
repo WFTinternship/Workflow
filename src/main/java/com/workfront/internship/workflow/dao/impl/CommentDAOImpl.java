@@ -221,7 +221,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
         return comments;
     }
-
 }
 
 

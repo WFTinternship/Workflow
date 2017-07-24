@@ -166,6 +166,7 @@
 
 
     <div class="headernav" id="header">
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="/"><img
@@ -237,7 +238,7 @@
             </div>
         </div>
     </div>
-
+    <div class="notify"></div>
 
     <section class="content">
         <div class="container">
@@ -530,43 +531,52 @@
     <script>
         jQuery("#vcodeajax").click(function () {
             var firstName = jQuery("input[name=firstName]").val();
-            jQuery("#loader").show();
-            $.ajax({
-                url: '/signup',
-                type: 'POST',
-                data: {
-                    'firstName': jQuery("input[name=firstName]").val(),
-                    'lastName': jQuery("input[name=lastName]").val(),
-                    'email': jQuery("#email").val(),
-                    'password': jQuery("#sgpass").val(),
-                    'confirmPass': jQuery("#sgpass2").val()
-                }, statusCode: {
-                    409: function (response) {
-                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+            if(jQuery("input[name=firstName]").val() || jQuery("input[name=lastName]").val() || jQuery("#email").val() || jQuery("#sgpass").val() || jQuery("#sgpass2").val()){
+                jQuery("#loader").show();
+                $.ajax({
+                    url: '/signup',
+                    type: 'POST',
+                    data: {
+                        'firstName': jQuery("input[name=firstName]").val(),
+                        'lastName': jQuery("input[name=lastName]").val(),
+                        'email': jQuery("#email").val(),
+                        'password': jQuery("#sgpass").val(),
+                        'confirmPass': jQuery("#sgpass2").val()
+                    }, statusCode: {
+                        409: function (response) {
+                            $('.notify').html('<div id="alert" class="alert alert-info"><strong>Info!</strong>This email is already used!</div>').fadeIn("slow");
+                            jQuery("#loader").hide();
+                        },
+                        403: function (response) {
+                            $('.notify').html('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please try again.</div>').fadeIn("slow");
+                            jQuery("#loader").hide();
+                        },
+                        500: function (response) {
+                            $('.notify').html('<div id="alert" class="alert alert-info"><strong>Info!</strong>We were not able to send the email. Please try again.</div>').fadeIn("slow");
+                            jQuery("#loader").hide();
+                        },
+                        400: function (response) {
+                            $('.notify').html('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
+                            jQuery("#loader").hide();
+                        }
+                    }, success: function () {
+                        jQuery("#afterajaxemail").val(jQuery("#email").val());
+                        $('#verify').modal('toggle');
                         jQuery("#loader").hide();
-                    },
-                    403: function (response) {
-                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>Email is not valid, could not send verification code. Please try again.</div>').fadeIn("slow");
-                        jQuery("#loader").hide();
-                    },
-                    500: function (response) {
-                        $('.content').before('<div id="alert" class="alert alert-info"><strong>Info!</strong>We were not able to send the email. Please try again.</div>').fadeIn("slow");
-                        jQuery("#loader").hide();
-                    },
-                    400: function (response) {
-                        $('#header').after('<div id="alert" class="alert alert-info"><strong>Info!</strong>Password does not match</div>').fadeIn("slow");
-                        jQuery("#loader").hide();
-                    }
-                }, success: function () {
-                    jQuery("#afterajaxemail").val(jQuery("#email").val());
-                    $('#verify').modal('toggle');
-                    jQuery("#loader").hide();
 
-                },
-                error: function (errorThrow) {
-                    console.log('error')
-                }
-            });
+                    },
+                    error: function (errorThrow) {
+                        console.log('error')
+                    }
+                });
+            }else{
+                console.log("blank");
+                $('.notify').html('<div id="alert" class="alert alert-info"><strong>Info!</strong>Please fill required fields</div>').fadeIn("slow");
+
+
+            }
+
+
         });
     </script>
 

@@ -1,20 +1,22 @@
 package com.workfront.internship.workflow.controller.utils;
 
+import com.workfront.internship.workflow.controller.PageAttributes;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.controller.PageAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by nane on 7/1/17
  */
 public class ControllerUtils {
-
 
     private static final int NUMBER_OF_POST_PER_PAGE = 5;
     private static List<AppArea> appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
@@ -27,7 +29,7 @@ public class ControllerUtils {
                     .map(appArea -> postService.getByAppAreaId(appArea.getId()).size())
                     .collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
-            return null;
+            return sizeOfPostsBySameAppAreaID;
         }
         return sizeOfPostsBySameAppAreaID;
     }
@@ -49,9 +51,12 @@ public class ControllerUtils {
     public static List<Long> getNumberOfLikes(List<Post> postList, PostService postService) {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
         try {
-            numbersOfLikesForPosts.addAll(postList.stream()
-                    .map(post -> postService.getLikesNumber(post.getId()))
-                    .collect(Collectors.toList()));
+            List<Long> list = new ArrayList<>();
+            for (Post post : postList) {
+                Long likesNumber = postService.getLikesNumber(post.getId());
+                list.add(likesNumber);
+            }
+            numbersOfLikesForPosts.addAll(list);
         } catch (ServiceLayerException e) {
             return numbersOfLikesForPosts;
         }

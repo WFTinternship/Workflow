@@ -1,5 +1,6 @@
-package com.workfront.internship.workflow.controller;
+package com.workfront.internship.workflow.controller.integration;
 
+import com.workfront.internship.workflow.controller.PageAttributes;
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
@@ -20,13 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by nane on 7/15/17
  */
-public class PostControllerIntegrationTest extends BaseControllerTest {
+public class PostControllerIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     @Qualifier("userServiceImpl")
@@ -92,15 +92,6 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
                 .andExpect(status().isOk());
     }
 
-
-    @Test
-    public void editPost() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/edit-post")
-                .requestAttr(PageAttributes.POST, post)
-        ).andExpect(view().name("post"));
-    }
-
     @Test
     public void newPost_get() throws Exception {
         allPosts = postService.getAll();
@@ -121,19 +112,13 @@ public class PostControllerIntegrationTest extends BaseControllerTest {
     public void newPost_post() throws Exception {
         allPosts = postService.getAll();
 
-        // TODO: add andExpect(allPosts) and #ofAnswers
         mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
                 .param(PageAttributes.TITLE, "A title")
                 .param(PageAttributes.POST_CONTENT, "Some content")
                 .param(PageAttributes.NOTE, "off")
                 .param(PageAttributes.APPAREA, "1")
                 .sessionAttr(PageAttributes.USER, user))
-                .andExpect(view().name("home"))
-                .andExpect(model().attribute(PageAttributes.APPAREAS, appAreas))
-                .andExpect(model().attribute(PageAttributes.POSTS_OF_APPAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService)))
-                .andExpect(status().isOk());
+                .andExpect(view().name("redirect:/home"));
     }
-
 }
 
