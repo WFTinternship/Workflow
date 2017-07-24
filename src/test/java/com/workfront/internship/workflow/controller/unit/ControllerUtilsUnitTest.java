@@ -21,9 +21,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class ControllerUtilsUnitTest extends BaseUnitTest {
+
     @Autowired
     private PostService postService;
-
 
     @Mock
     private PostService postServiceMock;

@@ -12,7 +12,7 @@ import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DaoTestUtil;
-import com.workfront.internship.workflow.web.PageAttributes;
+import com.workfront.internship.workflow.controller.PageAttributes;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
