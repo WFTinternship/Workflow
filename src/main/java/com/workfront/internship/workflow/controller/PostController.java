@@ -132,6 +132,7 @@ public class PostController extends BaseController {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry, your post was not added. Please try again")
                     .setViewName("new_post");
+            return modelAndView;
         }
 
         // Turns on notifications for the post, if the person wanted
