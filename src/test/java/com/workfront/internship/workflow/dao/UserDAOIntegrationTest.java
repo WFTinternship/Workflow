@@ -139,9 +139,9 @@ public class UserDAOIntegrationTest extends BaseIntegrationTest{
     @Test(expected = RuntimeException.class)
     public void subscribeToArea_failure(){
         userDAO.add(user);
+
         //Test method
         userDAO.subscribeToArea(user.getId(), 10000);
-
     }
 
     /**

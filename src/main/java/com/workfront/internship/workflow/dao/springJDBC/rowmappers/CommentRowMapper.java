@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class CommentRowMapper implements RowMapper {
 
     @Override
-    public Comment mapRow(ResultSet rs, int i) throws SQLException {
+    public Comment mapRow(ResultSet rs, int i) {
         return DAOUtil.commentFromResultSet(rs, "comment");
     }
 }

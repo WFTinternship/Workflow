@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -44,7 +45,8 @@ public class DAOUtil {
             comment.setContent(rs.getString(getColumnName(CommentDAO.content, tableAlias)));
             comment.setCommentTime(rs.getTimestamp(CommentDAO.dateTime));
         } catch (SQLException e) {
-            LOGGER.error("SQL exception occurred");
+            LOGGER.error("SQL exception");
+            throw new DAOException(e);
         }
         return comment;
     }
@@ -69,7 +71,7 @@ public class DAOUtil {
             user.setRating(rs.getInt(UserDAO.rating));
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         return user;
     }
@@ -125,7 +127,8 @@ public class DAOUtil {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("SQL exception");
+            throw new DAOException(e);
         }
         return post;
     }
@@ -151,7 +154,8 @@ public class DAOUtil {
             answer.setContent(rs.getString(PostDAO.answerContent));
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("SQL exception");
+            throw new DAOException(e);
         }
         return answer;
     }

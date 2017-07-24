@@ -7,11 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Vahag on 6/15/2017.
+ * Created by Vahag on 6/15/2017
  */
 public class AppAreaRowMapper implements RowMapper {
-
-
 
     @Override
     public AppArea mapRow(ResultSet rs, int rowNum) throws SQLException {
