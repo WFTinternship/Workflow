@@ -32,10 +32,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
     private ControllerUtils controllerUtils;
 
 
-    @Before
-    public void init() {
-    }
-
     /**
      * @see ControllerUtils#getNumberOfPostsForAppArea(List, PostService)
      */

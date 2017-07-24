@@ -31,7 +31,6 @@ public class PostControllerIntegrationTest extends BaseIntegrationTest {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
-    private User user;
 
     @Autowired
     @Qualifier("postServiceImpl")
@@ -41,6 +40,7 @@ public class PostControllerIntegrationTest extends BaseIntegrationTest {
     @Qualifier("commentServiceImpl")
     private CommentService commentService;
 
+    private User user;
     private Post post;
     private AppArea appArea;
     private List<User> userList;

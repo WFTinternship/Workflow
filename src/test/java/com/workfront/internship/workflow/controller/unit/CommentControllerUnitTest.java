@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
 
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -89,12 +91,10 @@ public class CommentControllerUnitTest extends BaseUnitTest {
 
         Long postId = comment.getPost().getId();
 
-        this.mockMvc.perform(post("/new-comment/" + postId))
-                .andExpect(view().name("post"))
-                .andExpect(model().attribute(PageAttributes.POST, comment.getPost()))
-                .andExpect(model().attribute(PageAttributes.USER, comment.getUser()))
-                //.andExpect(model().attribute(PageAttributes.COMMENTCONTENT, comment.getContent()))
-                .andExpect(status().isOk());
+        doReturn(post).when(postService).getById(anyInt());
+
+        mockMvc.perform(post("/new-comment/" + postId))
+                .andExpect(view().name("redirect:/post/" + postId));
 
     }
    /* @Test

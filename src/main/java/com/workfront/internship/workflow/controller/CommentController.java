@@ -47,7 +47,7 @@ public class CommentController extends BaseController {
 
         if (post.getPost() == null) {
             modelAndView.setViewName("redirect:/post/" + postId);
-        }else {
+        } else {
             modelAndView.setViewName("redirect:/post/" + post.getPost().getId());
         }
 
@@ -69,11 +69,7 @@ public class CommentController extends BaseController {
 
         List<User> users = postService.getNotificationRecipients(postId);
 
-        try {
-            postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
-        } catch (RuntimeException e) {
-
-        }
+        postService.notifyUsers(users, post, EmailType.NEW_RESPONSE);
 
         return modelAndView;
     }
