@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.NoSuchUserException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.impl.UserServiceImpl;
@@ -476,7 +477,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
     /**
      * @see UserService#authenticate(String, String)
      */
-    @Test(expected = ServiceLayerException.class)
+    @Test(expected = NoSuchUserException.class)
     public void authenticate_userNotExist() {
         doReturn(null).when(userDAOMock).getByEmail(anyString());
         //Test method
@@ -486,7 +487,7 @@ public class UserServiceUnitTest extends BaseUnitTest {
     /**
      * @see UserService#authenticate(String, String)
      */
-    @Test(expected = ServiceLayerException.class)
+    @Test(expected = NoSuchUserException.class)
     public void authenticate_wrongPassword() {
         User user = DaoTestUtil.getRandomUser();
         user.setPassword("123");

@@ -6,16 +6,13 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
-import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
-import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+
 import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -140,11 +137,8 @@ public class PostController extends BaseController {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
 
-        try {
-            List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
-            postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
-        } catch (RuntimeException e) {
-        }
+        List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
+        postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
 
         return modelAndView;
     }
@@ -200,7 +194,7 @@ public class PostController extends BaseController {
         List<Post> posts = new ArrayList<>();
         try {
             posts = postService.getByTitle(postTitle);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             searchMessage = "Sorry, there was a problem while loading the posts.";
         }
 

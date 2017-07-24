@@ -84,10 +84,4 @@ public class CommentController extends BaseController {
         return modelAndView;
     }
 
-    @ExceptionHandler({InvalidObjectException.class, ServiceLayerException.class})
-    public ModelAndView handleError() {
-        ModelAndView modelAndView = new ModelAndView("error");
-        modelAndView.addObject(PageAttributes.MESSAGE, "INTERNAL SERVER ERROR");
-        return modelAndView;
-    }
 }

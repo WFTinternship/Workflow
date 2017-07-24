@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.NotificationEmailSendFailedException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
@@ -522,7 +523,7 @@ public class PostServiceImpl implements PostService {
             }
         } catch (DAOException e) {
             logger.error("Failed to send emails to all users");
-            throw new ServiceLayerException("Failed to send emails to all users", e);
+            throw new NotificationEmailSendFailedException("Failed to send emails to all users", e);
         }
 
     }

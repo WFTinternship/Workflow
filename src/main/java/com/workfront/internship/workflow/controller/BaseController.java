@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
+import com.workfront.internship.workflow.exceptions.service.NotificationEmailSendFailedException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +16,11 @@ public abstract class BaseController {
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject(PageAttributes.MESSAGE, "INTERNAL SERVER ERROR");
         return modelAndView;
+    }
+
+    @ExceptionHandler({NotificationEmailSendFailedException.class})
+    protected void doNothing() {
+
     }
 
 }

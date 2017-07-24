@@ -102,7 +102,7 @@ public class PostControllerUnitTest extends BaseUnitTest {
         String content = "content";
         String notify = "off";
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
+        mockMvc.perform(MockMvcRequestBuilders.post("/new-post")
                 .param(PageAttributes.TITLE, title)
                 .param(PageAttributes.POST_CONTENT, content)
                 .param(PageAttributes.APPAREA, appArea)

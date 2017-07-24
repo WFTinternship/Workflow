@@ -197,16 +197,7 @@
     </div>
 
 
-    <section class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 breadcrumbf">
-                    <a href="#">Borderlands 2</a> <span class="diviver">&gt;</span> <a href="#">General Discussion</a>
-                    <span class="diviver">&gt;</span> <a href="#">New Topic</a>
-                </div>
-            </div>
-        </div>
-
+    <section class="content totop">
 
         <div class="container">
             <div class="row">
@@ -223,12 +214,6 @@
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
-                                        <img src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                    </div>
                                 </div>
                                 <div class="posttext pull-left">
 
@@ -299,10 +284,6 @@
                                     </div>
                                     <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
 
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/>
-                                        <img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
-                                    </div>
                                 </div>
                                 <div class="posttext pull-left">
                                     <h2><a href="/post/${post.id}">${post.title}</a></h2>
