@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.dao;
 
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 
 import javax.sql.DataSource;
@@ -62,6 +63,20 @@ public interface UserDAO {
      */
     List<AppArea> getAppAreasById(long id);
 
+    /**
+     * Gets the list of liked posts of the user with the specified id
+     * @param id user id
+     * @return list of liked posts of the given user
+     */
+    List<Post> getLikedPosts(long id);
+
+    /**
+     * Gets the list of liked posts of the user with the specified id
+     * @param id user id
+     * @return list of liked posts of the given user
+     */
+    List<Post> getDislikedPosts(long id);
+
     //UPDATE
 
     /**
@@ -91,6 +106,8 @@ public interface UserDAO {
      */
     void deleteAll();
 
+
+
     /**
      * Updates the fields of the specified user
      * @param user the user whose profile is to be updated
@@ -102,4 +119,11 @@ public interface UserDAO {
      * @param user the user whose avatar is to be updated
      */
     void updateAvatar(User user);
+
+    /**
+     * Updates the rating of the specified user
+     * @param user the user whose avatar is to be updated
+     */
+    void updateRating(User user);
+
 }

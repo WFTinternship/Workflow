@@ -5,24 +5,33 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-<%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
+<%@page import="com.workfront.internship.workflow.controller.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOST_DISCUSSED_POSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOP_POSTS)%>'/>
+<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUM_OF_ANSWERS_FOR_MDP)%>'/>
+<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIF_OF_LIKES_DISLIKES)%>'/>
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
-<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAREA)%>'/>
 <c:set var="avatar" value='<%=request.getSession().getAttribute(PageAttributes.AVATAR)%>'/>
 
-<c:set var="numberOfLikes" value='<%=request.getAttribute(PageAttributes.NUMOFLIKES)%>'/>
-<c:set var="numberOfDislikes" value='<%=request.getAttribute(PageAttributes.NUMOFDISLIKES)%>'/>
+<c:set var="numberOfLikes" value='<%=request.getAttribute(PageAttributes.NUMBER_OF_LIKES)%>'/>
+<c:set var="numberOfDislikes" value='<%=request.getAttribute(PageAttributes.NUMBER_OF_DISLIKES)%>'/>
 
 <c:set var="post" value='<%=request.getAttribute(PageAttributes.POST)%>'/>
+<c:set var="bestAnswer" value='<%=request.getAttribute(PageAttributes.BEST_ANSWER)%>'/>
 <c:set var="answers" value='<%=request.getAttribute(PageAttributes.ANSWERS)%>'/>
-<c:set var="comments" value='<%=request.getAttribute(PageAttributes.POSTCOMMENTS)%>'/>
-<c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWERCOMMENTS)%>'/>
+<c:set var="likedPosts" value='<%=request.getAttribute(PageAttributes.LIKED_POSTS)%>'/>
+<c:set var="dislikedPosts" value='<%=request.getAttribute(PageAttributes.DISLIKED_POSTS)%>'/>
+<c:set var="comments" value='<%=request.getAttribute(PageAttributes.POST_COMMENTS)%>'/>
+<c:set var="answerComments" value='<%=request.getAttribute(PageAttributes.ANSWER_COMMENTS)%>'/>
 <c:set var="message" value='<%=request.getAttribute(PageAttributes.MESSAGE)%>'/>
+<c:set var="error" value='<%=request.getAttribute(PageAttributes.ERROR)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +40,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forum :: Topic</title>
-
+    <title>Workflow</title>
+    <%----%>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%----%>
     <!-- Bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
@@ -60,6 +91,11 @@
 
 </head>
 <body class="topic">
+<div id="loader" style="display: none;">
+    <div class="leftEye"></div>
+    <div class="rightEye"></div>
+    <div class="mouth"></div>
+</div>
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -82,6 +118,63 @@
                         <div class="form-group">
                             <label for="pwd">Password:</label>
                             <input type="password" class="form-control" name="password" id="pwd">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span id="form-img"><img
+                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            height="60px" width="60px/"></span>
+                </div>
+                <form action="/delete/${post.id}" method="post">
+                    <div class="modal-body">
+                        <div class="delete-post-msg">
+                            <span>Are you sure you want to delete this ?</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-login">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="postModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span id="form-img"><img
+                            src="https://www.workfront.com/wp-content/themes/dragons/images/logo_footer.png" alt=""
+                            height="60px" width="60px/"></span>
+                </div>
+                <form action="/login/post/${post.id}" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Name:</label>
+                            <input type="text" class="form-control" name="email" id="user">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control" name="password" id="password">
                         </div>
                     </div>
 
@@ -130,11 +223,11 @@
                 <%--</div>--%>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
-                        <form action="#" method="post" class="form">
-                            <div class="pull-left txt"><input type="text" class="form-control"
-                                                              placeholder="Search Topics"></div>
+                        <form action="/searchPost" method="post" class="form">
+                            <div class="pull-left txt"><input type="text" class="form-control" name="postTitle"
+                                                              placeholder="Search posts"></div>
                             <div class="pull-right">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -171,8 +264,8 @@
                                     <b class="caret"></b>
                                     <div class="status green">&nbsp;</div>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                                   href="/users/${user.id}">My Profile</a>
+                                        <li role="presentation">
+                                            <a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
                                         </li>
                                         <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log
                                             Out</a>
@@ -197,7 +290,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 breadcrumbf">
-                    <font color="">something</font>
+                    <c:if test="${message != null && !error}">
+                        <div id="alert" class="alert-success alert-info-success"><strong>Info!</strong> ${message}</div>
+                    </c:if>
+                    <c:if test="${message != null && error}">
+                        <div id="alert" class="alert-success alert-info-failure"><strong>Info!</strong> ${message}</div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -218,68 +316,111 @@
                                     <div class="status green">&nbsp;</div>
                                 </div>
                                 <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
-                                <div class="icons">
-                                    <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                        src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                </div>
+
+                                <%--<a href="/appArea/${post.appArea.id}">--%>
+                                <%--<div class="views"><i></i>${post.appArea.name}</div>--%>
+                                <%--</a>--%>
                             </div>
                             <div class="posttext pull-left">
-                                <div class="edit-post">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <c:if test="${user.id == post.user.id}">
 
-                                    <span>
+                                    <div class="delete-post" data-toggle="modal"
+                                         data-target="#deleteModal">
+                                        <i class="fa fa-times" aria-hidden="true" title="Delete"></i>
+                                    </div>
+
+                                    <div class="edit-post">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <span>
                                         Edit
                                     </span>
-                                </div>
+                                    </div>
+                                </c:if>
+
                                 <h2>${post.title}</h2>
                                 <p>${post.content}</p>
+                                <input type="hidden" name="postId" value="${post.id}">
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="postinfobot">
 
+                            <c:set var="isLiked" value="false"/>
+                            <c:forEach var="item" items="${likedPosts}">
+                                <c:if test="${item eq post}">
+                                    <c:set var="isLiked" value="true"/>
+                                </c:if>
+                            </c:forEach>
+                            <c:set var="isDisliked" value="false"/>
+                            <c:forEach var="item" items="${dislikedPosts}">
+                                <c:if test="${item eq post}">
+                                    <c:set var="isDisliked" value="true"/>
+                                </c:if>
+                            </c:forEach>
                             <div class="likeblock pull-left">
-                                <span onclick="insert_like(${post.id})" class="up">
-                                    <i class="fa fa-thumbs-o-up" id="likeColor${post.id}"></i>
+
+                                <c:if test="${user == null}">
+                                    <span class="up" data-toggle="modal"
+                                          data-target="#postModal">
+                                    <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                       id="likeColor${post.id}"></i>
                                     <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
                                 </span>
-                                <span onclick="insert_dislike(${post.id})" class="down">
-                                    <i class="fa fa-thumbs-o-down" id="dislikeColor${post.id}"></i>
+                                    <span class="down" data-toggle="modal"
+                                          data-target="#myModal">
+                                    <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                       id="dislikeColor${post.id}"></i>
                                     <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
                                 </span>
-                            </div>
+                                </c:if>
 
+                                <c:if test="${user != null}">
+                                    <span onclick="like(${post.id})" class="up">
+                                    <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                       id="likeColor${post.id}"></i>
+                                    <span id="likeCnt${post.id}">${numberOfLikes[0]}</span>
+                                </span>
+                                    <span onclick="dislike(${post.id})" class="down">
+                                    <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                       id="dislikeColor${post.id}"></i>
+                                    <span id="dislikeCnt${post.id}">${numberOfDislikes[0]}</span>
+                                </span>
+                                </c:if>
+
+                            </div>
                             <div class="prev pull-left">
                                 <a href="#"><i class="fa fa-reply"></i></a>
                             </div>
 
                             <div class="posted pull-left"><i class="fa fa-clock-o"></i>${post.postTime}
                             </div>
-
-                            <div class="next pull-right">
-                                <a href="#"><i class="fa fa-share"></i></a>
-
-                                <a href="#"><i class="fa fa-flag"></i></a>
+                            <div class="pull-right apparea">
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views">${post.appArea.name}</div>
+                                </a>
                             </div>
-
                             <div class="clearfix"></div>
+
                         </div>
                         <div class="post-comment">
-                            <ul class="post-ul">
-                                <c:forEach var="comment" items="${comments}">
-                                    <li>
-                                            ${comment.content}
-                                    </li>
-                                </c:forEach>
-                            </ul>
-
+                            <c:if test="${fn:length(comments) != 0}">
+                                <ul class="post-ul">
+                                    <c:forEach var="comment" items="${comments}">
+                                        <li>
+                                                ${comment.content}
+                                            <div class="pull-right">
+                                                <a class="username"
+                                                   href="/users/${comment.user.id}">${comment.user.firstName}</a>
+                                            </div>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </c:if>
                             <c:if test="${user != null}">
                                 <form action="/new-comment/${post.id}" method="post">
                                     <div class="form-group newcomment">
                                         <input type="comment" class="form-control" id="new-comment"
-                                               placeholder="Comment"
+                                               placeholder="Comment" required
                                                name="content">
                                     </div>
                                     <button type="submit" class="btn btn-default" onclick="">Add</button>
@@ -298,7 +439,7 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-
+                    <h4> ${fn:length(answers)} answers </h4>
                     <!-- POST -->
                     <c:forEach var="answer" items="${answers}" varStatus="answerStatus">
                         <div class="post">
@@ -309,30 +450,104 @@
                                             <img src="${answer.user.avatarURL}" alt="" width="37" height="37"/>
                                         </a>
                                         <div class="status red">&nbsp;</div>
+                                        <div>
+                                            <a class="username"
+                                               href="/users/${answer.user.id}">${answer.user.firstName}</a>
+                                        </div>
                                         <c:if test="${user.id == post.user.id}">
-                                            <div class="icons">
-                                                <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
-                                                   id="tickColor${answer.id}" aria-hidden="true"></i>
-                                            </div>
+                                            <c:if test="${answer != bestAnswer}">
+                                                <div class="icons">
+                                                    <i onclick="bestAnswer(${answer.id})" class="fa fa-check"
+                                                       id="tickColor${answer.id}" aria-hidden="true"></i>
+                                                </div>
+                                            </c:if>
+
+                                            <c:if test="${answer == bestAnswer}">
+                                                <div class="icons">
+                                                    <i onclick="bestAnswer(${answer.id})" class="fa fa-check greenTick"
+                                                       id="tickColor${answer.id}" aria-hidden="true"></i>
+                                                </div>
+                                            </c:if>
                                         </c:if>
+
+                                        <c:if test="${user.id != post.user.id || user == null}">
+
+                                            <c:if test="${answer == bestAnswer}">
+                                                <div class="icons">
+                                                    <i onclick="bestAnswer(${answer.id})" class="fa fa-check greenTick"
+                                                       id="tickColor${answer.id}" aria-hidden="true"></i>
+                                                </div>
+                                            </c:if>
+
+                                        </c:if>
+
                                     </div>
                                 </div>
                                 <div class="posttext pull-left">
+
+                                    <c:if test="${user.id == answer.user.id}">
+
+                                        <div class="delete-post" data-toggle="modal"
+                                             data-target="#deleteModal">
+                                            <i class="fa fa-times" aria-hidden="true" title="Delete"></i>
+                                        </div>
+
+                                        <div class="edit-answer">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <span>
+                                        Edit
+                                    </span>
+                                        </div>
+                                    </c:if>
+
                                     <p>${answer.content}</p>
+                                    <input type="hidden" name="answerId" value="${answer.id}">
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="postinfobot">
 
+                                <c:set var="isLiked" value="false"/>
+                                <c:forEach var="item" items="${likedPosts}">
+                                    <c:if test="${item eq answer}">
+                                        <c:set var="isLiked" value="true"/>
+                                    </c:if>
+                                </c:forEach>
+                                <c:set var="isDisliked" value="false"/>
+                                <c:forEach var="item" items="${dislikedPosts}">
+                                    <c:if test="${item eq answer}">
+                                        <c:set var="isDisliked" value="true"/>
+                                    </c:if>
+                                </c:forEach>
                                 <div class="likeblock pull-left">
-                                    <span onclick="insert_like(${answer.id})" id="like" class="up">
-                                        <i class="fa fa-thumbs-o-up" id="likeColor${answer.id}"></i>
+
+                                    <c:if test="${user == null}">
+                                        <span id="like" class="up" data-toggle="modal"
+                                              data-target="#postModal">
+                                        <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                           id="likeColor${answer.id}"></i>
                                         <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
                                     </span>
-                                    <span onclick="insert_dislike(${answer.id})"  class="down">
-                                        <i class="fa fa-thumbs-o-down" id="dislikeColor${answer.id}"></i>
+                                        <span class="down" data-toggle="modal"
+                                              data-target="#postModal">
+                                        <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                           id="dislikeColor${answer.id}"></i>
                                         <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
                                     </span>
+                                    </c:if>
+
+                                    <c:if test="${user != null}">
+                                     <span onclick="like(${answer.id})" id="like" class="up">
+                                        <i class="${isLiked ? 'fa fa-thumbs-up' : 'fa fa-thumbs-o-up'}"
+                                           id="likeColor${answer.id}"></i>
+                                        <span id="likeCnt${answer.id}">${numberOfLikes[answerStatus.index + 1]}</span>
+                                    </span>
+                                        <span onclick="dislike(${answer.id})" class="down">
+                                        <i class="${isDisliked ? 'fa fa-thumbs-down' : 'fa fa-thumbs-o-down'}"
+                                           id="dislikeColor${answer.id}"></i>
+                                        <span id="dislikeCnt${answer.id}">${numberOfDislikes[answerStatus.index + 1]}</span>
+                                    </span>
+                                    </c:if>
                                 </div>
 
                                 <div class="prev pull-left">
@@ -341,28 +556,28 @@
 
                                 <div class="posted pull-left"><i class="fa fa-clock-o"></i> ${answer.postTime}</div>
 
-                                <div class="next pull-right">
-                                    <a href="#"><i class="fa fa-share"></i></a>
-
-                                    <a href="#"><i class="fa fa-flag"></i></a>
-                                </div>
-
                                 <div class="clearfix"></div>
                             </div>
                             <div class="post-comment">
-                                <ul class="post-ul">
-                                    <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
-                                               varStatus="commentStatus">
-                                        <li>
-                                                ${comment.content}
-                                        </li>
-                                    </c:forEach>
-                                </ul>
+                                <c:if test="${fn:length(comments) != 0}">
+                                    <ul class="post-ul">
+                                        <c:forEach var="comment" items="${answerComments[answerStatus.index]}"
+                                                   varStatus="commentStatus">
+                                            <li>
+                                                    ${comment.content}
+                                                <div class="pull-right">
+                                                    <a class="username"
+                                                       href="/users/${comment.user.id}">${comment.user.firstName}</a>
+                                                </div>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </c:if>
                                 <c:if test="${user != null}">
                                     <form action="/new-comment/${answer.id}" method="post">
                                         <div class="form-group newcomment">
                                             <input type="comment" class="form-control" id="new-comment"
-                                                   placeholder="Comment"
+                                                   placeholder="Comment" required
                                                    name="content">
                                         </div>
                                         <button type="submit" class="btn btn-default">Add</button>
@@ -382,7 +597,6 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-8 breadcrumbf">
-                                <font color="red">${message}</font>
                             </div>
                         </div>
                     </div>
@@ -403,12 +617,12 @@
                                         <div class="textwraper">
                                             <div class="postreply">Post a Reply</div>
                                             <textarea name="reply" id="reply"
-                                                      placeholder="Type your message here"></textarea>
+                                                      placeholder="Type your answer here" required></textarea>
                                         </div>
                                     </div>
-                                    <div class="clearfix"></div>
+                                    <div class="clearfix replybox"></div>
                                 </div>
-                                <div class="postinfobot">
+                                <div class="postinfobot replybox">
 
                                     <div class="notechbox pull-left">
                                         <input type="checkbox" name="note" id="note" class="form-control"/>
@@ -453,83 +667,26 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>Poll of the Week</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <p>Which game you are playing this week?</p>
-                            <form action="#" method="post" class="form">
-                                <table class="poll">
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                    Call of Duty Ghosts
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt1" type="radio" name="opt" value="1">
-                                            <label for="opt1"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                    Titanfall
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt2" type="radio" name="opt" value="2" checked>
-                                            <label for="opt2"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                    Battlefield 4
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt3" type="radio" name="opt" value="3">
-                                            <label for="opt3"></label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                            <p class="smal">Voting ends on 19th of October</p>
-                        </div>
+                        <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
+                        <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
+                            </div>
+                        </c:forEach>
                     </div>
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>My Active Threads</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                        </div>
+                        <a href="/topPosts"><h3>Top Posts</h3></a>
+                        <c:forEach var="post" items="${topPosts}" varStatus="status">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
+                            </div>
+                        </c:forEach>
                     </div>
 
 
@@ -559,7 +716,7 @@
                 <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
                         src="/images/logo.png" alt=""
                         height=67px width=67px/></a></div>
-                <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
+                <div class="col-lg-8 col-xs-9 col-sm-5 ">Workflow 2017</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">
                         <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
@@ -591,9 +748,7 @@
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
 <script type="text/javascript">
-
     var revapi;
-
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
@@ -604,12 +759,26 @@
                 hideThumbs: 10,
                 fullWidth: "on"
             });
-
     });	//ready
-
 </script>
 
 <script type="text/javascript">
+    function like(x) {
+        var likeColor = "likeColor" + x;
+        if ($('#' + likeColor).hasClass('fa-thumbs-up')) {
+            remove_like(x);
+        } else {
+            insert_like(x);
+        }
+    }
+    function dislike(x) {
+        var dislikeColor = "dislikeColor" + x;
+        if ($('#' + dislikeColor).hasClass('fa-thumbs-down')) {
+            remove_dislike(x);
+        } else {
+            insert_dislike(x);
+        }
+    }
 
 
     function insert_like(x) {
@@ -629,6 +798,23 @@
         });
     }
 
+    function remove_like(x) {
+        $.ajax({
+            type: 'post',
+            url: '/removeLike/' + x,
+            data: {
+                type: "like"
+            },
+            success: function (response) {
+                var likeCnt = "likeCnt" + x;
+                var likeColor = "likeColor" + x;
+                $('#' + likeCnt).html(response);
+                $('#' + likeColor).addClass('fa-thumbs-o-up');
+                $('#' + likeColor).removeClass('fa-thumbs-up');
+            }
+        });
+    }
+
     function insert_dislike(x) {
         $.ajax({
             type: 'post',
@@ -643,19 +829,33 @@
                 $('#' + dislikeColor).addClass('fa-thumbs-down');
                 $('#' + dislikeColor).removeClass('fa-thumbs-o-down');
             }
-
         });
     }
 
+    function remove_dislike(x) {
+        $.ajax({
+            type: 'post',
+            url: '/removeDislike/' + x,
+            data: {
+                type: "dislike"
+            },
+            success: function (response) {
+                var dislikeCnt = "dislikeCnt" + x;
+                var dislikeColor = "dislikeColor" + x;
+                $('#' + dislikeCnt).html(response);
+                $('#' + dislikeColor).addClass('fa-thumbs-o-down');
+                $('#' + dislikeColor).removeClass('fa-thumbs-down');
+            }
+        });
+    }
     function bestAnswer(x) {
         var tickColor = "tickColor" + x;
-        if($('#' + tickColor).hasClass('greenTick')){
-            removeBestAnswer( x);
+        if ($('#' + tickColor).hasClass('greenTick')) {
+            removeBestAnswer(x);
         } else {
             setBestAnswer(x);
         }
     }
-
     function setBestAnswer(x) {
         $.ajax({
             type: 'post',
@@ -669,7 +869,6 @@
             }
         });
     }
-
     function removeBestAnswer(x) {
         $.ajax({
             type: 'post',
@@ -683,7 +882,6 @@
             }
         });
     }
-
 </script>
 
 <!-- END REVOLUTION SLIDER -->

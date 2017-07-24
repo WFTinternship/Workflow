@@ -3,16 +3,21 @@ package com.workfront.internship.workflow.dao.springJDBC;
 import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AnswerRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.AppAreaRowMapper;
+import com.workfront.internship.workflow.dao.springJDBC.rowmappers.PostRowMapper;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -21,10 +26,10 @@ import java.util.List;
 /**
  * Created by Vahag on 6/15/2017
  */
-@Component
+@Repository
 public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDAOSpringImpl.class);
 
     public UserDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -54,7 +59,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             id = keyHolder.getKey().longValue();
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         user.setId(id);
         return id;
@@ -71,7 +76,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, userId, appAreaId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -86,7 +91,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, userId, appAreaId);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -102,10 +107,11 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return jdbcTemplate.query(sql, new Object[]{filteredName + "%"}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -119,10 +125,11 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return (User) jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -136,10 +143,11 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return (User) jdbcTemplate.queryForObject(sql, new Object[]{email}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -153,10 +161,63 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
         try {
             return jdbcTemplate.query(sql, new Object[]{userId}, new AppAreaRowMapper());
         } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
             return null;
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
+        }
+    }
+
+    /**
+     * @see UserDAO#getLikedPosts(long)
+     */
+    @Override
+    public List<Post> getLikedPosts(long id) {
+        String sql = "SELECT post.id, post.user_id, user.first_name, user.last_name, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM user_post_likes JOIN post ON user_post_likes.post_id = post.id " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE user_post_likes.user_id = ? " +
+                " ORDER BY post_time DESC";
+        try {
+            return jdbcTemplate.query(sql, new Object[]{id},
+                    new PostRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
+            return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new DAOException(e);
+        }
+    }
+
+    /**
+     * @see UserDAO#getDislikedPosts(long)
+     */
+    @Override
+    public List<Post> getDislikedPosts(long id) {
+        String sql = "SELECT post.id, post.user_id, user.first_name, user.last_name, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM user_post_dislikes JOIN post ON user_post_dislikes.post_id = post.id " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE user_post_dislikes.user_id = ? " +
+                " ORDER BY post_time DESC";
+        try {
+            return jdbcTemplate.query(sql, new Object[]{id},
+                    new PostRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOGGER.info("Empty Result Data AccessException");
+            return null;
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new DAOException(e);
         }
     }
 
@@ -171,7 +232,7 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
@@ -185,21 +246,51 @@ public class UserDAOSpringImpl extends AbstractDao implements UserDAO {
             jdbcTemplate.update(sql);
         } catch (DataAccessException e) {
             LOGGER.error("Data Access Exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
+    /**
+     * @see UserDAO#updateProfile(User)
+     */
     @Override
     public void updateProfile(User user) {
         String sql = "UPDATE user SET first_name = ?, last_name = ?, " +
-                " email = ? WHERE user.id = ? ";
-        jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
-                user.getEmail(), user.getId());
+                " email = ?, passcode = ? WHERE user.id = ? ";
+        try {
+            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),
+                    user.getEmail(), user.getPassword(), user.getId());
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new DAOException(e);
+        }
     }
 
+    /**
+     * @see UserDAO#updateAvatar(User)
+     */
     @Override
     public void updateAvatar(User user) {
         String sql = "UPDATE user SET avatar_url = ? WHERE user.id = ? ";
-        jdbcTemplate.update(sql, user.getAvatarURL(), user.getId());
+        try {
+            jdbcTemplate.update(sql, user.getAvatarURL(), user.getId());
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new DAOException(e);
+        }
+    }
+
+    /**
+     * @see UserDAO#updateRating(User)
+     */
+    @Override
+    public void updateRating(User user) {
+        String sql = "UPDATE user SET rating = ? WHERE user.id = ? ";
+        try {
+            jdbcTemplate.update(sql, user.getRating(), user.getId());
+        } catch (DataAccessException e) {
+            LOGGER.error("Data Access Exception");
+            throw new DAOException(e);
+        }
     }
 }

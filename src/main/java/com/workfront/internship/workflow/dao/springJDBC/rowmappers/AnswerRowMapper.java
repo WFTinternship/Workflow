@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class AnswerRowMapper implements RowMapper {
     @Override
-    public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Post mapRow(ResultSet rs, int rowNum) {
         return DAOUtil.answerFromResultSet(rs);
     }
 }

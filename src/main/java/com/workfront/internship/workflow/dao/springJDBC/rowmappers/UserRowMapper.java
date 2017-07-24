@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class UserRowMapper implements RowMapper {
 
     @Override
-    public User mapRow(ResultSet rs, int line) throws SQLException {
+    public User mapRow(ResultSet rs, int line) {
         return DAOUtil.userFromResultSet(rs);
     }
 

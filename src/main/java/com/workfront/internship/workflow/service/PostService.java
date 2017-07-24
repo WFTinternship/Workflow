@@ -1,6 +1,7 @@
 package com.workfront.internship.workflow.service;
 
 
+import com.workfront.internship.workflow.controller.utils.EmailType;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 
@@ -31,6 +32,13 @@ public interface PostService {
      * @return list of all posts starting with the most recent one
      */
     List<Post> getAll();
+
+    /**
+     * Retrieves all posts for specified page
+     * @return list of all posts for specified page
+     *  starting with the most recent one
+     */
+    List<Post> getPostsByPage(long pageNum);
 
     /**
      * Gets post with specified id
@@ -66,6 +74,13 @@ public interface PostService {
      * @return List of answers
      */
     List<Post> getAnswersByPostId(long id);
+
+    /**
+     * Gets list of answers of the user by the specified id
+     * @param userId id of the user
+     * @return List of answers of the specified user
+     */
+    List<Post> getAnswersByUserId(long userId);
 
     /**
      * Gets the answer of the post specified by postId, that was marked as best answer
@@ -112,6 +127,22 @@ public interface PostService {
      */
     void dislike(long userId, long postId);
 
+    /**
+     *
+     * user with specified id removes the like to the post with the specified id
+     * @param userId
+     * @param postId
+     */
+    void removeLike(long userId, long postId);
+
+    /**
+     *
+     * user with specified id removes the dislike to the post with the specified id
+     * @param userId
+     * @param postId
+     */
+    void removeDislike(long userId, long postId);
+
     //DELETE
 
     /**
@@ -119,6 +150,12 @@ public interface PostService {
      * @param id of the post to be deleted from database
      */
     void delete(long id);
+
+    /**
+     * Removes the answer which was set as best answer.
+     * @param answerId the if of an answer
+     */
+    void removeBestAnswer(long answerId);
 
     /**
      * Gets number of answers of the specified postId
@@ -148,5 +185,5 @@ public interface PostService {
      * @param users the users that need to be notified
      * @param post the post that has a new response
      */
-    void notifyUsers(List<User> users, Post post);
+    void notifyUsers(List<User> users, Post post, EmailType type);
 }

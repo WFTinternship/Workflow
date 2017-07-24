@@ -4,19 +4,21 @@ import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.service.NoSuchUserException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
+import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.util.ServiceUtils;
-import com.workfront.internship.workflow.web.PageAttributes;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,91 +33,84 @@ import java.util.List;
  * Created by nane on 6/27/17
  */
 @Controller
-public class UserController {
+public class UserController extends BaseController {
 
     private static final String DEFAULT_AVATAR_URL = "/images/default/user-avatar.png";
     private UserService userService;
     private PostService postService;
-    private List<AppArea> appAreas;
 
     public UserController() {
     }
 
     @Autowired
-    public UserController(UserService userService, PostService postService) {
+    public UserController(UserService userService, PostService postService, CommentService commentService) {
         this.userService = userService;
-        appAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         this.postService = postService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(HttpServletRequest request) {
+    public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        modelAndView.addObject(PageAttributes.LOGIN_REQUEST, true);
         return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = authenticate(request, response);
-        List<Post> posts = postService.getAll();
-
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
-        return modelAndView;
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,
+                              RedirectAttributes redirectAttributes) {
+        return authenticate(request, response, redirectAttributes);
     }
 
     @RequestMapping(value = "/login/new-post", method = RequestMethod.POST)
     public ModelAndView loginAndRedirect(HttpServletRequest request,
-                                         HttpServletResponse response) {
-        ModelAndView modelAndView = authenticate(request, response);
+                                         HttpServletResponse response,
+                                         RedirectAttributes redirectAttributes) {
+        ModelAndView modelAndView = authenticate(request, response, redirectAttributes);
 
-        if (!modelAndView.getViewName().equals("login")) {
-            modelAndView.setViewName("new_post");
+        if (!modelAndView.getViewName().equals("redirect:/login")) {
+            modelAndView.setViewName("redirect:/new-post");
         }
 
         return modelAndView;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView signUp(HttpServletRequest request) {
+    public ModelAndView signUp() {
         ModelAndView modelAndView = new ModelAndView("login");
-        request.setAttribute(PageAttributes.APPAREAS, appAreas);
-        modelAndView.setStatus(HttpStatus.GONE);
+        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+        modelAndView.addObject(PageAttributes.LOGIN_REQUEST, false);
         return modelAndView;
     }
 
     @RequestMapping(value = "/signup/verify", method = RequestMethod.POST)
     public ModelAndView verify(@RequestParam("emailajax") String email,
-                               @RequestParam("verify") String code) {
+                               @RequestParam("verify") String code,
+                               RedirectAttributes redirectAttributes) {
         User user = userService.getByEmail(email);
+
         String verificationCode = ServiceUtils.hashString(user.getPassword()).substring(0, 6);
 
-        ModelAndView modelAndView = new ModelAndView("login");
+        if (code.isEmpty()){
+            userService.deleteById(user.getId());
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "Your sign up was canceled.");
+            return new ModelAndView("redirect:/signup");
+        }
 
         if (!code.equals(verificationCode)) {
             userService.deleteById(user.getId());
-            modelAndView.addObject(PageAttributes.MESSAGE,
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
                     "Sorry, the code is invalid.");
-            return modelAndView;
+            return new ModelAndView("redirect:/signup");
         }
-        modelAndView
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.MESSAGE,
+        redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
                 "Congratulations! Your sign up was successful!");
-        return modelAndView;
+        return new ModelAndView("redirect:/login");
     }
 
-    private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response) {
-        request.setAttribute(PageAttributes.APPAREAS, appAreas);
-
+    private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response,
+                                      RedirectAttributes redirectAttributes) {
         String email = request.getParameter(PageAttributes.EMAIL);
         String password = request.getParameter(PageAttributes.PASSWORD);
 
@@ -124,25 +119,18 @@ public class UserController {
         try {
             user = userService.authenticate(email, password);
             HttpSession session = request.getSession();
-
-            String avatar = user.getAvatarURL();
-
             session.setAttribute(PageAttributes.USER, user);
-            session.setAttribute(PageAttributes.AVATAR, avatar);
-
-            modelAndView
-                    .addObject(PageAttributes.USER, user)
-                    .addObject(PageAttributes.AVATAR, avatar);
 
             response.setStatus(200);
-            modelAndView.setViewName("home");
-        } catch (RuntimeException e) {
+            modelAndView.setViewName("redirect:/home");
+        } catch (NoSuchUserException e) {
             modelAndView
-                    .addObject(PageAttributes.USER, null)
-                    .addObject(PageAttributes.MESSAGE,
-                            "The email or password is incorrect. Please try again.");
+                    .addObject(PageAttributes.USER, null);
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "The email or password is incorrect. Please try again.");
+            redirectAttributes.addFlashAttribute(PageAttributes.ERROR, true);
             response.setStatus(405);
-            modelAndView.setViewName("login");
+            modelAndView.setViewName("redirect:/login");
         }
         return modelAndView;
     }
@@ -154,17 +142,7 @@ public class UserController {
         session.setAttribute(PageAttributes.USER, null);
         session.invalidate();
 
-        ModelAndView modelAndView = new ModelAndView("home");
-
-        List<Post> posts = postService.getAll();
-
-        modelAndView
-                .addObject(PageAttributes.ALLPOSTS, posts)
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS, ControllerUtils.getNumberOfAnswers(posts, postService));
-        return modelAndView;
+        return new ModelAndView("redirect:/home");
     }
 
     @RequestMapping(value = "/users/*", method = RequestMethod.GET)
@@ -174,31 +152,38 @@ public class UserController {
         String url = request.getRequestURL().toString();
         long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
+        User user = userService.getById(userId);
+
         List<Post> postList = postService.getByUserId(userId);
         List<AppArea> myAppAreas = userService.getAppAreasById(userId);
 
         List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
         allAppAreas.removeAll(myAppAreas);
 
+        long numOfUsersAnswers = postService.getAnswersByUserId(userId).size();
+        long numOfUsersPosts = postList.size();
+
+        ControllerUtils.setDefaultAttributes(postService, postList, modelAndView);
+
         modelAndView
                 .addObject(PageAttributes.ALLPOSTS, postList)
-                .addObject(PageAttributes.MYAPPAREAS, myAppAreas)
+                .addObject(PageAttributes.MY_APPAREAS, myAppAreas)
                 .addObject(PageAttributes.APPAREAS, allAppAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService))
-                .addObject(PageAttributes.NUMOFANSWERS,
-                ControllerUtils.getNumberOfAnswers(postList, postService))
-                .addObject(PageAttributes.PROFILEOWNERID, userId);
+                .addObject(PageAttributes.NUM_OF_USERS_POSTS, numOfUsersPosts)
+                .addObject(PageAttributes.NUM_OF_USERS_ANSWERS, numOfUsersAnswers)
+                .addObject(PageAttributes.PROFILE_OWNER, user);
         return modelAndView;
     }
 
     @RequestMapping(value = "/updateAvatar", method = RequestMethod.POST)
-    public ModelAndView updateAvatar(HttpServletRequest request, HttpServletResponse response,
+    public ModelAndView updateAvatar(HttpServletRequest request,
                                      @RequestParam(value = "avatar", required = false) MultipartFile image)
             throws IOException {
-        ModelAndView modelAndView = new ModelAndView("user");
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(PageAttributes.USER);
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
 
         if (!image.isEmpty()) {
             String file = image.getOriginalFilename();
@@ -210,6 +195,8 @@ public class UserController {
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdir();
+            } else {
+                FileUtils.cleanDirectory(uploadDir);
             }
             String fileName = new File(user.getFirstName() + "Avatar").getName();
             String filePath = realPath + "/" + fileName + ext;
@@ -224,8 +211,99 @@ public class UserController {
             modelAndView.addObject(PageAttributes.MESSAGE,
                     "Sorry your avatar was not updated");
         }
-        List<Post> posts = postService.getAll();
-        modelAndView.addObject(PageAttributes.ALLPOSTS, posts);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/login/post/*", method = RequestMethod.POST)
+    public ModelAndView loginAndRedirectToPost(HttpServletRequest request, HttpServletResponse response,
+                                               RedirectAttributes redirectAttributes) {
+        ModelAndView modelAndView = authenticate(request, response, redirectAttributes);
+
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        modelAndView.setViewName("redirect:/post/" + postId);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit/*", method = RequestMethod.GET)
+    public ModelAndView viewProfile(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("edit_profile");
+
+        String url = request.getRequestURL().toString();
+        long userId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = userService.getById(userId);
+
+        List<Post> postList = postService.getByUserId(userId);
+        List<AppArea> myAppAreas = userService.getAppAreasById(userId);
+
+        List<AppArea> allAppAreas = new ArrayList<>(Arrays.asList(AppArea.values()));
+        allAppAreas.removeAll(myAppAreas);
+
+        ControllerUtils.setDefaultAttributes(postService, postList, modelAndView);
+
+        modelAndView
+                .addObject(PageAttributes.ALLPOSTS, postList)
+                .addObject(PageAttributes.MY_APPAREAS, myAppAreas)
+                .addObject(PageAttributes.APPAREAS, allAppAreas)
+                .addObject(PageAttributes.PROFILE_OWNER, user);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit-profile", method = RequestMethod.POST)
+    public ModelAndView editProfile(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
+
+        String firstName = request.getParameter(PageAttributes.FIRST_NAME);
+        String lastName = request.getParameter(PageAttributes.LAST_NAME);
+        String email = request.getParameter(PageAttributes.EMAIL);
+
+        user
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email);
+
+        try {
+            userService.updateProfile(user);
+        } catch (RuntimeException e) {
+            modelAndView.addObject(PageAttributes.MESSAGE,
+                    "Sorry, there has been a problem.");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/update-password", method = RequestMethod.POST)
+    public ModelAndView updatePassword(HttpServletRequest request,
+                                       RedirectAttributes redirectAttributes) {
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/users/" + user.getId());
+
+        String oldPassword = request.getParameter(PageAttributes.PASSWORD);
+        String newPassword = request.getParameter(PageAttributes.NEW_PASSWORD);
+        String confirmPassword = request.getParameter(PageAttributes.CONFIRM_PASSWORD);
+        String password;
+        try {
+            password = userService.verifyNewPassword(user, oldPassword,
+                    newPassword, confirmPassword);
+        } catch (ServiceLayerException e) {
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "Your password is not correct.");
+            return modelAndView;
+        }
+
+        user.setPassword(password);
+
+        try {
+            userService.updateProfile(user);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "Sorry, there has been a problem.");
+        }
         return modelAndView;
     }
 }

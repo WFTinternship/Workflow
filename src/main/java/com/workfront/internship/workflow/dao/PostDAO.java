@@ -47,6 +47,7 @@ public interface PostDAO {
 
     /**
      * Adds post to the db
+     *
      * @param post is to be added to the database
      * @return the generated id of added post
      */
@@ -54,12 +55,22 @@ public interface PostDAO {
 
     /**
      * Gets list of all posts form the db
+     *
      * @return list of all posts starting with the most recent one
      */
     List<Post> getAll();
 
     /**
+     * Retrieves all posts for specified page
+     *
+     * @return list of all posts for specified page
+     * starting with the most recent one
+     */
+    List<Post> getPostsByPage(long rowNumber);
+
+    /**
      * Gets list of posts posted by the user with the specified userId
+     *
      * @param userId id of the user
      * @return all List of posts created by the specified user
      */
@@ -67,6 +78,7 @@ public interface PostDAO {
 
     /**
      * Gets posts with the specified app area id
+     *
      * @param id id of the app area
      * @return List of posts created under the specified app area
      */
@@ -74,6 +86,7 @@ public interface PostDAO {
 
     /**
      * Gets list of posts which titles contain the specified title string.
+     *
      * @param title the phrase to search for posts
      * @return List of Post that contain the parameter in their titles
      */
@@ -81,6 +94,7 @@ public interface PostDAO {
 
     /**
      * Gets post with specified id
+     *
      * @param id of the the post to be retrieved from database
      * @return post with the specified id
      */
@@ -88,13 +102,23 @@ public interface PostDAO {
 
     /**
      * Gets list of answers of the post by the specified postId
+     *
      * @param postId id of the post
      * @return List of answers of the specified post
      */
     List<Post> getAnswersByPostId(long postId);
 
     /**
+     * Gets list of answers of the user by the specified id
+     *
+     * @param userId id of the user
+     * @return List of answers of the specified user
+     */
+    List<Post> getAnswersByUserId(long userId);
+
+    /**
      * Gets the answer of the post specified by postId, that was marked as best answer
+     *
      * @param postId id of the post
      * @return the best answer of the specified post
      */
@@ -102,6 +126,7 @@ public interface PostDAO {
 
     /**
      * gets number of likes of the post with the specified id
+     *
      * @param postId
      * @return
      */
@@ -109,6 +134,7 @@ public interface PostDAO {
 
     /**
      * gets number of dislikes of the post with the specified id
+     *
      * @param postId
      * @return
      */
@@ -116,41 +142,61 @@ public interface PostDAO {
 
     /**
      * Sets the answer as the best one for the specified post
-     * @param postId id of the post whose best answer is to be set
+     *
+     * @param postId   id of the post whose best answer is to be set
      * @param answerId id of the answer which is the best one for the post
      */
     void setBestAnswer(long postId, long answerId);
 
     /**
      * Updates fields of the specified post
+     *
      * @param post the post whose fields should be updated
      */
     void update(Post post);
 
     /**
-     *
      * user with specified id likes the post with the specified id
+     *
      * @param userId
      * @param postId
      */
     void like(long userId, long postId);
 
     /**
-     *
      * user with specified id dislikes the post with the specified id
+     *
      * @param userId
      * @param postId
      */
     void dislike(long userId, long postId);
 
     /**
+     * user with specified id removes the like to the post with the specified id
+     *
+     * @param userId
+     * @param postId
+     */
+    void removeLike(long userId, long postId);
+
+    /**
+     * user with specified id removes the dislike to the post with the specified id
+     *
+     * @param userId
+     * @param postId
+     */
+    void removeDislike(long userId, long postId);
+
+    /**
      * Deletes the post with the specified id
+     *
      * @param id of the post to be deleted from database
      */
     void delete(long id);
 
     /**
      * Gets number of answers of the specified postId
+     *
      * @param postId of the post which number of answers should get
      */
     Integer getNumberOfAnswers(long postId);
@@ -158,6 +204,7 @@ public interface PostDAO {
     /**
      * Notifies the user with specifies userId when there
      * is response to the post with specified postId
+     *
      * @param postId the id of a post that the user wants to be notified
      * @param userId the id of a user that will be notified
      */
@@ -166,8 +213,16 @@ public interface PostDAO {
     /**
      * Gets all user that should be notified when there
      * is response to the post with specified id
+     *
      * @param postId the id of a post
      * @return List of users that need to be notified for the specified post
      */
     List<User> getNotificationRecipients(long postId);
+
+    /**
+     * Removes the answer from best answer
+     *
+     * @param answerId
+     */
+    void removeBestAnswer(long answerId);
 }

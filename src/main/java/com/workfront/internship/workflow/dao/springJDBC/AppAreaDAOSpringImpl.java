@@ -6,12 +6,14 @@ import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.dao.springJDBC.rowmappers.UserRowMapper;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -22,16 +24,19 @@ import java.util.Map;
 /**
  * Created by nane on 6/15/17
  */
-@Component
+@Repository
 public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(AppAreaDAOSpringImpl.class);
 
     public AppAreaDAOSpringImpl(DataSource dataSource) {
         this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    /**
+     * @see AppAreaDAO#add(AppArea)
+     */
     @Override
     public long add(AppArea appArea) {
         String sql = "INSERT INTO apparea (id, name, description, team_name) " +
@@ -40,11 +45,14 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
             jdbcTemplate.update(sql, appArea.getId(), appArea.getName(),
                     appArea.getDescription(), appArea.getTeamName());
         }catch (DataAccessException e){
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
         return appArea.getId();
     }
 
+    /**
+     * @see AppAreaDAO#getUsersById(long)
+     */
     @Override
     public List<User> getUsersById(long appAreaId) {
         String sql = "SELECT * FROM user " +
@@ -54,10 +62,13 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 
+    /**
+     * @see AppAreaDAO#getById(long)
+     */
     @Override
     public AppArea getById(long id) {
         AppArea appArea = AppArea.getById(id);
@@ -93,7 +104,7 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -106,6 +117,9 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
                 appArea.getTeamName().equals(actualAppArea.get("TeamName"));
     }
 
+    /**
+     * @see AppAreaDAO#deleteById(long)
+     */
     @Override
     public void deleteById(long id) {
         String sql = "DELETE FROM apparea " +
@@ -113,7 +127,7 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
         try {
             jdbcTemplate.update(sql, id);
         } catch (DataAccessException e){
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }
     }
 }

@@ -4,9 +4,10 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.CommentDAO;
 import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.Comment;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by Angel on 27.05.2017
  */
-@Component
+@Repository
 public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
@@ -34,8 +35,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#add
-     * @param comment
-     * '@return'
      */
     @Override
     public long add(Comment comment) {
@@ -60,7 +59,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             comment.setId(id) ;
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
-            throw new RuntimeException();
+            throw new DAOException();
         } finally {
             closeResources(connection, stmt);
         }
@@ -69,9 +68,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#update(long, String)
-     * '@param' id
-     * @param newContent
-     * '@return'
      */
     @Override
     public boolean update(long id , String newContent) {
@@ -93,7 +89,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             return rows == 1;
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(connection, stmt);
         }
@@ -101,8 +97,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#getByPostId(long)
-     * @param postId id of the post
-     * @return
      */
     @Override
     public List<Comment> getByPostId(long postId) {
@@ -126,7 +120,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -135,8 +129,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#delete(long)
-     * @param id
-     * '@return'
      */
     @Override
     public void delete(long id) {
@@ -154,7 +146,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
         }catch (SQLException e){
             LOG.error("SQL exception occurred");
-            throw new RuntimeException();
+            throw new DAOException();
 
         } finally {
             closeResources(connection, stmt);
@@ -166,8 +158,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      * @see CommentDAO#getById(long)
-     * @param id
-     * '@return'
      */
     @Override
     public Comment getById(long id) {
@@ -192,6 +182,7 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
             }
         } catch (SQLException e) {
             LOG.error("SQL exception occurred");
+            throw new DAOException(e);
         } finally {
             closeResources(connection, stmt, rs);
         }
@@ -201,7 +192,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     /**
      *@see CommentDAO#getAll()
-     * '@return'
      */
     @Override
     public List<Comment> getAll() {
@@ -231,7 +221,6 @@ public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
         return comments;
     }
-
 }
 
 

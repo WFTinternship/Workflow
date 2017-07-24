@@ -6,12 +6,19 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<%@page import="com.workfront.internship.workflow.web.PageAttributes" %>
+<%@page import="com.workfront.internship.workflow.controller.PageAttributes" %>
 
 <c:set var="allPosts" value='<%=request.getAttribute(PageAttributes.ALLPOSTS)%>'/>
+<c:set var="mostDiscussedPosts" value='<%=request.getAttribute(PageAttributes.MOST_DISCUSSED_POSTS)%>'/>
+<c:set var="topPosts" value='<%=request.getAttribute(PageAttributes.TOP_POSTS)%>'/>
+
+<c:set var="numberOfAnswersForMDP" value='<%=request.getAttribute(PageAttributes.NUM_OF_ANSWERS_FOR_MDP)%>'/>
+<c:set var="difOfLikesDislikes" value='<%=request.getAttribute(PageAttributes.DIF_OF_LIKES_DISLIKES)%>'/>
+
 <c:set var="appAreas" value='<%=request.getAttribute(PageAttributes.APPAREAS)%>'/>
-<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAAREA)%>'/>
+<c:set var="postsBySameAppAreaID" value='<%=request.getAttribute(PageAttributes.POSTS_OF_APPAREA)%>'/>
 <c:set var="user" value='<%=request.getSession().getAttribute(PageAttributes.USER)%>'/>
+<c:set var="numberOfAnswers" value='<%=request.getAttribute(PageAttributes.NUM_OF_ANSWERS)%>'/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +27,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forum :: New topic</title>
+    <title>Workflow</title>
+    <%----%>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://www.workfront.com/wp-content/themes/dragons/images/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <%----%>
 
     <!-- Bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -49,6 +75,11 @@
 
 </head>
 <body>
+<div id="loader" style="display: none;">
+    <div class="leftEye"></div>
+    <div class="rightEye"></div>
+    <div class="mouth"></div>
+</div>
 <div class="container-fluid">
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -86,18 +117,18 @@
 
     <%--<!-- Slider -->--%>
     <%--<div class="tp-banner-container">--%>
-        <%--<div class="tp-banner">--%>
-            <%--<ul>--%>
-                <%--<!-- SLIDE  -->--%>
-                <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
-                    <%--<!-- MAIN IMAGE -->--%>
-                    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
-                         <%--data-bgposition="left top"--%>
-                         <%--data-bgrepeat="no-repeat">--%>
-                    <%--<!-- LAYERS -->--%>
-                <%--</li>--%>
-            <%--</ul>--%>
-        <%--</div>--%>
+    <%--<div class="tp-banner">--%>
+    <%--<ul>--%>
+    <%--<!-- SLIDE  -->--%>
+    <%--<li data-transition="fade" data-slotamount="7" data-masterspeed="1500">--%>
+    <%--<!-- MAIN IMAGE -->--%>
+    <%--<img src="${pageContext.request.contextPath}/images/slide.jpg" alt="slidebg1" data-bgfit="cover"--%>
+    <%--data-bgposition="left top"--%>
+    <%--data-bgrepeat="no-repeat">--%>
+    <%--<!-- LAYERS -->--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
     <%--</div>--%>
     <%--<!-- //Slider -->--%>
 
@@ -109,11 +140,11 @@
                         height=67px width=67px/></a></div>
                 <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
                     <div class="wrap">
-                        <form action="#" method="post" class="form">
-                            <div class="pull-left txt"><input type="text" class="form-control"
-                                                              placeholder="Search Topics"></div>
+                        <form action="/searchPost" method="post" class="form">
+                            <div class="pull-left txt"><input type="text" class="form-control" name="postTitle"
+                                                              placeholder="Search posts"></div>
                             <div class="pull-right">
-                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                             </div>
                             <div class="clearfix"></div>
                         </form>
@@ -150,7 +181,8 @@
                                 class="caret"></b>
                             <div class="status green">&nbsp;</div>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="/users/${user.id}">My Profile</a>
                                 </li>
                                 <li role="presentation"><a role="menuitem" tabindex="-3" href="/logout">Log Out</a>
                                 </li>
@@ -165,16 +197,7 @@
     </div>
 
 
-    <section class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 breadcrumbf">
-                    <a href="#">Borderlands 2</a> <span class="diviver">&gt;</span> <a href="#">General Discussion</a>
-                    <span class="diviver">&gt;</span> <a href="#">New Topic</a>
-                </div>
-            </div>
-        </div>
-
+    <section class="content totop">
 
         <div class="container">
             <div class="row">
@@ -191,23 +214,17 @@
                                         <div class="status red">&nbsp;</div>
                                     </div>
 
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon3.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
-                                        <img src="${pageContext.request.contextPath}/images/icon5.jpg" alt=""/><img
-                                            src="${pageContext.request.contextPath}/images/icon6.jpg" alt=""/>
-                                    </div>
                                 </div>
                                 <div class="posttext pull-left">
 
                                     <div>
-                                        <input type="text" placeholder="Enter Post Title" class="form-control"
+                                        <input type="text" placeholder="Enter Post Title" class="form-control" required
                                                name="title"/>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
-                                            <select name="appArea" id="category" class="form-control">
+                                            <select name="appArea" id="category" class="form-control" required>
                                                 <option value="" disabled selected>Select Application Area</option>
                                                 <c:forEach var="appArea" items="${appAreas}">
                                                     <option value="${appArea.id}">${appArea.name}</option>
@@ -218,62 +235,8 @@
 
                                     <div>
                                         <textarea name="content" id="desc" placeholder="Description"
-                                                  class="form-control"></textarea>
+                                                  class="form-control" required></textarea>
                                     </div>
-                                    <div class="row newtopcheckbox">
-                                        <div class="col-lg-6 col-md-6">
-                                            <div><p>Who can see this?</p></div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="everyone"/> Everyone
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="friends"/> Only Friends
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6">
-                                            <div>
-                                                <p>Share on Social Networks</p>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-3 col-md-4">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="fb"/> <i
-                                                                class="fa fa-facebook-square"></i>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-4">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="tw"/> <i
-                                                                class="fa fa-twitter"></i>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-4">
-                                                    <div class="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" id="gp"/> <i
-                                                                class="fa fa-google-plus-square"></i>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -301,27 +264,26 @@
                         </form>
                     </div><!-- POST -->
 
-                    <div class="row similarposts">
-                        <div class="col-lg-10"><i class="fa fa-info-circle"></i>
-                            <p>Similar Posts according to yours <a href="#">Topic Title</a>.</p></div>
-                        <div class="col-lg-2 loading"><i class="fa fa-spinner"></i></div>
+                    <%--<div class="row similarposts">--%>
+                        <%--<div class="col-lg-10"><i class="fa fa-info-circle"></i>--%>
+                            <%--<p>Similar Posts according to yours <a href="#">Topic Title</a>.</p></div>--%>
+                        <%--<div class="col-lg-2 loading"><i class="fa fa-spinner"></i></div>--%>
 
-                    </div>
+                    <%--</div>--%>
 
                     <!-- POST -->
-                    <c:forEach var="post" items="${allPosts}">
+                    <c:forEach var="post" items="${allPosts}" varStatus="status">
                         <div class="post">
                             <div class="wrap-ut pull-left">
                                 <div class="userinfo pull-left">
                                     <div class="avatar">
-                                        <img src="${user.avatarURL}" alt="" width="37" height="37"/>
+                                        <a href="/users/${post.user.id}">
+                                            <img src="${post.user.avatarURL}" alt="" width="37" height="37"/>
+                                        </a>
                                         <div class="status green">&nbsp;</div>
                                     </div>
+                                    <div><a class="username" href="/users/${post.user.id}">${post.user.firstName}</a></div>
 
-                                    <div class="icons">
-                                        <img src="${pageContext.request.contextPath}/images/icon1.jpg" alt=""/>
-                                        <img src="${pageContext.request.contextPath}/images/icon4.jpg" alt=""/>
-                                    </div>
                                 </div>
                                 <div class="posttext pull-left">
                                     <h2><a href="/post/${post.id}">${post.title}</a></h2>
@@ -332,13 +294,19 @@
                             <div class="postinfo pull-left">
                                 <div class="comments">
                                     <div class="commentbg">
-                                        560
+                                            ${numberOfAnswers[status.index]}
                                         <div class="mark"></div>
                                     </div>
 
                                 </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
+                                <div class="time"><i class="fa fa-clock-o"></i>${post.postTime}</div>
+                            </div>
+                            <div class="divline"></div>
+
+                            <div class="pull-left apparea">
+                                <a href="/appArea/${post.appArea.id}">
+                                    <div class="views">${post.appArea.name}</div>
+                                </a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -367,85 +335,29 @@
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>Poll of the Week</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <p>Which game you are playing this week?</p>
-                            <form action="#" method="post" class="form">
-                                <table class="poll">
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color1" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                    Call of Duty Ghosts
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt1" type="radio" name="opt" value="1">
-                                            <label for="opt1"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color2" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                    Titanfall
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt2" type="radio" name="opt" value="2" checked>
-                                            <label for="opt2"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="progress">
-                                                <div class="progress-bar color3" role="progressbar" aria-valuenow="40"
-                                                     aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                    Battlefield 4
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="chbox">
-                                            <input id="opt3" type="radio" name="opt" value="3">
-                                            <label for="opt3"></label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                            <p class="smal">Voting ends on 19th of October</p>
-                        </div>
+                        <a href="/mostDiscussedPosts"><h3>Most discussed posts</h3></a>
+                        <c:forEach var="post" items="${mostDiscussedPosts}" varStatus="status">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${numberOfAnswersForMDP[status.index]}</span>
+                            </div>
+                        </c:forEach>
                     </div>
 
                     <!-- -->
                     <div class="sidebarblock">
-                        <h3>My Active Threads</h3>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                        </div>
-                        <div class="divline"></div>
-                        <div class="blocktxt">
-                            <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                        </div>
-                    </div>
+                        <a href="/topPosts"><h3>Top Posts</h3></a>
+                        <c:forEach var="post" items="${topPosts}" varStatus="status">
+                            <div class="divline"></div>
+                            <div class="blocktxt">
+                                <a href="/post/${post.id}">${post.title}</a>
+                                <span class="badge pull-right">${difOfLikesDislikes[status.index]}</span>
+                            </div>
+                        </c:forEach>
 
+
+                    </div>
 
                 </div>
             </div>
@@ -458,20 +370,6 @@
                     <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
                     <div class="pull-left">
                         <ul class="paginationforum">
-                            <li class="hidden-xs"><a href="#">1</a></li>
-                            <li class="hidden-xs"><a href="#">2</a></li>
-                            <li class="hidden-xs"><a href="#">3</a></li>
-                            <li class="hidden-xs"><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li><a href="#" class="active">7</a></li>
-                            <li><a href="#">8</a></li>
-                            <li class="hidden-xs"><a href="#">9</a></li>
-                            <li class="hidden-xs"><a href="#">10</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                            <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                            <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-                            <li><a href="#">1586</a></li>
                         </ul>
                     </div>
                     <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
@@ -489,7 +387,7 @@
                 <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="/"><img
                         src="/images/logo.png" alt=""
                         height=67px width=67px/></a></div>
-                <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
+                <div class="col-lg-8 col-xs-9 col-sm-5 ">Workflow 2017</div>
                 <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                     <ul class="socialicons">
                         <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
@@ -519,9 +417,7 @@
 
 <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
 <script type="text/javascript">
-
     var revapi;
-
     jQuery(document).ready(function () {
         "use strict";
         revapi = jQuery('.tp-banner').revolution(
@@ -532,9 +428,7 @@
                 hideThumbs: 10,
                 fullWidth: "on"
             });
-
     });	//ready
-
 </script>
 
 <!-- END REVOLUTION SLIDER -->

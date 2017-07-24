@@ -10,13 +10,37 @@
 (+) Add Like/Dislike functionality (update db).
 (+) Add "Email me when some one post a reply Post Reply"
     functionality to Add Post and Add Answer.
+(+) Change the forest picture, please.
+(+) Post answers numbers.
+(+) Ignore db password.
+(+) Exception handling in updateProfile and updateAvatar in springJDBC.
+(+) Add Best Answer to interface.
+(+) Change color of Add New Answer.
+(+) Add Edit post/answer to interface.
+(+) Info "Please choose application area".
+(+) Make Fields required; Add Comment, Add new Answer, Add new Post, Login(email, password)
+(+) Fix nullPointer while sending null image for upload.
+(+) Delete checkboxes from app area list in user page.
+(+) Add number of answers before answers list in post page.
+(+) Pop-up for likes/dislikes with controller.
+(+) Add user ratings.
+(+) Fix update avatar page.
+(+) Change top posts to most discussed posts.
+(+) Add Top posts according to the difference of number of likes and dislikes.
+(+) Delete object fields in controllers.
+(+) Number of answers in app area pages.
+(+) User page when user is not logged in.
+(+) Remove post/answer/comment.
+(+) Fix the bug user is added to the database without verification.
+(+) Fix get number of answers in controller utils.
+(+) Congrats sign up was successful change color.
+(+) Alerts in sign up page.
+(+) Show best answer in post.
+(+) Type old password for editing password.
+(+) Sign up sends two emails fix that.
 
-(-) Change color of Add New Answer.
+
 (-) Duxov Remove redundant code.
-(-) Add Best Answer to interface.
-(-) Add Edit post/answer/comment to interface.
-(-) Change the forest picture, please.
-(-) Ignore db password.
-(-) Post answers numbers.
-(-) Fix the bug user is added to the database without verification.
-(-) Info "Please choose application area".
+(-) User page when there are no posts; footer.
+(-) Verification when editing email.
+(-) Make Sign up fields required.

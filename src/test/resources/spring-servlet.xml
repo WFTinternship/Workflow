@@ -9,15 +9,13 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-    <import resource="classpath:spring-config.xml"/>
+    <import resource="classpath:spring/spring-database.xml"/>
 
     <!--Tells spring to look for annotations-->
     <mvc:annotation-driven/>
 
     <!--Tells spring WHERE to look for annotations-->
     <context:component-scan base-package="com.workfront.internship.workflow" />
-
-    <import resource="hibernate-config.xml"/>
 
     <!--<mvc:resources mapping="/**" location="/"/>-->
 

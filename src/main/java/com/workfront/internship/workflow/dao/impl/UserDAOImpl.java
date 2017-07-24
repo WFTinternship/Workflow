@@ -4,11 +4,13 @@ import com.workfront.internship.workflow.dao.AbstractDao;
 import com.workfront.internship.workflow.dao.UserDAO;
 import com.workfront.internship.workflow.dao.util.DAOUtil;
 import com.workfront.internship.workflow.entity.AppArea;
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * Created by Vahag on 5/27/2017
  */
-@Component
+@Repository
 public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
@@ -67,7 +69,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             user.setId(id);
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         }finally {
             closeResources(connection, addStmt, resultSet);
         }
@@ -91,7 +93,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.execute();
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -114,7 +116,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -143,7 +145,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -171,7 +173,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -199,7 +201,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -208,8 +210,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     /**
      * @see UserDAO#getAppAreasById(long)
-     * @param userId user id
-     * @return list of app areas of the given user
      */
     @Override
     public List<AppArea> getAppAreasById(long userId) {
@@ -230,7 +230,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt, rs);
         }
@@ -238,8 +238,81 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
     }
 
     /**
+     * @see UserDAO#getLikedPosts(long)
+     */
+    @Override
+    public List<Post> getLikedPosts(long id) {
+        List<Post> postList = new ArrayList<>();
+        String sql = "SELECT post.id, post.user_id, user.first_name, user.last_name, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM user_post_likes JOIN post ON user_post_likes.post_id = post.id " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE user_post_likes.user_id = ? " +
+                " ORDER BY post_time DESC";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Post post = DAOUtil.postFromResultSet(rs);
+                postList.add(post);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception");
+            throw new DAOException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt, rs);
+        }
+        return postList;
+    }
+
+    /**
+     * @see UserDAO#getDislikedPosts(long)
+     */
+    @Override
+    public List<Post> getDislikedPosts(long id) {
+        List<Post> postList = new ArrayList<>();
+        String sql = "SELECT post.id, post.user_id, user.first_name, user.last_name, " +
+                " user.email, user.avatar_url, user.rating, user.passcode, " +
+                " apparea_id, apparea.name, apparea.description, " +
+                " apparea.team_name, post_time, title, content " +
+                " FROM user_post_dislikes JOIN post ON user_post_dislikes.post_id = post.id " +
+                " JOIN user ON post.user_id = user.id " +
+                " LEFT JOIN apparea ON post.apparea_id = apparea.id " +
+                " WHERE user_post_dislikes.user_id = ? " +
+                " ORDER BY post_time DESC";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Post post = DAOUtil.postFromResultSet(rs);
+                postList.add(post);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception");
+            throw new DAOException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt, rs);
+        }
+        return postList;
+    }
+
+    /**
      * @see UserDAO#deleteById(long)
-     * @param id id of the user that has to be deleted
      */
     @Override
     public void deleteById(long id) {
@@ -254,7 +327,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -274,7 +347,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
             stmt.execute(sql);
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException(e);
+            throw new DAOException(e);
         } finally {
             closeResources(conn, stmt);
         }
@@ -283,7 +356,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     /**
      * @see UserDAO#updateProfile(User)
-     * @param user the user whose profile is to be updated
      */
     @Override
     public void updateProfile(User user) {
@@ -303,7 +375,7 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }
@@ -311,7 +383,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     /**
      * @see UserDAO#updateAvatar(User)
-     * @param user the user whose avatar is to be updated
      */
     @Override
     public void updateAvatar(User user) {
@@ -328,7 +399,31 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
         } catch (SQLException e) {
             LOGGER.error("SQL exception");
-            throw new RuntimeException("SQL exception has occurred");
+            throw new DAOException("SQL exception has occurred");
+        } finally {
+            closeResources(conn, stmt);
+        }
+    }
+
+    /**
+     * @see UserDAO#updateRating(User)
+     */
+    @Override
+    public void updateRating(User user) {
+        String sql = "UPDATE user SET rating = ? WHERE user.id = ? ";
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = dataSource.getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, user.getRating());
+            stmt.setLong(2, user.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL exception");
+            throw new DAOException("SQL exception has occurred");
         } finally {
             closeResources(conn, stmt);
         }

@@ -1,13 +1,14 @@
 package com.workfront.internship.workflow.controller;
 
+import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.web.PageAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,22 @@ public class PostRestController {
         return ResponseEntity.ok(String.valueOf(postService.getLikesNumber(postId)));
     }
 
+    @RequestMapping(value = "/removeLike/*", method = RequestMethod.POST)
+    public ResponseEntity removeLike(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        try {
+            postService.removeLike(user.getId(), postId);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(String.valueOf(postService.getLikesNumber(postId)));
+    }
+
     @RequestMapping(value = "/dislike/*", method = RequestMethod.POST)
     public ResponseEntity<?> dislike(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
@@ -50,6 +67,22 @@ public class PostRestController {
 
         try {
             postService.dislike(user.getId(), postId);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(String.valueOf(postService.getDislikesNumber(postId)));
+    }
+
+    @RequestMapping(value = "/removeDislike/*", method = RequestMethod.POST)
+    public ResponseEntity<?> removeDislike(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
+
+        User user = (User) request.getSession().getAttribute(PageAttributes.USER);
+
+        try {
+            postService.removeDislike(user.getId(), postId);
         } catch (RuntimeException e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -76,7 +109,28 @@ public class PostRestController {
         String url = request.getRequestURL().toString();
         long answerId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
+        try {
+            postService.removeBestAnswer(answerId);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/edit-post"}, method = RequestMethod.POST)
+    public ResponseEntity<?> editPost(@RequestParam("postId") String postId,
+                                      @RequestParam("title") String title,
+                                      @RequestParam("content") String content) {
+        try {
+            Post post = postService.getById(Long.valueOf(postId));
+            post
+                    .setTitle(title)
+                    .setContent(content);
+
+            postService.update(post);
+        } catch (RuntimeException e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

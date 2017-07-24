@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class PostRowMapper implements RowMapper {
 
     @Override
-    public Post mapRow(ResultSet rs, int line) throws SQLException {
+    public Post mapRow(ResultSet rs, int line) {
         return DAOUtil.postFromResultSet(rs);
     }
 }

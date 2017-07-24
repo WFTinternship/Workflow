@@ -1,6 +1,8 @@
 package com.workfront.internship.workflow.controller;
 
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.service.NotExistingEmailException;
+import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,11 +48,13 @@ public class AuthenticationRestController {
             if (userService.getByEmail(email) != null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             } else {
-                userService.add(user);
                 userService.sendEmail(user);
+                userService.add(user);
                 return ResponseEntity.ok(user.getEmail());
             }
-        } catch (RuntimeException e) {
+        } catch (NotExistingEmailException e) {
+           return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (ServiceLayerException e) {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
