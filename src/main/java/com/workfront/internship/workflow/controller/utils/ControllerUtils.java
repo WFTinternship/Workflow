@@ -1,13 +1,16 @@
 package com.workfront.internship.workflow.controller.utils;
 
+import com.workfront.internship.workflow.controller.PageAttributes;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
-import com.workfront.internship.workflow.controller.PageAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -49,7 +52,7 @@ public class ControllerUtils {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
         try {
             List<Long> list = new ArrayList<>();
-                    for (Postpost : postList) {
+            for (Post post : postList) {
                 Long likesNumber = postService.getLikesNumber(post.getId());
                 list.add(likesNumber);
             }
@@ -155,7 +158,7 @@ public class ControllerUtils {
         return posts;
     }
 
-    public static List<Post> getFirstPagePosts(List<Post> allPosts){
+    public static List<Post> getFirstPagePosts(List<Post> allPosts) {
         return getPostsByPage(allPosts, 1);
     }
 

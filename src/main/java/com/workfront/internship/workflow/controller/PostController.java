@@ -73,10 +73,12 @@ public class PostController extends BaseController {
 
         answers = postService.getAnswersByPostId(postId);
 
+        Post bestAnswer = postService.getBestAnswer(postId);
+
+        
+
         allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
-
-        Post bestAnswer = postService.getBestAnswer(postId);
 
         postComments = commentService.getByPostId(postId);
 
