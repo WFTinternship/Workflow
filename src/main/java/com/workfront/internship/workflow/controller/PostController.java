@@ -73,14 +73,16 @@ public class PostController extends BaseController {
 
         answers = postService.getAnswersByPostId(postId);
 
-        allPosts = new ArrayList<>(answers);
-        allPosts.add(0, post);
-
         Post bestAnswer = postService.getBestAnswer(postId);
+
+        List<Post> orderedAnswers = ControllerUtils.orderAnswers(answers, bestAnswer, postService);
+
+        allPosts = new ArrayList<>(orderedAnswers);
+        allPosts.add(0, post);
 
         postComments = commentService.getByPostId(postId);
 
-        List<List<Comment>> answerComments = answers.stream()
+        List<List<Comment>> answerComments = orderedAnswers.stream()
                 .map(postAnswer -> commentService.getByPostId(postAnswer.getId()))
                 .collect(Collectors.toList());
 
@@ -92,7 +94,7 @@ public class PostController extends BaseController {
                 .addObject(PageAttributes.POST, post)
                 .addObject(PageAttributes.BEST_ANSWER, bestAnswer)
                 .addObject(PageAttributes.POST_COMMENTS, postComments)
-                .addObject(PageAttributes.ANSWERS, answers)
+                .addObject(PageAttributes.ANSWERS, orderedAnswers)
                 .addObject(PageAttributes.LIKED_POSTS, likedPosts)
                 .addObject(PageAttributes.DISLIKED_POSTS, dislikedPosts)
                 .addObject(PageAttributes.NUMBER_OF_LIKES,

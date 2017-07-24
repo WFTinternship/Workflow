@@ -70,6 +70,16 @@ public class ControllerUtils {
         return numbersOfDislikesForPosts;
     }
 
+    public static List<Post> orderAnswers(List<Post> answers, Post bestAnswer, PostService postService) {
+        List<Post> orderedAnswers = getTopPosts(postService, answers);
+
+        if (bestAnswer != null) {
+            orderedAnswers.remove(bestAnswer);
+            orderedAnswers.add(0, bestAnswer);
+        }
+        return orderedAnswers;
+    }
+
     public static List<Long> getDifOfLikesDislikes(List<Post> postList, PostService postService) {
         List<Long> difOfLikesDislikes = new ArrayList<>();
         try {
@@ -153,7 +163,7 @@ public class ControllerUtils {
         return posts;
     }
 
-    public static List<Post> getFirstPagePosts(List<Post> allPosts){
+    public static List<Post> getFirstPagePosts(List<Post> allPosts) {
         return getPostsByPage(allPosts, 1);
     }
 
