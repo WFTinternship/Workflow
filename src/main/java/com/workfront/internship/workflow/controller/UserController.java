@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.exceptions.service.NoSuchUserException;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
@@ -12,7 +13,6 @@ import com.workfront.internship.workflow.service.util.ServiceUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,15 +57,16 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
-        return authenticate(request, response);
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,
+                              RedirectAttributes redirectAttributes) {
+        return authenticate(request, response, redirectAttributes);
     }
 
     @RequestMapping(value = "/login/new-post", method = RequestMethod.POST)
     public ModelAndView loginAndRedirect(HttpServletRequest request,
-                                         HttpServletResponse response) {
-        ModelAndView modelAndView = authenticate(request, response);
-        ControllerUtils.setDefaultAttributes(postService, modelAndView);
+                                         HttpServletResponse response,
+                                         RedirectAttributes redirectAttributes) {
+        ModelAndView modelAndView = authenticate(request, response, redirectAttributes);
 
         if (!modelAndView.getViewName().equals("redirect:/login")) {
             modelAndView.setViewName("redirect:/new-post");
@@ -108,7 +109,8 @@ public class UserController extends BaseController {
         return new ModelAndView("redirect:/login");
     }
 
-    private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response) {
+    private ModelAndView authenticate(HttpServletRequest request, HttpServletResponse response,
+                                      RedirectAttributes redirectAttributes) {
         String email = request.getParameter(PageAttributes.EMAIL);
         String password = request.getParameter(PageAttributes.PASSWORD);
 
@@ -119,16 +121,14 @@ public class UserController extends BaseController {
             HttpSession session = request.getSession();
             session.setAttribute(PageAttributes.USER, user);
 
-            modelAndView
-                    .addObject(PageAttributes.USER, user);
-
             response.setStatus(200);
             modelAndView.setViewName("redirect:/home");
-        } catch (RuntimeException e) {
+        } catch (NoSuchUserException e) {
             modelAndView
-                    .addObject(PageAttributes.USER, null)
-                    .addObject(PageAttributes.MESSAGE,
-                            "The email or password is incorrect. Please try again.");
+                    .addObject(PageAttributes.USER, null);
+            redirectAttributes.addFlashAttribute(PageAttributes.MESSAGE,
+                    "The email or password is incorrect. Please try again.");
+            redirectAttributes.addFlashAttribute(PageAttributes.ERROR, true);
             response.setStatus(405);
             modelAndView.setViewName("redirect:/login");
         }
@@ -215,9 +215,9 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/login/post/*", method = RequestMethod.POST)
-    public ModelAndView loginAndRedirectToPost(HttpServletRequest request,
-                                               HttpServletResponse response) {
-        ModelAndView modelAndView = authenticate(request, response);
+    public ModelAndView loginAndRedirectToPost(HttpServletRequest request, HttpServletResponse response,
+                                               RedirectAttributes redirectAttributes) {
+        ModelAndView modelAndView = authenticate(request, response, redirectAttributes);
 
         String url = request.getRequestURL().toString();
         long postId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));

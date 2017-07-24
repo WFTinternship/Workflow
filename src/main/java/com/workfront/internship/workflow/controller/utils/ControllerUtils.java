@@ -23,7 +23,8 @@ public class ControllerUtils {
         // getting and passing list of sizes of each posts by same appArea id to home page
         try {
             sizeOfPostsBySameAppAreaID.addAll(appAreas.stream()
-                    .map(appArea -> postService.getByAppAreaId(appArea.getId()).size()).collect(Collectors.toList()));
+                    .map(appArea -> postService.getByAppAreaId(appArea.getId()).size())
+                    .collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return sizeOfPostsBySameAppAreaID;
         }
@@ -36,7 +37,8 @@ public class ControllerUtils {
         // getting and passing list of sizes of each posts by same appArea id to home page
         try {
             numbersOfAnswersForPosts.addAll(postList.stream()
-                    .map(post -> postService.getNumberOfAnswers(post.getId())).collect(Collectors.toList()));
+                    .map(post -> postService.getNumberOfAnswers(post.getId()))
+                    .collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return numbersOfAnswersForPosts;
         }
@@ -47,7 +49,7 @@ public class ControllerUtils {
         List<Long> numbersOfLikesForPosts = new ArrayList<>();
         try {
             List<Long> list = new ArrayList<>();
-            for (Post post : postList) {
+                    for (Postpost : postList) {
                 Long likesNumber = postService.getLikesNumber(post.getId());
                 list.add(likesNumber);
             }
@@ -62,7 +64,8 @@ public class ControllerUtils {
         List<Long> numbersOfDislikesForPosts = new ArrayList<>();
         try {
             numbersOfDislikesForPosts.addAll(postList.stream()
-                    .map(post -> postService.getDislikesNumber(post.getId())).collect(Collectors.toList()));
+                    .map(post -> postService.getDislikesNumber(post.getId()))
+                    .collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
             return numbersOfDislikesForPosts;
         }
@@ -70,14 +73,15 @@ public class ControllerUtils {
     }
 
     public static List<Long> getDifOfLikesDislikes(List<Post> postList, PostService postService) {
-        List<Long> numbersOfDislikesForPosts = new ArrayList<>();
+        List<Long> difOfLikesDislikes = new ArrayList<>();
         try {
-            numbersOfDislikesForPosts.addAll(postList.stream()
-                    .map(post -> postService.getLikesNumber(post.getId()) - postService.getDislikesNumber(post.getId())).collect(Collectors.toList()));
+            difOfLikesDislikes.addAll(postList.stream()
+                    .map(post -> postService.getLikesNumber(post.getId()) - postService.getDislikesNumber(post.getId()))
+                    .collect(Collectors.toList()));
         } catch (ServiceLayerException e) {
-            return numbersOfDislikesForPosts;
+            return difOfLikesDislikes;
         }
-        return numbersOfDislikesForPosts;
+        return difOfLikesDislikes;
     }
 
     public static List<Post> getMostDiscussedPosts(PostService postService, List<Post> posts) {

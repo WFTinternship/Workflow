@@ -5,6 +5,7 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
+import com.workfront.internship.workflow.exceptions.service.NoSuchUserException;
 import com.workfront.internship.workflow.exceptions.service.DuplicateEntryException;
 import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
 import com.workfront.internship.workflow.exceptions.service.NotExistingEmailException;
@@ -285,7 +286,7 @@ public class UserServiceImpl implements UserService {
             return user;
         } else {
             LOGGER.error("Invalid email-password combination!");
-            throw new ServiceLayerException("Invalid email-password combination!");
+            throw new NoSuchUserException("Invalid email-password combination!");
         }
     }
 
