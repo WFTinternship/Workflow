@@ -137,7 +137,7 @@ public class PostController extends BaseController {
             postService.getNotified(post.getId(), post.getUser().getId());
         }
 
-        List<User> usersToNotify = appAreaService.getUsersById(appArea.getId());
+        List<User> usersToNotify = appAreaService.getUsersById(appArea != null ? appArea.getId() : 0);
         postService.notifyUsers(usersToNotify, post, EmailType.NEW_POST);
 
         return modelAndView;

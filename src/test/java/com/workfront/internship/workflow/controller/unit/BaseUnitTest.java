@@ -11,10 +11,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 /**
  * Created by Angel on 7/13/2017
  */
-public class BaseUnitTest extends BaseControllerTest {
+public abstract class BaseUnitTest extends BaseControllerTest {
 
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
     }
+
 }
