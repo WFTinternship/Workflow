@@ -30,7 +30,6 @@ public class UserRestController {
         long appAreaId = Long.parseLong(url.substring(url.lastIndexOf('/') + 1));
 
         User user = (User) request.getSession().getAttribute(PageAttributes.USER);
-        String subscribed = request.getParameter(PageAttributes.NOTE);
 
         try {
                 userService.subscribeToArea(user.getId(), appAreaId);

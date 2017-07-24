@@ -3,13 +3,10 @@ package com.workfront.internship.workflow.controller;
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
-import com.workfront.internship.workflow.exceptions.service.InvalidObjectException;
-import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +19,6 @@ import java.util.List;
  * Created by nane on 6/25/17
  */
 @Controller
-@RequestMapping("/")
 public class HomeController extends BaseController {
     private PostService postService;
     private AppAreaService appAreaService;
@@ -65,7 +61,6 @@ public class HomeController extends BaseController {
                         ControllerUtils.getNumberOfAnswers(posts, postService))
                 .addObject(PageAttributes.POSTS_OF_APPAREA,
                         ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-
 
         return modelAndView;
     }

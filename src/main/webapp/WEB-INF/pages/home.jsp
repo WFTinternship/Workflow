@@ -87,9 +87,9 @@
 </head>
 <body>
 <div id="loader" style="display: none;">
-<div class="leftEye"></div>
-<div class="rightEye"></div>
-<div class="mouth"></div>
+    <div class="leftEye"></div>
+    <div class="rightEye"></div>
+    <div class="mouth"></div>
 </div>
 <div class="container-fluid">
     <!-- Modal -->
@@ -155,7 +155,7 @@
                         </form>
                     </div>
                 </div>
-                <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt <c:if test="${user != null}"> logedin </c:if>'>
+                <div class='col-lg-7 col-xs-12 col-sm-5 col-md-7 avt<c:if test="${user != null}"> logedin </c:if>'>
                     <div class="stnt">
                         <c:if test="${user == null}">
                             <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Post
