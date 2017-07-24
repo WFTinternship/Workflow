@@ -9,7 +9,6 @@ import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.PostService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.util.DaoTestUtil;
-import com.workfront.internship.workflow.controller.PageAttributes;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -25,8 +24,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
@@ -97,55 +94,4 @@ public class CommentControllerUnitTest extends BaseUnitTest {
                 .andExpect(view().name("redirect:/post/" + postId));
 
     }
-   /* @Test
-    public void addNewComment_success() throws Exception {
-        User user = (User) testSession.getAttribute(PageAttributes.USER);
-        Post post = (Post) testSession.getAttribute(PageAttributes.POST);
-        String content = (String) testSession.getAttribute(PageAttributes.COMMENTCONTENT);
-
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Comment comment = new Comment();
-        comment.setUser(user).setPost(post).setContent(content).setCommentTime(timestamp);
-
-        Long comment_id = commentService.add(comment);
-        when(commentService.add(comment)).thenReturn(comment_id);
-
-        Long postId = comment.getPost().getId();
-
-            this.mockMvc.perform(post("/new-comment/" + postId))
-                    .andExpect(model().attribute(PageAttributes.COMMENTCONTENT, comment.getContent()))
-                    .andExpect(model().attribute(PageAttributes.USER, comment.getUser()))
-                    .andExpect(model().attribute(PageAttributes.POST, comment.getPost()))
-                    .andExpect(status().isOk());
-
-    }*/
-    /*@Test
-    public void addNewComment_RunTimeException() throws Exception {
-        Long postId = postService.add(post);
-        when(commentService.add(any(Comment.class))).thenThrow(new RuntimeException());
-        this.mockMvc.perform(post("/new-comment/" + postId))
-                .andExpect(model().attribute(PageAttributes.MESSAGE,
-                        "Sorry, your comment was not added. Please try again"));
-    }
-    @Test
-    public void newComment_nullPost() {
-        //.andExpect(model().attribute(PageAttributes.POSTCOMMENTS, commentService.getByPostId(postId)));
-    }
-    @Test
-    public void newComment_success() {
-*/
-        /*
-        modelAndView
-                .addObject(PageAttributes.ANSWERS, answers)
-                .addObject(PageAttributes.POST, post)
-                .addObject(PageAttributes.NUMOFLIKES,
-                        ControllerUtils.getNumberOfLikes(allPosts, postService))
-                .addObject(PageAttributes.NUMOFDISLIKES,
-                        ControllerUtils.getNumberOfDislikes(allPosts, postService))
-                .addObject(PageAttributes.APPAREAS, appAreas)
-                .addObject(PageAttributes.POSTS_OF_APPAAREA,
-                        ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-                        }
-         */
-
 }

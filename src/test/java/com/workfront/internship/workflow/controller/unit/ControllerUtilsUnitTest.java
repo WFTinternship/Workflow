@@ -5,13 +5,9 @@ import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.exceptions.service.ServiceLayerException;
 import com.workfront.internship.workflow.service.PostService;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +23,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
 
     @Mock
     private PostService postServiceMock;
-
-    @InjectMocks
-    private ControllerUtils controllerUtils;
-
 
     /**
      * @see ControllerUtils#getNumberOfPostsForAppArea(List, PostService)
@@ -68,14 +60,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
      * @see ControllerUtils#getNumberOfAnswers(List, PostService)
      */
     @Test
-    public void getNumberOfAnswers_success() {
-
-    }
-
-    /**
-     * @see ControllerUtils#getNumberOfAnswers(List, PostService)
-     */
-    @Test
     public void getNumberOfAnswers_ServiceLayerException() {
         List<Post> postList = new ArrayList<>();
         Long postId = 7L;
@@ -84,14 +68,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
         // Test method
         List<Integer> expectedList = ControllerUtils.getNumberOfAnswers(postList, postService);
         assertTrue(expectedList.isEmpty());
-    }
-
-    /**
-     * @see ControllerUtils#getNumberOfLikes(List, PostService)
-     */
-    @Test
-    public void getNumberOfLikes_success() {
-
     }
 
     /**
@@ -112,14 +88,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
      * @see ControllerUtils#getNumberOfDislikes(List, PostService)
      */
     @Test
-    public void getNumberOfDislikes_success() {
-
-    }
-
-    /**
-     * @see ControllerUtils#getNumberOfDislikes(List, PostService)
-     */
-    @Test
     public void getNumberOfDislikes_ServiceLayerException() {
         List<Post> postList = new ArrayList<>();
         Long postId = 7L;
@@ -128,15 +96,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
         // Test method
         List<Long> expectedList = ControllerUtils.getNumberOfLikes(postList, postService);
         assertTrue(expectedList.isEmpty());
-    }
-
-
-    /**
-     * @see ControllerUtils#getDifOfLikesDislikes(List, PostService)
-     */
-    @Test
-    public void getDifOfLikesDislikes_success() {
-
     }
 
     /**
@@ -158,14 +117,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
      * @see ControllerUtils#getMostDiscussedPosts(PostService, List)
      */
     @Test
-    public void getMostDiscussedPosts_success() {
-
-    }
-
-    /**
-     * @see ControllerUtils#getMostDiscussedPosts(PostService, List)
-     */
-    @Test
     public void getMostDiscussedPosts_ServiceLayerException() {
         List<Post> posts = new ArrayList<>();
         Long postId = 7L;
@@ -174,14 +125,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
         // Test method
         List<Post> expectedList = ControllerUtils.getMostDiscussedPosts(postService, posts);
         assertTrue(expectedList.isEmpty());
-    }
-
-    /**
-     * @see ControllerUtils#getTopPosts(PostService, List)
-     */
-    @Test
-    public void getTopPosts_success() {
-
     }
 
     /**
@@ -198,48 +141,4 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
         List<Post> expectedList = ControllerUtils.getTopPosts(postService, posts);
         assertTrue(expectedList.isEmpty());
     }
-
-    /**
-     * @see ControllerUtils#setDefaultAttributes(PostService, ModelAndView)
-     */
-    @Test
-    public void setDefaultAttributes_success() {
-
-    }
-
-    @Test
-    public void setDefaultAttributes_gettingPostsList_success() {
-/*
-        ModelAndView modelAndView = new ModelAndView();
-        List<Post> posts = new ArrayList<>();
-        List<AppArea> appAreas = new ArrayList<>();
-        mockStatic(ControllerUtils.class);
-        List<Post> topPosts = new ArrayList<>();
-        List<Post> mostDiscussedPosts = new ArrayList<>();
-        doReturn(topPosts).when(ControllerUtils.getTopPosts(postService, posts));
-        doReturn(mostDiscussedPosts).when(ControllerUtils.getMostDiscussedPosts(postService, posts));
-
-        doReturn(PageAttributes.NUMOFANSWERS).when(ControllerUtils.getNumberOfAnswers(posts, postService));
-        doReturn(PageAttributes.NUMOFANSWERSFORMDP).when(ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
-        doReturn(PageAttributes.DIFOFLIKESDISLIKES).when(ControllerUtils.getDifOfLikesDislikes(topPosts, postService));
-        doReturn(PageAttributes.POSTS_OF_APPAAREA).when(ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-
-        // Test method
-        ControllerUtils.setDefaultAttributes(postService, posts, modelAndView);
-
-        assertEquals(modelAndView.getModel()
-        .get(PageAttributes.NUMOFANSWERS),ControllerUtils.getNumberOfAnswers(posts, postService));
-        assertEquals(modelAndView.getModel().get(PageAttributes.NUMOFANSWERSFORMDP),
-                ControllerUtils.getNumberOfAnswers(mostDiscussedPosts, postService));
-        assertEquals(modelAndView.getModel().get(PageAttributes.DIFOFLIKESDISLIKES),
-                ControllerUtils.getDifOfLikesDislikes(topPosts, postService));
-        assertEquals(modelAndView.getModel().get(PageAttributes.APPAREAS),appAreas);
-        assertEquals(modelAndView.getModel().get(PageAttributes.POSTS_OF_APPAAREA),
-                ControllerUtils.getNumberOfPostsForAppArea(appAreas, postService));
-        assertEquals(modelAndView.getModel().get(PageAttributes.TOPPOSTS),topPosts);
-        assertEquals(modelAndView.getModel().get(PageAttributes.MOSTDISCUSSEDPOSTS),mostDiscussedPosts);
-*/
-
-    }
-
 }
