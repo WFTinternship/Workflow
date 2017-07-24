@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -61,8 +60,6 @@ public class PostControllerUnitTest extends BaseUnitTest {
         dislikedPosts = new ArrayList<>();
         postComments = new ArrayList<>();
         answers = new ArrayList<>();
-
-        MockitoAnnotations.initMocks(this);
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(postController)

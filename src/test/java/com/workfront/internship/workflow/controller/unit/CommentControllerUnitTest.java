@@ -1,9 +1,6 @@
 package com.workfront.internship.workflow.controller.unit;
 
 import com.workfront.internship.workflow.controller.CommentController;
-import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
-import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
-import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
@@ -17,18 +14,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 
 
 import java.sql.Timestamp;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -39,6 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by Angel on 7/13/2017
  */
 public class CommentControllerUnitTest extends BaseUnitTest {
+
+    @InjectMocks
+    private CommentController commentController;
+
     @Mock
     private CommentService commentService;
 
@@ -48,19 +44,10 @@ public class CommentControllerUnitTest extends BaseUnitTest {
     @Mock
     private UserService userService;
 
-    private HttpServletRequest testRequest;
-    private HttpSession testSession;
-
-    @InjectMocks
-    private CommentController commentController;
-    private MockMvc mockMvc;
 
     private Post post;
     private Comment comment;
     private User user;
-    private CommentDAOImpl commentDAO;
-    private UserDAOImpl userDAO;
-    private PostDAOImpl postDAO;
 
     @Before
     public void init() {
@@ -69,7 +56,7 @@ public class CommentControllerUnitTest extends BaseUnitTest {
         post = DaoTestUtil.getRandomPost();
         comment = DaoTestUtil.getRandomComment(user, post);
 
-       // mockMvc = MockMvcBuilders.standaloneSetup(commentController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(commentController).build();
     }
     @Test
     public void newComment_notValidComment() {
