@@ -1,5 +1,6 @@
-package com.workfront.internship.workflow.controller;
+package com.workfront.internship.workflow.controller.integration;
 
+import com.workfront.internship.workflow.controller.PageAttributes;
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
 import com.workfront.internship.workflow.entity.Comment;
@@ -20,13 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by nane on 7/15/17
  */
-public class PostControllerIntegrationTest extends BaseControllerTest {
+public class PostControllerIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     @Qualifier("userServiceImpl")

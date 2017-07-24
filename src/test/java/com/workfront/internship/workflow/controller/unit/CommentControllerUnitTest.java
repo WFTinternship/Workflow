@@ -1,5 +1,6 @@
-package com.workfront.internship.workflow.controller;
+package com.workfront.internship.workflow.controller.unit;
 
+import com.workfront.internship.workflow.controller.CommentController;
 import com.workfront.internship.workflow.dao.impl.CommentDAOImpl;
 import com.workfront.internship.workflow.dao.impl.PostDAOImpl;
 import com.workfront.internship.workflow.dao.impl.UserDAOImpl;
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by Angel on 7/13/2017
  */
-public class CommentControllerUnitUnitTest extends BaseUnitTest {
+public class CommentControllerUnitTest extends BaseUnitTest {
     @Mock
     private CommentService commentService;
 
@@ -68,8 +69,7 @@ public class CommentControllerUnitUnitTest extends BaseUnitTest {
         post = DaoTestUtil.getRandomPost();
         comment = DaoTestUtil.getRandomComment(user, post);
 
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(commentController).build();
+       // mockMvc = MockMvcBuilders.standaloneSetup(commentController).build();
     }
     @Test
     public void newComment_notValidComment() {

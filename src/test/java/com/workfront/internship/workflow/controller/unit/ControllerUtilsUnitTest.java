@@ -1,4 +1,4 @@
-package com.workfront.internship.workflow.controller;
+package com.workfront.internship.workflow.controller.unit;
 
 import com.workfront.internship.workflow.controller.utils.ControllerUtils;
 import com.workfront.internship.workflow.entity.AppArea;
@@ -34,7 +34,6 @@ public class ControllerUtilsUnitTest extends BaseUnitTest {
 
     @Before
     public void init() {
-        MockitoAnnotations.initMocks(this);
     }
 
     /**
