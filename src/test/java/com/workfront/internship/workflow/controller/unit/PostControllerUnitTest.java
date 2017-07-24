@@ -4,6 +4,7 @@ import com.workfront.internship.workflow.controller.PostController;
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.entity.Post;
 import com.workfront.internship.workflow.entity.User;
+import com.workfront.internship.workflow.service.AppAreaService;
 import com.workfront.internship.workflow.service.CommentService;
 import com.workfront.internship.workflow.service.UserService;
 import com.workfront.internship.workflow.service.impl.PostServiceImpl;
@@ -42,6 +43,9 @@ public class PostControllerUnitTest extends BaseUnitTest {
 
     @Mock
     private CommentService commentServiceMock;
+
+    @Mock
+    private AppAreaService appAreaServiceMock;
 
     private Post post;
     private User user;
