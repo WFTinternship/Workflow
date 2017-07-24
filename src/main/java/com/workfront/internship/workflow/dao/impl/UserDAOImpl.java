@@ -26,11 +26,6 @@ public class UserDAOImpl extends AbstractDao implements UserDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    public UserDAOImpl() {
-        dataSource = DBHelper.getPooledConnection();
-    }
-
-    @Autowired
     public UserDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }

@@ -9,6 +9,7 @@ import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -23,14 +24,9 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
-    public AppAreaDAOImpl(){
-        dataSource = DBHelper.getPooledConnection();
-    }
-
-    public AppAreaDAOImpl(DataSource dataSource){
+    public AppAreaDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
 
     /**
      * @see AppAreaDAO#add(AppArea)
@@ -118,10 +114,10 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
     public AppArea getById(long id) {
         AppArea appArea = AppArea.getById(id);
         Map<String, Object> actualAppArea = getAppAreaFieldsById(id);
-        if(actualAppArea.isEmpty()){
+        if (actualAppArea.isEmpty()) {
             return null;
         }
-        if(!isTheActualAppArea(appArea, actualAppArea)){
+        if (!isTheActualAppArea(appArea, actualAppArea)) {
             LOGGER.error("AppArea does not exist");
             throw new NotExistingAppAreaException();
         }
@@ -132,7 +128,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
     /**
      * Returns Map of appArea fields from database
      */
-    private Map<String, Object> getAppAreaFieldsById(long id){
+    private Map<String, Object> getAppAreaFieldsById(long id) {
         Map<String, Object> fieldsMap = new HashMap<>();
         final String sql = "SELECT * FROM apparea " +
                 "WHERE id = ?";
@@ -145,9 +141,9 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                fieldsMap.put("Name",rs.getString(name));
-                fieldsMap.put("Description",rs.getString(description));
-                fieldsMap.put("TeamName",rs.getString(teamName));
+                fieldsMap.put("Name", rs.getString(name));
+                fieldsMap.put("Description", rs.getString(description));
+                fieldsMap.put("TeamName", rs.getString(teamName));
             }
         } catch (SQLException e) {
             LOGGER.error("SQL exception occurred");
@@ -162,7 +158,7 @@ public class AppAreaDAOImpl extends AbstractDao implements AppAreaDAO {
      * Checks if the appArea got from the database is the same as the one in AppArea enum
      */
 
-    private static boolean isTheActualAppArea(AppArea appArea, Map<String, Object> actualAppArea){
+    private static boolean isTheActualAppArea(AppArea appArea, Map<String, Object> actualAppArea) {
         return appArea.getName().equals(actualAppArea.get("Name")) &&
                 appArea.getDescription().equals(actualAppArea.get("Description")) &&
                 appArea.getTeamName().equals(actualAppArea.get("TeamName"));

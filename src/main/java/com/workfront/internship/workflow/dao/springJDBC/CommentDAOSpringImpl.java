@@ -6,6 +6,7 @@ import com.workfront.internship.workflow.dao.springJDBC.rowmappers.CommentRowMap
 import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,9 +29,8 @@ public class CommentDAOSpringImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOGGER = Logger.getLogger(CommentDAOSpringImpl.class);
 
-    public CommentDAOSpringImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public CommentDAOSpringImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     /**

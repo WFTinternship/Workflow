@@ -7,6 +7,7 @@ import com.workfront.internship.workflow.entity.Comment;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -24,10 +25,6 @@ import java.util.List;
 public class CommentDAOImpl extends AbstractDao implements CommentDAO {
 
     private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
-
-    public CommentDAOImpl(){
-        dataSource = DBHelper.getPooledConnection();
-    }
 
     public CommentDAOImpl(DataSource dataSource){
         this.dataSource = dataSource;

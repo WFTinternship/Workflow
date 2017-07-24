@@ -8,6 +8,7 @@ import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.util.DBHelper;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -21,26 +22,7 @@ import java.util.List;
 @Repository
 public class PostDAOImpl extends AbstractDao implements PostDAO {
 
-    // Post fileds
-    public static final String id = "id";
-    public static final String postId = "post_id";
-    public static final String appAreaId = "apparea_id";
-    public static final String dateTime = "post_time";
-    public static final String content = "postContent";
-    public static final String isCorrect = "is_correct";
     private static final Logger LOG = Logger.getLogger(PostDAOImpl.class);
-    public static String postTitle = "answerTitle";
-
-    // Answer fields
-
-    public static String answerTime = "answer_time";
-    public static String answerContent = "answer_content";
-    public static String userId = "user_id";
-    public static String title = "answer_title";
-
-    public PostDAOImpl() {
-        dataSource = DBHelper.getPooledConnection();
-    }
 
     public PostDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;

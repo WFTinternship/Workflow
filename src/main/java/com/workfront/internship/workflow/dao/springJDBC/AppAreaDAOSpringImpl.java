@@ -9,6 +9,7 @@ import com.workfront.internship.workflow.entity.User;
 import com.workfront.internship.workflow.exceptions.dao.DAOException;
 import com.workfront.internship.workflow.exceptions.dao.NotExistingAppAreaException;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,9 +30,8 @@ public class AppAreaDAOSpringImpl extends AbstractDao implements AppAreaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(AppAreaDAOSpringImpl.class);
 
-    public AppAreaDAOSpringImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public AppAreaDAOSpringImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
