@@ -408,6 +408,10 @@
                                     <c:forEach var="comment" items="${comments}">
                                         <li>
                                                 ${comment.content}
+                                            <div class="pull-right">
+                                                <a class="username"
+                                                   href="/users/${comment.user.id}">${comment.user.firstName}</a>
+                                            </div>
                                         </li>
                                     </c:forEach>
                                 </ul>
@@ -561,6 +565,10 @@
                                                    varStatus="commentStatus">
                                             <li>
                                                     ${comment.content}
+                                                <div class="pull-right">
+                                                    <a class="username"
+                                                       href="/users/${comment.user.id}">${comment.user.firstName}</a>
+                                                </div>
                                             </li>
                                         </c:forEach>
                                     </ul>

@@ -75,8 +75,6 @@ public class PostController extends BaseController {
 
         Post bestAnswer = postService.getBestAnswer(postId);
 
-        
-
         allPosts = new ArrayList<>(answers);
         allPosts.add(0, post);
 
